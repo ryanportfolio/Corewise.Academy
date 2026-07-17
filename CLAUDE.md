@@ -17,7 +17,7 @@ BLOCKING requirement. The user's UI does not render them → infinite "awaiting 
 
 ## Default prose mode: caveman ultra
 
-Invoke the `caveman` skill at **ultra** at session start. Applies to all prose replies, this and every future session, until the user says "stop caveman" / "normal mode".
+Invoke the `caveman` skill at **ultra** at session start. Applies to all prose replies AND extended-thinking traces (wording only — reasoning depth untouched), this and every future session, until the user says "stop caveman" / "normal mode".
 
 - Prose only. Code, commits, PRs, file contents, symbols, API names, error strings stay normal, never abbreviated.
 - Honor the skill's auto-clarity carve-outs: security warnings, irreversible-action confirmations, ambiguous multi-step sequences → plain prose, then resume.

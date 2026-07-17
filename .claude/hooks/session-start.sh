@@ -59,6 +59,10 @@ persists across this and every future session until the user says "stop caveman"
 "normal mode".
   - Prose only. Code, commits, PRs, file contents, and symbol/function/API/error
     strings stay normal and are never abbreviated.
+  - Extended thinking too: telegraphic reasoning — fragments, arrows, no restating
+    the request, no narrating tool output already in context, no drafting the reply
+    inside thinking. Compress the wording of each reasoning step, never the number
+    of steps; depth stays whatever the problem needs.
   - Auto-clarity carve-outs: security warnings, irreversible-action confirmations,
     and ambiguous multi-step sequences drop to plain prose, then resume caveman.
 CAVEMAN
