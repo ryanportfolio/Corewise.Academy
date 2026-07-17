@@ -78,8 +78,13 @@ this order, using the existing sample guide as the structural reference:
 7. **Sources** — every source video in `sources` frontmatter (url, creator, video,
    timestamps, watched).
 
-Set `status: draft` (or `review`), `placeholder: false`, and `lastUpdated` to today.
-Fill every required field in the schema at `site/src/content.config.ts`.
+Set `status: draft` (or `review`) and `lastUpdated` to today. Fill every required
+field in the schema at `site/src/content.config.ts`.
+
+YAML gotcha (has bitten twice): any frontmatter string containing `: ` (a colon
+followed by a space) — titles, objectives, self-check answers — must be quoted, or
+the build fails with "bad indentation of a mapping entry". When in doubt,
+single-quote the whole scalar.
 
 Multi-source rule: if the guide draws on more than one video, weave them — do not
 section the guide by source. The reader should see one lesson, not a playlist.
@@ -87,8 +92,7 @@ section the guide by source. The reader should see one lesson, not a playlist.
 ## Step 5: Update the source registry
 
 Add a row to `content/sources.md` for each ingested video: date watched, creator /
-channel, video title + link, and a one-line note on why it qualified. If a real
-source replaces the placeholders, delete the placeholder rows in this same change.
+channel, video title + link, and a one-line note on why it qualified.
 
 ## Step 6: Verify the build
 
