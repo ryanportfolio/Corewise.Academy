@@ -1,0 +1,20 @@
+{
+  "name": "corewise-academy",
+  "version": "0.1.0",
+  "description": "CoreWise Academy — a celestial atlas of machine minds. Editorial AI learning publication.",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^4.0.0",
+    "astro": "^5.0.0",
+    "three": "^0.160.0"
+  }
+}

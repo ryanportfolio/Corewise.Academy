@@ -1,0 +1,81 @@
+---
+import Base from '../layouts/Base.astro';
+
+const principles = [
+  {
+    name: 'Andragogy',
+    line: 'Adults learn what they can use — every guide opens with why it matters to real work and ends with an exercise you run tonight.',
+  },
+  {
+    name: "Bloom's-taxonomy objectives",
+    line: 'The objective box promises observable verbs — estimate, restructure, diagnose — never "understand"; you can check whether you left the room with them.',
+  },
+  {
+    name: 'Retrieval practice',
+    line: 'The oral examination at the end of each guide makes you pull the ideas back out of your own head — reveal-style answers, no grades, pure recall.',
+  },
+  {
+    name: 'Scaffolding',
+    line: 'Prerequisite links and the Broad → Practitioner → Deep shelves let each guide stand on charted ground instead of assuming it.',
+  },
+];
+---
+
+<Base title="How it’s charted — CoreWise Academy">
+  <main>
+    <p class="mono-label accent">Colophon · How it’s charted</p>
+    <h1 class="display">The pipeline behind the atlas.</h1>
+
+    <div class="prose">
+      <h2><span class="no">01</span>Sources are watched, not scraped</h2>
+      <p>
+        The pipeline starts with a video the editor actually learned from. Its transcript is
+        fetched; the material is broken into concepts, prerequisites, misconceptions, exercises,
+        and quotable moments with timestamps. A source registry records every ingested video and
+        why it qualified.
+      </p>
+
+      <h2><span class="no">02</span>Synthesis, not summary</h2>
+      <p>
+        Notes from multiple sources are woven into an original guide — the atlas never republishes
+        anyone's lecture. The writing tool reads the whole curriculum first and decides whether the
+        material becomes a new guide, extends an existing one, or splits across several.
+      </p>
+
+      <h2><span class="no">03</span>The pull request is the editorial desk</h2>
+      <p>
+        Nothing publishes directly. Every draft arrives as a pull request; the editor reviews,
+        corrects, and merges. Merging is publishing — the site rebuilds and the new star appears on
+        its shelf.
+      </p>
+
+      <h2><span class="no">04</span>Learning science, applied</h2>
+      <ul class="principles">
+        {
+          principles.map((p) => (
+            <li>
+              <strong>{p.name}.</strong> {p.line}
+            </li>
+          ))
+        }
+      </ul>
+
+      <h2><span class="no">05</span>Built like it teaches</h2>
+      <p>
+        The site itself is a static Astro build: design tokens in one documented file, a custom
+        titling typeface generated from stroke skeletons, and a WebGL star chart whose stars are
+        the guides themselves. The craft is the credential.
+      </p>
+    </div>
+  </main>
+
+  <style>
+    main { max-width: calc(var(--measure) + 2 * var(--s-4)); margin: 0 auto; padding: var(--s-8) var(--s-4) var(--s-12); }
+    h1 { font-family: var(--font-display); font-size: clamp(2.4rem, 6vw, var(--text-3xl)); margin: var(--s-2) 0 var(--s-4); }
+    .prose p { margin-bottom: var(--s-3); }
+    .prose h2 { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 400; margin: var(--s-6) 0 var(--s-2); }
+    .no { color: var(--accent-deep); margin-right: 0.45em; }
+    .principles { list-style: none; margin: 0; padding: 0; }
+    .principles li { border-left: 3px solid var(--accent-deep); padding-left: var(--s-3); margin-bottom: var(--s-3); }
+  </style>
+</Base>

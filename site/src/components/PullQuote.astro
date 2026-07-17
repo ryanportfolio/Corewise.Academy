@@ -1,0 +1,48 @@
+---
+// A star speaks: attributed pull quote with a timestamp link into the source video.
+interface Props {
+  quote: string;
+  creator: string;
+  video: string;
+  href: string;
+  timestamp: string;
+}
+const { quote, creator, video, href, timestamp } = Astro.props;
+---
+
+<figure class="pullquote">
+  <p>“{quote}”</p>
+  <cite>
+    — {creator}, <a href={href}>“{video}”</a> · <a class="timestamp" href={href}>{timestamp}</a>
+  </cite>
+</figure>
+
+<style>
+  .pullquote {
+    margin: var(--s-6) 0;
+    padding-left: var(--s-3);
+    border-left: 3px solid var(--accent-deep);
+  }
+  .pullquote p {
+    font-family: var(--font-body);
+    font-style: italic;
+    font-weight: 500;
+    font-size: var(--text-lg);
+    line-height: 1.32;
+  }
+  .pullquote cite {
+    display: block;
+    margin-top: var(--s-2);
+    font-family: var(--font-mono);
+    font-style: normal;
+    font-size: var(--text-xs);
+    color: var(--ink-mute);
+  }
+  .timestamp {
+    font-family: var(--font-mono);
+    color: var(--accent-deep);
+    text-decoration: none;
+    border-bottom: 1px dashed color-mix(in srgb, var(--accent) 55%, transparent);
+  }
+  .timestamp::before { content: '▶ '; font-size: 0.8em; }
+</style>

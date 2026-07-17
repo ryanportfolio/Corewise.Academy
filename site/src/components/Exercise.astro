@@ -1,0 +1,24 @@
+---
+// "Field exercise — try this tonight": the hands-on step every guide carries.
+interface Props {
+  title?: string;
+}
+const { title = 'Field exercise — try this tonight' } = Astro.props;
+---
+
+<aside class="exercise">
+  <span class="panel-label">{title}</span>
+  <slot />
+</aside>
+
+<style>
+  .exercise {
+    background: var(--accent-wash);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent-deep);
+    padding: var(--s-3);
+    margin: var(--s-6) 0;
+  }
+  .exercise :global(ol) { margin: 0 0 0 var(--s-3); }
+  .exercise :global(li) { margin-bottom: var(--s-1); }
+</style>
