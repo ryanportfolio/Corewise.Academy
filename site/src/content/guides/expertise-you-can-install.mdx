@@ -1,0 +1,116 @@
+---
+title: Expertise you can install
+description: Career-long judgment now ships as skill files your agent can run — engineering practice, YC-style interrogation, entire security frameworks. How to adopt someone's method, and why you scan it like untrusted input first.
+track: agents
+level: broad
+number: 10
+minutes: 9
+objectives:
+  - Evaluate an open-source skills repository by the process it encodes rather than the feature list it advertises.
+  - Adopt a third-party skill collection by running its stages in the intended order on a real task.
+  - 'Scan a skill for malicious patterns — prompt injection, data exfiltration, privilege escalation — before it touches your agent.'
+prerequisites:
+  - slug: automate-the-bottleneck
+    note: Assumes you know what a skill is and have built at least one of your own.
+sources:
+  - url: https://www.youtube.com/watch?v=2lmBj_XQq0I
+    creator: Matthew Berman
+    video: You NEED to try these 12 open-source AI projects RIGHT NOW
+    timestamps: ['2:39', '7:57', '9:43', '11:53', '12:01']
+    watched: July 2026
+selfCheck:
+  - q: Why does "a process, not a collection of tools" change how you adopt a skills repository?
+    a: Because the stages assume each other — think, plan, build, review, test, ship, reflect each exist to catch what the previous stage produced. Cherry-picking one skill out of the sequence discards the checks the author built into the ordering, which is where most of the encoded judgment actually lives.
+  - q: What makes an installable skill a supply-chain risk in a way an ordinary library is not?
+    a: 'A skill is natural-language instruction that your agent will follow with your credentials and tools. A malicious one attacks through obedience — prompt injection, data exfiltration, excessive agency — rather than through a code path a scanner of binaries would catch. And installation is deliberately frictionless: paste a URL, say install.'
+  - q: What does it mean, practically, that domain expertise now ships as skill files?
+    a: Practitioners are codifying career-long judgment — engineering practice, investor-style interrogation, entire security frameworks like MITRE ATT&CK — into files any agent can run. Adopting one is adopting the author's method, so you vet the author the way you would choose a mentor, and vet the file the way you would treat untrusted input.
+status: published
+lastUpdated: 2026-07-17
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+
+<Chalk>you are not installing a tool — you are installing someone's judgment</Chalk>
+
+<p class="lede">
+Scan any week's crop of open-source AI releases — Matthew Berman's curation rounds are a good
+sampling instrument — and a pattern separates itself from the tool noise. The projects gathering
+six-figure star counts are increasingly not applications at all. They are skill files:
+practitioners packaging how they think into instructions an agent can run. A veteran developer
+educator ships his entire engineering practice as skills. The president of Y Combinator codifies
+how he interrogates startups into an ordered pipeline your agent can walk you through. Whole
+security frameworks — MITRE ATT&CK, NIST, fraud models co-developed by major banks — arrive as
+a paste-one-URL install. The unit of distribution for expertise has changed, and it changes both
+how you should adopt it and what you should fear.
+</p>
+
+## <span class="sec-no">01</span>The judgment ships, not just the capability
+
+What these repositories sell is not features — it is a working method with the author's scars
+built in. The tell is the tagline on the most-starred of them: skills for real engineering, not
+vibe coding. The value of such a collection is that somebody spent a career learning which
+questions to ask and in which order, then wrote that down in a form your agent can execute.
+Which means the right way to evaluate one is not the star count and not the feature list: read
+the skill files themselves and ask whose judgment this encodes, and whether that judgment is
+one you would take as mentorship if it came from a person. It would be strange to adopt a
+mentor by popularity alone; the file deserves the same scrutiny.
+
+## <span class="sec-no">02</span>A process, not a toolbox
+
+The best of these collections are explicit that the ordering is the product.
+
+<PullQuote
+  quote="He describes G Stack as a process, not a collection of tools."
+  creator="Matthew Berman, on Garry Tan's skills"
+  video="You NEED to try these 12 open-source AI projects RIGHT NOW"
+  href="https://www.youtube.com/watch?v=2lmBj_XQq0I"
+  timestamp="9:43"
+/>
+
+Think, plan, build, review, test, ship, reflect — with an office-hours-style interrogation
+before any of it, where the agent grills you about the problem space, the solution, and the
+team the way a YC partner would. Each stage exists to catch what the previous one produced,
+and that is precisely where the encoded judgment lives. Cherry-pick the build skill and skip
+the interrogation, and you have kept the author's typing speed while discarding their taste.
+Run the sequence in order at least once before you decide what to prune — the stages you are
+most tempted to skip are usually the ones the author added after being burned.
+
+## <span class="sec-no">03</span>Scan it like untrusted input
+
+Now the fear. A skill is natural-language instruction that your agent will obey with your
+credentials, your files, and your tools. That makes a malicious skill categorically different
+from a malicious library: it does not need a vulnerable code path, it just needs your agent's
+obedience. The attack surface is instruction-following itself — prompt injection, data
+exfiltration, privilege escalation, excessive agency — and the install culture of
+paste-a-URL-and-say-install is exactly the frictionlessness attackers love. The ecosystem
+knows it: one of the projects in the same curation round is NVIDIA's security scanner for
+agent skills, checking dozens of vulnerability patterns across sixteen categories before
+anything reaches your agent.
+
+<PullQuote
+  quote="Anytime you're about to install a skill, you should first … inspect it."
+  creator="Matthew Berman"
+  video="You NEED to try these 12 open-source AI projects RIGHT NOW"
+  href="https://www.youtube.com/watch?v=2lmBj_XQq0I"
+  timestamp="12:01"
+/>
+
+The discipline is the same one this publication applies to sources: nothing gets in unread.
+Scan with a purpose-built tool where one exists; where it does not, have a *separate* agent
+session — one with no tools and no access — read the skill and answer three questions. What
+does this instruct my agent to do with data it touches? What does it tell my agent to fetch,
+send, or execute? And is there any instruction addressed to the agent that the installing
+human was clearly not meant to read?
+
+<Exercise>
+1. Pick a skills repository from a practitioner whose judgment you already respect. Before
+   installing anything, read its top-level skill files and write one sentence naming the
+   process they encode — if you cannot, that is your answer.
+2. Scan it before install: a dedicated skill scanner if available, otherwise a toolless agent
+   session prompted with the three questions from section 03.
+3. Run the full sequence in its intended order on one small, real task. Note which stage you
+   wanted to skip and what it caught — then decide, from evidence, what to keep.
+</Exercise>

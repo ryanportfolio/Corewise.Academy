@@ -33,7 +33,6 @@ const guides = defineCollection({
       .length(3),
     status: z.enum(['draft', 'review', 'published']).default('draft'),
     lastUpdated: z.coerce.date(),
-    placeholder: z.boolean().default(false), // sample/mockup content flag
     courseSlug: z.string().optional(),
     courseOrder: z.number().int().optional(),
   }),
