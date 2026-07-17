@@ -1,0 +1,130 @@
+---
+title: Rent the model, own the method
+description: Frontier models come and go on someone else's schedule. The durable skill is extracting how they work — into skill files, routing tables, and orchestrator-worker splits that cheaper models can run.
+track: agents
+level: practitioner
+number: 9
+minutes: 10
+objectives:
+  - Route a task to the cheapest model-and-effort pairing that clears its quality bar, using a toolkit table you maintain yourself.
+  - Extract a frontier model's working discipline from a session you admired into an installable skill file any model can run.
+  - Structure an orchestrator-worker split so the expensive model plans adversarially while cheap models execute and report back.
+  - Identify, from output alone, when raising effort has tipped a model into overthinking instead of improving it.
+prerequisites:
+  - slug: automate-the-bottleneck
+    note: Know what a skill is and how a proactive system is shaped before deciding which model runs inside one.
+sources:
+  - url: https://www.youtube.com/watch?v=XTBWVVcF3Pk
+    creator: Nate Herk
+    video: How I Make Opus Think Like Fable (5 easy steps)
+    timestamps: ['1:13', '2:45', '3:53', '5:49', '6:19', '8:47']
+    watched: July 2026
+selfCheck:
+  - q: Why did a frontier orchestrator with cheap workers match a frontier-everywhere workflow at a fraction of the cost?
+    a: Because the judgment lives at the plan-and-verify layer, not in the execution. When the orchestrator scopes adversarially, anticipates failure modes, and reviews what comes back, the workers only need to follow a well-designed step — and that takes far less intelligence than designing it.
+  - q: What separates scoping from planning?
+    a: Planning lists the steps to the goal. Scoping plays devil's advocate first — what could go wrong, which assumptions are unverified, where are the unknowns — and only then commits to steps. A plan without that interrogation looks identical right up until it fails.
+  - q: What columns belong in a model-routing table, and why does taste get its own column?
+    a: At minimum cost, intelligence, and taste, scored per model in your toolkit. Taste — creativity, design judgment, out-of-the-box framing — doesn't track reasoning strength, so a task can demand one without the other; collapsing them into one score routes both kinds of work badly.
+status: published
+lastUpdated: 2026-07-17
+placeholder: false
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+
+<Chalk>a better telescope does not make an astronomer — the discipline does</Chalk>
+
+<p class="lede">
+Put the strongest model available in the hands of a beginner, and give a seasoned engineer a
+model two generations older: the engineer still ships the better result. That thought experiment
+opens Nate Herk's field notes on working with frontier models, and it carries an uncomfortable
+corollary — if the practitioner beats the model upgrade, then the model was never the moat. The
+instructions, the systems, and the loops around the model are. This guide is about making that
+corollary pay: extracting how the best model you can rent actually works, so the method survives
+when the model is priced up, rate-limited, or taken away.
+</p>
+
+<PullQuote
+  quote="You can't keep the model's intelligence, but you can keep its process."
+  creator="Nate Herk"
+  video="How I Make Opus Think Like Fable (5 easy steps)"
+  href="https://www.youtube.com/watch?v=XTBWVVcF3Pk"
+  timestamp="1:13"
+/>
+
+## <span class="sec-no">01</span>The judgment lives in the plan, not the execution
+
+The evidence for that claim is an experiment worth internalizing. Herk ran the same multi-agent
+workflows three ways: a frontier model orchestrating frontier-model workers, the same
+orchestrator over mid-tier workers, and — in a separate test — a strong orchestrator over the
+cheapest tier available. Results were roughly interchangeable; costs were not, with the cheap-
+worker runs landing around three times cheaper for the same output. The pattern generalizes:
+when the expensive model does the scoping, anticipates what could go wrong, and reviews what
+comes back — redesigning the next step from each report — the workers are executing a
+well-specified plan, and executing a well-specified plan is exactly what cheaper models are
+good at.
+
+Which reframes the frontier model's job. It is not a workhorse; it is the senior engineer about
+to rotate off the team, and your task is to have it package up everything it knows for the
+cohort that replaces it. Treat it as a teacher: have it review your setups, improve your
+skills, and — most importantly — explain its own reasoning while you still have it.
+
+## <span class="sec-no">02</span>Extract the discipline into a skill file
+
+The concrete move: when a frontier model hands you a deliverable you love but cannot quite
+explain, do not just save the deliverable. Reopen the session and interrogate it — what did you
+consider to get here, how did you verify it, why does this output work. Then have the model
+condense those answers into an installable skill file that any model can run. Herk's version
+gates work through five stages: **scope** before touching anything, gather **evidence** before
+reasoning, reason **adversarially**, **verify** before declaring done, and **report** with
+calibrated confidence.
+
+The gate that earns its place is the first one. Scoping is not planning. A plan says "here are
+the steps"; scoping plays devil's advocate first — every assumption that might be false, every
+unknown the plan silently walks past. The difference is invisible in the happy case and decisive
+everywhere else, and it is precisely the habit worth stealing: the same discipline shows up in
+the (reportedly leaked, so treat the provenance accordingly) system prompt of the strongest
+current model — recognizing something from training does not mean current knowledge, a file
+implied to exist is not a file verified to exist, check at every step that what you have done is
+what you think you have done. Encoded as a skill, that discipline demonstrably elevates a
+mid-tier model — and it runs on anything, including models you host yourself.
+
+## <span class="sec-no">03</span>Route by table, spend by effort
+
+Owning the method also means deciding, per task, how much intelligence to rent. Two dials
+matter. The first is the model: keep an explicit routing table for your toolkit — one row per
+model, scored for cost, intelligence, and taste. Intelligence is reasoning strength: how well it
+follows you, reviews code, holds a long chain. Taste is the other axis people forget to score:
+creativity, interface judgment, framing. They do not move together, and a table that collapses
+them routes design work to a strong-but-tasteless model and hard debugging to a charming one.
+Hand the table to your orchestrator and let it delegate against it.
+
+The second dial is effort. Published score-versus-cost curves show effort levels overlapping
+across model tiers — a top model on low effort landing near the previous tier on high — so the
+pairing, not the model name, is the real unit of choice. And more is not monotonically better:
+past a point, maximum effort buys longer runs, second-guessing, and worse output than the tier
+below on high. The tell is a response that relitigates its own correct first answer. When you
+see it, route down.
+
+<PullQuote
+  quote="We don't own these models. So, what we can own is our processes, our systems."
+  creator="Nate Herk"
+  video="How I Make Opus Think Like Fable (5 easy steps)"
+  href="https://www.youtube.com/watch?v=XTBWVVcF3Pk"
+  timestamp="9:36"
+/>
+
+<Exercise>
+1. Find one deliverable from a strong model that you loved but could not articulate why. Reopen
+   that session and ask: what did you consider, how did you verify, why does this work? Have it
+   condense the answers into an installable skill file gated by scope → evidence → adversarial
+   reasoning → verify → report.
+2. Run the skill on a cheaper model against a task of the same shape. Compare the two outputs
+   honestly — note where the discipline closed the gap and where raw capability still shows.
+3. Build your routing table: every model you can invoke, scored 1–5 for cost, intelligence, and
+   taste. Route your next three real tasks by the table instead of by habit, and record what the
+   week cost against the week before.
+</Exercise>
