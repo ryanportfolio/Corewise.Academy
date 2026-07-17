@@ -4,17 +4,21 @@
 //   node scripts/transcript.mjs "https://www.youtube.com/watch?v=VIDEO_ID"
 //   node scripts/transcript.mjs VIDEO_ID
 //
-// No dependencies — it reads the caption track YouTube already ships with the
-// watch page. If the video has no captions (many don't), it says so clearly and
-// exits non-zero, so the ingest workflow knows to ask the editor to paste one.
+// Strategy, most reliable first:
+//   1. yt-dlp, if it is on PATH (manual subtitles preferred, then auto-generated).
+//   2. Zero-dependency fallback: read the caption track the YouTube watch page
+//      embeds. YouTube often gates these URLs behind a player token, so this
+//      path fails for many videos even when captions exist.
+//   3. Neither worked -> exit non-zero with a clear message, so the ingest
+//      workflow knows to ask the editor to paste a transcript.
 //
-// Reliability note: YouTube increasingly gates caption URLs behind a
-// player-generated token, so bare server-side fetch fails for many videos even
-// when captions exist. When it does, the paste fallback is the intended path.
-// For a more reliable fetch, install yt-dlp and run:
-//   yt-dlp --skip-download --write-auto-subs --sub-format vtt --sub-langs en -o - <url>
-// Adding an npm transcript library is possible too, but that is a dependency the
-// editor should approve first.
+// Output format either way: one line per caption, "[m:ss] text" on stdout;
+// diagnostics on stderr.
+
+import { spawnSync } from 'node:child_process';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 
 const raw = process.argv[2];
 if (!raw) {
@@ -43,6 +47,95 @@ if (!id) {
   console.error(`Could not parse a YouTube video id from: ${raw}`);
   process.exit(2);
 }
+const watchUrl = `https://www.youtube.com/watch?v=${id}`;
+
+function stamp(seconds) {
+  const s = Math.floor(seconds);
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = s % 60;
+  const pad = (n) => String(n).padStart(2, '0');
+  return h > 0 ? `${h}:${pad(m)}:${pad(sec)}` : `${m}:${pad(sec)}`;
+}
+
+function printLines(lines, sourceNote) {
+  console.error(`# Transcript for ${watchUrl} ${sourceNote}`);
+  for (const l of lines) if (l.text) console.log(`[${stamp(l.t)}] ${l.text}`);
+}
+
+// ---------------------------------------------------------------- yt-dlp path
+
+function haveYtDlp() {
+  return spawnSync('yt-dlp', ['--version'], { stdio: 'ignore', shell: false }).status === 0;
+}
+
+// Parse YouTube's json3 caption format: { events: [{ tStartMs, segs: [{utf8}] }] }.
+function parseJson3(file) {
+  const data = JSON.parse(fs.readFileSync(file, 'utf8'));
+  const lines = [];
+  for (const ev of data.events ?? []) {
+    if (!ev.segs) continue;
+    const text = ev.segs
+      .map((s) => s.utf8 ?? '')
+      .join('')
+      .replace(/\s+/g, ' ')
+      .trim();
+    if (text) lines.push({ t: (ev.tStartMs ?? 0) / 1000, text });
+  }
+  return lines;
+}
+
+// Prefer an exact-language file (video.en.json3) over auto-translated variants
+// (video.en-de.json3 = English translated from German).
+function pickSubFile(dir, base) {
+  const files = fs.readdirSync(dir).filter((f) => f.startsWith(base + '.') && f.endsWith('.json3'));
+  if (!files.length) return null;
+  files.sort((a, b) => a.length - b.length); // "en" beats "en-US" beats "en-de"
+  const exact = files.find((f) => /\.en\.json3$/.test(f));
+  return path.join(dir, exact ?? files[0]);
+}
+
+function tryYtDlp() {
+  if (!haveYtDlp()) return null;
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cw-transcript-'));
+  try {
+    // Two passes: manual subtitles first, auto-generated only if none exist.
+    for (const [flag, note] of [
+      ['--write-subs', ''],
+      ['--write-auto-subs', ' (auto-generated)'],
+    ]) {
+      const base = flag === '--write-subs' ? 'manual' : 'auto';
+      const run = spawnSync(
+        'yt-dlp',
+        [
+          '--skip-download',
+          flag,
+          '--sub-langs',
+          'en.*',
+          '--sub-format',
+          'json3',
+          '-o',
+          path.join(dir, `${base}.%(ext)s`),
+          watchUrl,
+        ],
+        { encoding: 'utf8', shell: false, timeout: 120_000 },
+      );
+      if (run.status !== 0) {
+        console.error(`yt-dlp exited ${run.status}: ${(run.stderr || '').trim().split('\n').pop()}`);
+        continue;
+      }
+      const file = pickSubFile(dir, base);
+      if (!file) continue;
+      const lines = parseJson3(file);
+      if (lines.length) return { lines, note: `[yt-dlp${note}]` };
+    }
+    return null;
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+}
+
+// ------------------------------------------------- zero-dependency fallback
 
 const UA =
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0 Safari/537.36';
@@ -57,41 +150,26 @@ function decodeEntities(s) {
     .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(+n));
 }
 
-function stamp(seconds) {
-  const s = Math.floor(seconds);
-  const h = Math.floor(s / 3600);
-  const m = Math.floor((s % 3600) / 60);
-  const sec = s % 60;
-  const pad = (n) => String(n).padStart(2, '0');
-  return h > 0 ? `${h}:${pad(m)}:${pad(sec)}` : `${m}:${pad(sec)}`;
-}
-
 async function getText(url) {
   const res = await fetch(url, { headers: { 'user-agent': UA, 'accept-language': 'en' } });
   if (!res.ok) throw new Error(`HTTP ${res.status} fetching ${url}`);
   return res.text();
 }
 
-const NO_CAPTIONS = (extra = '') => {
-  console.error(`No transcript available for video ${id}.${extra ? ' ' + extra : ''}`);
-  console.error('Ask the editor to paste a transcript, or pick a video that has captions.');
-  process.exit(1);
-};
-
-try {
-  const watch = await getText(`https://www.youtube.com/watch?v=${id}`);
+async function tryWatchPage() {
+  const watch = await getText(watchUrl);
 
   // The player response embedded in the watch page lists caption tracks.
   const m = watch.match(/"captionTracks":(\[.*?\])/);
-  if (!m) NO_CAPTIONS('This video has no caption tracks.');
+  if (!m) return null;
 
   let tracks;
   try {
     tracks = JSON.parse(m[1]);
   } catch {
-    NO_CAPTIONS('Could not parse caption track list.');
+    return null;
   }
-  if (!tracks.length) NO_CAPTIONS('This video has no caption tracks.');
+  if (!tracks.length) return null;
 
   // Prefer a manually-made English track; fall back to auto/any.
   const pick =
@@ -104,12 +182,31 @@ try {
     t: parseFloat(mm[1]),
     text: decodeEntities(mm[2].replace(/<[^>]+>/g, '')).replace(/\s+/g, ' ').trim(),
   }));
-
-  if (!lines.length) NO_CAPTIONS('The caption track was empty.');
+  if (!lines.length) return null;
 
   const auto = pick.kind === 'asr' ? ' (auto-generated)' : '';
-  console.error(`# Transcript for https://www.youtube.com/watch?v=${id} [${pick.languageCode}${auto}]`);
-  for (const l of lines) if (l.text) console.log(`[${stamp(l.t)}] ${l.text}`);
+  return { lines, note: `[${pick.languageCode}${auto}]` };
+}
+
+// -------------------------------------------------------------------- main
+
+try {
+  const viaYtDlp = tryYtDlp();
+  if (viaYtDlp) {
+    printLines(viaYtDlp.lines, viaYtDlp.note);
+    process.exit(0);
+  }
+  console.error(haveYtDlp() ? 'yt-dlp found no caption track; trying watch-page fallback…' : 'yt-dlp not on PATH; trying watch-page fallback…');
+
+  const viaWatch = await tryWatchPage();
+  if (viaWatch) {
+    printLines(viaWatch.lines, viaWatch.note);
+    process.exit(0);
+  }
+
+  console.error(`No transcript available for video ${id}.`);
+  console.error('Ask the editor to paste a transcript, or pick a video that has captions.');
+  process.exit(1);
 } catch (err) {
   console.error(`Failed to fetch transcript: ${err.message}`);
   process.exit(1);

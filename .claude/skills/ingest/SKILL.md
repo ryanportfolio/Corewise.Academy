@@ -27,10 +27,15 @@ which video to ingest.
 
 Run `node scripts/transcript.mjs "<youtube-url>"`.
 
-- If it prints a timestamped transcript, use it.
-- If it exits with "No transcript available" (common — YouTube gates captions), ask
-  the editor to paste a transcript. Do not fabricate one. Do not proceed without the
-  actual words of the video.
+The script tries yt-dlp first (manual subtitles preferred, then auto-generated) and
+falls back to a dependency-free watch-page fetch if yt-dlp is not installed. With
+yt-dlp on PATH this succeeds for nearly any captioned video.
+
+- If it prints a timestamped transcript, use it. The header line says whether the
+  captions were auto-generated — treat auto captions as lossy: verify names, numbers,
+  and technical terms against the video before quoting them.
+- If it exits with "No transcript available", ask the editor to paste a transcript.
+  Do not fabricate one. Do not proceed without the actual words of the video.
 
 Capture the creator name, channel, video title, and URL for crediting.
 
