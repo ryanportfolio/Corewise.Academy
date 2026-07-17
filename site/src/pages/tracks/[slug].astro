@@ -46,7 +46,7 @@ const byLevel = (level: string) =>
             ) : (
               <ol class="shelf-list">
                 {shelf.map((g) => (
-                  <li class:list={[{ 'is-placeholder': g.data.placeholder }]}>
+                  <li>
                     <a href={`/guides/${g.id}/`}>
                       <span class="no">Nº {String(g.data.number).padStart(3, '0')}</span>
                       <span class="t">{g.data.title}</span>
@@ -83,19 +83,6 @@ const byLevel = (level: string) =>
     .shelf-list .t { font-family: var(--font-display); font-size: var(--text-md); }
     .shelf-list .m { font-family: var(--font-mono); font-size: var(--text-2xs); color: var(--ink-mute); }
     .shelf-list p { margin: 4px 0 0 6.5rem; padding-left: var(--s-3); font-size: var(--text-sm); color: var(--ink-soft); max-width: 52ch; }
-    .is-placeholder::after {
-      content: 'PLACEHOLDER';
-      position: absolute;
-      top: var(--s-2);
-      right: 0;
-      font-family: var(--font-mono);
-      font-size: 9px;
-      letter-spacing: 0.14em;
-      color: var(--accent-deep);
-      border: 1px solid currentColor;
-      padding: 2px 6px;
-      transform: rotate(2deg);
-    }
     @media (max-width: 720px) {
       .shelf-list a { grid-template-columns: 1fr auto; }
       .shelf-list .no { display: none; }
