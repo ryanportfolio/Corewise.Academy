@@ -1,0 +1,143 @@
+---
+title: Automate the bottleneck, not the busywork
+description: Four working rules distilled from Anthropic's own engineers — find the constraint, make Claude report to you, read the traces, and hand over objectives instead of tasks.
+track: agents
+level: broad
+number: 8
+minutes: 11
+objectives:
+  - Diagnose the true bottleneck in a recurring workflow with a five-whys interrogation before building any automation.
+  - 'Assemble a proactive automation from its four parts — trigger, worker, access, receipt — and name each part for a workflow you own.'
+  - Distinguish a receipt from a trace, and convert one failure found in a trace into a permanent fix to the underlying skill.
+  - Scope an objective-level delegation with granular done-criteria and an evaluator that is separate from the worker.
+prerequisites: []
+sources:
+  - url: https://www.youtube.com/watch?v=3Y6kVI3fR9c
+    creator: Austin Marchese
+    video: How Anthropic Engineers ACTUALLY Automate Their Work
+    timestamps: ['0:26', '3:47', '5:25', '8:07', '12:43', '13:42']
+    watched: July 2026
+selfCheck:
+  - q: Why is an hour saved outside the bottleneck not actually an hour saved?
+    a: Throughput is set by the constraint. Speed up any other step and work simply piles up in front of the slow one — the system as a whole finishes no sooner. Like a hiking line that moves at the pace of its slowest walker, the only fix that counts is lightening the slowest step's load.
+  - q: What separates a receipt from a trace, and which one do you debug with?
+    a: A receipt is the quantified outcome summary — "141 emails reviewed", not "emails reviewed". A trace is the full record of every step the system took to get there. You debug with the trace; the receipt only tells you whether to go looking.
+  - q: When handing Claude an objective instead of a task, what two structures must exist before any work starts?
+    a: A granular definition of done — contract criteria specific enough that a failure points at an exact line — and an independent evaluator with the access it needs to actually run the result. The worker never grades its own output.
+status: published
+lastUpdated: 2026-07-17
+placeholder: false
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+
+<Chalk>the line moves at the pace of the slowest hiker — find yours before you build anything</Chalk>
+
+<p class="lede">
+The first instinct with automation is to aim it at whatever annoys you most. That instinct wastes
+weeks. The people who build these systems for a living — Anthropic's own engineers, whose public
+talks and interviews this guide distills — work in a different order: locate the constraint, solve
+it once by hand, and only then encode the solution so it never needs solving again. Everything
+else in this guide hangs off that ordering.
+</p>
+
+The logic comes from operations theory, and the classic picture is a scout troop on a trail. The
+line stretches because the fast hikers speed ahead, but the troop arrives when the slowest hiker
+arrives — so the leader moves the slowest walker to the front and redistributes the weight in his
+pack. The troop speeds up precisely because the fastest hikers slowed down. Your workflows obey
+the same arithmetic: an hour saved anywhere except the constraint is an hour that queues up
+behind it, indistinguishable from an hour not saved at all.
+
+<PullQuote
+  quote="Find the bottleneck, solve the bottleneck."
+  creator="Boris Cherny, creator of Claude Code"
+  video="How Anthropic Engineers ACTUALLY Automate Their Work"
+  href="https://www.youtube.com/watch?v=3Y6kVI3fR9c"
+  timestamp="0:26"
+/>
+
+## <span class="sec-no">01</span>Interrogate before you build
+
+Most people cannot name their actual bottleneck, which is why the first tool is an interrogation,
+not a build. Ask why the work is slow; ask why of the answer; keep going five layers down. Fifty
+new sales leads are worthless if onboarding is manual — the leads were never the constraint. Only
+when the constraint has a name do you choose an instrument for it, and the instrument should be
+the smallest one that works: a skill for a repeatable procedure, a scheduled routine for a
+recurring check, an artifact for something you need to see, an external tool when the work lives
+outside the model. One problem, one deliberate pairing — not one hammer for everything.
+
+## <span class="sec-no">02</span>Four parts of a machine that reports to you
+
+If the interrogation reveals that *you* are the bottleneck — you dispatch every task, you chase
+every status — the fix is structural. A synchronous, top-down loop (you ask, it answers) caps the
+system at the speed of your attention. The working alternative is bottom-up: Claude initiates,
+and you review what arrives. Every proactive system, human or machine, has the same four parts,
+and naming them for your own workflow is most of the design work:
+
+- **Trigger** — the cadence. Time-based ("Monday, 8 a.m.") or event-based, which in practice
+  means a frequent, token-cheap check that decides whether the expensive work should run at all.
+- **Worker** — whatever does the job. Build the minimum viable version; solve today's problem,
+  not a theoretical future one.
+- **Access** — the accounts and tools the worker may touch. The test is the same as for a new
+  hire: does it have the logins the task actually requires?
+- **Receipt** — the proof of completion, and the part most people get wrong. A receipt must be
+  explicit, not implied: "141 emails reviewed" carries a verifiable number; "emails reviewed"
+  hides every possible failure behind three words.
+
+Anthropic runs this shape on real work — one internal system hands Claude the entire growth-
+experiment loop on a schedule, with the analyzed results returning to the team as the receipt.
+The pattern scales down just as well: one trigger, one worker, one explicit receipt, delivered
+wherever you already look every day.
+
+## <span class="sec-no">03</span>The receipt is not the story
+
+A receipt is the total at the bottom of a dinner bill. The trace is the line items — the full
+transcript of what the system actually did, step by step. Unwatched automations drift, and the
+correction for drift is not more experiments or cleverer prompts. Asked for the secret at an
+engineering workshop, Anthropic's applied-AI answer was disarmingly manual:
+
+<PullQuote
+  quote="By far and away the best approach … is just reading the traces by hand."
+  creator="Ash, Applied AI at Anthropic"
+  video="How Anthropic Engineers ACTUALLY Automate Their Work"
+  href="https://www.youtube.com/watch?v=3Y6kVI3fR9c"
+  timestamp="8:43"
+/>
+
+Reading traces is a three-step discipline. First, make sure the logs exist — scheduled runs
+usually keep their conversation history, and anything you run elsewhere should write a run log
+to a known location, ideally through one shared logging skill so the format can be changed in
+one place. Second, actually look at them, in whatever viewer makes that effortless. Third — the
+step that compounds — act on what you find: bring the trace back to Claude, point at the exact
+wrong turn, and have it amend the skill itself. That converts a one-time failure into a
+permanent repair, because the fix lands in the system rather than in the conversation.
+
+## <span class="sec-no">04</span>Objectives, not tasks
+
+Tasks are instructions: send this report, reply to these emails. Objectives are outcomes: make
+this true, figure this out. The strongest colleagues you have ever worked with took objectives —
+and Claude can too, but only inside the right scaffolding. The cautionary tale is a retro game
+built two ways by Anthropic engineers: the same objective, prompted conversationally, shipped
+something that *looked* finished until the first arrow-key press did nothing. Restructured — the
+objective plus scaffolding, then a closed laptop — it came back six hours later fully playable.
+Same model, same goal; only the structure changed.
+
+That structure has three parts. Agree on what done looks like before any work starts, at
+uncomfortable granularity — the engineers behind that experiment settled on twenty-seven
+contract criteria, because vague criteria produce a shrug while granular ones point at the exact
+line to fix. Add an evaluator that is not the worker, with real access to run the product,
+because a model grades its own work the way an employee writes their own performance review.
+And require the final receipt to carry proof — screenshots of the running thing, not a
+paragraph asserting success.
+
+<Exercise>
+1. Pick the workflow that ate the most of your week. Write down why it is slow; ask why of that
+   answer, five times. The last answer is your candidate bottleneck.
+2. Design — on paper, before building anything — the four parts of a proactive system for it:
+   trigger, worker, access, receipt. Make the receipt an explicit, countable claim.
+3. Build the smallest worker that could possibly run once, run it, and read the entire trace
+   line by line. Bring one wrong turn back to Claude and have it amend the skill so that class
+   of failure cannot recur.
+</Exercise>

@@ -10,10 +10,7 @@ why it qualified.
 
 | Watched | Creator / channel | Video | Why it qualified |
 |---|---|---|---|
-| 2026-06 | _Placeholder Creator_ | [Long context is a lie (sort of)](https://example.com/placeholder-video-1) | PLACEHOLDER — seeds the sample guide; replace when the first real source is ingested. |
-| 2026-06 | _Another Creator_ | [Prompt anatomy for production systems](https://example.com/placeholder-video-2) | PLACEHOLDER — second source for the sample guide's multi-source synthesis. |
+| 2026-07 | Austin Marchese | [How Anthropic Engineers ACTUALLY Automate Their Work](https://www.youtube.com/watch?v=3Y6kVI3fR9c) | Collates primary-source statements from Anthropic engineers (Cherny, Wu, applied-AI workshop) into four usable automation rules; the bottleneck-first ordering and receipt-vs-trace distinction were genuinely clarifying. |
 
-<!--
-Append new rows at the bottom as videos are ingested. Keep placeholders until the
-first real guide lands, then delete them in the same PR that adds the real source.
--->
+<!-- Append new rows at the bottom as videos are ingested. -->
+
