@@ -1,0 +1,81 @@
+---
+title: Context windows are a budget, not a bucket
+description: Why stuffing more into the prompt makes models worse — and how to spend tokens where they earn their keep.
+track: prompting
+level: practitioner
+number: 7
+minutes: 14
+objectives:
+  - Estimate the token cost of each component of a prompt and rank components by marginal value.
+  - 'Restructure an overloaded prompt into layered context: instructions, references, and retrieved material.'
+  - Diagnose a "lost in the middle" failure from model output alone, without inspecting logits.
+prerequisites: []
+sources:
+  - url: https://example.com/placeholder-video-1
+    creator: Placeholder Creator
+    video: Long context is a lie (sort of)
+    timestamps: ['04:12', '12:41', '27:03']
+    watched: June 2026
+  - url: https://example.com/placeholder-video-2
+    creator: Another Creator
+    video: Prompt anatomy for production systems
+    timestamps: ['08:55', '19:20']
+    watched: June 2026
+selfCheck:
+  - q: Why does adding more context sometimes reduce output quality?
+    a: Attention over long sequences is non-uniform — middle content is recalled worse — and every added token dilutes the relative weight of the instructions. More context raises the chance the model attends to the wrong thing.
+  - q: Where should critical instructions sit in a long prompt, and why?
+    a: At the edges — top or bottom — because recall is strongest at sequence boundaries. Burying instructions mid-prompt is the most common self-inflicted failure.
+  - q: What distinguishes "reference" from "retrieved material" in the three-layer model?
+    a: Reference is stable, curated, and compressed (schemas, style rules, examples); retrieved material is the variable per-task payload, delimited and labeled as data so it can't masquerade as instructions.
+status: published
+lastUpdated: 2026-07-01
+placeholder: true
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+
+<Chalk>forty pages of context, two lines of instructions — guess which one the model reads</Chalk>
+
+<p class="lede">
+Every model ships with a context window measured in tokens, and the number keeps going up — so the
+intuition forms early: more room means more context means better answers. That intuition is wrong
+in a specific, measurable way. Attention over a long sequence is not uniform. Material in the
+middle of a long prompt is recalled worse than material at the edges, and every marginal paragraph
+dilutes the instructions you actually care about.
+</p>
+
+The better mental model is a budget. Every token you spend on boilerplate is a token of attention
+you can't spend on the task. A 200-line system prompt where 30 lines do the work isn't thorough —
+it's noise wearing a suit. The craft is deciding what earns a place in context at all, and where
+it sits.
+
+## <span class="sec-no">01</span>The three layers of a working prompt
+
+Prompts that survive contact with production tend to converge on the same shape:
+
+- **Instructions** — short, imperative, at the top or bottom, never buried. What to do, what never
+  to do.
+- **Reference** — schemas, examples, style rules. Compressed to the minimum that changes behavior.
+- **Retrieved material** — the variable payload. Clearly delimited, labeled as data rather than
+  instructions.
+
+When output quality drops after you add material, suspect placement before you suspect the model.
+Move the instruction block to the end, rerun, and compare — the fix is often free.
+
+<PullQuote
+  quote="The model didn't forget your instruction. You buried it under forty paragraphs it had no reason to prioritize."
+  creator="Placeholder Creator"
+  video="Long context is a lie (sort of)"
+  href="https://example.com/placeholder-video-1"
+  timestamp="12:41"
+/>
+
+<Exercise>
+1. Take the longest prompt you use regularly and paste it into a tokenizer playground.
+2. Label each section: instruction, reference, or payload. Note the token count of each.
+3. Delete the section you're least sure earns its cost. Rerun your last three real tasks and
+   compare outputs.
+</Exercise>

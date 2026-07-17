@@ -1,0 +1,105 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { TRACKS, LEVELS } from '../../data/tracks';
+
+export function getStaticPaths() {
+  return TRACKS.map((t) => ({ params: { slug: t.slug }, props: { track: t } }));
+}
+
+const { track } = Astro.props;
+const guides = (await getCollection('guides')).filter(
+  (g) => g.data.status === 'published' && g.data.track === track.slug,
+);
+const byLevel = (level: string) =>
+  guides
+    .filter((g) => g.data.level === level)
+    .sort((a, b) => (a.data.courseOrder ?? a.data.number) - (b.data.courseOrder ?? b.data.number));
+---
+
+<Base title={`${track.name} — CoreWise Academy`} description={track.description}>
+  <main>
+    <header class="track-head">
+      <p class="mono-label accent">Constellation {track.numeral} — {track.constellation}</p>
+      <h1 class="display">{track.name}</h1>
+      <p class="dek">{track.description}</p>
+    </header>
+
+    {
+      LEVELS.map((l) => {
+        const shelf = byLevel(l.id);
+        return (
+          <section class="shelf-section reveal">
+            <div class="shelf-head">
+              <h2>
+                {l.label} <span class="shelf-name">— {l.shelf}</span>
+              </h2>
+              <span class="mono-label">
+                {shelf.length === 0 ? 'awaiting first star' : `${shelf.length} guide${shelf.length > 1 ? 's' : ''}`}
+              </span>
+            </div>
+            {shelf.length === 0 ? (
+              <p class="empty-shelf">
+                This shelf awaits its first star. The roadmap is honest: nothing hangs here until a
+                guide earns its place.
+              </p>
+            ) : (
+              <ol class="shelf-list">
+                {shelf.map((g) => (
+                  <li class:list={[{ 'is-placeholder': g.data.placeholder }]}>
+                    <a href={`/guides/${g.id}/`}>
+                      <span class="no">Nº {String(g.data.number).padStart(3, '0')}</span>
+                      <span class="t">{g.data.title}</span>
+                      <span class="m">{g.data.minutes} min</span>
+                    </a>
+                    <p>{g.data.description}</p>
+                  </li>
+                ))}
+              </ol>
+            )}
+          </section>
+        );
+      })
+    }
+  </main>
+
+  <style>
+    main { max-width: 70rem; margin: 0 auto; padding: var(--s-8) var(--s-4) var(--s-12); }
+    .track-head { padding-bottom: var(--s-4); border-bottom: 1px solid var(--ink); }
+    h1 { font-family: var(--font-display); font-size: clamp(2.6rem, 7vw, var(--text-3xl)); margin: var(--s-2) 0; }
+    .dek { font-size: var(--text-md); font-style: italic; color: var(--ink-soft); max-width: 52ch; }
+
+    .shelf-section { padding: var(--s-6) 0; border-bottom: 1px solid var(--line); }
+    .shelf-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: var(--s-3); }
+    .shelf-head h2 { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 400; }
+    .shelf-name { color: var(--ink-mute); font-size: 0.7em; }
+    .empty-shelf { color: var(--ink-mute); font-style: italic; max-width: 52ch; }
+
+    .shelf-list { list-style: none; margin: 0; padding: 0; }
+    .shelf-list li { border-bottom: 1px dashed var(--line); padding: var(--s-2) 0; position: relative; }
+    .shelf-list a { display: grid; grid-template-columns: 6.5rem 1fr auto; gap: var(--s-3); text-decoration: none; color: var(--ink); align-items: baseline; }
+    .shelf-list a:hover .t { color: var(--accent-deep); }
+    .shelf-list .no { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--accent-deep); }
+    .shelf-list .t { font-family: var(--font-display); font-size: var(--text-md); }
+    .shelf-list .m { font-family: var(--font-mono); font-size: var(--text-2xs); color: var(--ink-mute); }
+    .shelf-list p { margin: 4px 0 0 6.5rem; padding-left: var(--s-3); font-size: var(--text-sm); color: var(--ink-soft); max-width: 52ch; }
+    .is-placeholder::after {
+      content: 'PLACEHOLDER';
+      position: absolute;
+      top: var(--s-2);
+      right: 0;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      color: var(--accent-deep);
+      border: 1px solid currentColor;
+      padding: 2px 6px;
+      transform: rotate(2deg);
+    }
+    @media (max-width: 720px) {
+      .shelf-list a { grid-template-columns: 1fr auto; }
+      .shelf-list .no { display: none; }
+      .shelf-list p { margin-left: 0; padding-left: 0; }
+    }
+  </style>
+</Base>

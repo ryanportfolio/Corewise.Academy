@@ -1,0 +1,189 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+const { title, description = 'CoreWise Academy — a celestial atlas of machine minds. Original guides on working with AI, distilled from the best teachers on the open web.' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" data-theme="day">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=Caveat:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <script is:inline>
+      // theme before first paint — no flash of the wrong lecture
+      document.documentElement.dataset.theme = localStorage.getItem('cw-theme') || 'day';
+    </script>
+  </head>
+  <body class="grain">
+    <header class="masthead">
+      <a class="wordmark" href="/">CoreWise <em>Academy</em></a>
+      <nav>
+        <a href="/#tracks">Constellations</a>
+        <a href="/about/">About</a>
+        <a href="/how-its-built/">How it’s charted</a>
+        <button class="session-toggle" id="toggle" aria-label="Switch between day and night theme">
+          <span class="dot"></span><span id="toggle-label">DAY LECTURE</span>
+        </button>
+      </nav>
+    </header>
+
+    <slot />
+
+    <footer class="site-footer">
+      <span>CoreWise Academy · charted nightly · no mind left unmapped</span>
+      <span><a href="/how-its-built/">How it’s charted →</a></span>
+      <span>Edited by Ryan · Vol. I</span>
+    </footer>
+
+    <script>
+      const root = document.documentElement;
+      const label = document.getElementById('toggle-label')!;
+      const apply = (t: string) => {
+        root.dataset.theme = t;
+        label.textContent = t === 'night' ? 'NIGHT LECTURE' : 'DAY LECTURE';
+      };
+      apply(localStorage.getItem('cw-theme') || 'day');
+      document.getElementById('toggle')!.addEventListener('click', () => {
+        const next = root.dataset.theme === 'night' ? 'day' : 'night';
+        localStorage.setItem('cw-theme', next);
+        apply(next);
+      });
+
+      // scroll reveal — unobserve once
+      const io = new IntersectionObserver(
+        (es) =>
+          es.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add('in');
+              io.unobserve(e.target);
+            }
+          }),
+        { threshold: 0.12 },
+      );
+      document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+    </script>
+
+    <style is:global>
+      @import '../styles/tokens.css';
+
+      .masthead {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: var(--s-2) var(--s-4);
+        border-bottom: 1px solid var(--line);
+        background: color-mix(in srgb, var(--paper) 84%, transparent);
+        backdrop-filter: blur(10px);
+        transition: background var(--dur) var(--ease);
+      }
+      .wordmark {
+        font-family: var(--font-display);
+        font-size: var(--text-md);
+        letter-spacing: 0.02em;
+        color: var(--ink);
+        text-decoration: none;
+      }
+      .wordmark em { font-style: normal; color: var(--accent-deep); }
+      .masthead nav { display: flex; gap: var(--s-4); align-items: center; }
+      .masthead nav a {
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+        letter-spacing: var(--tracking-caps);
+        text-transform: uppercase;
+        color: var(--ink-soft);
+        text-decoration: none;
+      }
+      .masthead nav a:hover { color: var(--accent-deep); }
+      .session-toggle {
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+        letter-spacing: var(--tracking-caps);
+        border: 1px solid var(--line);
+        background: none;
+        color: var(--ink-soft);
+        padding: 6px 12px;
+        cursor: pointer;
+        display: inline-flex;
+        gap: 8px;
+        align-items: center;
+        transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+      }
+      .session-toggle:hover { color: var(--accent-deep); border-color: var(--accent); }
+      .session-toggle .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 8px var(--glow);
+      }
+
+      .site-footer {
+        border-top: 1px solid var(--line);
+        padding: var(--s-4);
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: var(--s-2);
+        font-family: var(--font-mono);
+        font-size: var(--text-2xs);
+        letter-spacing: 0.08em;
+        color: var(--ink-mute);
+        text-transform: uppercase;
+        position: relative;
+        z-index: 1;
+      }
+      .site-footer a { color: var(--ink-soft); }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(22px);
+        transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+      }
+      .reveal.in { opacity: 1; transform: none; }
+
+      .btn {
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+        letter-spacing: var(--tracking-caps);
+        text-transform: uppercase;
+        text-decoration: none;
+        padding: 12px 22px;
+        border: 1px solid var(--accent-deep);
+        color: var(--accent-deep);
+        white-space: nowrap;
+        transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+      }
+      .btn.solid { background: var(--accent-deep); color: var(--paper); }
+      .btn:hover { background: var(--accent); color: var(--paper); border-color: var(--accent); }
+
+      .panel-label {
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+        text-transform: uppercase;
+        letter-spacing: var(--tracking-caps);
+        color: var(--accent-deep);
+        display: block;
+        margin-bottom: var(--s-2);
+      }
+
+      @media (max-width: 720px) {
+        .masthead nav a { display: none; }
+        .masthead { padding: var(--s-2); }
+      }
+    </style>
+  </body>
+</html>
