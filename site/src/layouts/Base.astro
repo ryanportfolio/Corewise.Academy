@@ -14,12 +14,11 @@ const { title, description = 'CoreWise Academy — a celestial atlas of machine 
     <meta name="description" content={description} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>{title}</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=Caveat:wght@500&display=swap"
-      rel="stylesheet"
-    />
+    <!-- fonts are self-hosted (see src/styles/fonts.css) — no third-party requests.
+         Preload the three faces that paint above the fold. -->
+    <link rel="preload" href="/fonts/AlembicTitling.otf" as="font" type="font/otf" crossorigin />
+    <link rel="preload" href="/fonts/newsreader-normal-400_700-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/ibm-plex-mono-normal-400-latin.woff2" as="font" type="font/woff2" crossorigin />
     <script is:inline>
       // theme before first paint — no flash of the wrong lecture
       document.documentElement.dataset.theme = localStorage.getItem('cw-theme') || 'day';
@@ -75,6 +74,7 @@ const { title, description = 'CoreWise Academy — a celestial atlas of machine 
     </script>
 
     <style is:global>
+      @import '../styles/fonts.css';
       @import '../styles/tokens.css';
 
       .masthead {
