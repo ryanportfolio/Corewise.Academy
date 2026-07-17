@@ -17,6 +17,7 @@ const guides = defineCollection({
     prerequisites: z
       .array(z.object({ slug: z.string(), note: z.string().optional() }))
       .default([]),
+    // Empty = original work (first-party field notes, no video source).
     sources: z
       .array(
         z.object({
@@ -27,7 +28,7 @@ const guides = defineCollection({
           watched: z.string(), // e.g. "June 2026"
         }),
       )
-      .min(1),
+      .default([]),
     selfCheck: z
       .array(z.object({ q: z.string(), a: z.string() }))
       .length(3),

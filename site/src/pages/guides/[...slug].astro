@@ -103,19 +103,25 @@ const no = String(d.number).padStart(3, '0');
 
     <section class="sources">
       <span class="panel-label">Star catalogue — sources credited</span>
-      <ol>
-        {
-          d.sources.map((s) => (
-            <li>
-              <span class="creator">{s.creator}</span> — <a href={s.url}>“{s.video}”</a>
-              <br />
-              <span class="stamps">
-                cited at {s.timestamps.join(' · ')} — observed {s.watched}
-              </span>
-            </li>
-          ))
-        }
-      </ol>
+      {
+        d.sources.length > 0 ? (
+          <ol>
+            {d.sources.map((s) => (
+              <li>
+                <span class="creator">{s.creator}</span> — <a href={s.url}>“{s.video}”</a>
+                <br />
+                <span class="stamps">
+                  cited at {s.timestamps.join(' · ')} — observed {s.watched}
+                </span>
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <p class="original-note">
+            Original field notes — charted in-house from the editor's own practice.
+          </p>
+        )
+      }
     </section>
   </article>
 
@@ -230,5 +236,6 @@ const no = String(d.number).padStart(3, '0');
     .sources li { margin-bottom: var(--s-2); }
     .sources .creator { font-weight: 600; }
     .sources .stamps { font-family: var(--font-mono); font-size: var(--text-2xs); color: var(--ink-mute); }
+    .sources .original-note { font-size: var(--text-sm); font-style: italic; color: var(--ink-soft); }
   </style>
 </Base>
