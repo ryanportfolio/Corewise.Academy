@@ -60,7 +60,7 @@ persist if they land under the real mount path; a write anywhere else under `/mn
 temporary local storage and vanishes when the session ends. The store stays in sync across every
 session that shares it.
 
-## <span class="sec-no">02</span>read_only is the load-bearing setting
+## <span class="sec-no">02</span>read_only is the big decision
 
 The `access` field defaults to `read_write`, and that default deserves suspicion. The docs are
 blunt about the reason: a prompt injection from untrusted input can make one session write

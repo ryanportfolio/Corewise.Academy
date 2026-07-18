@@ -63,7 +63,7 @@ dropping effort on Fable 5 instead.
 | medium / low | Routine tasks that still need Fable-level reasoning | The cheapest runs; low can still exceed xhigh on prior models | For when a bigger model does earn its keep and where more
 effort stops paying off, see <a href="/guides/rent-the-model-own-the-method/">Rent the model, own the method</a>.
 
-## <span class="sec-no">02</span>The long run lies to you, unless you make it check
+## <span class="sec-no">02</span>Make the long run check itself
 
 The signature failure of a long autonomous run is the fabricated status report: the agent claims
 it ran the tests, fixed the file, deployed the change, when it did none of those. The
@@ -81,7 +81,7 @@ reassurance that the model has ample context left, so the count informs without 
 early. And set your software's timeouts for the runs you actually expect. Turns of 2
 minutes or more are normal here, not a hang.
 
-## <span class="sec-no">03</span>Memory, fresh eyes, and the words you cannot read
+## <span class="sec-no">03</span>Memory and fresh eyes
 
 A run longer than one context window needs saved information that survives the reset. Give the model a memory
 system of Markdown files, one lesson per file, so a durable finding written 2 hours in is still

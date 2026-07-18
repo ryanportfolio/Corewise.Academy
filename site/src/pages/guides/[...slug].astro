@@ -174,7 +174,8 @@ const isoDate = d.lastUpdated.toISOString().slice(0, 10);
 
     .kicker { display: flex; gap: var(--s-1); align-items: center; color: var(--accent-deep); }
     .kicker .lvl { color: var(--ink-mute); }
-    h1 { font-family: var(--font-display); font-size: clamp(2.4rem, 6vw, var(--text-3xl)); line-height: 1.04; margin: var(--s-2) 0; text-wrap: balance; }
+    /* Cap sized so the longest guide title (41 chars) stays on one line at the article measure */
+    h1 { font-family: var(--font-display); font-size: clamp(1.4rem, 3.6vw, 1.85rem); line-height: 1.08; margin: var(--s-2) 0; text-wrap: balance; }
     .dek { font-size: var(--text-md); font-style: italic; color: var(--ink-soft); }
     .byline {
       font-family: var(--font-mono);

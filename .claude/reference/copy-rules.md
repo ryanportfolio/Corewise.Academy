@@ -27,7 +27,10 @@ Periods never appear on big font at all, including mid-text: hero and display
 lines drop internal sentence periods too ("Start anywhere. Every guide builds."
 → "Start anywhere / Every guide builds" as stacked lines). And headings
 stay short enough to sit on one line at their rendered size; if a heading
-wraps, shorten the words, not the font.
+wraps, shorten the words, not the font. Hard caps, browser-measured at
+desktop width (editor ruling, 2026-07-18): guide titles ≤ 41 chars, section
+headings ≤ 32 chars. Enforced by `site/scripts/heading-length.mjs`, which
+runs in `npm run build` and `npm run lint:copy` alongside the em-dash gate.
 
 Enforcement: `site/scripts/no-em-dash.mjs` runs first in `npm run build`
 (`npm run lint:copy` runs it alone) and fails the build with file:line:col for every
