@@ -58,6 +58,22 @@ Clear, to the point, plain words. Fewer words beat more words everywhere on the 
 
 - **Say what it is, not what it is not.** "Several sources become one original
   guide" beats "Synthesis, not summary". Negative-definition headings are banned.
+- **The negation pivot is banned in every disguise** (editor ruling, 2026-07-17).
+  The tell is any sentence that spends its first half denying something nobody
+  claimed, then pivots to the real point: "It's not just X, it's Y", "The
+  interesting part is not the drawing set. It is how you get the next one",
+  "This isn't about A; it's about B", "less about X than Y", "What matters
+  isn't X", "The real question isn't X". Splitting it across two sentences or
+  swapping the wording does not make it fine; the shape is the tell. Fix: delete
+  the denial half and open with the point ("The interesting part is how you get
+  the next drawing set for a different subject"). A negation survives only when
+  it corrects a real, named misconception the reader actually holds, and even
+  then the correction comes after the positive claim.
+- **Write it straight.** The house model is the plain declarative essay
+  (Morgan Housel's Collab Fund posts are the reference: "'Smart' is the ability
+  to solve problems." "That was life."). Make the claim, then earn it with a
+  concrete example. Short sentences carry the point; long ones carry the
+  evidence. No throat-clearing before the claim, no reframing after it.
 - **Lead with the point.** A lede or paragraph earns its wind-up only after the
   point has landed. If the payoff sentence could open the paragraph, move it there
   and cut what it replaced.
