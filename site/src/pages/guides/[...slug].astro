@@ -2,7 +2,9 @@
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Faq from '../../components/Faq.astro';
+import AudioPlayer from '../../components/AudioPlayer.astro';
 import { trackBySlug, LEVELS } from '../../data/tracks';
+import audioManifest from '../../data/audioManifest.json';
 
 export async function getStaticPaths() {
   const guides = await getCollection('guides');
@@ -23,6 +25,7 @@ const prereqs = d.prerequisites.map((p) => {
 });
 const no = String(d.number).padStart(3, '0');
 const isoDate = d.lastUpdated.toISOString().slice(0, 10);
+const audio = (audioManifest as Record<string, { hash: string }>)[guide.id];
 ---
 
 <Base
@@ -61,6 +64,8 @@ const isoDate = d.lastUpdated.toISOString().slice(0, 10);
       <span>Nº {no} · Vol. I</span><span>·</span><span>{d.minutes} min read</span><span>·</span>
       <span>Updated {d.lastUpdated.toLocaleString('en', { month: 'long', year: 'numeric' })}</span>
     </p>
+
+    {audio && <AudioPlayer src={`/audio/${guide.id}.mp3?v=${audio.hash.slice(0, 8)}`} />}
 
     <aside class="objectives">
       <span class="panel-label">After this guide, you can</span>

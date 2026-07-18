@@ -11,6 +11,7 @@
     "dev": "astro dev",
     "lint:copy": "node scripts/no-em-dash.mjs && node scripts/heading-length.mjs",
     "build": "node scripts/no-em-dash.mjs && node scripts/heading-length.mjs && astro build",
+    "audio": "node scripts/generate-audio.mjs",
     "preview": "astro preview"
   },
   "dependencies": {
