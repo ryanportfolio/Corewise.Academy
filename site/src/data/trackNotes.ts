@@ -75,7 +75,7 @@ export const TRACK_NOTES: Record<string, TrackNotes> = {
     tagline: 'reliable autonomy',
     notes: [
       'Agents are models that act: they call tools, read files, and carry multi-step work without a human on every turn. Automation only pays when that autonomy is reliable, so this track is less about wiring and more about the working rules that keep agents honest over hours-long runs.',
-      'The agents shelf is currently the deepest in the Academy: 43 minutes of reading across five guides, from finding the bottleneck worth automating to giving an agent a memory that survives the session. Expect automation gospel nowhere and traces, verification, and handover discipline everywhere.',
+      'The agents shelf is currently the deepest in the Academy: 43 minutes of reading across five guides, from finding the bottleneck worth automating to giving an agent a memory that survives the session. Traces, verification, and handover discipline run through every one of them.',
     ],
     quotes: [
       {

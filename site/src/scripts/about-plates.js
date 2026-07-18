@@ -180,16 +180,19 @@ function createChandelier(svg, { labels = true } = {}) {
     synthTxt = el('text', { class: 'ann', 'text-anchor': 'middle' }, svg);
     synthTxt.textContent = 'ONE SYNTHESIS';
   }
-  return function update(az) {
+  return function update(az, windAt) {
     const { cam, S, A, nodes, strands } = chandelierGeometry(az, fov);
-    ringPath.setAttribute('d', pathFrom([...nodes, nodes[0]].map((p) => cam.project(p))));
-    const ps = cam.project(S), pa = cam.project(A);
+    // windAt(p) is a world-space x displacement; both anchors sit where its
+    // height envelope is zero, so the spire and apex stay pinned.
+    const proj = windAt ? (p) => cam.project(v3(p.x + windAt(p), p.y, p.z)) : (p) => cam.project(p);
+    ringPath.setAttribute('d', pathFrom([...nodes, nodes[0]].map(proj)));
+    const ps = proj(S), pa = proj(A);
     centerLine.setAttribute('x1', fmt(ps.x)); centerLine.setAttribute('y1', fmt(ps.y - 30));
     centerLine.setAttribute('x2', fmt(pa.x)); centerLine.setAttribute('y2', fmt(pa.y + 34));
-    const order = strands.map((pts, i) => ({ pts, d: cam.project(nodes[i]).depth, i })).sort((a, b) => b.d - a.d);
+    const order = strands.map((pts, i) => ({ pts, d: proj(nodes[i]).depth, i })).sort((a, b) => b.d - a.d);
     for (const s of order) {
       strandsG.appendChild(strandGs[s.i]); // re-sort back-to-front; moves nodes, no rebuild
-      const pp = s.pts.map((p) => cam.project(p));
+      const pp = s.pts.map(proj);
       const depths = pp.map((p) => p.depth);
       const lo = Math.min(...depths), hi = Math.max(...depths);
       const per = Math.ceil((pp.length - 1) / CHUNKS);
@@ -204,7 +207,7 @@ function createChandelier(svg, { labels = true } = {}) {
       }
     }
     nodes.forEach((N, i) => {
-      const p = cam.project(N);
+      const p = proj(N);
       nodeDots[i].setAttribute('cx', fmt(p.x)); nodeDots[i].setAttribute('cy', fmt(p.y));
       if (labels) {
         nodeTexts[i].setAttribute('x', fmt(p.x + (p.x > 260 ? 10 : -10)));
@@ -233,31 +236,36 @@ function initChandelier(host, { hero = false }) {
   const svg = svgRoot(host, 520, 470);
   const update = createChandelier(svg, { labels: !hero });
   const REST = 0.50;
-  let az = REST, vel = 0;
-  update(az);
+  update(REST);
   const play = prepDraw(svg, { stagger: 10, dur: 900 });
-  let drawn = false, raf = null, visible = false, last = null;
-  // Deterministic breeze: hovering never tracks the cursor. Entering the figure
-  // fires one fixed gust whose direction matches the side you came in from; the
-  // under-damped spring sways the orbit through a few passes and settles it home.
-  // Same entry side, same breeze, every time.
-  // Tuned so one gust reads as: strong sweep (~0.28 rad), one gentle backswing,
-  // at rest in ~3.6s. Simulated deterministically before shipping.
-  const STIFF = 14, DAMP = 2 * Math.sqrt(STIFF) * 0.5, GUST = 2.0;
+  let drawn = false, raf = null, visible = false;
+  // Deterministic breeze: the wind bends the strands, the camera barely moves.
+  // Entering the figure releases one gust front that travels across the model
+  // from the entry side; each strand bows as the front reaches it (pinned at
+  // spire and apex, deepest bow mid-height) and relaxes on a long exhale.
+  // Pure function of elapsed time; one gust at a time, so it can never stutter.
+  const TAU = 0.7, AMP_X = 16, AMP_AZ = 0.045, SPEED = 420, YT = 172, YB = -14;
+  const alpha = (k) => (k > 0 ? k * Math.exp(1 - k) : 0);
+  let gustStart = null, gustDir = 1;
   const tick = (t) => {
     raf = null;
-    const dt = Math.min((last == null ? 16.7 : t - last) / 1000, 0.04);
-    last = t;
-    vel += (STIFF * (REST - az) - DAMP * vel) * dt;
-    az += vel * dt;
-    if (drawn) update(az);
-    if ((Math.abs(REST - az) > 0.0004 || Math.abs(vel) > 0.002) && visible) raf = requestAnimationFrame(tick);
-    else last = null;
+    if (gustStart == null) return;
+    const s = Math.max(t - gustStart, 0) / 1000;
+    const windAt = (p) => {
+      const lag = (gustDir > 0 ? p.x + 110 : 110 - p.x) / SPEED;
+      const env = Math.sin(Math.PI * Math.min(Math.max((YT - p.y) / (YT - YB), 0), 1));
+      return gustDir * AMP_X * alpha((s - lag) / TAU) * env;
+    };
+    if (drawn) update(REST + gustDir * AMP_AZ * alpha(s / TAU), windAt);
+    if (s < 220 / SPEED + TAU * 7 && visible) raf = requestAnimationFrame(tick);
+    else { gustStart = null; if (drawn) update(REST); }
   };
-  const kick = () => { if (!raf && drawn && !reduced) raf = requestAnimationFrame(tick); };
+  const kick = () => { if (!raf && drawn && !reduced && gustStart != null) raf = requestAnimationFrame(tick); };
   host.addEventListener('pointerenter', (e) => {
+    if (gustStart != null) return; // let the current gust finish; no restarts
     const r = host.getBoundingClientRect();
-    vel = (e.clientX < r.left + r.width / 2 ? 1 : -1) * GUST;
+    gustDir = e.clientX < r.left + r.width / 2 ? 1 : -1;
+    gustStart = performance.now();
     kick();
   });
   new IntersectionObserver((es) => {
