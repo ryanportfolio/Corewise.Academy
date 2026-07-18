@@ -1,0 +1,117 @@
+---
+title: The conceit does the work
+description: A design concept earns its place by answering design questions, not decorating the page. Field notes from a portfolio page built as an architectural drawing set, and the six-step method that generalizes.
+track: building
+level: practitioner
+number: 19
+minutes: 9
+objectives:
+  - Derive a design conceit from something true about the subject, and test whether it is load-bearing before committing to it.
+  - Write a constraint contract that turns visual coherence into checkable rules, so violations are bugs instead of taste disputes.
+  - Run at least three adversarial critique passes against rendered output using distinct lenses, and recognize why a pass that finds nothing has failed.
+  - Explain why reusing a successful conceit on a new subject produces slop, and re-derive instead.
+sources: []
+selfCheck:
+  - q: What is the test that decides whether a conceit is load-bearing?
+    a: Ask it design questions it was not built for. What typeface? What does red mean? What goes in the margins? A load-bearing conceit answers them from its own logic. A decorative one goes silent, and silence means discard it, no matter how clever it sounded.
+  - q: Why does a constraint contract beat a style guide for AI-assisted design work?
+    a: A style guide describes preferences, so every deviation becomes a taste dispute. A contract binds meaning to form (solid means shipped, dashed means killed), so a solid line on dead work is a factual error anyone, including an agent, can catch and fix. Coherence you can check reads as intent, and intent is exactly what slop lacks.
+  - q: A critique pass on the rendered page comes back with "looks good." What does that tell you?
+    a: That the pass failed, not that the page passed. Every render has real faults; a lens that finds none was pointed wrong. Rerun with a sharper, more specific lens, and critique the rendered output, never the source code, because the render is what the reader gets.
+status: published
+lastUpdated: 2026-07-17
+---
+
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+
+<Chalk>slop is what a page looks like when nothing decided it</Chalk>
+
+<p class="lede">
+The about page on this site is drawn as an architectural drawing set: numbered sheets, a title
+block, line conventions declared on sheet A-001 and binding everywhere after. Nobody asked for
+that. It came out of one true sentence about how the work was actually built: agents drafted,
+an independent agent checked, a human approved. That is a drafting workflow, so the page became
+a drawing set, and once it did, every design question that usually takes a meeting answered
+itself. This guide is the method behind that page, written down because the interesting part is
+not the drawing set. It is how you get the next one, for a different subject, without copying
+this one.
+</p>
+
+## <span class="sec-no">01</span>Find the conceit that carries weight
+
+Start with something true about the subject, not something pretty near it. The portfolio's
+truth was procedural: specified, gated, checked, approved. The conceit (a drawing set) is that
+truth given a body. This is the opposite of moodboarding, which starts from how things look and
+works backward toward a justification.
+
+Then apply the one test that matters: ask the conceit design questions it was never explicitly
+built to answer. What typeface? A drawing set says monospaced and engineering-lettered, because
+drawings are annotated, not typeset. What does red mean? Drafting convention reserves it for
+markup and approval, so on this page red belongs to the human alone. What lives in the margins?
+Title blocks, revision history, sheet numbers, all of which the page actually has. A
+load-bearing conceit answers question after question from its own internal logic. A decorative
+one answers none of them; it sits on top of the page like a sticker. If the conceit decorates
+but decides nothing, discard it and go find a truer sentence. This test is cheap and it is
+brutal, and it is the single biggest difference between a concept and a theme.
+
+## <span class="sec-no">02</span>Write the contract before the layout
+
+Before any layout work, write the semantic rules and make them binding. On the about page:
+solid lines mean shipped and live, dashed means pruned or killed, phantom means unreleased, red
+ink is reserved for human action. Those rules are published on the page itself, on the first
+sheet, labeled binding for every sheet after.
+
+The point of writing them down is the reframe it buys: once the contract exists, a violation is
+a bug, not a matter of taste. A solid line on a killed project is now a factual error with a
+correct fix, which means an agent can catch it, a reviewer can flag it, and nobody has to win
+an argument about aesthetics. This is what makes the method work with AI in the loop at all.
+Models are mediocre at taste and excellent at rule-following, so convert as much taste as
+possible into rules. The reader never sees the contract as rules; they experience it as
+coherence, the quiet sense that everything on the page is there on purpose. Coherence reads as
+intent, and intent is precisely the thing slop lacks.
+
+Two more rules belong in the contract even though they are not visual. First, facts before
+form: every number on the page gets verified at its source before it gets drawn, and a small
+verify script rechecks the claims, which makes the page carry its own eval harness. If you draw
+eight of something, there are eight, countable. Second, real machinery: the figures on the
+about page are projected 3D geometry computed in the browser, drawn by the same math that
+produced the print edition, seeded so the output is reproducible. Generated-from-data survives
+zooming in; a pasted texture
+or a borrowed effect does not, and zooming in is exactly what a skeptical reader does.
+
+## <span class="sec-no">03</span>Critique the render, three lenses minimum
+
+When a draft renders, the pull toward "looks good, ship it" is strong and wrong. Schedule at
+least three adversarial passes, each with a distinct lens, and aim them at the rendered output,
+never at the source. Code can be immaculate while the render is broken, and the render is the
+only thing the reader receives.
+
+The lenses that earned their keep: the audience lens (a recruiter skimming on a deadline; what
+do they take away, and is it the right thing), the craft lens (alignment, spacing rhythm,
+typographic consistency, whether the contract holds on every sheet), and the anti-slop lens,
+which hunts a specific list of tells. Gradient glows nothing asked for. Decoration with no
+semantic job. Perfectly symmetric filler content. Numbers that feel invented. Effects that fall
+apart under zoom. Style imported from some other subject's truth. Each pass must return
+findings. A pass that comes back clean did not certify the page; it failed, because every
+render has real faults and a lens that found none was pointed in the wrong direction. Rerun it
+narrower.
+
+The last rule is the one that keeps the method alive: never carry the conceit to the next
+subject. The drawing set worked because it was derived from this portfolio's truth. Reaching
+for it again on a different subject is skipping step one, and skipping step one is the exact
+move that produces slop, your own greatest hits pasted where they no longer mean anything. The
+method transfers. The conceit never does. Next subject, next true sentence, next derivation.
+
+<Exercise>
+1. Take a page you need to design and write five true sentences about its subject, none of them
+   visual. Pick the truest and propose a conceit from it. Then interrogate the conceit with five
+   design questions it was not built for (typeface, color semantics, margins, motion, empty
+   states). Fewer than four confident answers, discard it and try the next sentence.
+2. Write the constraint contract before touching layout: every visual element that carries
+   meaning, and what it is forbidden to mean. Hand the contract to your agent with the build
+   brief, then audit the render against it line by line and file each violation as a bug.
+3. Run three critique passes on the rendered page with three lenses: your actual audience on a
+   deadline, a typographer, and a slop-hunter armed with the tells list above. Each pass must
+   produce written findings. Fix, re-render, repeat until the findings stop being structural.
+</Exercise>
