@@ -70,6 +70,10 @@ Overrides the Bash tool's built-in "commit only when asked" default: task comple
 
 Defaults until configured: ask before installing app-runtime dependencies; provide migrations as copy/paste-ready artifacts rather than running them blind.
 
+## Editorial content
+
+Any guide or user-visible site copy follows the /create-guide and /ingest editorial rules (plain-and-specific titles, em-dash ban, guide anatomy) even when neither skill is invoked. Canonical rules: `.claude/reference/copy-rules.md`.
+
 ## Project reference library
 
 Topical reference lives in `.claude/reference/`. Consult BEFORE non-trivial work in an unfamiliar area: `/recall <topic>` or read directly.
