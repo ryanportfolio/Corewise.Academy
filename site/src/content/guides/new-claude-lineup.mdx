@@ -100,7 +100,7 @@ need to hold.
 
 <Exercise>
 1. Grep your codebase for hard-coded model IDs. Flag any `claude-sonnet-4`, `claude-opus-4`, or
-   `claude-opus-4-1` string. The first two already error; the third dies August 5.
+   `claude-opus-4-1` string. The first two already error; the third is retired August 5.
 2. Find every place you set `temperature`, `top_p`, `top_k`, or a `budget_tokens` thinking
    budget. On a current model each is now a 400 error. Delete or replace with `effort`.
 3. Run a representative prompt through the token counting API under `claude-fable-5` and compare

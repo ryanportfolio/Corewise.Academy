@@ -87,15 +87,15 @@ Output is the same bill from the other side: every word the model says back to y
 then re-read on every following turn. <a href="/guides/thinking-on-a-budget/">Thinking on a budget</a>
 covers that half, from a one-line "be concise" to a full compression contract.
 
-The contract we actually run, on every session behind this site, is a skill called caveman, the
-same one the video reaches for. It makes the model answer like a smart caveman: articles and
-filler die, fragments are fine, arrows replace causal narration, and the things that matter
-(code, error strings, facts, caveats) are never touched. The plate below shows the top of our
+We use a skill called caveman for this, on every session behind this site, the same one the
+video reaches for. It has the model answer like a smart caveman: it strips articles and filler
+words, allows sentence fragments, swaps causal narration for arrows, and never shortens the
+things that matter (code, error strings, facts, caveats). The plate below shows the top of our
 version; the button copies every line of it.
 
 <SkillCopy skill={CAVEMAN_SKILL} name="/caveman" savePath=".claude/skills/caveman/SKILL.md" />
 
-Run it at whatever rung matches your tolerance; ours stays on ultra. The design reasoning
+Run it at whatever intensity suits you; ours stays on ultra. The design reasoning
 behind every line of it (the never-cut list, the escape hatches, the conversation-level audit)
 is the thinking-on-a-budget guide's subject.
 

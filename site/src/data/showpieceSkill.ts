@@ -45,7 +45,7 @@ Constraints create coherence; coherence reads as intent; intent is what slop
 lacks.
 
 - Give visual elements **semantics**, then never violate them. (Line
-  convention: solid = shipped, dashed = killed, phantom = unreleased. One red,
+  convention: solid = shipped, dashed = cancelled, phantom = unreleased. One red,
   spent only on human decision points.)
 - Set budgets: one accent color with a stated meaning, one type system, one
   easing curve, N decorative notes per page max.
