@@ -883,7 +883,7 @@ export function boot() {
   $('btn-arm').addEventListener('click', (e) => {
     corridor.arm();
     e.target.disabled = true;
-    e.target.textContent = 'CELL ARMED · GATE 09 CLOSED';
+    e.target.textContent = 'TRADE APPROVED · GATE 09 CLOSED';
     $('confirm-wrap').classList.add('ready');
     $('input-confirm').focus();
   });
