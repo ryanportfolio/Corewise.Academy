@@ -1,14 +1,14 @@
 ---
 title: The new Claude lineup and what it breaks
-description: The Claude lineup as of July 2026, straight from the release notes. Fable 5, Glasswing-gated Mythos 5, Sonnet 5 at intro pricing, and Opus 4.8, plus the three migration changes that bite (two return 400 errors, one quietly inflates your token bill) and the retirement dates already on the calendar.
+description: 'Claude''s July 2026 lineup is four models: Fable 5, Glasswing-gated Mythos 5, Sonnet 5 at intro pricing, and Opus 4.8, plus the three migration changes that bite.'
 track: foundations
 level: broad
 number: 13
 minutes: 5
 objectives:
   - 'Name the four current Claude models, their shared context and output limits, and which one is gated behind Project Glasswing.'
-  - Diagnose a 400 error on migration by tracing it to always-on thinking, a non-default sampling parameter, or a deprecated manual thinking budget.
-  - Estimate the token-count and cost impact of the Opus-4.7 tokenizer before moving a workload to a current model.
+  - Diagnose a 400 error on migration by tracing it to always-on thinking, a non-default sampling parameter, or a no longer supported manual thinking budget.
+  - Estimate the token-count and cost impact of the Opus-4.7 tokenizer before moving a task to a current model.
   - 'Handle the refusal stop_reason and its safety categories, and plan around the retirement dates for Sonnet 4, Opus 4, and Opus 4.1.'
 prerequisites: []
 sources: []
@@ -17,7 +17,7 @@ selfCheck:
     a: 'Adaptive thinking is on by default and manual extended thinking (thinking type "enabled" with budget_tokens) now returns 400; non-default temperature, top_p, or top_k values return 400; and the model uses the new Opus-4.7 tokenizer, so any hard token budget you set against the old count may now overflow. The first two throw errors directly; the third is a silent cost and length shift.'
   - q: A request to Claude Fable 5 comes back with stop_reason "refusal" and no output. What does that cost you, and what does stop_details.category tell you?
     a: 'It costs nothing. Since June 2, 2026 the API does not bill refusals that generated no output. The category names why a safety classifier declined: cyber, bio, or the newer reasoning_extraction, which fires on requests aimed at reverse-engineering or duplicating the model, and needs no beta header to appear.'
-  - q: Why does the release-notes fact sheet warn you to treat parts of the lineup as in-flux?
+  - q: Why does the release-notes fact sheet warn you to treat parts of the lineup as still changing?
     a: 'Because several dates are already fixed and several features are previews. Opus 4.1 retires August 5, 2026 and Sonnet 5 intro pricing ends August 31, 2026, so anything built against them has a deadline. Mythos 5 is Glasswing-only, and fast mode on Opus 4.8 is a research preview, so neither is something to depend on in production.'
 status: published
 lastUpdated: 2026-07-17
@@ -26,7 +26,7 @@ lastUpdated: 2026-07-17
 import Exercise from '../../components/Exercise.astro';
 import Chalk from '../../components/Chalk.astro';
 
-<Chalk>the model you learned last quarter is not the model shipping now</Chalk>
+<Chalk>this quarter's Claude lineup already replaced last quarter's</Chalk>
 
 <p class="lede">
 Moving a working prompt onto a current Claude model can hand you a 400 error, a 30% bigger
@@ -42,7 +42,14 @@ released model, launched June 9, 2026 alongside **Claude Mythos 5** (`claude-myt
 is restricted to Project Glasswing participants and not something you can build on. **Claude
 Sonnet 5** (`claude-sonnet-5`) launched June 30 at introductory pricing of $2/$10 per MTok (dollars
 per million input tokens, then output tokens), rising to $3/$15 after August 31, 2026. **Claude Opus 4.8** (`claude-opus-4-8`) launched May 28
-and stays a strong generally available option.
+and stays widely available.
+
+| Model | ID | Status |
+| --- | --- | --- |
+| Claude Fable 5 | `claude-fable-5` | Most capable widely released model, launched June 9, 2026 |
+| Claude Mythos 5 | `claude-mythos-5` | Project Glasswing participants only |
+| Claude Sonnet 5 | `claude-sonnet-5` | $2/$10 per MTok intro pricing until August 31, 2026, then $3/$15 |
+| Claude Opus 4.8 | `claude-opus-4-8` | Widely available, launched May 28, 2026 |
 
 The shared spec is the easy part to remember: all four default to a 1M token context window and
 128k max output tokens. Exact pricing for Fable 5, Mythos 5, and Opus 4.8 is not published on the
@@ -64,14 +71,14 @@ returns a 400 error on Sonnet 5 and Opus 4.8. Any prompt that pinned
 temperature to zero for determinism needs that line removed.
 
 Third, and quietest, the tokenizer. Fable 5, Mythos 5, and Sonnet 5 use the tokenizer introduced
-with Opus 4.7, which produces roughly 30% more tokens for the same text than older models. Nothing
-errors. Your prompts just cost about a third more and hit output limits sooner than the old count
-predicted. Re-measure before you migrate: the token counting API accepts `claude-fable-5` to count
+with Opus 4.7, which produces roughly 30% more tokens for the same text than older models.
+
+> “Nothing errors. Your prompts just cost about a third more and hit output limits sooner than the old count predicted.” Re-measure before you migrate: the token counting API accepts `claude-fable-5` to count
 under the new scheme. And once the bigger bill lands,
 <a href="/guides/thinking-on-a-budget/">Thinking on a budget</a> is the guide to cutting
 reasoning-token spend without cutting depth.
 
-## <span class="sec-no">03</span>Refusals, and the dates on the calendar
+## <span class="sec-no">03</span>Refusals and deadlines
 
 Fable 5 runs safety classifiers before and during generation. A declined request comes back with
 `stop_reason` `refusal`, and since June 2, 2026 a refusal that generated no output is not billed.
@@ -83,8 +90,10 @@ show-your-thinking language that could trip it, a hazard
 request on another model at that model's rates, though not on the Message Batches API.
 
 Then the deadlines. **Claude Sonnet 4 and Claude Opus 4 were retired June 15, 2026** and now
-return errors. **Claude Opus 4.1 is deprecated with retirement scheduled for August 5, 2026.**
-Anything still pointed at those IDs has a countdown. And Sonnet 5's cheap intro pricing ends
+return errors. **Claude Opus 4.1 is being phased out, with retirement scheduled for August 5, 2026.**
+> “Any code still pointing at a retired model ID stops working on its retirement date.”
+
+And Sonnet 5's cheap intro pricing ends
 August 31, so cost math done today expires in a few weeks. Treat previews the same way: Mythos 5
 is invitation-only, and fast mode on Opus 4.8 is a research preview. Neither belongs in a plan you
 need to hold.
@@ -98,3 +107,11 @@ need to hold.
    against your old count. Multiply the difference across your monthly volume before you commit to
    the move.
 </Exercise>
+
+## Further reading
+
+- [Anthropic · API release notes](https://platform.claude.com/docs/en/release-notes/overview), the primary source this snapshot is dated against
+- [Anthropic · Claude models overview](https://docs.claude.com/en/docs/about-claude/models/overview), the model reference for confirmed pricing and limits
+- [Anthropic · Claude Fable 5 and Mythos 5 announcement](https://www.anthropic.com/news/claude-fable-5-mythos-5), the launch post for the top of the lineup
+- [Wikipedia · Claude (language model)](https://en.wikipedia.org/wiki/Claude_%28language_model%29), the history in one place
+- [Anthropic · news](https://www.anthropic.com/news), where the next lineup change will land first

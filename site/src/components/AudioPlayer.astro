@@ -1,0 +1,159 @@
+---
+// "Listen to this guide": plays the pre-generated narration mp3 for a guide.
+// Renders nothing server-side unless a src is passed; the guide page only
+// includes it when the audio manifest has an entry for the guide.
+interface Props {
+  src: string;
+}
+const { src } = Astro.props;
+---
+
+<div class="audio-player">
+  <button class="ap-play" type="button" aria-label="Play the audio version of this guide">
+    <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+      <path class="ap-ic-play" d="M4 2.5 L13 8 L4 13.5 Z" fill="currentColor"></path>
+      <g class="ap-ic-pause" fill="currentColor" style="display: none">
+        <rect x="3.5" y="2.5" width="3.2" height="11"></rect>
+        <rect x="9.3" y="2.5" width="3.2" height="11"></rect>
+      </g>
+    </svg>
+  </button>
+  <div class="ap-main">
+    <span class="panel-label">Listen to this guide</span>
+    <div class="ap-row">
+      <input class="ap-seek" type="range" min="0" max="100" step="0.1" value="0" aria-label="Seek within the audio" />
+      <span class="ap-time mono">0:00 / –:––</span>
+      <button class="ap-speed mono" type="button" aria-label="Change playback speed">1×</button>
+    </div>
+  </div>
+  <audio preload="none" src={src}></audio>
+</div>
+
+<script>
+  const format = (s: number) =>
+    isFinite(s) ? `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}` : '–:––';
+
+  for (const player of document.querySelectorAll<HTMLElement>('.audio-player')) {
+    const audio = player.querySelector('audio')!;
+    const play = player.querySelector<HTMLButtonElement>('.ap-play')!;
+    const seek = player.querySelector<HTMLInputElement>('.ap-seek')!;
+    const time = player.querySelector<HTMLElement>('.ap-time')!;
+    const speed = player.querySelector<HTMLButtonElement>('.ap-speed')!;
+    const icPlay = player.querySelector<SVGElement>('.ap-ic-play')!;
+    const icPause = player.querySelector<SVGElement>('.ap-ic-pause')!;
+    const speeds = [1, 1.25, 1.5, 2];
+    let speedIdx = 0;
+
+    play.addEventListener('click', () => (audio.paused ? audio.play() : audio.pause()));
+    audio.addEventListener('play', () => {
+      icPlay.style.display = 'none';
+      icPause.style.display = '';
+      play.setAttribute('aria-label', 'Pause the audio version of this guide');
+    });
+    audio.addEventListener('pause', () => {
+      icPlay.style.display = '';
+      icPause.style.display = 'none';
+      play.setAttribute('aria-label', 'Play the audio version of this guide');
+    });
+    audio.addEventListener('loadedmetadata', () => {
+      time.textContent = `${format(audio.currentTime)} / ${format(audio.duration)}`;
+    });
+    audio.addEventListener('timeupdate', () => {
+      if (audio.duration) seek.value = String((audio.currentTime / audio.duration) * 100);
+      time.textContent = `${format(audio.currentTime)} / ${format(audio.duration)}`;
+    });
+    audio.addEventListener('ended', () => {
+      seek.value = '0';
+      audio.currentTime = 0;
+    });
+    seek.addEventListener('input', () => {
+      if (audio.duration) audio.currentTime = (Number(seek.value) / 100) * audio.duration;
+    });
+    speed.addEventListener('click', () => {
+      speedIdx = (speedIdx + 1) % speeds.length;
+      audio.playbackRate = speeds[speedIdx];
+      speed.textContent = `${speeds[speedIdx]}×`;
+    });
+  }
+</script>
+
+<style>
+  .audio-player {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent-deep);
+    background: var(--accent-wash);
+    padding: var(--s-2) var(--s-3);
+    margin: var(--s-3) 0 0;
+    max-width: 46ch;
+  }
+  .ap-play {
+    flex: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--ink);
+    background: transparent;
+    color: var(--ink);
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+  }
+  .ap-play:hover {
+    background: var(--ink);
+    color: var(--paper, #fff);
+  }
+  .ap-main {
+    flex: 1;
+    min-width: 0;
+  }
+  .ap-row {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    margin-top: 6px;
+  }
+  .ap-seek {
+    flex: 1;
+    min-width: 0;
+    appearance: none;
+    -webkit-appearance: none;
+    height: 2px;
+    background: var(--line);
+    accent-color: var(--accent-deep);
+    cursor: pointer;
+  }
+  .ap-seek::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent-deep);
+  }
+  .ap-seek::-moz-range-thumb {
+    width: 10px;
+    height: 10px;
+    border: none;
+    border-radius: 50%;
+    background: var(--accent-deep);
+  }
+  .ap-time,
+  .ap-speed {
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    color: var(--ink-mute);
+    white-space: nowrap;
+  }
+  .ap-speed {
+    border: 1px solid var(--line);
+    background: transparent;
+    padding: 2px 6px;
+    cursor: pointer;
+  }
+  .ap-speed:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+</style>

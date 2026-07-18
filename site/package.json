@@ -1,6 +1,6 @@
 {
   "name": "corewise-academy",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "CoreWise Academy — a celestial atlas of machine minds. Editorial AI learning publication.",
   "type": "module",
   "private": true,
@@ -9,8 +9,9 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "lint:copy": "node scripts/no-em-dash.mjs",
-    "build": "node scripts/no-em-dash.mjs && astro build",
+    "lint:copy": "node scripts/no-em-dash.mjs && node scripts/heading-length.mjs",
+    "build": "node scripts/no-em-dash.mjs && node scripts/heading-length.mjs && astro build",
+    "audio": "node scripts/generate-audio.mjs",
     "preview": "astro preview"
   },
   "dependencies": {

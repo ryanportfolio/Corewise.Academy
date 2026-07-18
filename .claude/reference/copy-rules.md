@@ -24,10 +24,13 @@ Applies sitewide, all pages and guides. Question marks and other terminal marks
 are allowed only when the heading genuinely is a question.
 
 Periods never appear on big font at all, including mid-text: hero and display
-lines drop internal sentence periods too ("Every guide is a star. Connect
-them." → "Every guide is a star / Connect them" as stacked lines). And headings
+lines drop internal sentence periods too ("Start anywhere. Every guide builds."
+→ "Start anywhere / Every guide builds" as stacked lines). And headings
 stay short enough to sit on one line at their rendered size; if a heading
-wraps, shorten the words, not the font.
+wraps, shorten the words, not the font. Hard caps, browser-measured at
+desktop width (editor ruling, 2026-07-18): guide titles ≤ 41 chars, section
+headings ≤ 32 chars. Enforced by `site/scripts/heading-length.mjs`, which
+runs in `npm run build` and `npm run lint:copy` alongside the em-dash gate.
 
 Enforcement: `site/scripts/no-em-dash.mjs` runs first in `npm run build`
 (`npm run lint:copy` runs it alone) and fails the build with file:line:col for every
@@ -58,12 +61,51 @@ Clear, to the point, plain words. Fewer words beat more words everywhere on the 
 
 - **Say what it is, not what it is not.** "Several sources become one original
   guide" beats "Synthesis, not summary". Negative-definition headings are banned.
+- **The negation pivot is banned in every disguise** (editor ruling, 2026-07-17).
+  The tell is any sentence that spends its first half denying something nobody
+  claimed, then pivots to the real point: "It's not just X, it's Y", "The
+  interesting part is not the drawing set. It is how you get the next one",
+  "This isn't about A; it's about B", "less about X than Y", "What matters
+  isn't X", "The real question isn't X". Splitting it across two sentences or
+  swapping the wording does not make it fine; the shape is the tell. Fix: delete
+  the denial half and open with the point ("The interesting part is how you get
+  the next drawing set for a different subject"). A negation survives only when
+  it corrects a real, named misconception the reader actually holds, and even
+  then the correction comes after the positive claim.
+- **Write it straight.** The house model is the plain declarative essay
+  (Morgan Housel's Collab Fund posts are the reference: "'Smart' is the ability
+  to solve problems." "That was life."). Make the claim, then earn it with a
+  concrete example. Short sentences carry the point; long ones carry the
+  evidence. No throat-clearing before the claim, no reframing after it.
 - **Lead with the point.** A lede or paragraph earns its wind-up only after the
   point has landed. If the payoff sentence could open the paragraph, move it there
   and cut what it replaced.
 - **No ten-dollar words.** If the editor has to look it up ("andragogy"), it does
   not ship. Everyday phrase first; a term of art only when it is the reader's own
   vocabulary, glossed at first use.
+- **No jargon, no invented coinages** (editor ruling, 2026-07-18). A made-up
+  label ("deliberation dial") or insider word ("colophon") is a defect even when
+  the author finds it charming: the reader has to ask what it means, so it fails.
+  Specific and simple beats unnecessary complexity, every time. The test for any
+  phrase: would a smart reader outside AI tooling have to ask? Then replace it
+  with the plain phrase ("deliberation dial" → "how hard the model thinks").
+- **No walls of text** (editor ruling, 2026-07-18). A dense block gets skimmed
+  and forgotten, so it fails no matter how good the sentences are. Paragraphs
+  run 1-4 sentences; a paragraph past ~60 words needs a reason to exist at that
+  length. Break at each new idea. Let lists, short paragraphs, and white space
+  carry the structure a long block hides.
+- **State the rule, skip the flourish** (editor ruling, 2026-07-18, from the
+  editor's own rewrite of the compression-contract passage). Cut, every time:
+  aphorism capstones ("The cheapest token is the one never written"), dramatic
+  justifications bolted onto self-evident rules ("a paraphrased error message
+  is a lie"), praise of the writing's own advice ("a genuinely radical clause"),
+  coined names nobody needs ("call it ultra"), and qualifiers that restate a
+  rule already given. A list of rules reads as flat plain declaratives.
+- **Don't tour the mechanism** (editor ruling, 2026-07-18). When a thing has
+  levels or stages, say that it has them and what the end state buys; walk the
+  reader through each stop only when they must choose between stops. An
+  illustrative example earns its place only if the claim is unclear without it;
+  one example is the ceiling.
 - **Never talk down to the reader.** No "adults learn what they can use"-style
   framing that explains the reader to themselves.
 - **Theme never beats clarity.** Decorative labels are welcome only next to plain

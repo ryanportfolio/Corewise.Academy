@@ -163,6 +163,23 @@ function createChandelier(svg, { labels = true } = {}) {
     nodeDots.push(el('circle', { r: 2.6, class: 'nd', 'data-conv': 'solid' }, svg));
     if (labels) nodeTexts.push(el('text', { class: 'annf' }, svg));
   }
+  // Hover FX: two chromatic echoes of the strand linework plus a bright tracer
+  // that runs along each strand. Hidden until update() receives an fx state.
+  const fxG = el('g', {}, svg);
+  fxG.style.opacity = '0';
+  fxG.style.pointerEvents = 'none';
+  const echoLayer = (stroke, glow, width) => {
+    const g = el('g', {}, fxG);
+    g.style.stroke = stroke;
+    g.style.filter = `drop-shadow(0 0 ${glow}px ${stroke})`;
+    const paths = [];
+    for (let i = 0; i < 6; i++) paths.push(el('path', { fill: 'none', 'stroke-width': width, 'stroke-linecap': 'round', 'data-nodraw': 1 }, g));
+    return { g, paths };
+  };
+  const echoA = echoLayer('var(--accent)', 4, 0.8);
+  const echoB = echoLayer('var(--accent-deep)', 4, 0.8);
+  const tracer = echoLayer('var(--accent)', 5, 1.7);
+  tracer.paths.forEach((p) => p.setAttribute('stroke-dasharray', '12 228'));
   const sDot = el('circle', { r: 3.4, class: 'nd-solid', 'data-conv': 'solid' }, svg);
   const aDot = el('circle', { r: 3.4, class: 'nd', 'data-conv': 'solid' }, svg);
   const outs = [[-128, 1.6, 'CONVERGENCE'], [0, 0.9, 'DIVERGENCE'], [128, 0.45, 'UNIQUE INSIGHTS']];
@@ -180,16 +197,32 @@ function createChandelier(svg, { labels = true } = {}) {
     synthTxt = el('text', { class: 'ann', 'text-anchor': 'middle' }, svg);
     synthTxt.textContent = 'ONE SYNTHESIS';
   }
-  return function update(az) {
+  return function update(az, windAt, fx) {
     const { cam, S, A, nodes, strands } = chandelierGeometry(az, fov);
-    ringPath.setAttribute('d', pathFrom([...nodes, nodes[0]].map((p) => cam.project(p))));
-    const ps = cam.project(S), pa = cam.project(A);
+    // windAt(p) is a world-space x displacement; both anchors sit where its
+    // height envelope is zero, so the spire and apex stay pinned.
+    const proj = windAt ? (p) => cam.project(v3(p.x + windAt(p), p.y, p.z)) : (p) => cam.project(p);
+    ringPath.setAttribute('d', pathFrom([...nodes, nodes[0]].map(proj)));
+    const ps = proj(S), pa = proj(A);
     centerLine.setAttribute('x1', fmt(ps.x)); centerLine.setAttribute('y1', fmt(ps.y - 30));
     centerLine.setAttribute('x2', fmt(pa.x)); centerLine.setAttribute('y2', fmt(pa.y + 34));
-    const order = strands.map((pts, i) => ({ pts, d: cam.project(nodes[i]).depth, i })).sort((a, b) => b.d - a.d);
+    const fxOn = fx && fx.e > 0.004;
+    fxG.style.opacity = fxOn ? fmt(fx.e) : '0';
+    if (fxOn) {
+      echoA.g.setAttribute('transform', `translate(${fmt(fx.off)} ${fmt(-fx.off * 0.35)})`);
+      echoB.g.setAttribute('transform', `translate(${fmt(-fx.off)} ${fmt(fx.off * 0.35)})`);
+      tracer.paths.forEach((p) => p.setAttribute('stroke-dashoffset', fmt(fx.dash)));
+    }
+    const order = strands.map((pts, i) => ({ pts, d: proj(nodes[i]).depth, i })).sort((a, b) => b.d - a.d);
     for (const s of order) {
       strandsG.appendChild(strandGs[s.i]); // re-sort back-to-front; moves nodes, no rebuild
-      const pp = s.pts.map((p) => cam.project(p));
+      const pp = s.pts.map(proj);
+      if (fxOn) {
+        const dFull = pathFrom(pp);
+        echoA.paths[s.i].setAttribute('d', dFull);
+        echoB.paths[s.i].setAttribute('d', dFull);
+        tracer.paths[s.i].setAttribute('d', dFull);
+      }
       const depths = pp.map((p) => p.depth);
       const lo = Math.min(...depths), hi = Math.max(...depths);
       const per = Math.ceil((pp.length - 1) / CHUNKS);
@@ -204,7 +237,7 @@ function createChandelier(svg, { labels = true } = {}) {
       }
     }
     nodes.forEach((N, i) => {
-      const p = cam.project(N);
+      const p = proj(N);
       nodeDots[i].setAttribute('cx', fmt(p.x)); nodeDots[i].setAttribute('cy', fmt(p.y));
       if (labels) {
         nodeTexts[i].setAttribute('x', fmt(p.x + (p.x > 260 ? 10 : -10)));
@@ -233,33 +266,51 @@ function initChandelier(host, { hero = false }) {
   const svg = svgRoot(host, 520, 470);
   const update = createChandelier(svg, { labels: !hero });
   const REST = 0.50;
-  let az = REST, vel = 0;
-  update(az);
+  update(REST);
   const play = prepDraw(svg, { stagger: 10, dur: 900 });
-  let drawn = false, raf = null, visible = false, last = null;
-  // Deterministic breeze: hovering never tracks the cursor. Entering the figure
-  // fires one fixed gust whose direction matches the side you came in from; the
-  // under-damped spring sways the orbit through a few passes and settles it home.
-  // Same entry side, same breeze, every time.
-  // Tuned so one gust reads as: strong sweep (~0.28 rad), one gentle backswing,
-  // at rest in ~3.6s. Simulated deterministically before shipping.
-  const STIFF = 14, DAMP = 2 * Math.sqrt(STIFF) * 0.5, GUST = 2.0;
+  let drawn = false, raf = null, visible = false;
+  // Two independent layers, both pure functions of time:
+  //  - Ambient breeze, always on: the strands sway on slow overlapping waves
+  //    (pinned at spire and apex) and the camera drifts a few degrees. No
+  //    pointer input touches the geometry, so it can never stutter.
+  //  - Hover FX: the pointer feeds an eased energy level that fades in a
+  //    chromatic echo (two glowing offset copies of the linework) plus a
+  //    bright tracer running along each strand, direction set by entry side.
+  const YT = 172, YB = -14;
+  let energy = 0, target = 0, dir = 1, last = null, ambient0 = null;
   const tick = (t) => {
     raf = null;
-    const dt = Math.min((last == null ? 16.7 : t - last) / 1000, 0.04);
+    if (!visible) { last = null; return; }
+    const dt = last == null ? 0 : Math.min((t - last) / 1000, 0.1);
     last = t;
-    vel += (STIFF * (REST - az) - DAMP * vel) * dt;
-    az += vel * dt;
-    if (drawn) update(az);
-    if ((Math.abs(REST - az) > 0.0004 || Math.abs(vel) > 0.002) && visible) raf = requestAnimationFrame(tick);
-    else last = null;
+    const ts = t / 1000;
+    energy += (target - energy) * (1 - Math.exp(-dt / 0.22));
+    if (!target && energy < 0.004) energy = 0;
+    // Amplitude ramps from zero after the draw-in, so the first animated frame
+    // is the rest pose itself and the sway grows out of it with no snap.
+    if (ambient0 == null && drawn) ambient0 = t;
+    const k = ambient0 == null ? 0 : Math.min((t - ambient0) / 2500, 1);
+    const ramp = k * k * (3 - 2 * k);
+    const az = REST + ramp * (0.085 * Math.sin(ts * 0.13) + 0.03 * Math.sin(ts * 0.051 + 2.1));
+    const windAt = (p) => {
+      const env = Math.sin(Math.PI * Math.min(Math.max((YT - p.y) / (YT - YB), 0), 1));
+      return ramp * env * (9 * Math.sin(ts * 0.55 - p.x * 0.013) + 5 * Math.sin(ts * 0.23 + p.z * 0.011 + 1.7));
+    };
+    const fx = {
+      e: energy,
+      off: dir * energy * (2.4 + 0.5 * Math.sin(ts * 1.6)),
+      dash: dir * ts * -170,
+    };
+    if (drawn) update(az, windAt, fx);
+    raf = requestAnimationFrame(tick);
   };
-  const kick = () => { if (!raf && drawn && !reduced) raf = requestAnimationFrame(tick); };
+  const kick = () => { if (!raf && !reduced && visible) raf = requestAnimationFrame(tick); };
   host.addEventListener('pointerenter', (e) => {
     const r = host.getBoundingClientRect();
-    vel = (e.clientX < r.left + r.width / 2 ? 1 : -1) * GUST;
-    kick();
+    dir = e.clientX < r.left + r.width / 2 ? 1 : -1;
+    target = 1;
   });
+  host.addEventListener('pointerleave', () => { target = 0; });
   new IntersectionObserver((es) => {
     es.forEach((e) => {
       visible = e.isIntersecting;
@@ -832,7 +883,7 @@ export function boot() {
   $('btn-arm').addEventListener('click', (e) => {
     corridor.arm();
     e.target.disabled = true;
-    e.target.textContent = 'CELL ARMED · GATE 09 CLOSED';
+    e.target.textContent = 'TRADE APPROVED · GATE 09 CLOSED';
     $('confirm-wrap').classList.add('ready');
     $('input-confirm').focus();
   });

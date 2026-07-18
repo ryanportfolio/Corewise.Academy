@@ -1,5 +1,12 @@
 ---
+import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
+import Faq from '../components/Faq.astro';
+
+const guides = (await getCollection('guides')).filter((g) => g.data.status === 'published');
+const totalMinutes = guides.reduce((sum, g) => sum + g.data.minutes, 0);
+const shortest = Math.min(...guides.map((g) => g.data.minutes));
+const longest = Math.max(...guides.map((g) => g.data.minutes));
 
 const principles = [
   {
@@ -12,26 +19,57 @@ const principles = [
   },
   {
     name: 'Active recall',
-    line: 'The self-check at the end of each guide makes you pull the ideas back out of your own head: reveal-style answers, no grades.',
+    line: 'The self-check at the end of each guide makes you pull the ideas back out of your own head: you reveal each answer yourself, and nothing is graded.',
   },
   {
     name: 'Prerequisites are explicit',
     line: 'Prerequisite links and the Broad → Practitioner → Deep levels mean each guide builds on ones you have read instead of assuming them.',
   },
 ];
+
+const pipeline = [
+  { stage: 'Ingest', happens: 'A source video or document is fetched and broken into concepts, misconceptions, exercises, and quotable moments', output: 'Structured notes + source log' },
+  { stage: 'Draft', happens: 'The writing tool reads the whole curriculum, then writes an original guide (or extends an existing one)', output: 'MDX draft on a branch' },
+  { stage: 'Review', happens: 'The draft arrives as a pull request; the editor reviews, corrects, and merges', output: 'Published guide' },
+  { stage: 'Rebuild', happens: 'Merging rebuilds the static site, so publishing and merging are the same act', output: 'Live page' },
+];
+
+const faq = [
+  {
+    q: 'How are the guides made?',
+    a: 'Each guide starts from real sources: a lecture the editor learned from, official docs fetched at writing time, or first-party field notes. Notes from several sources are combined into one original piece, and a human editor reviews every draft as a pull request before it publishes.',
+  },
+  {
+    q: 'How long are the guides?',
+    a: `Guides run ${shortest} to ${longest} minutes each, and the whole catalogue is about ${totalMinutes} minutes of reading. A typical guide is made to fit inside one sitting.`,
+  },
+  {
+    q: 'Who checks what gets published?',
+    a: '100% of guides pass through the editor, Ryan Allen, before they go live. Nothing publishes directly: every draft is a pull request, review notes are resolved, and merging is publishing.',
+  },
+];
 ---
 
-<Base title="How it’s built · CoreWise Academy">
+<Base
+  title="How CoreWise Academy guides get made · CoreWise Academy"
+  description="How CoreWise Academy guides get made: real sources, one original guide per topic, a human editor reviewing every draft, and learning science applied on purpose."
+  faq={faq}
+  crumbs={[{ name: 'How guides get made', path: '/how-its-built/' }]}
+>
   <main>
     <p class="mono-label accent">How it’s built</p>
     <h1 class="display">How guides get made</h1>
+    <p class="dek">
+      Every CoreWise Academy guide is an original piece made from real sources: lectures worth
+      learning from, official docs fetched at writing time, or the editor’s own field notes.
+    </p>
 
     <div class="prose">
       <h2><span class="no">01</span>Guides start from real sources</h2>
       <p>
-        Most start with a video the editor learned from: the transcript is fetched and broken
+        Most start with a video the editor learned from. The transcript is fetched and broken
         into concepts, prerequisites, misconceptions, exercises, and quotable moments with
-        timestamps, and a source registry records every ingested video and why it qualified.
+        timestamps. A source log records every video added and why it qualified.
         Others are grounded in official docs fetched at writing time, and a few are original
         field notes from the editor's own work. Every guide credits its sources on the page, or
         says plainly that it is original work.
@@ -41,16 +79,52 @@ const principles = [
       <p>
         Notes from multiple sources are combined into an original guide; the site never republishes
         anyone's lecture. The writing tool reads the whole curriculum first and decides whether the
-        material becomes a new guide, extends an existing one, or splits across several.
+        material becomes a new guide, extends an existing one, or splits across several. The
+        catalogue currently holds {guides.length} published guides, about {totalMinutes} minutes of
+        reading, each one made to fit a single sitting of {shortest} to {longest} minutes.
       </p>
 
-      <h2><span class="no">03</span>An editor reviews every guide</h2>
+      <h2><span class="no">03</span><a href="/about/">I</a> review every guide</h2>
       <p>
         Nothing publishes directly. Every draft arrives as a pull request; the editor reviews,
         corrects, and merges. Merging is publishing: the site rebuilds and the guide goes live.
       </p>
+      <table class="pipeline">
+        <thead>
+          <tr><th>Stage</th><th>What happens</th><th>What comes out</th></tr>
+        </thead>
+        <tbody>
+          {
+            pipeline.map((p) => (
+              <tr>
+                <td class="stage">{p.stage}</td>
+                <td>{p.happens}</td>
+                <td class="mono">{p.output}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
 
-      <h2><span class="no">04</span>Learning science, applied</h2>
+      <h2><span class="no">04</span>The style book is strict</h2>
+      <p>
+        The Academy keeps a written style book, and its rulings are enforced at build time where a
+        machine can check them. Three of the load-bearing rules, quoted as written:
+      </p>
+      <blockquote>
+        <p>“No em dash anywhere on the site, ever.”</p>
+        <cite>the Academy style book · copy rules</cite>
+      </blockquote>
+      <blockquote>
+        <p>“Fewer words beat more words everywhere on the site.”</p>
+        <cite>the Academy style book · plain language</cite>
+      </blockquote>
+      <blockquote>
+        <p>“A reader who has not opened the piece can say what it is about from the title alone.”</p>
+        <cite>the Academy style book · titles</cite>
+      </blockquote>
+
+      <h2><span class="no">05</span>Learning science, applied</h2>
       <ul class="principles">
         {
           principles.map((p) => (
@@ -60,23 +134,57 @@ const principles = [
           ))
         }
       </ul>
-
-      <h2><span class="no">05</span>Built like it teaches</h2>
       <p>
-        The site itself is a static Astro build: design tokens in one documented file, a custom
-        titling typeface generated from stroke skeletons, and a WebGL star chart whose stars are
-        the guides themselves.
+        They apply the standard findings on <a
+          href="https://en.wikipedia.org/wiki/Testing_effect"
+          rel="noopener">the testing effect</a> and <a
+          href="https://en.wikipedia.org/wiki/Active_recall"
+          rel="noopener">active recall</a> to a guide format.
+      </p>
+
+      <h2><span class="no">06</span>Built like it teaches</h2>
+      <p>
+        The site itself is a static <a href="https://astro.build/" rel="noopener">Astro</a> build:
+        the style settings in one documented file, a custom titling typeface generated from basic
+        letter strokes, and a 3D star chart whose stars are the guides themselves. The whole thing is
+        free to read, and the code that made it lives on <a
+          href="https://github.com/ryanportfolio"
+          rel="noopener">GitHub</a>. The drafting agents run on <a
+          href="https://docs.claude.com/"
+          rel="noopener">Claude</a>; the judgment stays with the editor.
       </p>
     </div>
+
+    <Faq heading="FAQ · how guides get made" items={faq} />
   </main>
 
   <style>
     main { max-width: calc(var(--measure) + 2 * var(--s-4)); margin: 0 auto; padding: var(--s-8) var(--s-4) var(--s-12); }
-    h1 { font-family: var(--font-display); font-size: clamp(2.4rem, 6vw, var(--text-3xl)); margin: var(--s-2) 0 var(--s-4); }
+    h1 { font-family: var(--font-display); font-size: clamp(2.4rem, 6vw, var(--text-3xl)); margin: var(--s-2) 0 var(--s-3); }
+    .dek { font-size: var(--text-md); font-style: italic; color: var(--ink-soft); margin-bottom: var(--s-2); }
     .prose p { margin-bottom: var(--s-3); }
-    .prose h2 { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 400; margin: var(--s-6) 0 var(--s-2); }
+    .prose h2 { font-family: var(--font-body); font-size: var(--text-xl); font-weight: 600; margin: var(--s-6) 0 var(--s-2); }
     .no { color: var(--accent-deep); margin-right: 0.45em; }
-    .principles { list-style: none; margin: 0; padding: 0; }
+    .prose a { color: var(--ink); }
+    .prose a:hover { color: var(--accent-deep); }
+    .pipeline { border-collapse: collapse; font-size: var(--text-sm); margin: var(--s-3) 0; }
+    .pipeline th {
+      font-family: var(--font-mono);
+      font-size: var(--text-2xs);
+      letter-spacing: var(--tracking-caps);
+      text-transform: uppercase;
+      color: var(--ink-mute);
+      text-align: left;
+      border-bottom: 1px solid var(--ink);
+      padding: var(--s-1) var(--s-3) var(--s-1) 0;
+    }
+    .pipeline td { border-bottom: 1px dashed var(--line); padding: var(--s-2) var(--s-3) var(--s-2) 0; vertical-align: top; }
+    .pipeline .stage { font-weight: 600; white-space: nowrap; }
+    .pipeline .mono { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--ink-soft); }
+    blockquote { margin: 0 0 var(--s-3); padding-left: var(--s-3); border-left: 3px solid var(--accent-deep); }
+    blockquote p { font-style: italic; margin-bottom: var(--s-1); }
+    blockquote cite { font-family: var(--font-mono); font-size: var(--text-2xs); font-style: normal; color: var(--ink-mute); }
+    .principles { list-style: none; margin: 0 0 var(--s-3); padding: 0; }
     .principles li { border-left: 3px solid var(--accent-deep); padding-left: var(--s-3); margin-bottom: var(--s-3); }
   </style>
 </Base>

@@ -1,12 +1,26 @@
 ---
 import Base from '../layouts/Base.astro';
+import Faq from '../components/Faq.astro';
+
+const faq = [
+  {
+    q: 'Who is Ryan Allen?',
+    a: 'Builder who ships AI systems end to end, with AI agents as the workforce and a human gate on every merge. Editor of CoreWise Academy.',
+  },
+  {
+    q: 'How I build',
+    a: 'The way the Academy teaches, applied to my own work: brief the model instead of shouting at it, give agents memory and installable skills, and aim automation at the step that slows everything else down. I work to get the most out of models: the highest quality and accuracy at the lowest cost, tuning thinking budgets and model choice. Every merge still passes a human gate, and the four live systems above are what that method ships.',
+  },
+];
 ---
 
 <Base
-  title="About · Ryan Allen · Approved Works"
-  description="Ryan Allen builds and ships AI systems end to end. Four live systems, drawn to drafting convention: corewise.video, kinefractal.com, truenote.org, willaicite.com."
+  title="Ryan Allen, AI systems builder · CoreWise Academy"
+  description="Ryan Allen builds and ships AI systems end to end. Four live systems, presented as a technical drawing set: corewise.video, kinefractal.com, truenote.org, willaicite.com."
+  faq={faq}
+  crumbs={[{ name: 'About the editor', path: '/about/' }]}
 >
-  <div id="aw">
+  <main id="aw">
     <!-- A-000 · cover -->
     <section class="sheet hero" data-sheet="A-000">
       <div class="hero-grid">
@@ -14,7 +28,7 @@ import Base from '../layouts/Base.astro';
           <p class="aw-kicker">APPROVED WORKS · DRAWING SET A · WEB EDITION</p>
           <h1 class="hero-name">Ryan Allen</h1>
           <div class="hero-rule"></div>
-          <p class="hero-line">AI systems, built and shipped end to end</p>
+          <p class="hero-line">AI systems builder<br />shipping end to end</p>
           <p class="hero-links">
             <a href="https://corewise.video">corewise.video</a> ·
             <a href="https://kinefractal.com">kinefractal.com</a> ·
@@ -29,22 +43,14 @@ import Base from '../layouts/Base.astro';
 
     <!-- A-001 · index + line law -->
     <section class="sheet" data-sheet="A-001" id="sec-a001">
-      <header class="sheet-head">
-        <div>
-          <p class="sheet-no">A-001</p>
-          <h2 class="sheet-title">INDEX OF SHEETS · HOLDINGS</h2>
-        </div>
-        <p class="sheet-sub">READ THIS SHEET FIRST</p>
-      </header>
-
       <ol class="idx">
         <li><a href="#sec-a100"><span class="idx-no">A-100</span><span class="idx-name">CoreWise · six-model synthesis</span><span class="idx-live"><span class="ext">corewise.video ↗</span> LIVE</span></a></li>
-        <li><a href="#sec-a200"><span class="idx-no">A-200</span><span class="idx-name">KineFractal · deterministic signal engine</span><span class="idx-live"><span class="ext">kinefractal.com ↗</span> LIVE</span></a></li>
+        <li><a href="#sec-a200"><span class="idx-no">A-200</span><span class="idx-name">KineFractal · rule-based signal engine</span><span class="idx-live"><span class="ext">kinefractal.com ↗</span> LIVE</span></a></li>
         <li><a href="#sec-a300"><span class="idx-no">A-300</span><span class="idx-name">Truenote · cited answers or refusal</span><span class="idx-live"><span class="ext">truenote.org ↗</span> LIVE</span></a></li>
         <li><a href="#sec-a400"><span class="idx-no">A-400</span><span class="idx-name">WillAICite · deterministic GEO audit</span><span class="idx-live"><span class="ext">willaicite.com ↗</span> LIVE</span></a></li>
         <li><a href="#sec-a500"><span class="idx-no">A-500</span><span class="idx-name">Method of construction</span><span class="idx-tag">METHOD</span></a></li>
         <li><a href="#sec-a600"><span class="idx-no">A-600</span><span class="idx-name">Ancillary works</span><span class="idx-tag">TOOLING</span></a></li>
-        <li><a href="#sec-a999"><span class="idx-no">A-999</span><span class="idx-name">Colophon</span><span class="idx-tag">END OF SET</span></a></li>
+        <li><a href="#sec-a999"><span class="idx-no">A-999</span><span class="idx-name">How this page was drawn</span><span class="idx-tag">END OF SET</span></a></li>
       </ol>
 
       <h3 class="sec-head">HOLDINGS · THE TEN-SECOND VERSION</h3>
@@ -56,7 +62,7 @@ import Base from '../layouts/Base.astro';
       </div>
 
       <p class="body-block">Live systems: specified, gated, checked, and approved. The agents drafted.
-        An independent agent with fresh context checked. After feedback I approved. Human always in
+        An independent agent that had not seen the work checked. After feedback I approved. Human always in
         the loop for the final step after automation is complete.</p>
     </section>
 
@@ -77,8 +83,8 @@ import Base from '../layouts/Base.astro';
           <p class="fig-cap"><span class="fig-no">FIG 1</span>Six model strands descend from one source, cross the
             ring, and converge to one synthesis. Outputs are weight-graded: heavy convergence, medium
             divergence, fine for what only one model saw. True perspective; stroke weight falls with depth.
-            This one is live: enter it with your pointer and a breeze sweeps through from that side,
-            sways the strands, and sets them back down.</p>
+            This one is live: it sways in a slow breeze on its own, and your pointer splits the
+            linework into a glowing chromatic echo, traced from the side you entered.</p>
           <div class="fig-row">
             <div class="fig ink-vermilion" id="fig-disc" aria-label="108 engraved spokes, one per hundred commits"></div>
             <p class="fig-cap narrow"><span class="fig-no">FIG 2</span>108 engraved spokes, one per 100 commits:
@@ -95,11 +101,11 @@ import Base from '../layouts/Base.astro';
             <dt>MODELS IN PARALLEL</dt><dd>6</dd>
             <dt>REGISTERED USERS</dt><dd>1,800+</dd>
             <dt>COMMITS</dt><dd>~10.8K / ~7 MO</dd>
-            <dt>SURFACES</dt><dd>WEB · MOBILE (EXPO) · DESKTOP (TAURI) · 2 BROWSER EXTS · MCP SERVER</dd>
+            <dt>PLATFORMS</dt><dd>WEB · MOBILE (EXPO) · DESKTOP (TAURI) · 2 BROWSER EXTS · MCP SERVER</dd>
             <dt>BILLING / EXPORT</dt><dd>STRIPE · NOTION / PDF / TTS</dd>
           </dl>
-          <p class="rail-note">Six models because one model alone lies confidently. Where they agree I
-            trust it more. Where they split, that's usually the interesting part.</p>
+          <p class="rail-note">“Six models because one model alone lies confidently. Where they agree I
+            trust it more. Where they split, that's usually the interesting part.”</p>
         </aside>
       </div>
     </section>
@@ -111,37 +117,37 @@ import Base from '../layouts/Base.astro';
           <p class="sheet-no">A-200</p>
           <h2 class="sheet-title">KINEFRACTAL · TEN-GATE CORRIDOR</h2>
         </div>
-        <p class="sheet-sub">DETERMINISTIC SIGNAL ENGINE · LIVE · PAPER</p>
+        <p class="sheet-sub">RULE-BASED SIGNAL ENGINE · LIVE · PAPER</p>
       </header>
       <div class="cols">
         <div class="main">
-          <p class="lede">It buys broad-market fear and trims into strength. One engine produces every
+          <p class="lede">It buys broad-market fear and sells gradually as prices rise. One engine produces every
             backtest and the nightly public signal. Ten gates stand between signal and order, and on this
             page the last two are yours to operate.</p>
           <div class="fig ink-prussian" id="fig-corridor" aria-label="Ten pre-trade gates in one-point perspective"></div>
           <div class="gate-panel">
             <p class="gate-readout" id="gate-readout">GATES CLOSED 00 / 10</p>
-            <button class="aw-btn" id="btn-arm">ARM THE CELL · CLOSE GATE 09</button>
+            <button class="aw-btn" id="btn-arm">APPROVE THE TRADE · CLOSE GATE 09</button>
             <div class="confirm-wrap" id="confirm-wrap">
               <input id="input-confirm" type="text" placeholder="TYPE TRANSMIT" autocomplete="off" spellcheck="false" aria-label="Type TRANSMIT to close gate 10" />
-              <button class="aw-btn" id="btn-confirm">CONFIRM · CLOSE GATE 10</button>
+              <button class="aw-btn" id="btn-confirm">SEND THE ORDER · CLOSE GATE 10</button>
             </div>
-            <p class="gate-note">This is the real protocol, miniaturized: no order transmits unless a human
-              arms the exact cell and types the confirmation. Paper account only.</p>
+            <p class="gate-note">This is the real protocol, miniaturized: no order goes out unless a human
+              clicks approve on the exact trade, then types TRANSMIT to send it. Paper account only.</p>
           </div>
           <div class="gatekey">
             <p><b>01</b> DECISION FROM PREVIOUS CLOSED NYSE SESSION</p>
             <p><b>03</b> LEDGER AND BROKER QUANTITIES MUST AGREE</p>
             <p><b>05</b> BUYS CANNOT EXCEED AVAILABLE FUNDS</p>
             <p><b>07</b> STALE GATEWAY FAILS CLOSED</p>
-            <p class="human"><b>09</b> ARM SENTINEL · HUMAN</p>
-            <p class="human"><b>10</b> TYPED CONFIRMATION · HUMAN</p>
+            <p class="human"><b>09</b> A HUMAN APPROVES THE TRADE</p>
+            <p class="human"><b>10</b> A HUMAN TYPES TRANSMIT</p>
           </div>
           <p class="fig-cap"><span class="fig-no">FIG 1</span>Ten pre-trade gates in one-point perspective; all ten
             must close before anything transmits. Six are named in the schedule (the full list is in the
             repo README). The last two belong to a human, which is why this page makes you be one.</p>
-          <div class="fig ink-prussian" id="fig-strata" aria-label="Percentile fear floors for the three live cells"></div>
-          <p class="fig-cap"><span class="fig-no">FIG 2</span>The three live cells in section: each buys only when
+          <div class="fig ink-prussian" id="fig-strata" aria-label="Percentile fear floors for the three live strategies"></div>
+          <p class="fig-cap"><span class="fig-no">FIG 2</span>The three live strategies in section: each buys only when
             its fear reading (Williams VIX Fix vs its own history) rises past the floor.</p>
           <div class="fig ink-prussian" id="fig-ledger" aria-label="69 dated ledger entries"></div>
           <p class="fig-cap"><span class="fig-no">FIG 3</span>69 dated entries in a 219 KB experiment ledger. Kills
@@ -170,17 +176,17 @@ import Base from '../layouts/Base.astro';
       <header class="sheet-head ink-viridian">
         <div>
           <p class="sheet-no">A-300</p>
-          <h2 class="sheet-title">TRUENOTE · RETRIEVAL CONFLUENCE</h2>
+          <h2 class="sheet-title">TRUENOTE · MANY SEARCHES, ONE ANSWER</h2>
         </div>
-        <p class="sheet-sub">RAG FOR LIVE CALLS · LIVE · PUBLIC REPO</p>
+        <p class="sheet-sub">SOURCE-GROUNDED AI FOR LIVE CALLS · LIVE · PUBLIC REPO</p>
       </header>
       <div class="cols">
         <div class="main">
           <p class="lede">Built for call-center reps mid-call: every answer carries a clickable citation,
-            or the system refuses out loud. Never a guess. Drag the confidence down and watch it refuse.</p>
+            or the system refuses out loud instead of guessing. Drag the confidence down and watch it refuse.</p>
           <div class="fig ink-viridian" id="fig-confluence" aria-label="Eighty retrieval filaments narrowing to one cited answer"></div>
           <div class="conf-panel">
-            <label for="conf-slider" class="conf-label">RERANK CONFIDENCE</label>
+            <label for="conf-slider" class="conf-label">RE-RANKING CONFIDENCE</label>
             <input id="conf-slider" type="range" min="0" max="1" step="0.01" value="0.62" />
             <p class="conf-readout" id="conf-readout"></p>
           </div>
@@ -202,11 +208,11 @@ import Base from '../layouts/Base.astro';
             <dt>PUBLIC REPO</dt><dd><a href="https://github.com/ryanportfolio/Truenote">github.com/ryanportfolio/Truenote</a></dd>
             <dt>RETRIEVAL</dt><dd>VECTOR 40 + BM25 40 → RERANK 8 → 1</dd>
             <dt>TEST FILES</dt><dd>43 (VITEST)</dd>
-            <dt>ROLES</dt><dd>4-TIER · SERVER-SIDE TENANT SCOPING</dd>
-            <dt>EVAL</dt><dd>ANSWER ACC · CITATION ACC · REFUSAL RATE · P50/P95</dd>
+            <dt>ROLES</dt><dd>4-TIER · CUSTOMER DATA KEPT SEPARATE ON THE SERVER</dd>
+            <dt>EVALUATION</dt><dd>ANSWER ACC · CITATION ACC · REFUSAL RATE · P50/P95</dd>
           </dl>
-          <p class="rail-note">A guess during a live call is worse than no answer. So refusing correctly
-            counts as a score here, not an error.</p>
+          <p class="rail-note">“A guess during a live call is worse than no answer. So refusing correctly
+            counts as a score here, not an error.”</p>
         </aside>
       </div>
     </section>
@@ -253,9 +259,9 @@ import Base from '../layouts/Base.astro';
             <dt>SCORED DIMENSIONS</dt><dd>8</dd>
             <dt>LLM CALLS IN AUDIT PATH</dt><dd>0 · DETERMINISTIC BY DESIGN</dd>
             <dt>SPEC → LIVE</dt><dd>SAME DAY · 22+ PRS MERGED</dd>
-            <dt>FETCHER</dt><dd>SSRF-GUARDED · RATE-LIMITED</dd>
+            <dt>FETCHER</dt><dd>BLOCKED FROM REACHING INTERNAL ADDRESSES · RATE-LIMITED</dd>
           </dl>
-          <p class="rail-note">And no, the audit isn't "AI-powered." It's deterministic on purpose.
+          <p class="rail-note">The audit is deterministic on purpose: identical input gives an identical score.
             That's the whole point of a score you can trust.</p>
         </aside>
       </div>
@@ -266,14 +272,14 @@ import Base from '../layouts/Base.astro';
       <header class="sheet-head">
         <div>
           <p class="sheet-no">A-500</p>
-          <h2 class="sheet-title">METHOD OF CONSTRUCTION · STEMMA OF REVIEW</h2>
+          <h2 class="sheet-title">METHOD OF CONSTRUCTION</h2>
         </div>
         <p class="sheet-sub">HOW EVERY SHEET IN THIS SET GOT BUILT</p>
       </header>
       <div class="cols">
         <div class="main">
-          <p class="lede">I ship with AI agents as the workforce. And a builder never grades its own work.</p>
-          <div class="fig" id="fig-stemma" aria-label="The sixteen-agent design workflow drawn as a stemma"></div>
+          <p class="lede">I ship with AI agents as the workforce. An independent agent checks the work before I approve it.</p>
+          <div class="fig" id="fig-stemma" aria-label="The sixteen-agent design workflow drawn as a family tree"></div>
           <p class="fig-cap"><span class="fig-no">FIG 1</span>The 16-agent design workflow that chose
             kinefractal.com's production architecture, every agent numbered: five code readers and four
             web researchers feed three independent proposals; a three-lens judge panel scores them; one
@@ -287,10 +293,10 @@ import Base from '../layouts/Base.astro';
             <dt>WORKFORCE</dt><dd>AI AGENTS</dd>
             <dt>REVIEW</dt><dd>INDEPENDENT AGENT, FRESH CONTEXT</dd>
             <dt>MERGE</dt><dd>HUMAN GATE · ALWAYS</dd>
-            <dt>PROCESS</dt><dd>CAN'T-DO → CAN-DO → CHEAPER AND FASTER → IMPROVE THE HARNESS → AUDIT THE OUTPUT → PRUNE WHAT DOESN'T HOLD UP → JUDGE RESULTS AND STUDY LOGS</dd>
+            <dt>PROCESS</dt><dd>CAN'T-DO → CAN-DO → CHEAPER AND FASTER → IMPROVE THE SETUP → AUDIT THE OUTPUT → PRUNE WHAT DOESN'T HOLD UP → JUDGE RESULTS AND STUDY LOGS</dd>
           </dl>
-          <p class="rail-note">I don't vibe-code and hope: PRs get reviewed by independent AI agents with
-            fresh context.</p>
+          <p class="rail-note">“PRs get reviewed by independent AI agents with
+            fresh context.”</p>
         </aside>
       </div>
     </section>
@@ -315,8 +321,8 @@ import Base from '../layouts/Base.astro';
             <div class="side-copy">
               <h3 class="sec-head">AI-FIRMWARE</h3>
               <p class="body-block small">A self-syncing template: an always-loaded kernel of rules, 34
-                on-demand skills, committed memory, and session hooks that catch drift. One source of
-                truth for two agent runtimes. Versioned plugin, v1.1.1.</p>
+                on-demand skills, committed memory, and automatic checks that catch when it goes off track. One rule set
+                for both agent tools. Versioned plugin, v1.1.1.</p>
               <p class="mono-link"><a href="https://github.com/ryanportfolio/AI-Firmware">github.com/ryanportfolio/AI-Firmware ↗</a></p>
             </div>
           </div>
@@ -330,16 +336,17 @@ import Base from '../layouts/Base.astro';
           <div class="fig" id="fig-githelp" aria-label="Discussion-scouting pipeline with a normally-open human switch"></div>
           <div class="go-panel"><button class="aw-btn" id="btn-go">GIVE THE HUMAN GO</button></div>
           <p class="fig-cap"><span class="fig-no">FIG 3</span>A workspace that scouts GitHub Discussions, ranks
-            what's answerable, reads the full thread, and drafts a verified answer. The posting switch is
-            normally open: nothing goes to GitHub without an explicit human go, same turn. Yours to flip,
-            here only.</p>
+            what's answerable, reads the full thread, and drafts a verified answer. Each answer posts to
+            GitHub only after a human clicks go; one click approves one answer. The button below is that
+            switch, demo-only: it closes the drawn circuit and posts nothing.</p>
           <div class="fig-row">
-            <div class="fig" id="fig-pixelswarm" aria-label="PixelSwarm drawn entirely in phantom line"></div>
+            <div class="fig" id="fig-pixelswarm" aria-label="Maimcoil drawn entirely in phantom line"></div>
             <div class="side-copy">
-              <h3 class="sec-head">PIXELSWARM</h3>
-              <p class="fig-cap"><span class="fig-no">FIG 4</span>A desktop survivors-like in Tauri 2 + React with a
-                Rust/Steamworks bridge, ~37k lines of game code. Unreleased, so it is drawn entirely in
-                phantom line, per the conventions on A-001. The swarm drifts anyway.</p>
+              <h3 class="sec-head">MAIMCOIL</h3>
+              <p class="fig-cap"><span class="fig-no">FIG 4</span>A survivors-style action game headed for Steam:
+                Tauri 2 + React with a Rust/Steamworks bridge, ~37k lines of game code. A playable
+                prototype is live at <a href="https://corewise.video/play">corewise.video/play ↗</a>. The
+                swarm drifts anyway.</p>
             </div>
           </div>
         </div>
@@ -348,22 +355,22 @@ import Base from '../layouts/Base.astro';
           <div class="rail-rule"></div>
           <dl>
             <dt>AI-FIRMWARE</dt><dd>PUBLIC · PLUGIN v1.1.1 · 34 SKILLS</dd>
-            <dt>LOCAL-CPU-ONLY-PTT</dt><dd>PUBLIC · OFFLINE · CPU-ONLY WHISPER</dd>
+            <dt>LOCAL-CPU-ONLY-PTT</dt><dd>PUBLIC · OFFLINE · CPU-ONLY WHISPER · <a href="https://github.com/ryanportfolio/Local-CPU-only-PTT">REPO ↗</a></dd>
             <dt>GITHELP</dt><dd>PRIVATE · HUMAN-GO GATE</dd>
-            <dt>PIXELSWARM</dt><dd>UNRELEASED · PHANTOM LINE</dd>
+            <dt>MAIMCOIL</dt><dd>STEAM GAME · PROTOTYPE · <a href="https://corewise.video/play">PLAY ↗</a></dd>
           </dl>
-          <p class="rail-note">None of these are products. They're the tooling that makes the products
+          <p class="rail-note">These are the tooling that makes the products
             shippable.</p>
         </aside>
       </div>
     </section>
 
-    <!-- A-999 · Colophon -->
+    <!-- A-999 · How this page was drawn -->
     <section class="sheet last" data-sheet="A-999" id="sec-a999">
       <header class="sheet-head">
         <div>
           <p class="sheet-no">A-999</p>
-          <h2 class="sheet-title">COLOPHON · HOW THIS PAGE WAS DRAWN</h2>
+          <h2 class="sheet-title">HOW THIS PAGE WAS DRAWN</h2>
         </div>
         <p class="sheet-sub">END OF SET</p>
       </header>
@@ -377,7 +384,7 @@ import Base from '../layouts/Base.astro';
           <p class="body-block">Every figure is computed geometry: real 3D to 2D projection math running
             in your browser, emitted as vectors. The chandelier is a true perspective camera you steer.
             The corridor is one-point perspective with the human gates wired to your hand. The confluence
-            is dimetric axonometric with a live confidence gate. Where a count is drawn, the count is the
+            is <a href="https://en.wikipedia.org/wiki/Axonometric_projection" rel="noopener">angled 3D view</a> with a live confidence gate. Where a count is drawn, the count is the
             fact. There is also a <a href="https://github.com/ryanportfolio">print edition</a>: a 9-sheet
             vector PDF of this same set, built by the same locked facts and audited by a script that
             recounts every drawn mark.</p>
@@ -392,14 +399,30 @@ import Base from '../layouts/Base.astro';
               <tr><td>△5</td><td>WEB EDITION · THE SET LEARNS TO MOVE</td><td>2026-07-18</td></tr>
             </tbody>
           </table>
-          <h3 class="sec-head">THE WORKS, ONE MORE TIME</h3>
+          <h3 class="sec-head">RECENT</h3>
           <p class="works">
-            <a href="https://corewise.video">corewise.video</a> · multi-model synthesis, 1,800+ registered users<br />
-            <a href="https://kinefractal.com">kinefractal.com</a> · nightly signals, paper only, every gate drawn on A-200<br />
+            <a href="https://corewise.video">corewise.video</a> · six models read in parallel, 1,800+ registered users<br />
+            <a href="https://kinefractal.com">kinefractal.com</a> · 519 agent-written PRs, every merge through a human gate<br />
             <a href="https://truenote.org">truenote.org</a> · cited answers or refusal, never a guess<br />
             <a href="https://willaicite.com">willaicite.com</a> · deterministic GEO audit, spec to live in a day<br />
             <a href="https://github.com/ryanportfolio">github.com/ryanportfolio</a> · the rest of the shop
           </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- A-1000 · FAQ + contact -->
+    <section class="sheet" data-sheet="A-1000" id="contact">
+      <header class="sheet-head">
+        <div>
+          <p class="sheet-no">A-1000</p>
+          <h2 class="sheet-title">FAQ &amp; CONTACT</h2>
+        </div>
+        <p class="sheet-sub">QUESTIONS THE SET GETS ASKED</p>
+      </header>
+      <div class="cols">
+        <div class="main">
+          <Faq heading="FAQ · about Ryan Allen" items={faq} open={true} />
         </div>
       </div>
     </section>
@@ -413,7 +436,7 @@ import Base from '../layouts/Base.astro';
       <span class="tb-cell wide"><span class="tb-k">CHECKED BY</span>INDEPENDENT AGENT, FRESH CONTEXT</span>
       <span class="tb-cell"><span class="tb-k">APPROVED</span><span class="tb-approved">R. ALLEN</span></span>
     </div>
-  </div>
+  </main>
 
   <script>
     import { boot } from '../scripts/about-plates.js';
@@ -427,6 +450,8 @@ import Base from '../layouts/Base.astro';
        ============================================================ */
     /* this page is Ryan's, not the Academy's: the wordmark drops its suffix here */
     :global(.masthead .wordmark em) { display: none; }
+    /* the pinned title block covers the bottom edge; lift the site footer above it */
+    :global(.site-footer) { margin-bottom: 56px; }
 
     #aw {
       --awc: var(--ink);                 /* carbon key */
@@ -555,7 +580,7 @@ import Base from '../layouts/Base.astro';
     #input-confirm {
       font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.14em; text-transform: uppercase;
       background: none; border: 1.5px solid var(--line); border-bottom-color: var(--awc); color: var(--ink);
-      padding: 10px 12px; width: 15ch;
+      padding: 10px 12px; width: 18ch;
     }
     #input-confirm:focus { outline: none; border-color: var(--aw-verm); }
     :global(.shake) { animation: aw-shake 0.35s; }

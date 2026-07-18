@@ -9,7 +9,7 @@ objectives:
   - 'Audit a Claude setup with /usage and /context, and attribute each cost to one of the two variables: tokens consumed or model used.'
   - 'Trim the preloaded context tax: unused MCP servers, bloated skill descriptions, and an oversized CLAUDE.md.'
   - Route repeatable grunt work to the cheapest model that could have done it a year ago, and to zero-token scripts inside skills.
-  - 'Compare the aggressive options (compressed inputs, image-encoded context, harness swaps, local models) by trade-off rather than headline savings.'
+  - 'Compare the riskier options (compressed inputs, image-encoded context, harness swaps, local models) by trade-off rather than headline savings.'
 prerequisites:
   - slug: thinking-on-a-budget
     note: The output half of this bill. That guide compresses what the model says; this one shrinks everything else.
@@ -79,7 +79,7 @@ the descriptions of the ones you keep, because names and descriptions load at ev
 start. Cut CLAUDE.md hardest of all: it is re-read on every message, so a 4,000-token file taxes
 every exchange. Keep it to how Claude should work with your project, a couple hundred lines at
 most, with detail split into files loaded on demand. That thin-kernel discipline is the subject
-of <a href="/guides/firmware-not-folklore/">Firmware, not folklore</a>.
+of <a href="/guides/firmware-not-folklore/">Every new repo starts with your lessons</a>.
 
 Output is the same bill from the other side: every word the model says back to you is billed and
 then re-read on every following turn. <a href="/guides/thinking-on-a-budget/">Thinking on a budget</a>
@@ -113,7 +113,7 @@ zero tokens, and never hallucinates, so any step of a skill that is deterministi
 parsing, moving files, formatting output) belongs in code, with the model kept for the parts
 that need judgment.
 
-## <span class="sec-no">04</span>The aggressive aisle, priced honestly
+## <span class="sec-no">04</span>Riskier fixes, priced honestly
 
 Past the habits and the routing sit heavier interventions, each with a real trade-off attached.
 Input compression tools such as RTK sit between your commands and the model, deterministically
@@ -128,8 +128,8 @@ Further out: routing execution-heavy work to a second harness with its own budge
 Claude Code's backing model for a cheaper provider via environment variables, or running an open
 model on your own hardware. Each buys capacity and sells something you may care about, whether
 model quality, data governance, or your evenings spent maintaining a server. The honest reading
-of this aisle is an ordering: exhaust the free fixes in Sections 02 and 03 first, because they
-attack the same two variables without adding a single new failure mode.
+of these options is an ordering: exhaust the free fixes in Sections 02 and 03 first, because
+they attack the same two variables without adding a single new failure mode.
 
 <Exercise>
 1. Run `/usage` and write down the top item under what is using your limits. Then run

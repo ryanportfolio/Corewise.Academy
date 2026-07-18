@@ -94,13 +94,19 @@ Derived from Wikipedia's [Signs of AI writing](https://en.wikipedia.org/wiki/Wik
 
 ### 9. Negative parallelisms and tail negations
 
-**Watch:** It's not just X, it's Y; Not only… but…; clipped fragments like "no guessing"
+**Watch:** It's not just X, it's Y; Not only… but…; clipped fragments like "no guessing". Also every disguise of the same shape: "The point isn't X. It's Y" (split across sentences), "This isn't about A; it's about B", "less about X than Y", "What matters isn't X", "The interesting part is not X". Rewording or splitting doesn't cure it; the deny-then-pivot shape is the tell. The fix is always the same: delete the denial half, open with the point. A negation earns its place only when it corrects a real misconception the reader actually holds, stated after the positive claim.
 
 **Before:**
 > It's not just about the beat riding under the vocals; it's part of the aggression and atmosphere.
 
 **After:**
 > The heavy beat adds to the aggressive tone.
+
+**Before (cross-sentence disguise):**
+> Written down because the interesting part is not the drawing set. It is how you get the next one, for a different subject, without copying this one.
+
+**After:**
+> Written down because the interesting part is how you get the next drawing set, for a different subject, without copying this one.
 
 **Before (tail negation):**
 > The options come from the selected item, no guessing.
