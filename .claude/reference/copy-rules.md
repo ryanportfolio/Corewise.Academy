@@ -112,6 +112,14 @@ Clear, to the point, plain words. Fewer words beat more words everywhere on the 
   function words, never instead of them. "Upon leaving this room, you can" loses
   to "After this guide, you can".
 
+## Quotes and titles are copied by hand (2026-07-18)
+
+Guide Chalk lines and pull-quotes are quoted verbatim in `site/src/data/trackNotes.ts`
+and on the homepage (`site/src/pages/index.astro`), and guide titles appear as
+cross-link text in other guides and in trackNotes. None of it is generated. After
+changing a Chalk line, pull-quote, or title, grep `site/src` for the old wording and
+update every copy, or the site misquotes itself.
+
 ## Cross-linking (editor ruling, 2026-07-17)
 
 When a guide touches a topic another guide covers (token spend, memory, skills,
