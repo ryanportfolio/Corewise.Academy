@@ -36,17 +36,17 @@ two-space indent, that the deploy step needs a manual approval, that it botched 
 last week) is gone the moment the session ends. That is the default, and for a one-shot task it is
 the right one. But an agent you come back to 5 days a week should not relearn you every morning.
 
-> “An agent you come back to should not relearn you every morning.” The mechanism
-that fixes it is a <a href="https://platform.claude.com/docs/en/managed-agents/memory">memory
+The fix
+is a <a href="https://platform.claude.com/docs/en/managed-agents/memory">memory
 store</a>: a workspace-scoped collection of text documents that mounts as a directory the agent
 reads and writes with its ordinary file tools. Preferences, conventions, prior mistakes, domain
 context. They go in the directory, and the next session finds them there. For the repo-level
-counterpart, where committed memory travels with the codebase itself, see <a href="/guides/firmware-not-folklore/">Firmware, not folklore</a>.
+counterpart, where committed memory travels with the codebase itself, see <a href="/guides/firmware-not-folklore/">Every new repo starts with your lessons</a>.
 </p>
 
 ## <span class="sec-no">01</span>A directory, versioned
 
-A memory store is deliberately unexciting: text files, each addressed by a path like
+A memory store is a set of text files, each addressed by a path like
 `/formatting_standards.md`. Attach one at session creation and it mounts under `/mnt/memory/` at a
 short name derived from the store's name. Read the authoritative `mount_path` off the session's
 memory-store resource rather than constructing it yourself. The agent needs its file tools enabled
@@ -62,11 +62,11 @@ session that shares it.
 
 ## <span class="sec-no">02</span>read_only is the big decision
 
-The `access` field defaults to `read_write`, and that default deserves suspicion. The docs are
-blunt about the reason: a prompt injection from untrusted input can make one session write
+The `access` field defaults to `read_write`, and that default is risky. The docs say
+why: a prompt injection from untrusted input can make one session write
 malicious content, and a later session reads that content back as trusted memory.
 
-> “The write happens under attacker influence, the read happens under your trust.” It is the same threat model that <a href="/guides/expertise-you-can-install/">Expertise you can install</a> applies to a downloaded skill file: untrusted input you cannot afford to trust blindly. Access is enforced at the filesystem
+It is the same threat model that <a href="/guides/expertise-you-can-install/">Expertise you can install</a> applies to a downloaded skill file: untrusted input you cannot afford to trust blindly. Access is enforced at the filesystem
 level, so `read_only` genuinely rejects writes. Use it for reference material and any store the
 agent has no business modifying. Reserve `read_write` for the sessions that actually add memories.
 Every write to a `read_write` mount is attributed to its session in the version history, so you can
@@ -87,8 +87,8 @@ drop a store mid-session. Plan the attach list up front.
 | Memories per store | 2,000 | New writes; existing entries stay readable |
 | Stores per session | 8, fixed in `resources[]` at creation | Attaching more, or swapping mid-session |
 
-Because each store carries its own 2,000-memory budget, the shape of a healthy setup is several
-focused stores, not one giant one: a store per end user, a shared domain-knowledge store, a store
+Because each store carries its own 2,000-memory budget, a healthy setup uses several
+focused stores: a store per end user, a shared domain-knowledge store, a store
 per project. A common pattern is one `read_only` shared reference store shared across many
 sessions, plus a `read_write` store scoped to whoever is actually writing.
 

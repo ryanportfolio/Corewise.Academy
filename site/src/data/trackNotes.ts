@@ -80,7 +80,7 @@ export const TRACK_NOTES: Record<string, TrackNotes> = {
     quotes: [
       {
         text: 'The line moves at the pace of the slowest hiker: find yours before you build anything.',
-        guideTitle: 'Automate the bottleneck, not the busywork',
+        guideTitle: 'Automate the step that slows you down',
         href: '/guides/automate-the-bottleneck/',
       },
       {
@@ -116,7 +116,7 @@ export const TRACK_NOTES: Record<string, TrackNotes> = {
       },
       {
         text: 'One repo learns; the next should not start dumb.',
-        guideTitle: 'Firmware, not folklore',
+        guideTitle: 'Every new repo starts with your lessons',
         href: '/guides/firmware-not-folklore/',
       },
       {

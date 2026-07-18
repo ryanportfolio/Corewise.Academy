@@ -1,5 +1,5 @@
 ---
-title: Automate the bottleneck, not the busywork
+title: Automate the step that slows you down
 description: 'Automating the bottleneck means finding the constraint that sets your pace and pointing Claude at it: four working rules distilled from Anthropic''s own engineers.'
 track: agents
 level: broad
@@ -19,7 +19,7 @@ sources:
     watched: July 2026
 selfCheck:
   - q: Why is an hour saved outside the bottleneck not actually an hour saved?
-    a: Throughput is set by the constraint. Speed up any other step and work simply piles up in front of the slow one. The system as a whole finishes no sooner. Like a hiking line that moves at the pace of its slowest walker, the only fix that counts is lightening the slowest step's load.
+    a: Throughput is set by the constraint. Speed up any other step and work simply piles up in front of the slow one. The system as a whole finishes no sooner. The only fix is lightening the slowest step's load.
   - q: What separates a receipt from a trace, and which one do you debug with?
     a: A receipt is the quantified outcome summary ("141 emails reviewed"), not "emails reviewed". A trace is the full record of every step the system took to get there. You debug with the trace; the receipt only tells you whether to go looking.
   - q: When handing Claude an objective instead of a task, what two structures must exist before any work starts?
@@ -83,8 +83,7 @@ and naming them for your own workflow is most of the design work:
   not a theoretical future one.
 - **Access**: the accounts and tools the worker may touch. The test is the same as for a new
   hire: does it have the logins the task actually requires?
-- **Receipt**: the proof of completion, and the part most people get wrong. A receipt must be
-  explicit, not implied: "141 emails reviewed, 12 minutes of runtime" carries verifiable
+- **Receipt**: the proof of completion, and the part most people get wrong. A receipt must spell out the outcome: "141 emails reviewed, 12 minutes of runtime" carries verifiable
   numbers; "emails reviewed" hides every possible failure behind three words.
 
 Anthropic runs this shape on real work: one internal system hands Claude the entire growth-
@@ -92,11 +91,10 @@ experiment loop on a schedule, with the analyzed results returning to the team a
 The pattern scales down just as well: one trigger, one worker, one explicit receipt, delivered
 wherever you already look every day.
 
-## <span class="sec-no">03</span>The receipt is not the story
+## <span class="sec-no">03</span>The trace holds the story
 
 A receipt is the total at the bottom of a dinner bill. The trace is the line items: the full
-transcript of what the system actually did, step by step. Unwatched automations drift, and the
-correction for drift is not more experiments or cleverer prompts. Asked for the secret at an
+transcript of what the system actually did, step by step. Unwatched automations drift. Asked for the secret at an
 engineering workshop, Anthropic's applied-AI answer was disarmingly manual:
 
 <PullQuote
@@ -115,8 +113,7 @@ to a known location, ideally through one shared logging skill so the format can 
 one place. Second, actually look at them, in whatever viewer makes that effortless. Third, the
 step that compounds, act on what you find: bring the trace back to Claude, point at the exact
 wrong turn, and have it amend the skill itself. That converts a one-time failure into a
-permanent repair, because the fix lands in the system rather than in the conversation, the
-layer-routing habit at the heart of <a href="/guides/firmware-not-folklore/">Firmware, not folklore</a>.
+permanent repair, because the fix lands in the system rather than in the conversation. <a href="/guides/firmware-not-folklore/">Every new repo starts with your lessons</a> covers that habit.
 
 ## <span class="sec-no">04</span>Objectives, not tasks
 

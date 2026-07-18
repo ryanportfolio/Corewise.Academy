@@ -33,14 +33,14 @@ courseOrder: 3
 import Exercise from '../../components/Exercise.astro';
 import Chalk from '../../components/Chalk.astro';
 
-<Chalk>a model that runs for hours needs a support structure, not a longer prompt</Chalk>
+<Chalk>a model that runs for hours needs a support structure</Chalk>
 
 <p class="lede">
 Claude Fable 5 is built to take multi-minute turns and run autonomously for hours. That is the
 capability you are paying for, and it is the one most setups quietly waste. Point a model built
 for the long run at a prompt written for quick turns and you get the worst of it: an agent that
 works for 2 hours, then hands you a confident summary of things it never actually did. The fix is
-not a longer prompt. It is the support structure that keeps a long run honest, and a first move most people
+the support structure that keeps a long run honest, and a first move most people
 miss because it is a single dial.
 </p>
 
@@ -50,7 +50,7 @@ On Fable 5 the <a href="https://platform.claude.com/docs/en/build-with-claude/pr
 is the primary control over intelligence, latency, and cost. High is the default and the right
 resting place for most work. Push to xhigh when the task is capability-sensitive, the kind of
 problem where getting it right matters more than getting it fast. Drop to medium or low for
-routine work, and here is the part that changes your intuition: low effort on Fable 5 can still
+routine work. Low effort on Fable 5 can still
 exceed xhigh on prior models. So "cheap and fast" no longer means "dumb." The reflex to reach for
 a bigger model on a hard task is often better answered by leaving the model and raising the
 effort, and the reflex to save money by downgrading the model is often better answered by
@@ -93,12 +93,12 @@ see <a href="/guides/give-your-agent-a-memory/">Give your agent a memory</a>.
 For checking work, prefer a fresh-context verifier subagent over self-critique.
 
 > “A model reviewing its own transcript shares its blind spots; a subagent that reads only the finished work and the criteria does not.” Keeping the evaluator separate from the worker is the same split behind
-<a href="/guides/automate-the-bottleneck/">Automate the bottleneck, not the busywork</a>. And if you want the model to send you a verbatim message mid-task, define a
+<a href="/guides/automate-the-bottleneck/">Automate the step that slows you down</a>. And if you want the model to send you a verbatim message mid-task, define a
 send_to_user tool in your own software, then prompt for it explicitly. Defining the tool alone is not
 enough. Fable 5 needs the elicitation, a clear instruction on when and how to call it, or it
 stays silent.
 
-One thing you cannot build your way into: reading the raw chain of thought. On Fable 5,
+You cannot build your way into reading the raw chain of thought. On Fable 5,
 thinking.display defaults to omitted and the raw reasoning is never returned. Worse, an
 instruction telling the model to echo or transcribe its reasoning can trip the
 reasoning_extraction refusal, returning stop_reason "refusal" instead of work. So audit your

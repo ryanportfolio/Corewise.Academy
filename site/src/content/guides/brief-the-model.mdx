@@ -79,12 +79,12 @@ right home for standing character; the user turn is for the task.
 
 ## <span class="sec-no">03</span>Order the docs, mean every word
 
-Long prompts have a geometry. For inputs past 20k tokens, put the longform documents at the top
+For inputs past 20k tokens, put the longform documents at the top
 and the query at the very end. Anthropic reports end-placed queries improved response quality by
 up to 30 percent on complex multidocument tests, which is a large return for 5 minutes of
 rearranging text you already have. Give each document its own `<document>` tag with `<document_content>` and `<source>`
 subtags, and for work that leans on pulling facts from sources, ask Claude to pull relevant quotes into `<quotes>` tags
-before it answers. That gives the model an anchored path from source to conclusion.
+before it answers. That lets the model trace each conclusion back to its source.
 
 The last fundamental is the one people trip over most: the latest models do what you literally
 say. "Can you suggest some changes" returns suggestions, not edits, because that is what you
