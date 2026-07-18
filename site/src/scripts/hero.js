@@ -1,4 +1,4 @@
-// CoreWise Academy — hero star chart.
+// CoreWise Academy hero star chart.
 // The curriculum rendered as a constellation atlas: guides are stars,
 // prerequisite links are constellation lines, the cursor is a lantern
 // that connects nearby stars. Five clusters = five tracks.
@@ -73,7 +73,7 @@ try {
   renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'low-power' });
 } catch {
   canvas.replaceWith(Object.assign(document.createElement('div'), { className: 'sky-fallback' }));
-  throw new Error('WebGL unavailable — static hero');
+  throw new Error('WebGL unavailable: static hero');
 }
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 
@@ -89,7 +89,7 @@ const positions = new Float32Array(starPos);
 const aBase = new Float32Array(N);
 const aSize = new Float32Array(N);
 const aPhase = new Float32Array(N);
-const aLantern = new Float32Array(N); // 0..1, cursor proximity — CPU-updated
+const aLantern = new Float32Array(N); // 0..1, cursor proximity, CPU-updated
 for (let i = 0; i < N; i++) {
   aBase[i] = starMeta[i].base;
   aSize[i] = starMeta[i].size;
@@ -155,12 +155,12 @@ const lineGeo = new THREE.BufferGeometry();
 lineGeo.setAttribute('position', new THREE.BufferAttribute(linePos, 3));
 const lineMat = new THREE.LineBasicMaterial({ transparent: true, opacity: 0.22, color: '#2743d0', depthTest: false, depthWrite: false });
 const constellations = new THREE.LineSegments(lineGeo, lineMat);
-constellations.renderOrder = 1; // painter's order for all overlays — depth-sort flips between
+constellations.renderOrder = 1; // painter's order for all overlays; depth-sort flips between
 sky.add(constellations);        // transparent layers read as pixel flicker while the sky drifts
 
 // ---- lantern edges (drawn live between stars near the cursor) ----
 // Each strand has a lifecycle: it eases in slowly, grows outward from its
-// midpoint, and fades out even more slowly — per-vertex alpha via shader,
+// midpoint, and fades out even more slowly (per-vertex alpha via shader,
 // so nothing pops. A persistent map + hysteresis keeps the set stable.
 const MAX_LANTERN_EDGES = 240;
 const lanternPos = new Float32Array(MAX_LANTERN_EDGES * 6);
@@ -267,7 +267,7 @@ function updateLantern(dt) {
   starGeo.attributes.aLantern.needsUpdate = true;
 
   // candidate strands among the warmest stars (hysteresis: born > 0.3, kept until < 0.12).
-  // Shortest pairs first, at most 3 strands per star — a web, not a hairball.
+  // Shortest pairs first, at most 3 strands per star: a web, not a hairball.
   near.sort((a, b) => a[1] - b[1]);
   const picks = near.slice(0, 20).map((n) => n[0]);
   const pairs = [];
@@ -286,7 +286,7 @@ function updateLantern(dt) {
     degree.set(a, (degree.get(a) ?? 0) + 1);
     degree.set(b, (degree.get(b) ?? 0) + 1);
   };
-  // living strands keep their claim first — otherwise the greedy re-selection
+  // living strands keep their claim first, otherwise the greedy re-selection
   // flips a strand's fate frame to frame while the lantern moves, and it flickers
   for (const [key, edge] of edgeLife) {
     if (edge.s > 0.04 && aLantern[edge.a] > 0.16 && aLantern[edge.b] > 0.16) claim(edge.a, edge.b, key);
@@ -310,9 +310,9 @@ function updateLantern(dt) {
   for (const [key, edge] of edgeLife) {
     const alive = wanted.has(key) && aLantern[edge.a] > 0.12 && aLantern[edge.b] > 0.12;
     edge.s += ((alive ? 1 : 0) - edge.s) * ease(alive ? 3.2 : 2.0, dt); // slow bloom, slower fade
-    if (edge.s > 0.985) edge.s = 1; // settle exactly — an endless exponential crawl reads as shimmer
+    if (edge.s > 0.985) edge.s = 1; // settle exactly; an endless exponential crawl reads as shimmer
     if (!alive && edge.s < 0.02) { edgeLife.delete(key); continue; }
-    // geometry reaches the stars sooner than the alpha finishes — the line stops
+    // geometry reaches the stars sooner than the alpha finishes, so the line stops
     // moving early (sub-pixel endpoint motion is the flicker), the glow keeps blooming
     const g = smooth(Math.min(1, edge.s * 1.6));
     const ga = smooth(edge.s);
@@ -323,7 +323,7 @@ function updateLantern(dt) {
       mx + (starPos[a3] - mx) * g, my + (starPos[a3 + 1] - my) * g, mz + (starPos[a3 + 2] - mz) * g,
       mx + (starPos[b3] - mx) * g, my + (starPos[b3 + 1] - my) * g, mz + (starPos[b3 + 2] - mz) * g,
     ], e * 6);
-    // feather each strand by how warm its endpoint is — the web breathes at the rim
+    // feather each strand by how warm its endpoint is: the web breathes at the rim
     lanternAlpha[e * 2] = ga * Math.min(1, aLantern[edge.a] * 1.4);
     lanternAlpha[e * 2 + 1] = ga * Math.min(1, aLantern[edge.b] * 1.4);
     e++;

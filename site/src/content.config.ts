@@ -1,7 +1,7 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
-// Guide frontmatter contract — the ingest skill writes this shape; the
+// Guide frontmatter contract: the ingest skill writes this shape; the
 // templates render it. A course is NOT a separate type: courseSlug +
 // courseOrder sequence guides within a track.
 const guides = defineCollection({

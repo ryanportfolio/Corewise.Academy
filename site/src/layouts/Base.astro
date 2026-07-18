@@ -3,7 +3,7 @@ interface Props {
   title: string;
   description?: string;
 }
-const { title, description = 'CoreWise Academy — a celestial atlas of machine minds. Original guides on working with AI, distilled from the best teachers on the open web.' } = Astro.props;
+const { title, description = 'CoreWise Academy · a celestial atlas of machine minds. Original guides on working with AI, distilled from the best teachers on the open web.' } = Astro.props;
 ---
 
 <!doctype html>
@@ -14,13 +14,13 @@ const { title, description = 'CoreWise Academy — a celestial atlas of machine 
     <meta name="description" content={description} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>{title}</title>
-    <!-- fonts are self-hosted (see src/styles/fonts.css) — no third-party requests.
+    <!-- fonts are self-hosted (see src/styles/fonts.css), no third-party requests.
          Preload the three faces that paint above the fold. -->
     <link rel="preload" href="/fonts/AlembicTitling.otf" as="font" type="font/otf" crossorigin />
     <link rel="preload" href="/fonts/newsreader-normal-400_700-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/ibm-plex-mono-normal-400-latin.woff2" as="font" type="font/woff2" crossorigin />
     <script is:inline>
-      // theme before first paint — no flash of the wrong lecture
+      // theme before first paint: no flash of the wrong lecture
       document.documentElement.dataset.theme = localStorage.getItem('cw-theme') || 'day';
     </script>
   </head>
@@ -59,7 +59,7 @@ const { title, description = 'CoreWise Academy — a celestial atlas of machine 
         apply(next);
       });
 
-      // scroll reveal — unobserve once
+      // scroll reveal: unobserve once
       const io = new IntersectionObserver(
         (es) =>
           es.forEach((e) => {

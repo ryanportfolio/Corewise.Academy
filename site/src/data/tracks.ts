@@ -1,4 +1,4 @@
-// The five constellations — the fixed curriculum skeleton.
+// The five constellations: the fixed curriculum skeleton.
 // Content slots into this; the skeleton itself does not change.
 
 export interface Track {
@@ -62,7 +62,7 @@ export const TRACKS: Track[] = [
     name: 'Practice',
     constellation: 'THE METRONOME',
     description:
-      'Daily habits, verification, taste — and the discipline of knowing when to leave the telescope covered.',
+      'Daily habits, verification, taste, and the discipline of knowing when to leave the telescope covered.',
     sky: { cx: 3.6, cy: 0.7, spread: 0.85 },
   },
 ];

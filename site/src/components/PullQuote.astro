@@ -13,7 +13,7 @@ const { quote, creator, video, href, timestamp } = Astro.props;
 <figure class="pullquote">
   <p>“{quote}”</p>
   <cite>
-    — {creator}, <a href={href}>“{video}”</a> · <a class="timestamp" href={href}>{timestamp}</a>
+    {creator}, <a href={href}>“{video}”</a> · <a class="timestamp" href={href}>{timestamp}</a>
   </cite>
 </figure>
 

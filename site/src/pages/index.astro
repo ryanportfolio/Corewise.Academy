@@ -24,7 +24,7 @@ const minis: Record<string, string> = {
 };
 ---
 
-<Base title="CoreWise Academy — a celestial atlas of machine minds">
+<Base title="CoreWise Academy · a celestial atlas of machine minds">
   <div class="hero">
     <canvas
       id="sky"
@@ -33,9 +33,9 @@ const minis: Record<string, string> = {
     <div class="graticule"></div>
     <p class="corner tl">Observatory open<br /><span class="v">Admission always free</span></p>
     <p class="corner tr">
-      Stars <span class="v" data-star-count>—</span> · Links <span class="v" data-link-count>—</span><br />Sky — drifting
+      Stars <span class="v" data-star-count>·</span> · Links <span class="v" data-link-count>·</span><br />Sky · drifting
     </p>
-    <p class="corner bl">Vol. I — MMXXVI<br /><span class="v">Sapere aude</span></p>
+    <p class="corner bl">Vol. I · MMXXVI<br /><span class="v">Sapere aude</span></p>
     <p class="corner br">Cursor is a lantern<br /><span class="v">Bring it near the stars</span></p>
     <div class="hero-copy">
       <p class="mono-label hero-kicker">CoreWise Academy · a celestial atlas of machine minds</p>
@@ -45,8 +45,8 @@ const minis: Record<string, string> = {
         <span class="hl"><span class="lit">Connect them.</span></span>
       </h1>
       <p class="dek">
-        Original guides on working with AI, distilled from the best teachers on the open web — charted
-        into five constellations, from first light to deep sky.
+        Original guides on working with AI, distilled from the best teachers on the open web and
+        charted into five constellations, from first light to deep sky.
       </p>
       <div class="hero-ctas">
         <a class="btn solid" href="#tracks">Open the atlas</a>
@@ -68,7 +68,7 @@ const minis: Record<string, string> = {
           <span class="num">{t.numeral}</span>
           <div>
             <h3>{t.name}</h3>
-            <span class="constellation">Constellation — {t.constellation}</span>
+            <span class="constellation">Constellation · {t.constellation}</span>
             <Fragment set:html={minis[t.slug]} />
           </div>
           <p>{t.description}</p>
@@ -78,7 +78,7 @@ const minis: Record<string, string> = {
               return (
                 <span class={`shelf${n === 0 ? ' empty' : ''}`}>
                   <span>
-                    {l.label.toUpperCase()} — {l.shelf}
+                    {l.label.toUpperCase()} · {l.shelf}
                   </span>
                   <span class="stars">
                     {n === 0 ? 'awaiting first star' : `${'★'.repeat(Math.min(n, 5))} ${n} guide${n > 1 ? 's' : ''}`}

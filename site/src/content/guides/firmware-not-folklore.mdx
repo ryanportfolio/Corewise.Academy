@@ -1,12 +1,12 @@
 ---
 title: Firmware, not folklore
-description: Every agent setup learns lessons — a debug loop here, a deploy gotcha there — and the lessons stay where they happened. AI Firmware is the fix, a boot layer of kernel rules, installable skills, and committed memory that makes every new repo start senior.
+description: Every agent setup learns lessons (a debug loop here, a deploy gotcha there) and the lessons stay where they happened. AI Firmware is the fix, a boot layer of kernel rules, installable skills, and committed memory that makes every new repo start senior.
 track: agents
 level: broad
 number: 12
 minutes: 7
 objectives:
-  - 'Explain the firmware split — kernel, skills, memory, hooks, sync — and the token-cost problem each layer solves.'
+  - 'Explain the firmware split (kernel, skills, memory, hooks, sync) and the token-cost problem each layer solves.'
   - Spawn a configured agent project from the AI Firmware template and initialize it with a single command.
   - 'Route a new durable lesson to its correct layer: kernel rule, on-demand skill, or committed reference memory.'
   - Pull template improvements into a spawned repo, and push a generic fix back, so every project inherits the lesson.
@@ -16,11 +16,11 @@ prerequisites:
 sources: []
 selfCheck:
   - q: Why keep the kernel small when the model could easily read a much larger rules file?
-    a: 'Because always-loaded files are a per-turn tax — every rule in the kernel rides along on every single request, whether or not it is relevant. The discipline is altitude: only cross-cutting safety and process rules stay resident; topical detail moves to skills and reference files that load on demand, and the template ships a script that measures the resident token weight so bloat is visible.'
+    a: 'Because always-loaded files are a per-turn tax: every rule in the kernel rides along on every single request, whether or not it is relevant. The discipline is altitude: only cross-cutting safety and process rules stay resident; topical detail moves to skills and reference files that load on demand, and the template ships a script that measures the resident token weight so bloat is visible.'
   - q: What breaks when lessons live in chat transcripts instead of committed memory?
     a: They stop traveling. A transcript dies with the session and the machine; the next session, the next repo, and the cloud sandbox all start dumb and relearn the same gotcha. Committed reference files travel with every clone, survive context resets, and are read by whichever agent opens the project next.
   - q: Why does the template draw a hard boundary between the Claude Code and Codex runtimes instead of sharing everything?
-    a: 'Because automation is only safe in the runtime built for it — session hooks and auto-commit rules that are correct under Claude Code become unsafe commands if another agent inherits them blindly. So Codex gets its own instruction boundary and thin adapters that delegate to the same canonical skill files: the playbooks are shared, the automation is not.'
+    a: 'Because automation is only safe in the runtime built for it: session hooks and auto-commit rules that are correct under Claude Code become unsafe commands if another agent inherits them blindly. So Codex gets its own instruction boundary and thin adapters that delegate to the same canonical skill files: the playbooks are shared, the automation is not.'
 status: published
 lastUpdated: 2026-07-17
 ---
@@ -28,12 +28,12 @@ lastUpdated: 2026-07-17
 import Exercise from '../../components/Exercise.astro';
 import Chalk from '../../components/Chalk.astro';
 
-<Chalk>one repo learns — the next should not start dumb</Chalk>
+<Chalk>one repo learns; the next should not start dumb</Chalk>
 
 <p class="lede">
 Watch what happens to agent setups over a few months. One repo learns a better debugging loop.
 Another learns a deployment gotcha that cost an afternoon. A third learns which standing rules
-are worth their token weight and which are not. And all of it stays where it happened — folklore,
+are worth their token weight and which are not. And all of it stays where it happened: folklore,
 locked in transcripts and one-off prompt files, relearned from scratch by every new project.
 <a href="https://github.com/ryanportfolio/AI-Firmware">AI Firmware</a> is the counter-move: a
 portable boot layer that sits under the work, small enough to stay out of the way, structured
@@ -43,10 +43,10 @@ enough to shape how an agent boots, remembers, checks itself, and ships.
 ## <span class="sec-no">01</span>The firmware split
 
 The design answers a tension every agent setup hits. Put everything in the prompt and every turn
-gets heavier — always-loaded instructions are a tax paid on every single request. Store nothing
+gets heavier: always-loaded instructions are a tax paid on every single request. Store nothing
 and every project repeats every mistake. Firmware splits the difference by giving each kind of
 knowledge the cheapest home that still works: a **kernel** of standing rules that stays small
-and always loaded — cross-cutting safety and process only; **skills** that hold the long
+and always loaded (cross-cutting safety and process only); **skills** that hold the long
 playbooks and load only when a task triggers them; **committed reference memory** that keeps
 project knowledge out of the chat transcript and inside the repo, where it travels with every
 clone; **session hooks** that run cheap startup checks; and **sync scripts** that move reusable
@@ -54,26 +54,26 @@ improvements between projects. The template even ships a script that measures th
 token weight, so the cost of a fat kernel is a number, not a feeling.
 
 The routing rule that falls out of the split: when a lesson proves durable, ask which layer it
-belongs to. Cross-cutting discipline goes in the kernel — rarely. A repeatable procedure becomes
+belongs to. Cross-cutting discipline goes in the kernel (rarely). A repeatable procedure becomes
 a skill. A project quirk goes to reference memory. Getting this wrong in either direction costs
-you — resident rules you rarely need, or on-demand files the agent forgets to consult.
+you: resident rules you rarely need, or on-demand files the agent forgets to consult.
 
 ## <span class="sec-no">02</span>What ships in the box
 
-The template arrives with thirty-one skills — installable judgment, in the sense the previous
-guide gave that word. The load-bearing ones: **recall**, which routes durable project knowledge
+The template arrives with thirty-one skills (installable judgment, in the sense the previous
+guide gave that word). The load-bearing ones: **recall**, which routes durable project knowledge
 (pitfalls, commands, architecture) into committed reference files and consults them before
 unfamiliar work; **verification-before-completion**, which demands evidence before any claim
 that something works; **systematic-debugging**, which forces reproduction before fixes;
 **caveman**, the token-economy prose mode; and **init-project**, the guided setup that
-configures a fresh spawn. Around the skills sit the session hooks — every boot re-asserts the
+configures a fresh spawn. Around the skills sit the session hooks: every boot re-asserts the
 active defaults and quietly checks whether the template has improved since the repo was spawned.
 
-The box also holds a second runtime. Claude Code gets the full system — kernel, hooks, skills,
+The box also holds a second runtime. Claude Code gets the full system: kernel, hooks, skills,
 automation. Codex gets a deliberate boundary: its own instruction file and thin adapters that
 delegate to the same canonical skill files, generated by a sync script rather than maintained by
 hand. One source of truth for the playbooks; no leaked automation. That boundary is the quiet
-lesson of the design — sharing methods between agents is good, sharing their trigger-happy
+lesson of the design: sharing methods between agents is good, sharing their trigger-happy
 defaults is not.
 
 ## <span class="sec-no">03</span>Spawn fast, learn as a fleet
@@ -81,23 +81,23 @@ defaults is not.
 Setup is deliberately near-instant: create a repository from the template, open it, run one
 command. The initializer detects the stack, asks a short round of questions about verification
 and deployment, seeds the reference files, prunes the skills that don't apply, and commits the
-result. From the first turn, the new project has the full discipline installed — it starts
+result. From the first turn, the new project has the full discipline installed: it starts
 senior, not blank.
 
 The part that compounds is the sync. Spawned projects freeze the template at spawn date, but the
 template keeps improving, so a weekly hook nudges when the shared surface has drifted, and the
 sync skill closes the gap in both directions: pull the template's improvements into the project,
-or push a lesson that proved generic back up to the template — where every future spawn, and
+or push a lesson that proved generic back up to the template, where every future spawn, and
 every synced sibling, inherits it. That is the whole thesis in one loop. A gotcha hit once, in
 one repo, becomes firmware everywhere. Folklore evaporates; firmware accumulates.
 
 <Exercise>
 1. Spawn a project from the <a href="https://github.com/ryanportfolio/AI-Firmware">AI Firmware</a>
-   template and run its initializer. Time it — the point is that the cost of starting senior is
+   template and run its initializer. Time it: the point is that the cost of starting senior is
    minutes, not an afternoon.
 2. The next durable gotcha you hit, route it deliberately: kernel, skill, or reference memory?
    Save it to the layer you chose and write one sentence on why that layer.
 3. Find one improvement in your spawned repo that is generic rather than project-specific. Push
-   it back to the template with the sync skill, then pull it into a second project — watch one
+   it back to the template with the sync skill, then pull it into a second project: watch one
    lesson become fleet-wide.
 </Exercise>

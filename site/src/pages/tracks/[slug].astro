@@ -17,10 +17,10 @@ const byLevel = (level: string) =>
     .sort((a, b) => (a.data.courseOrder ?? a.data.number) - (b.data.courseOrder ?? b.data.number));
 ---
 
-<Base title={`${track.name} — CoreWise Academy`} description={track.description}>
+<Base title={`${track.name} · CoreWise Academy`} description={track.description}>
   <main>
     <header class="track-head">
-      <p class="mono-label accent">Constellation {track.numeral} — {track.constellation}</p>
+      <p class="mono-label accent">Constellation {track.numeral} · {track.constellation}</p>
       <h1 class="display">{track.name}</h1>
       <p class="dek">{track.description}</p>
     </header>
@@ -32,7 +32,7 @@ const byLevel = (level: string) =>
           <section class="shelf-section reveal">
             <div class="shelf-head">
               <h2>
-                {l.label} <span class="shelf-name">— {l.shelf}</span>
+                {l.label} <span class="shelf-name">· {l.shelf}</span>
               </h2>
               <span class="mono-label">
                 {shelf.length === 0 ? 'awaiting first star' : `${shelf.length} guide${shelf.length > 1 ? 's' : ''}`}

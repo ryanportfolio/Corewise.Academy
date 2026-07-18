@@ -22,6 +22,13 @@ which video to ingest.
   the source registry.
 - **The editorial bar:** a video qualifies only if the editor personally learned from
   it. If that is unclear, ask before ingesting.
+- **Em dashes are BANNED on the site.** Editor's standing rule, zero exceptions: no
+  em dash anywhere in a guide (prose, frontmatter description, objectives, self-check
+  answers, pull-quote text). Use a period, comma, colon, or parentheses; label-style
+  separators use " · ". `npm run build` fails on any em dash in `site/src`
+  (`scripts/no-em-dash.mjs`), so a violation cannot ship, but write clean from the
+  start instead of leaning on the gate. Sweep the finished draft for the character
+  before Step 6.
 
 ## Step 1: Get the transcript
 
@@ -113,6 +120,8 @@ review and that merging is publishing.
 - Don't invent a transcript, a quote, a timestamp, or a source. If you don't have the
   words, ask for them.
 - Don't use vague objectives ("understand X"). Only observable, checkable verbs.
+- Don't use em dashes anywhere, and don't substitute lookalikes (en dash, double
+  hyphen). Plain punctuation only; the build gate will reject the PR otherwise.
 - Don't skip the registry row or the build check.
 - Don't reshape the guide anatomy or invent new section types — consistency across
   guides is the point.
