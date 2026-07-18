@@ -21,7 +21,7 @@ selfCheck:
     a: 'budget_tokens extended thinking is deprecated on Opus 4.6 and Sonnet 4.6 and returns a 400 error on Opus 4.7 and later, Fable 5, and Mythos 5, so replace it with adaptive thinking calibrated by the effort parameter. Prefilled assistant responses on the last turn return a 400 error starting with 4.6 models, so replace format control with Structured Outputs and a system-prompt "no preamble" instruction.'
   - q: A responsive model spawns a subagent where a grep would do and adds abstractions you never asked for. Which two levers address this?
     a: 'A subagent-scope instruction restricting proactive subagents to parallel, isolated-context, independent workstreams stops the reflexive spawning. A minimalism prompt covering scope, documentation, defensive coding, and abstractions curbs the overengineering. Both are standing system-prompt blocks, not per-task reminders, because the behavior is a default you are correcting once.'
-status: review
+status: published
 lastUpdated: 2026-07-17
 courseSlug: prompting-best-practices
 courseOrder: 2

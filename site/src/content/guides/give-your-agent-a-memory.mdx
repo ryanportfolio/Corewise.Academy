@@ -21,7 +21,7 @@ selfCheck:
     a: 'The write fails once the store is at its 2,000-memory cap, blocking both direct memories.create calls and the agent''s own file writes to new paths. Existing memories stay readable and editable; only new memories are blocked. The fix is pruning stale memories with memories.delete, or moving to a fresh store, since each store carries its own 2,000-memory limit.'
   - q: You need to roll a memory back to last week''s content, and you leaked a secret into an old version. What are the two mechanisms?
     a: 'There is no restore endpoint. To roll back, retrieve the desired memory version (memver_) and write its content back with memories.update, or memories.create if the parent was deleted. To scrub the secret, use the redact endpoint, which removes content from a historical version while keeping the who-did-what-when metadata. You cannot redact a version that is the current head, so write a new version or delete the memory first.'
-status: review
+status: published
 lastUpdated: 2026-07-17
 ---
 

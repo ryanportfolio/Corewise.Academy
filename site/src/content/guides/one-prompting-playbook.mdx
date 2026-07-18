@@ -21,7 +21,7 @@ selfCheck:
     a: 'Tool orchestration. OpenAI Programmatic Tool Calling has the model write server-side code that calls tools, processes several results, and returns one small structured payload, good for bounded filter/aggregate/validate work. Claude keeps orchestration in the client loop or its code-execution tool. That is a real architectural split, not a phrasing difference. Reasoning reuse diverges too: OpenAI carries encrypted reasoning across turns via previous_response_id plus reasoning.context, where Claude re-sends thinking blocks in the conversation history.'
   - q: OpenAI reports leaner prompts scoring 10-15% higher while cutting cost 33-67%. How much weight should that carry?
     a: 'Directional, not settled. The numbers are self-reported internal evals with no methodology, task mix, or baseline disclosed, so you cannot check whether they transfer to your workload. Treat them as a reason to run the experiment yourself, not as a measured result to quote. The direction is corroborated by the other vendor moving the same way; the magnitude is not something you should bank on.'
-status: review
+status: published
 lastUpdated: 2026-07-17
 ---
 
