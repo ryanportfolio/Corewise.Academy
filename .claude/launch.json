@@ -1,0 +1,13 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "site-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--", "--port", "4399"],
+      "cwd": "site",
+      "port": 4399,
+      "autoPort": false
+    }
+  ]
+}
