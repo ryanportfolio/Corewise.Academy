@@ -9,10 +9,10 @@ objectives:
   - 'Explain why Managed Agents sessions start with fresh context, and how a mounted memory store carries state across them.'
   - 'Choose read_only versus read_write for a mount by the prompt-injection risk the choice controls.'
   - 'Estimate when a store hits its limits (100 kB per memory, 2,000 per store, 8 stores per session) and what fails at each cap.'
-  - 'Design a multi-store layout (per user, per project, shared read-only reference) and a pruning or dreaming plan to keep it healthy.'
+  - 'Design a multi-store layout (per user, per project, shared read-only reference) and a pruning or consolidation plan to keep it healthy.'
 prerequisites:
   - slug: firmware-not-folklore
-    note: Extends the committed-memory-that-travels idea from repo firmware to a managed agent's own persistent store.
+    note: Extends the committed-memory-that-travels idea from committed project memory to a managed agent's own persistent store.
 sources: []
 selfCheck:
   - q: Why is the read_write default a dangerous one, and when should you override it to read_only?
@@ -20,7 +20,7 @@ selfCheck:
   - q: A store has 1,999 memories and the agent tries to write a new file to an unmapped path. What happens, and what still works?
     a: 'The write fails once the store is at its 2,000-memory cap, blocking both direct memories.create calls and the agent''s own file writes to new paths. Existing memories stay readable and editable; only new memories are blocked. The fix is pruning stale memories with memories.delete, or moving to a fresh store, since each store carries its own 2,000-memory limit.'
   - q: You need to roll a memory back to last week''s content, and you leaked a secret into an old version. What are the two mechanisms?
-    a: 'There is no restore endpoint. To roll back, retrieve the desired memory version (memver_) and write its content back with memories.update, or memories.create if the parent was deleted. To scrub the secret, use the redact endpoint, which removes content from a historical version while keeping the who-did-what-when metadata. You cannot redact a version that is the current head, so write a new version or delete the memory first.'
+    a: 'There is no restore endpoint. To roll back, retrieve the desired memory version (memver_) and write its content back with memories.update, or memories.create if the parent was deleted. To scrub the secret, use the redact endpoint, which removes content from a historical version while keeping the who-did-what-when metadata. You cannot redact a version that is the current version, so write a new version or delete the memory first.'
 status: published
 lastUpdated: 2026-07-17
 ---
@@ -48,16 +48,16 @@ counterpart, where committed memory travels with the codebase itself, see <a hre
 
 A memory store is deliberately unexciting: text files, each addressed by a path like
 `/formatting_standards.md`. Attach one at session creation and it mounts under `/mnt/memory/` at a
-slug derived from the store's name. Read the authoritative `mount_path` off the session's
+short name derived from the store's name. Read the authoritative `mount_path` off the session's
 memory-store resource rather than constructing it yourself. The agent needs its file tools enabled
 at agent creation to touch the mount at all. A description of every mount lands in the system prompt
 automatically, so the agent knows what each store holds.
 
 Two details make this safe to run in production. Every change creates an immutable memory version
-(id prefix `memver_`), which is your audit trail and your point-in-time recovery. Versions belong
+(id prefix `memver_`), which is your audit trail and your way to restore an earlier version. Versions belong
 to the store and survive after a memory is deleted, so the history stays complete. And writes only
 persist if they land under the real mount path; a write anywhere else under `/mnt/memory/` goes to
-container-local scratch and vanishes when the session ends. The store stays in sync across every
+temporary local storage and vanishes when the session ends. The store stays in sync across every
 session that shares it.
 
 ## <span class="sec-no">02</span>read_only is the load-bearing setting
@@ -89,7 +89,7 @@ drop a store mid-session. Plan the attach list up front.
 
 Because each store carries its own 2,000-memory budget, the shape of a healthy setup is several
 focused stores, not one giant one: a store per end user, a shared domain-knowledge store, a store
-per project. A common pattern is one `read_only` shared reference store fanned out across many
+per project. A common pattern is one `read_only` shared reference store shared across many
 sessions, plus a `read_write` store scoped to whoever is actually writing.
 
 ## <span class="sec-no">04</span>Keeping it healthy over time
@@ -105,8 +105,8 @@ reads both but writes only to the new one.
 
 Two more endpoints matter for compliance. Rolling back has no dedicated restore call. Retrieve the
 `memver_` version you want and write it back with `memories.update`. And the redact endpoint scrubs
-content from a historical version while preserving its metadata, for leaked secrets, PII, or a user
-deletion request. You cannot redact a live memory's current head, so write a new version or delete
+content from a historical version while preserving its metadata, for leaked secrets, personal data, or a user
+deletion request. You cannot redact a live memory's current version, so write a new version or delete
 the memory first, then redact the old one.
 
 <Exercise>

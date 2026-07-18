@@ -16,11 +16,11 @@ prerequisites:
 sources: []
 selfCheck:
   - q: 'Why does "CRITICAL: You MUST use this tool" now hurt on Opus 4.5 and 4.6, when it used to help?'
-    a: 'Those models are far more responsive to system prompts, so anti-undertriggering language that once nudged a reluctant model into using a tool now overtriggers. The model reaches for the tool when it should not. The fix is conditional phrasing that says when to act: "Use this tool when...". You are steering a model that already listens, so you turn the volume down, not up.'
+    a: 'Those models are far more responsive to system prompts, so forceful language that once nudged a reluctant model into using a tool now backfires. The model reaches for the tool when it should not. The fix is conditional phrasing that says when to act: "Use this tool when...". You are steering a model that already listens, so you turn the volume down, not up.'
   - q: You have a prompt that sets thinking with budget_tokens and prefills the assistant turn for format control. What breaks on the newest models, and what replaces each?
     a: 'budget_tokens extended thinking is deprecated on Opus 4.6 and Sonnet 4.6 and returns a 400 error on Opus 4.7 and later, Fable 5, and Mythos 5, so replace it with adaptive thinking calibrated by the effort parameter. Prefilled assistant responses on the last turn return a 400 error starting with 4.6 models, so replace format control with Structured Outputs and a system-prompt "no preamble" instruction.'
   - q: A responsive model spawns a subagent where a grep would do and adds abstractions you never asked for. Which two levers address this?
-    a: 'A subagent-scope instruction restricting proactive subagents to parallel, isolated-context, independent workstreams stops the reflexive spawning. A minimalism prompt covering scope, documentation, defensive coding, and abstractions curbs the overengineering. Both are standing system-prompt blocks, not per-task reminders, because the behavior is a default you are correcting once.'
+    a: 'A subagent-scope instruction restricting proactive subagents to parallel, independent tasks that each run in their own context stops the reflexive spawning. A minimalism prompt covering scope, documentation, defensive coding, and abstractions curbs the overengineering. Both are standing system-prompt blocks, not per-task reminders, because the behavior is a default you are correcting once.'
 status: published
 lastUpdated: 2026-07-17
 courseSlug: prompting-best-practices
@@ -45,7 +45,7 @@ meant as a nudge. The fix runs against instinct. You turn the volume down.
 
 Anthropic's <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices">prompting
 best practices</a> put it plainly: Opus 4.5 and 4.6 are more responsive to system prompts, so
-aggressive anti-undertriggering language like "CRITICAL: You MUST use this tool" should soften to
+aggressive push-to-act language like "CRITICAL: You MUST use this tool" should soften to
 "Use this tool when...". The rewrite takes 30 seconds and the difference is large. The first
 phrasing is a command with no condition, so the model applies it everywhere. The second names the
 trigger, so the model applies it where it belongs.
@@ -62,7 +62,7 @@ you suggest some changes" gets you suggestions, not edits. If you want action by
 imperatively or install a `<default_to_action>` block. One clear autonomy statement beats
 repeating "ask first," a convergence <a href="/guides/one-prompting-playbook/">Claude and OpenAI, one prompting playbook</a> works through.
 
-## <span class="sec-no">02</span>The thinking dials moved
+## <span class="sec-no">02</span>The thinking settings changed
 
 Two mechanisms you may still be reaching for are gone or going.
 
@@ -80,11 +80,11 @@ Assistant prefill is the other casualty. Starting with 4.6 models, a prefilled a
 on the last turn returns a 400 error. Prefill did real work: constraining format, stripping
 preamble, resuming an interrupted response. Each job has a new home. For format constraints, use
 Structured Outputs. To kill preamble, put a "no preamble" instruction in the system prompt. To
-resume an interrupted response, continue it from the user message. To rehydrate context, use tools
-or compaction. One old lever, four cleaner ones, and migrating a typical prompt takes about
+resume an interrupted response, continue it from the user message. To restore earlier context, use tools
+or a summary of the conversation so far. One old lever, four cleaner ones, and migrating a typical prompt takes about
 20 minutes end to end.
 
-## <span class="sec-no">03</span>The behavior levers
+## <span class="sec-no">03</span>The behavior controls
 
 A model that listens well will also run past you if you let it. The best-practices doc names five
 standing blocks that keep a responsive model in bounds. Install them in the system prompt, not as
@@ -100,8 +100,8 @@ per-task reminders, because you are correcting a default once.
 
 A `<use_parallel_tool_calls>` prompt pushes independent tool calls (speculative searches,
 multi-file reads, parallel bash) toward roughly 100 percent parallel execution. A subagent-scope
-instruction restricts proactive subagents to parallel, isolated-context, independent workstreams,
-because Opus 4.6 has a strong predilection for spawning them where a direct grep would suffice.
+instruction restricts proactive subagents to parallel, independent tasks that each run in their own context,
+because Opus 4.6 has a strong tendency to spawn them where a direct grep would suffice.
 When a subagent genuinely earns its place, the orchestrator-worker split in <a href="/guides/rent-the-model-own-the-method/">Rent the model, own the method</a> shows how to structure it. A
 minimalism prompt covering scope, documentation, defensive coding, and abstractions curbs the
 overengineering these models drift into (extra files, unrequested abstractions). A reversibility

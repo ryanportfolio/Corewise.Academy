@@ -9,7 +9,7 @@ objectives:
   - Diagnose the true bottleneck in a recurring workflow with a five-whys interrogation before building any automation.
   - 'Assemble a proactive automation from its four parts (trigger, worker, access, receipt) and name each part for a workflow you own.'
   - Distinguish a receipt from a trace, and convert one failure found in a trace into a permanent fix to the underlying skill.
-  - Scope an objective-level delegation with granular done-criteria and an evaluator that is separate from the worker.
+  - Scope an objective-level delegation with detailed done-criteria and an evaluator that is separate from the worker.
 prerequisites: []
 sources:
   - url: https://www.youtube.com/watch?v=3Y6kVI3fR9c
@@ -77,8 +77,8 @@ system at the speed of your attention. The working alternative is bottom-up: Cla
 and you review what arrives. Every proactive system, human or machine, has the same four parts,
 and naming them for your own workflow is most of the design work:
 
-- **Trigger**: the cadence. Time-based ("Monday, 8 a.m.") or event-based, which in practice
-  means a frequent, token-cheap check that decides whether the expensive work should run at all.
+- **Trigger**: how often it runs. Time-based ("Monday, 8 a.m.") or event-based, which in practice
+  means a frequent, cheap check that decides whether the expensive work should run at all.
 - **Worker**: whatever does the job. Build the minimum viable version; solve today's problem,
   not a theoretical future one.
 - **Access**: the accounts and tools the worker may touch. The test is the same as for a new
@@ -107,7 +107,8 @@ engineering workshop, Anthropic's applied-AI answer was disarmingly manual:
   timestamp="8:43"
 />
 
-Reading traces is a three-step discipline, and 10 minutes of it a week catches drift long
+Reading traces (the step-by-step record of what the agent actually did) is a three-step
+discipline, and 10 minutes of it a week catches drift long
 before a broken receipt would. First, make sure the logs exist: scheduled runs
 usually keep their conversation history, and anything you run elsewhere should write a run log
 to a known location, ideally through one shared logging skill so the format can be changed in
@@ -129,10 +130,10 @@ this true, figure this out. The difference is easiest to see side by side:
 | You must supply | The steps | Done-criteria plus an evaluator |
 | Failure looks like | A wrong step | A receipt without proof |
  The strongest colleagues you have ever worked with took objectives,
-and Claude can too, but only inside the right scaffolding. The cautionary tale is a retro game
+and Claude can too, but only inside the right support structure. The cautionary tale is a retro game
 built two ways by Anthropic engineers: the same objective, prompted conversationally, shipped
 something that *looked* finished until the first arrow-key press did nothing. Restructured (the
-objective plus scaffolding, then a closed laptop), it came back 6 hours later fully playable.
+objective plus support structure, then a closed laptop), it came back 6 hours later fully playable.
 Same model, same goal; only the structure changed. Keeping a run that long honest is its own
 discipline, the subject of <a href="/guides/guardrails-for-long-runs/">Guardrails for hours-long agent runs</a>.
 
@@ -160,4 +161,4 @@ paragraph asserting success.
 - [Wikipedia · theory of constraints](https://en.wikipedia.org/wiki/Theory_of_constraints), the operations theory behind the hiking-line picture
 - [Wikipedia · The Goal (Goldratt)](https://en.wikipedia.org/wiki/The_Goal_%28novel%29), where the scout-troop story comes from
 - [Anthropic · engineering blog](https://www.anthropic.com/engineering), first-party accounts of agent workflows
-- [Anthropic · Claude Code documentation](https://docs.claude.com/en/docs/claude-code/overview), the harness the workers in this guide run on
+- [Anthropic · Claude Code documentation](https://docs.claude.com/en/docs/claude-code/overview), the tool the workers in this guide run on

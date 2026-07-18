@@ -12,7 +12,7 @@ export const TRACK_NOTES: Record<string, TrackNotes> = {
   foundations: {
     tagline: 'how AI models work',
     notes: [
-      'Foundations is where the Academy starts because every other track leans on it. Before prompting tricks or agent scaffolding, you need a working picture of what a large language model can and cannot do, how the current lineup differs, and why the model you learned last quarter may not be the model shipping now.',
+      'Foundations is where the Academy starts because every other track leans on it. Before prompting tricks or agent setups, you need a working picture of what a large language model can and cannot do, how the current lineup differs, and why the model you learned last quarter may not be the model shipping now.',
       'The foundations here are deliberately practical: release notes read closely, vendor guides compared side by side, and the migration changes that actually bite. A typical guide in this track runs 5 minutes, so the whole shelf fits inside a coffee break.',
     ],
     quotes: [
@@ -75,7 +75,7 @@ export const TRACK_NOTES: Record<string, TrackNotes> = {
     tagline: 'reliable autonomy',
     notes: [
       'Agents are models that act: they call tools, read files, and carry multi-step work without a human on every turn. Automation only pays when that autonomy is reliable, so this track is less about wiring and more about the working rules that keep agents honest over hours-long runs.',
-      'The agents shelf is currently the deepest in the Academy: 43 minutes of reading across five guides, from finding the bottleneck worth automating to giving an agent a memory that survives the session. Traces, verification, and handover discipline run through every one of them.',
+      'The agents shelf is currently the deepest in the Academy: 43 minutes of reading across five guides, from finding the bottleneck worth automating to giving an agent a memory that survives the session. Run records, verification, and handover discipline run through every one of them.',
     ],
     quotes: [
       {
@@ -146,7 +146,7 @@ export const TRACK_NOTES: Record<string, TrackNotes> = {
         href: '/guides/thinking-on-a-budget/',
       },
       {
-        text: 'A model that runs for hours needs scaffolding, not a longer prompt.',
+        text: 'A model that runs for hours needs a support structure, not a longer prompt.',
         guideTitle: 'Guardrails for hours-long agent runs',
         href: '/guides/guardrails-for-long-runs/',
       },

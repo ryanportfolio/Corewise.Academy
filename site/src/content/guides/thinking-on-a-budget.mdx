@@ -12,7 +12,7 @@ objectives:
   - 'Detect, from a session transcript, the point where brevity stopped saving tokens and started buying clarification round-trips.'
 prerequisites:
   - slug: rent-the-model-own-the-method
-    note: Covers how long the model thinks (model and effort routing). This guide covers how many words it writes.
+    note: Covers how long the model thinks (choosing the model and effort level). This guide covers how many words it writes.
 sources: []
 selfCheck:
   - q: Why is "compress wording, not meaning" the load-bearing rule, rather than a general instruction to be concise?
@@ -43,7 +43,7 @@ is about paying less by saying less, while knowing exactly as much.
 ## <span class="sec-no">01</span>Two meters run in every session
 
 The first meter is how long the model thinks before it answers. That one is
-controlled at the harness (effort levels, thinking budgets, model routing), and <a href="/guides/rent-the-model-own-the-method/">Rent the model, own the method</a>
+controlled by the tool running the model (effort levels, thinking budgets, model choice), and <a href="/guides/rent-the-model-own-the-method/">Rent the model, own the method</a>
 covered how to set it per task. The second meter is how many words the
 model spends performing its work back at you. It is controlled by instruction, it is almost
 always set too high by default, and it is the one this guide turns down.
@@ -61,28 +61,16 @@ instruction ("be brief") is how you end up cutting the wrong one.
 
 What works in practice is a written contract the agent runs under: graduated levels of
 compression, a list of things that never get cut, and an explicit statement of what wins when
-brevity and accuracy collide. The levels give you stops rather than one cliff:
+brevity and accuracy collide. The levels give you stops rather than one cliff. The result is
+explanations that cost far fewer tokens and lose nothing the reader needed.
 
-| Stop | What changes | Prose spend, by design target |
-| --- | --- | --- |
-| Light | Filler and hedging die; full sentences survive | Roughly 30% off |
-| Full | Articles drop, fragments allowed, short synonyms | Roughly 50% off |
-| Ultra | Abbreviations, stripped conjunctions, arrows for causality | About 75% off |
+The never-cut list:
 
-At the far end, a sentence of causal narration becomes an arrow chain: inline
-object prop → new reference → re-render. Six tokens, and nothing a practitioner needed is lost.
-
-The never-cut list is what makes the far end safe:
-
-- Code, symbols, function names, API names, and error strings are never abbreviated: they are
-  load-bearing, and a paraphrased error message is a lie.
+- Code, symbols, function names, API names, and error strings are never abbreviated.
 - Facts, caveats, and qualifiers are never dropped to save tokens; the contract compresses
   wording, not meaning.
-- When terseness would risk a misread, spend the words: accuracy beats brevity.
-- Before writing any summary, ask whether the tool output already shows it. A self-evident diff
-  needs no closing narration.
-
-The cheapest token is the one never written.
+- Before writing any summary, the model asks whether the tool output already shows it. A
+  self-evident diff needs no closing narration.
 
 ## <span class="sec-no">03</span>Escape hatches, and the tell that you cut too deep
 
@@ -132,6 +120,6 @@ own craft in <a href="/guides/firmware-not-folklore/">Firmware, not folklore</a>
 
 - [Anthropic · prompting Claude Fable 5](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5), the effort dial that controls how long the model thinks
 - [Anthropic · pricing](https://www.anthropic.com/pricing), why output tokens are the expensive class
-- [Anthropic · Claude developer documentation](https://docs.claude.com/), the harness features (skills, memory) a contract installs into
+- [Anthropic · Claude developer documentation](https://docs.claude.com/), the features (skills, memory) a contract installs into
 - [Wikipedia · plain language](https://en.wikipedia.org/wiki/Plain_language), the register the escape hatches drop into, studied
-- [Anthropic · engineering blog](https://www.anthropic.com/engineering), first-party notes on agent harness economics
+- [Anthropic · engineering blog](https://www.anthropic.com/engineering), first-party notes on agent token economics

@@ -20,7 +20,7 @@ const faq = [
 
 <Base
   title="Ryan Allen, AI systems builder · CoreWise Academy"
-  description="Ryan Allen builds and ships AI systems end to end. Four live systems, drawn to drafting convention: corewise.video, kinefractal.com, truenote.org, willaicite.com."
+  description="Ryan Allen builds and ships AI systems end to end. Four live systems, presented as a technical drawing set: corewise.video, kinefractal.com, truenote.org, willaicite.com."
   faq={faq}
   crumbs={[{ name: 'About the editor', path: '/about/' }]}
 >
@@ -49,7 +49,7 @@ const faq = [
     <section class="sheet" data-sheet="A-001" id="sec-a001">
       <ol class="idx">
         <li><a href="#sec-a100"><span class="idx-no">A-100</span><span class="idx-name">CoreWise · six-model synthesis</span><span class="idx-live"><span class="ext">corewise.video ↗</span> LIVE</span></a></li>
-        <li><a href="#sec-a200"><span class="idx-no">A-200</span><span class="idx-name">KineFractal · deterministic signal engine</span><span class="idx-live"><span class="ext">kinefractal.com ↗</span> LIVE</span></a></li>
+        <li><a href="#sec-a200"><span class="idx-no">A-200</span><span class="idx-name">KineFractal · rule-based signal engine</span><span class="idx-live"><span class="ext">kinefractal.com ↗</span> LIVE</span></a></li>
         <li><a href="#sec-a300"><span class="idx-no">A-300</span><span class="idx-name">Truenote · cited answers or refusal</span><span class="idx-live"><span class="ext">truenote.org ↗</span> LIVE</span></a></li>
         <li><a href="#sec-a400"><span class="idx-no">A-400</span><span class="idx-name">WillAICite · deterministic GEO audit</span><span class="idx-live"><span class="ext">willaicite.com ↗</span> LIVE</span></a></li>
         <li><a href="#sec-a500"><span class="idx-no">A-500</span><span class="idx-name">Method of construction</span><span class="idx-tag">METHOD</span></a></li>
@@ -66,7 +66,7 @@ const faq = [
       </div>
 
       <p class="body-block">Live systems: specified, gated, checked, and approved. The agents drafted.
-        An independent agent with fresh context checked. After feedback I approved. Human always in
+        An independent agent that had not seen the work checked. After feedback I approved. Human always in
         the loop for the final step after automation is complete.</p>
     </section>
 
@@ -105,7 +105,7 @@ const faq = [
             <dt>MODELS IN PARALLEL</dt><dd>6</dd>
             <dt>REGISTERED USERS</dt><dd>1,800+</dd>
             <dt>COMMITS</dt><dd>~10.8K / ~7 MO</dd>
-            <dt>SURFACES</dt><dd>WEB · MOBILE (EXPO) · DESKTOP (TAURI) · 2 BROWSER EXTS · MCP SERVER</dd>
+            <dt>PLATFORMS</dt><dd>WEB · MOBILE (EXPO) · DESKTOP (TAURI) · 2 BROWSER EXTS · MCP SERVER</dd>
             <dt>BILLING / EXPORT</dt><dd>STRIPE · NOTION / PDF / TTS</dd>
           </dl>
           <p class="rail-note">“Six models because one model alone lies confidently. Where they agree I
@@ -121,11 +121,11 @@ const faq = [
           <p class="sheet-no">A-200</p>
           <h2 class="sheet-title">KINEFRACTAL · TEN-GATE CORRIDOR</h2>
         </div>
-        <p class="sheet-sub">DETERMINISTIC SIGNAL ENGINE · LIVE · PAPER</p>
+        <p class="sheet-sub">RULE-BASED SIGNAL ENGINE · LIVE · PAPER</p>
       </header>
       <div class="cols">
         <div class="main">
-          <p class="lede">It buys broad-market fear and trims into strength. One engine produces every
+          <p class="lede">It buys broad-market fear and sells gradually as prices rise. One engine produces every
             backtest and the nightly public signal. Ten gates stand between signal and order, and on this
             page the last two are yours to operate.</p>
           <div class="fig ink-prussian" id="fig-corridor" aria-label="Ten pre-trade gates in one-point perspective"></div>
@@ -180,9 +180,9 @@ const faq = [
       <header class="sheet-head ink-viridian">
         <div>
           <p class="sheet-no">A-300</p>
-          <h2 class="sheet-title">TRUENOTE · RETRIEVAL CONFLUENCE</h2>
+          <h2 class="sheet-title">TRUENOTE · MANY SEARCHES, ONE ANSWER</h2>
         </div>
-        <p class="sheet-sub">RAG FOR LIVE CALLS · LIVE · PUBLIC REPO</p>
+        <p class="sheet-sub">SOURCE-GROUNDED AI FOR LIVE CALLS · LIVE · PUBLIC REPO</p>
       </header>
       <div class="cols">
         <div class="main">
@@ -190,7 +190,7 @@ const faq = [
             or the system refuses out loud. Never a guess. Drag the confidence down and watch it refuse.</p>
           <div class="fig ink-viridian" id="fig-confluence" aria-label="Eighty retrieval filaments narrowing to one cited answer"></div>
           <div class="conf-panel">
-            <label for="conf-slider" class="conf-label">RERANK CONFIDENCE</label>
+            <label for="conf-slider" class="conf-label">RE-RANKING CONFIDENCE</label>
             <input id="conf-slider" type="range" min="0" max="1" step="0.01" value="0.62" />
             <p class="conf-readout" id="conf-readout"></p>
           </div>
@@ -212,8 +212,8 @@ const faq = [
             <dt>PUBLIC REPO</dt><dd><a href="https://github.com/ryanportfolio/Truenote">github.com/ryanportfolio/Truenote</a></dd>
             <dt>RETRIEVAL</dt><dd>VECTOR 40 + BM25 40 → RERANK 8 → 1</dd>
             <dt>TEST FILES</dt><dd>43 (VITEST)</dd>
-            <dt>ROLES</dt><dd>4-TIER · SERVER-SIDE TENANT SCOPING</dd>
-            <dt>EVAL</dt><dd>ANSWER ACC · CITATION ACC · REFUSAL RATE · P50/P95</dd>
+            <dt>ROLES</dt><dd>4-TIER · CUSTOMER DATA KEPT SEPARATE ON THE SERVER</dd>
+            <dt>EVALUATION</dt><dd>ANSWER ACC · CITATION ACC · REFUSAL RATE · P50/P95</dd>
           </dl>
           <p class="rail-note">“A guess during a live call is worse than no answer. So refusing correctly
             counts as a score here, not an error.”</p>
@@ -263,7 +263,7 @@ const faq = [
             <dt>SCORED DIMENSIONS</dt><dd>8</dd>
             <dt>LLM CALLS IN AUDIT PATH</dt><dd>0 · DETERMINISTIC BY DESIGN</dd>
             <dt>SPEC → LIVE</dt><dd>SAME DAY · 22+ PRS MERGED</dd>
-            <dt>FETCHER</dt><dd>SSRF-GUARDED · RATE-LIMITED</dd>
+            <dt>FETCHER</dt><dd>BLOCKED FROM REACHING INTERNAL ADDRESSES · RATE-LIMITED</dd>
           </dl>
           <p class="rail-note">And no, the audit isn't "AI-powered." It's deterministic on purpose.
             That's the whole point of a score you can trust.</p>
@@ -276,14 +276,14 @@ const faq = [
       <header class="sheet-head">
         <div>
           <p class="sheet-no">A-500</p>
-          <h2 class="sheet-title">METHOD OF CONSTRUCTION · STEMMA OF REVIEW</h2>
+          <h2 class="sheet-title">METHOD OF CONSTRUCTION · REVIEW FAMILY TREE</h2>
         </div>
         <p class="sheet-sub">HOW EVERY SHEET IN THIS SET GOT BUILT</p>
       </header>
       <div class="cols">
         <div class="main">
           <p class="lede">I ship with AI agents as the workforce. And a builder never grades its own work.</p>
-          <div class="fig" id="fig-stemma" aria-label="The sixteen-agent design workflow drawn as a stemma"></div>
+          <div class="fig" id="fig-stemma" aria-label="The sixteen-agent design workflow drawn as a family tree"></div>
           <p class="fig-cap"><span class="fig-no">FIG 1</span>The 16-agent design workflow that chose
             kinefractal.com's production architecture, every agent numbered: five code readers and four
             web researchers feed three independent proposals; a three-lens judge panel scores them; one
@@ -297,9 +297,9 @@ const faq = [
             <dt>WORKFORCE</dt><dd>AI AGENTS</dd>
             <dt>REVIEW</dt><dd>INDEPENDENT AGENT, FRESH CONTEXT</dd>
             <dt>MERGE</dt><dd>HUMAN GATE · ALWAYS</dd>
-            <dt>PROCESS</dt><dd>CAN'T-DO → CAN-DO → CHEAPER AND FASTER → IMPROVE THE HARNESS → AUDIT THE OUTPUT → PRUNE WHAT DOESN'T HOLD UP → JUDGE RESULTS AND STUDY LOGS</dd>
+            <dt>PROCESS</dt><dd>CAN'T-DO → CAN-DO → CHEAPER AND FASTER → IMPROVE THE SETUP → AUDIT THE OUTPUT → PRUNE WHAT DOESN'T HOLD UP → JUDGE RESULTS AND STUDY LOGS</dd>
           </dl>
-          <p class="rail-note">“I don't vibe-code and hope: PRs get reviewed by independent AI agents with
+          <p class="rail-note">“I don't just generate code and hope: PRs get reviewed by independent AI agents with
             fresh context.”</p>
         </aside>
       </div>
@@ -325,8 +325,8 @@ const faq = [
             <div class="side-copy">
               <h3 class="sec-head">AI-FIRMWARE</h3>
               <p class="body-block small">A self-syncing template: an always-loaded kernel of rules, 34
-                on-demand skills, committed memory, and session hooks that catch drift. One source of
-                truth for two agent runtimes. Versioned plugin, v1.1.1.</p>
+                on-demand skills, committed memory, and automatic checks that catch when it goes off track. One rule set
+                for both agent tools. Versioned plugin, v1.1.1.</p>
               <p class="mono-link"><a href="https://github.com/ryanportfolio/AI-Firmware">github.com/ryanportfolio/AI-Firmware ↗</a></p>
             </div>
           </div>
@@ -347,7 +347,7 @@ const faq = [
             <div class="fig" id="fig-pixelswarm" aria-label="PixelSwarm drawn entirely in phantom line"></div>
             <div class="side-copy">
               <h3 class="sec-head">PIXELSWARM</h3>
-              <p class="fig-cap"><span class="fig-no">FIG 4</span>A desktop survivors-like in Tauri 2 + React with a
+              <p class="fig-cap"><span class="fig-no">FIG 4</span>A desktop survivors-style action game in Tauri 2 + React with a
                 Rust/Steamworks bridge, ~37k lines of game code. Unreleased, so it is drawn entirely in
                 phantom line, per the conventions on A-001. The swarm drifts anyway.</p>
             </div>
@@ -387,7 +387,7 @@ const faq = [
           <p class="body-block">Every figure is computed geometry: real 3D to 2D projection math running
             in your browser, emitted as vectors. The chandelier is a true perspective camera you steer.
             The corridor is one-point perspective with the human gates wired to your hand. The confluence
-            is <a href="https://en.wikipedia.org/wiki/Axonometric_projection" rel="noopener">dimetric axonometric</a> with a live confidence gate. Where a count is drawn, the count is the
+            is <a href="https://en.wikipedia.org/wiki/Axonometric_projection" rel="noopener">angled 3D view</a> with a live confidence gate. Where a count is drawn, the count is the
             fact. There is also a <a href="https://github.com/ryanportfolio">print edition</a>: a 9-sheet
             vector PDF of this same set, built by the same locked facts and audited by a script that
             recounts every drawn mark.</p>
