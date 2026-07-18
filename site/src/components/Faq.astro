@@ -1,0 +1,42 @@
+---
+// FAQ ledger: reveal-style question and answer pairs. The same items feed the
+// FAQPage JSON-LD via Base's `faq` prop, so the page and its markup agree.
+interface Props {
+  heading?: string;
+  items: { q: string; a: string }[];
+  open?: boolean;
+}
+const { heading = 'FAQ · quick answers', items, open = false } = Astro.props;
+---
+
+<section class="faq">
+  <h2>{heading}</h2>
+  {
+    items.map((item) => (
+      <details open={open}>
+        <summary>
+          <h3>{item.q}</h3>
+        </summary>
+        <p>{item.a}</p>
+      </details>
+    ))
+  }
+</section>
+
+<style>
+  .faq { margin: var(--s-6) 0; }
+  .faq h2 {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 400;
+    margin-bottom: var(--s-2);
+  }
+  .faq details { border-bottom: 1px solid var(--line); padding: var(--s-2) 0; }
+  .faq details:first-of-type { border-top: 1px solid var(--line); }
+  .faq summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: var(--s-2); }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary h3 { font-family: var(--font-body); font-size: var(--text-base, 1rem); font-weight: 600; margin: 0; }
+  .faq summary::after { content: '✦'; color: var(--accent-deep); transition: transform var(--dur) var(--ease); }
+  .faq details[open] summary::after { transform: rotate(135deg); }
+  .faq details p { margin-top: var(--s-1); color: var(--ink-soft); font-size: var(--text-sm); }
+</style>

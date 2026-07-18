@@ -1,6 +1,6 @@
 ---
 title: Automate the bottleneck, not the busywork
-description: Four working rules distilled from Anthropic's own engineers. Find the constraint, make Claude report to you, read the traces, and hand over objectives instead of tasks.
+description: 'Automating the bottleneck means finding the constraint that sets your pace and pointing Claude at it: four working rules distilled from Anthropic''s own engineers.'
 track: agents
 level: broad
 number: 8
@@ -46,8 +46,8 @@ The logic comes from operations theory, and the classic picture is a scout troop
 line stretches because the fast hikers speed ahead, but the troop arrives when the slowest hiker
 arrives, so the leader moves the slowest walker to the front and redistributes the weight in his
 pack. The troop speeds up precisely because the fastest hikers slowed down. Your workflows obey
-the same arithmetic: an hour saved anywhere except the constraint is an hour that queues up
-behind it, indistinguishable from an hour not saved at all.
+the same arithmetic: 60 minutes saved anywhere except the constraint is 60 minutes that queues up
+behind it, indistinguishable from time not saved at all.
 
 <PullQuote
   quote="Find the bottleneck, solve the bottleneck."
@@ -60,7 +60,7 @@ behind it, indistinguishable from an hour not saved at all.
 ## <span class="sec-no">01</span>Interrogate before you build
 
 Most people cannot name their actual bottleneck, which is why the first tool is an interrogation,
-not a build. Ask why the work is slow; ask why of the answer; keep going five layers down. Fifty
+not a build. Ask why the work is slow; then ask why of the answer, 5 times over. Fifty
 new sales leads are worthless if onboarding is manual. The leads were never the constraint. Only
 when the constraint has a name do you choose an instrument for it, and the instrument should be
 the smallest one that works: a skill for a repeatable procedure, a scheduled routine for a
@@ -84,8 +84,8 @@ and naming them for your own workflow is most of the design work:
 - **Access**: the accounts and tools the worker may touch. The test is the same as for a new
   hire: does it have the logins the task actually requires?
 - **Receipt**: the proof of completion, and the part most people get wrong. A receipt must be
-  explicit, not implied: "141 emails reviewed" carries a verifiable number; "emails reviewed"
-  hides every possible failure behind three words.
+  explicit, not implied: "141 emails reviewed, 12 minutes of runtime" carries verifiable
+  numbers; "emails reviewed" hides every possible failure behind three words.
 
 Anthropic runs this shape on real work: one internal system hands Claude the entire growth-
 experiment loop on a schedule, with the analyzed results returning to the team as the receipt.
@@ -107,7 +107,8 @@ engineering workshop, Anthropic's applied-AI answer was disarmingly manual:
   timestamp="8:43"
 />
 
-Reading traces is a three-step discipline. First, make sure the logs exist: scheduled runs
+Reading traces is a three-step discipline, and 10 minutes of it a week catches drift long
+before a broken receipt would. First, make sure the logs exist: scheduled runs
 usually keep their conversation history, and anything you run elsewhere should write a run log
 to a known location, ideally through one shared logging skill so the format can be changed in
 one place. Second, actually look at them, in whatever viewer makes that effortless. Third, the
@@ -119,11 +120,19 @@ layer-routing habit at the heart of <a href="/guides/firmware-not-folklore/">Fir
 ## <span class="sec-no">04</span>Objectives, not tasks
 
 Tasks are instructions: send this report, reply to these emails. Objectives are outcomes: make
-this true, figure this out. The strongest colleagues you have ever worked with took objectives,
+this true, figure this out. The difference is easiest to see side by side:
+
+| | Task | Objective |
+| --- | --- | --- |
+| You hand over | An instruction ("send the report") | An outcome ("make this true") |
+| Claude decides | Almost nothing | The route, the tools, the order |
+| You must supply | The steps | Done-criteria plus an evaluator |
+| Failure looks like | A wrong step | A receipt without proof |
+ The strongest colleagues you have ever worked with took objectives,
 and Claude can too, but only inside the right scaffolding. The cautionary tale is a retro game
 built two ways by Anthropic engineers: the same objective, prompted conversationally, shipped
 something that *looked* finished until the first arrow-key press did nothing. Restructured (the
-objective plus scaffolding, then a closed laptop), it came back six hours later fully playable.
+objective plus scaffolding, then a closed laptop), it came back 6 hours later fully playable.
 Same model, same goal; only the structure changed. Keeping a run that long honest is its own
 discipline, the subject of <a href="/guides/guardrails-for-long-runs/">Guardrails for hours-long agent runs</a>.
 
@@ -144,3 +153,11 @@ paragraph asserting success.
    line by line. Bring one wrong turn back to Claude and have it amend the skill so that class
    of failure cannot recur.
 </Exercise>
+
+## Further reading
+
+- [Austin Marchese · How Anthropic Engineers ACTUALLY Automate Their Work](https://www.youtube.com/watch?v=3Y6kVI3fR9c), the source this guide distills
+- [Wikipedia · theory of constraints](https://en.wikipedia.org/wiki/Theory_of_constraints), the operations theory behind the hiking-line picture
+- [Wikipedia · The Goal (Goldratt)](https://en.wikipedia.org/wiki/The_Goal_%28novel%29), where the scout-troop story comes from
+- [Anthropic · engineering blog](https://www.anthropic.com/engineering), first-party accounts of agent workflows
+- [Anthropic · Claude Code documentation](https://docs.claude.com/en/docs/claude-code/overview), the harness the workers in this guide run on

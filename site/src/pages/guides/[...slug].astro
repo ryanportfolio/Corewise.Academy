@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import Faq from '../../components/Faq.astro';
 import { trackBySlug, LEVELS } from '../../data/tracks';
 
 export async function getStaticPaths() {
@@ -21,9 +22,20 @@ const prereqs = d.prerequisites.map((p) => {
   return { ...p, target };
 });
 const no = String(d.number).padStart(3, '0');
+const isoDate = d.lastUpdated.toISOString().slice(0, 10);
 ---
 
-<Base title={`${d.title} · CoreWise Academy`} description={d.description}>
+<Base
+  title={`${d.title} · CoreWise Academy`}
+  description={d.description}
+  faq={d.selfCheck}
+  datePublished={isoDate}
+  dateModified={isoDate}
+  crumbs={[
+    { name: `${track.name} track`, path: `/tracks/${track.slug}/` },
+    { name: d.title, path: `/guides/${guide.id}/` },
+  ]}
+>
   <div class="ambient"></div>
   <div class="twinkle" style="top:18%; left:6%; animation-delay:0s"></div>
   <div class="twinkle" style="top:42%; left:9%; animation-delay:2.2s"></div>
@@ -89,17 +101,7 @@ const no = String(d.number).padStart(3, '0');
       <Content />
     </div>
 
-    <section class="selfcheck">
-      <span class="panel-label">Self-check</span>
-      {
-        d.selfCheck.map((item) => (
-          <details>
-            <summary>{item.q}</summary>
-            <p>{item.a}</p>
-          </details>
-        ))
-      }
-    </section>
+    <Faq heading="FAQ · check yourself" items={d.selfCheck} />
 
     <section class="sources">
       <span class="panel-label">Sources</span>
@@ -219,15 +221,26 @@ const no = String(d.number).padStart(3, '0');
     .body-text :global(ul) { margin: 0 0 var(--s-3) var(--s-3); }
     .body-text :global(li) { margin-bottom: var(--s-1); }
     .body-text :global(code) { font-family: var(--font-mono); font-size: 0.85em; background: var(--accent-wash); padding: 1px 5px; }
-
-    .selfcheck { margin: var(--s-6) 0; }
-    .selfcheck details { border-bottom: 1px solid var(--line); padding: var(--s-2) 0; }
-    .selfcheck details:first-of-type { border-top: 1px solid var(--line); }
-    .selfcheck summary { cursor: pointer; font-weight: 600; list-style: none; display: flex; justify-content: space-between; gap: var(--s-2); }
-    .selfcheck summary::-webkit-details-marker { display: none; }
-    .selfcheck summary::after { content: '✦'; color: var(--accent-deep); transition: transform var(--dur) var(--ease); }
-    .selfcheck details[open] summary::after { transform: rotate(135deg); }
-    .selfcheck details p { margin-top: var(--s-1); color: var(--ink-soft); font-size: var(--text-sm); }
+    .body-text :global(blockquote) {
+      margin: var(--s-4) 0;
+      padding-left: var(--s-3);
+      border-left: 3px solid var(--accent-deep);
+      font-style: italic;
+      font-size: var(--text-md);
+      color: var(--ink-soft);
+    }
+    .body-text :global(table) { border-collapse: collapse; font-size: var(--text-sm); margin: var(--s-3) 0; width: 100%; }
+    .body-text :global(th) {
+      font-family: var(--font-mono);
+      font-size: var(--text-2xs);
+      letter-spacing: var(--tracking-caps);
+      text-transform: uppercase;
+      color: var(--ink-mute);
+      text-align: left;
+      border-bottom: 1px solid var(--ink);
+      padding: var(--s-1) var(--s-3) var(--s-1) 0;
+    }
+    .body-text :global(td) { border-bottom: 1px dashed var(--line); padding: var(--s-2) var(--s-3) var(--s-2) 0; vertical-align: top; }
 
     .sources { margin-top: var(--s-8); padding-top: var(--s-4); border-top: 3px double var(--line); }
     .sources ol { margin: 0 0 0 var(--s-3); font-size: var(--text-sm); }

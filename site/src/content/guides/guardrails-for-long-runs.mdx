@@ -1,6 +1,6 @@
 ---
 title: Guardrails for hours-long agent runs
-description: Claude Fable 5 takes multi-minute turns and runs for hours on its own. That capability is wasted, or worse, without the scaffolding that keeps it honest. An audit instruction that kills fabricated status reports, a memory system that survives context resets, and verifiers that see with fresh eyes.
+description: 'Guardrails are the scaffolding that keeps an hours-long agent run honest: an audit instruction, a memory that survives resets, and fresh-eyed verifiers.'
 track: prompting
 level: deep
 number: 16
@@ -39,7 +39,7 @@ import Chalk from '../../components/Chalk.astro';
 Claude Fable 5 is built to take multi-minute turns and run autonomously for hours. That is the
 capability you are paying for, and it is the one most setups quietly waste. Point a model built
 for the long run at a prompt written for quick turns and you get the worst of it: an agent that
-works for an hour, then hands you a confident summary of things it never actually did. The fix is
+works for 2 hours, then hands you a confident summary of things it never actually did. The fix is
 not a longer prompt. It is scaffolding that keeps a long run honest, and a first move most people
 miss because it is a single dial.
 </p>
@@ -54,7 +54,13 @@ routine work, and here is the part that changes your intuition: low effort on Fa
 exceed xhigh on prior models. So "cheap and fast" no longer means "dumb." The reflex to reach for
 a bigger model on a hard task is often better answered by leaving the model and raising the
 effort, and the reflex to save money by downgrading the model is often better answered by
-dropping effort on Fable 5 instead. For when a bigger model does earn its keep and where more
+dropping effort on Fable 5 instead.
+
+| Effort | Reach for it when | What to expect |
+| --- | --- | --- |
+| high, the default | Most work; the right resting place | Standard agentic turns |
+| xhigh | Capability-sensitive problems where right beats fast | Turns of 2 to 10 minutes, and worth it |
+| medium / low | Routine tasks that still need Fable-grade reasoning | The cheapest runs; low can still exceed xhigh on prior models | For when a bigger model does earn its keep and where more
 effort stops paying off, see <a href="/guides/rent-the-model-own-the-method/">Rent the model, own the method</a>.
 
 ## <span class="sec-no">02</span>The long run lies to you, unless you make it check
@@ -64,28 +70,29 @@ it ran the tests, fixed the file, deployed the change, when it did none of those
 <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices">best-practices</a>
 guidance names the fix, and it is one instruction. Tell the model to audit every claim against
 tool results before reporting it. In Anthropic's own testing that instruction nearly eliminated
-fabricated status. It works because it removes the room to guess: a claim now has to trace to an
-observed result or it does not get made.
+fabricated status. It works because it removes the room to guess.
+
+> “A claim now has to trace to an observed tool result or it does not get made.”
 
 The countdown is the other trap. A running remaining-token counter reads to the model as a
 deadline, and it responds by wrapping up early, cutting work short to "finish in time." So do not
 surface remaining-token counts. If your harness must show them, pair the number with an explicit
 reassurance that the model has ample context left, so the count informs without triggering a
-premature close. And set your client timeouts for the runs you actually expect. Multi-minute
-turns are normal here, not a hang.
+premature close. And set your client timeouts for the runs you actually expect. Turns of 2
+minutes or more are normal here, not a hang.
 
 ## <span class="sec-no">03</span>Memory, fresh eyes, and the words you cannot read
 
 A run longer than one context window needs state that survives the reset. Give the model a memory
-system of Markdown files, one lesson per file, so a durable finding written in hour one is still
-readable in hour three. Small focused files beat one growing scratchpad, the same discipline the
+system of Markdown files, one lesson per file, so a durable finding written 2 hours in is still
+readable 4 hours in. Small focused files beat one growing scratchpad, the same discipline the
 managed-agent <a href="https://platform.claude.com/docs/en/managed-agents/memory">memory docs</a>
 recommend for their stores. For the managed-agent version, stores, scopes, and caps included,
 see <a href="/guides/give-your-agent-a-memory/">Give your agent a memory</a>.
 
-For checking work, prefer a fresh-context verifier subagent over self-critique. A model reviewing
-its own transcript shares its blind spots; a subagent that reads only the artifact and the
-criteria does not. Keeping the evaluator separate from the worker is the same split behind
+For checking work, prefer a fresh-context verifier subagent over self-critique.
+
+> “A model reviewing its own transcript shares its blind spots; a subagent that reads only the artifact and the criteria does not.” Keeping the evaluator separate from the worker is the same split behind
 <a href="/guides/automate-the-bottleneck/">Automate the bottleneck, not the busywork</a>. And if you want the model to send you a verbatim message mid-task, define a
 client-side send_to_user tool, then prompt for it explicitly. Defining the tool alone is not
 enough. Fable 5 needs the elicitation, a clear instruction on when and how to call it, or it
@@ -100,10 +107,18 @@ thinking.display to summarized to read structured thinking blocks instead.
 
 <Exercise>
 1. Add one line to your agent instructions: audit every claim against tool results before
-   reporting it. Run a task you know involves several tool calls, then check the summary against
-   the transcript for anything it claimed but never did.
+   reporting it. Run a task you know involves several tool calls, then spend 10 minutes checking
+   the summary against the transcript for anything it claimed but never did.
 2. Grep your skills for "show your thinking", "explain your reasoning step by step", or "print
    your chain of thought." Delete those phrasings and switch thinking.display to summarized.
 3. On your next long run, set the client timeout for multi-minute turns, and confirm nothing in
    the harness surfaces a bare remaining-token count to the model.
 </Exercise>
+
+## Further reading
+
+- [Anthropic · prompting Claude Fable 5](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5), the effort dial and long-run guidance
+- [Anthropic · Claude prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices), source of the audit-claims instruction
+- [Anthropic · Managed Agents memory stores](https://platform.claude.com/docs/en/managed-agents/memory), the store mechanics behind the memory advice
+- [Wikipedia · hallucination (artificial intelligence)](https://en.wikipedia.org/wiki/Hallucination_%28artificial_intelligence%29), the failure family fabricated status belongs to
+- [Anthropic · engineering blog](https://www.anthropic.com/engineering), first-party accounts of long-horizon agent work
