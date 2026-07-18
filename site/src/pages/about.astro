@@ -5,7 +5,7 @@ import Faq from '../components/Faq.astro';
 const faq = [
   {
     q: 'Who is Ryan Allen?',
-    a: 'Ryan Allen is a builder who ships AI systems end to end: four live systems in 7 months, with AI agents as the workforce and a human gate on every merge. He also edits CoreWise Academy, the free guide library this page belongs to.',
+    a: 'Builder who ships AI systems end to end, with AI agents as the workforce and a human gate on every merge. Editor of CoreWise Academy.',
   },
   {
     q: 'What is his shipping philosophy?',
@@ -336,16 +336,18 @@ const faq = [
           <div class="fig" id="fig-githelp" aria-label="Discussion-scouting pipeline with a normally-open human switch"></div>
           <div class="go-panel"><button class="aw-btn" id="btn-go">GIVE THE HUMAN GO</button></div>
           <p class="fig-cap"><span class="fig-no">FIG 3</span>A workspace that scouts GitHub Discussions, ranks
-            what's answerable, reads the full thread, and drafts a verified answer. The posting switch is
-            normally open: nothing goes to GitHub without an explicit human go, same turn. Yours to flip,
-            here only.</p>
+            what's answerable, reads the full thread, and drafts a verified answer. Each answer posts to
+            GitHub only after a human clicks go; one click approves one answer. The button below is that
+            switch, demo-only: it closes the drawn circuit and posts nothing.</p>
           <div class="fig-row">
-            <div class="fig" id="fig-pixelswarm" aria-label="PixelSwarm drawn entirely in phantom line"></div>
+            <div class="fig" id="fig-pixelswarm" aria-label="Maimcoil drawn entirely in phantom line"></div>
             <div class="side-copy">
-              <h3 class="sec-head">PIXELSWARM</h3>
-              <p class="fig-cap"><span class="fig-no">FIG 4</span>A desktop survivors-style action game in Tauri 2 + React with a
-                Rust/Steamworks bridge, ~37k lines of game code. Unreleased, so it is drawn entirely in
-                phantom line, per the conventions on A-001. The swarm drifts anyway.</p>
+              <h3 class="sec-head">MAIMCOIL</h3>
+              <p class="fig-cap"><span class="fig-no">FIG 4</span>A survivors-style action game headed for Steam:
+                Tauri 2 + React with a Rust/Steamworks bridge, ~37k lines of game code. Not yet released,
+                so it is drawn entirely in phantom line, per the conventions on A-001; a playable prototype
+                is live at <a href="https://corewise.video/play">corewise.video/play ↗</a>. The swarm
+                drifts anyway.</p>
             </div>
           </div>
         </div>
@@ -354,9 +356,9 @@ const faq = [
           <div class="rail-rule"></div>
           <dl>
             <dt>AI-FIRMWARE</dt><dd>PUBLIC · PLUGIN v1.1.1 · 34 SKILLS</dd>
-            <dt>LOCAL-CPU-ONLY-PTT</dt><dd>PUBLIC · OFFLINE · CPU-ONLY WHISPER</dd>
+            <dt>LOCAL-CPU-ONLY-PTT</dt><dd>PUBLIC · OFFLINE · CPU-ONLY WHISPER · <a href="https://github.com/ryanportfolio/Local-CPU-only-PTT">REPO ↗</a></dd>
             <dt>GITHELP</dt><dd>PRIVATE · HUMAN-GO GATE</dd>
-            <dt>PIXELSWARM</dt><dd>UNRELEASED · PHANTOM LINE</dd>
+            <dt>MAIMCOIL</dt><dd>STEAM GAME · PROTOTYPE · <a href="https://corewise.video/play">PLAY ↗</a></dd>
           </dl>
           <p class="rail-note">None of these are products. They're the tooling that makes the products
             shippable.</p>
@@ -398,10 +400,10 @@ const faq = [
               <tr><td>△5</td><td>WEB EDITION · THE SET LEARNS TO MOVE</td><td>2026-07-18</td></tr>
             </tbody>
           </table>
-          <h3 class="sec-head">THE WORKS, ONE MORE TIME</h3>
+          <h3 class="sec-head">RECENT</h3>
           <p class="works">
-            <a href="https://corewise.video">corewise.video</a> · multi-model synthesis, more than 1,800 users<br />
-            <a href="https://kinefractal.com">kinefractal.com</a> · nightly signals, paper only, every gate drawn on A-200<br />
+            <a href="https://corewise.video">corewise.video</a> · six models read in parallel, 1,800+ registered users<br />
+            <a href="https://kinefractal.com">kinefractal.com</a> · 519 agent-written PRs, every merge through a human gate<br />
             <a href="https://truenote.org">truenote.org</a> · cited answers or refusal, never a guess<br />
             <a href="https://willaicite.com">willaicite.com</a> · deterministic GEO audit, spec to live in a day<br />
             <a href="https://github.com/ryanportfolio">github.com/ryanportfolio</a> · the rest of the shop
