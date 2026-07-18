@@ -1,6 +1,6 @@
 ---
 title: The design concept does the work
-description: 'The exact prompt and the reusable skill file behind the about page on this site, with the reason each part earns its place.'
+description: 'The prompt and the reusable skill file behind the about page on this site, with the reason each part earns its place.'
 track: building
 level: practitioner
 number: 19
@@ -24,6 +24,7 @@ lastUpdated: 2026-07-18
 
 import Exercise from '../../components/Exercise.astro';
 import Chalk from '../../components/Chalk.astro';
+import SkillCopy from '../../components/SkillCopy.astro';
 
 <Chalk>slop is what a page looks like when nothing decided it</Chalk>
 
@@ -33,31 +34,22 @@ block, line conventions declared on sheet A-001 and binding everywhere after. It
 prompt that named the audience, set a quality bar, and demanded critique passes, while leaving
 every visual decision open. The agent found the drawing-set idea during the work, and afterward
 the method got written down as a skill file any agent can run. This guide hands you both: the
-exact prompt, the full skill, and why each part is there.
+prompt, the full skill, and why each part is there.
 </p>
 
 ## <span class="sec-no">01</span>The actual prompt
 
-Here is the prompt that started it, unedited:
+Here is the prompt that started it, tidied for print (the working version was rougher; nothing
+of substance changed):
 
 ```text
-I'd like to make a super creative PDF to showcase my github portfolio and
-public sites. Lets push what is thought possible with PDF's.
+Make a seriously creative PDF that showcases my GitHub portfolio and public sites. Push what people think a PDF can do.
 
-Lets spend a super long time on the design. This is going to be seen by job
-recruiters from AI-based jobs I'm applying for. They would know AI slop
-design, we must critically avoid that perception.
+Spend real time on the design. The audience is recruiters at AI companies. They recognize AI-slop design on sight, and that perception is the one thing this piece cannot afford.
 
-You can be as creative as possible; involve a mixture of advanced visual
-techniques, some of which would include high-quality 3D tactics; otherworldly,
-beautiful animations; exceptional color palettes; and whatever you deem fit as
-a way to showcase your skill. You have total creative freedom to design in a
-way that you believe best illustrates your capabilities. Before you "ok" it,
-make sure you do at least three iteration passes. An iteration pass is where,
-after completing the code, you go through it with a fine-toothed comb, looking
-for design problems, opportunities to improve/complexify the design, and more.
+You have total creative freedom: advanced visual techniques, high-quality 3D, striking animation, an exceptional palette, whatever best shows what you can do. Before you call it done, run at least three iteration passes: after the code is complete, go back through it with a fine-toothed comb looking for design problems and chances to push the design further.
 
-Run a /workflows of Fable subagents on "High" thinking
+Run a /workflows of Fable subagents on "High" thinking.
 ```
 
 Notice what it pins down and what it leaves open. Pinned: the audience and the stakes
@@ -73,12 +65,11 @@ craft, covered in <a href="/guides/brief-the-model/">Brief the model like a bril
 The web version came from a second, much shorter prompt:
 
 ```text
-next, lets make a website version of this, and really go all out on the
-website version that isn't possible on pdf
+Now make a website version, and go all out on everything a website can do that a PDF cannot.
 
-same style as pdf though, just its 'upgraded' version
+Same style as the PDF, just its upgraded version.
 
-and lets put it on corewise.academy/about
+Put it at corewise.academy/about
 ```
 
 One honest note on ordering: PDF first, website second happened because the PDF was needed for
@@ -95,130 +86,9 @@ the model, own the method</a> covers extracting from your own sessions. So the s
 are a distillation made afterward, with hindsight, from a session that went well. They are the
 recipe for next time, extracted from the one time it worked.
 
-The full file, ready to drop into `.claude/skills/showpiece/SKILL.md`:
+The plate below shows the top of the file; the button copies every line of it.
 
-```markdown
----
-description: Recipe for making one-of-a-kind creative artifacts (PDF, site,
-  deck, poster, video, any medium) that read as crafted, not AI slop. Use when
-  the user says /showpiece, asks to "make something super creative", "push
-  what's possible with X", wants a portfolio-grade / recruiter-facing artifact,
-  or says "avoid AI slop". This is a thinking method, not a style; it produced
-  the Approved Works drawing set and generalizes to any subject and medium.
----
-
-# Showpiece: method for one-of-a-kind artifacts
-
-Not a style guide. The drawing-set aesthetic is one output of this method;
-copying it would itself be slop. The method is what transfers. Work the steps
-in order; each one gates the next.
-
-## Step 1: Find the load-bearing conceit
-
-One metaphor, drawn from something **true about the subject**, that the whole
-artifact lives inside.
-
-- Start from the subject's most distinctive true fact, not from visuals.
-  (Approved Works: "AI agents draft, an independent agent checks, a human
-  approves" became an engineering drawing set with DRAWN BY / CHECKED BY /
-  APPROVED title blocks.)
-- **The test: the conceit must answer design questions for you.** What
-  typeface? What does color mean? What goes in the margin? How are pages
-  numbered? If the conceit only decorates and decides nothing, discard it and
-  dig again.
-- Generate 3+ candidate conceits before committing. Judge them on: truth to
-  subject, decision-generating power, and distance from anything a template
-  would produce. If the user asked for heavy exploration, run competing
-  directions as parallel agents and judge with independent lenses.
-- The conceit should permit **wit**: small details that reward close reading
-  (a revision table that logs the artifact's own edits, a scale cell reading
-  "1 TICK = 1 PR"). Wit is the strongest anti-slop signal because templates
-  cannot do it.
-
-## Step 2: Write the constraint contract
-
-Before any layout, write binding rules the artifact must obey everywhere.
-Constraints create coherence; coherence reads as intent; intent is what slop
-lacks.
-
-- Give visual elements **semantics**, then never violate them. (Line
-  convention: solid = shipped, dashed = killed, phantom = unreleased. One red,
-  spent only on human decision points.)
-- Set budgets: one accent color with a stated meaning, one type system, one
-  easing curve, N decorative notes per page max.
-- Treat a contract violation as a **bug**, not a taste call. In review passes,
-  hunt for violations explicitly.
-
-## Step 3: Lock facts before form
-
-- Collect every number, name, and claim the artifact will show. Verify each
-  against the primary source **before** designing around it. Never design
-  around an unverified number; reflowing later is expensive and tempts you to
-  keep the wrong number.
-- **Countable honesty:** if a graphic depicts N of something, draw exactly N
-  real ones, and make N auditable. Decorative fake data is slop and, in front
-  of an expert audience, a credibility hole.
-- Write a tiny verify script that counts/checks the claims embedded in the
-  artifact's source or output and fails loudly on mismatch. The artifact gets
-  its own eval harness.
-
-## Step 4: Earn the visuals with real machinery
-
-- Build effects from actual math (true 3D projection, real geometry, seeded
-  deterministic randomness), not filters, stock textures, or library defaults.
-  Real machinery survives zoom-in, stays consistent across instances, and can
-  do things (provable determinism, weight-encoded meaning) that pasted
-  effects cannot.
-- Prefer generated-from-data over drawn-by-hand: when the graphic is computed
-  from the true numbers, honesty and beauty stop competing.
-- Know the render target's quirks empirically: render a specimen early and
-  inspect it (font fallbacks, missing glyphs, collapsed variable-font axes,
-  antialiasing eating thin dashes). Assume nothing survives the pipeline
-  untested.
-
-## Step 5: Adversarial passes, minimum three
-
-- Critique the **final rendered output** at full fidelity (rasterized pages,
-  real-browser screenshots), never the source code or your memory of it. Most
-  defects live only in the render.
-- Use independent fresh-context reviewers with **distinct lenses**: the target
-  audience's eyes, craft/typography, and a dedicated anti-slop detector.
-  Distinct lenses catch what redundant ones miss.
-- Every pass must produce concrete defects AND at least one opportunity to
-  deepen the conceit. A pass that returns "looks good" was a wasted pass;
-  instruct reviewers that finding nothing is failure.
-- Fix blockers, re-render, re-verify counts, repeat. Stop only when a pass
-  surfaces no contract violations and no factual errors.
-
-## Step 6: Escalate across media, don't re-theme
-
-Porting the artifact to a new medium (PDF to web, deck to video): keep the
-conceit and the contract identical, and add **only what the new medium
-uniquely enables**: interaction, live proof, steerable views, real-time
-verification. The new version is the same work "upgraded", not a redesign. If
-a feature was possible in the old medium, adding it now is noise.
-
-## Anti-slop tells (hunt these in every pass)
-
-- Default gradients, glassmorphism, purple-blue "AI product" palettes,
-  centered hero + floating blobs.
-- Decoration with no semantics; effects without a system; conventions applied
-  inconsistently.
-- Fake or unverifiable data in graphics; placeholder-flavored microcopy.
-- Template symmetry: everything centered, everything rounded, nothing earns
-  its position.
-- Style borrowed from a past success instead of derived from this subject's
-  truth (including this skill's own drawing-set look).
-
-## Anti-patterns
-
-- Don't pick visuals first and retrofit a story; conceit precedes style.
-- Don't skip source-verifying a number because it "was right last time".
-- Don't review source code as a proxy for the rendered artifact.
-- Don't accept a review pass that found nothing.
-- Don't carry a conceit to a new subject; re-derive from the new subject's
-  truth.
-```
+<SkillCopy />
 
 ## <span class="sec-no">03</span>Why each step works
 
@@ -250,7 +120,7 @@ separate from the maker is the same evaluator split
 <a href="/guides/automate-the-bottleneck/">Automate the step that slows you down</a> argues for.
 
 **Step 6, the port.** Compare the skill's wording to the second prompt above. "Same style as
-pdf though, just its 'upgraded' version" became "keep the conceit and the contract identical,
+the PDF, just its upgraded version" became "keep the conceit and the contract identical,
 and add only what the new medium uniquely enables". The step is that session's move, generalized.
 
 The rule that keeps all of this alive is the last anti-pattern: never carry the finished look
@@ -260,7 +130,8 @@ nothing is the slop this whole method exists to avoid. Rerun the method; discard
 style.
 
 <Exercise>
-1. Install the skill: create `.claude/skills/showpiece/SKILL.md` with the file above. Then
+1. Install the skill: copy it with the button above and save it as
+   `.claude/skills/showpiece/SKILL.md`. Then
    write your own version of the opening prompt for an artifact you actually need: name the
    real audience, what they are experts at spotting, the quality gate, and nothing visual.
 2. Run steps 1 through 3 before any layout: three candidate concepts from facts about your
