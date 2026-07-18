@@ -51,8 +51,8 @@ const byLevel = (level: string) =>
                       <span class="no">Nº {String(g.data.number).padStart(3, '0')}</span>
                       <span class="t">{g.data.title}</span>
                       <span class="m">{g.data.minutes} min</span>
+                      <p>{g.data.description}</p>
                     </a>
-                    <p>{g.data.description}</p>
                   </li>
                 ))}
               </ol>
@@ -76,17 +76,69 @@ const byLevel = (level: string) =>
     .empty-shelf { color: var(--ink-mute); font-style: italic; max-width: 52ch; }
 
     .shelf-list { list-style: none; margin: 0; padding: 0; }
-    .shelf-list li { border-bottom: 1px dashed var(--line); padding: var(--s-2) 0; position: relative; }
-    .shelf-list a { display: grid; grid-template-columns: 6.5rem 1fr auto; gap: var(--s-3); text-decoration: none; color: var(--ink); align-items: baseline; }
-    .shelf-list a:hover .t { color: var(--accent-deep); }
+    .shelf-list li { border-bottom: 1px dashed var(--line); position: relative; }
+    .shelf-list a {
+      display: grid;
+      grid-template-columns: 6.5rem 1fr auto;
+      gap: 4px var(--s-3);
+      text-decoration: none;
+      color: var(--ink);
+      align-items: baseline;
+      position: relative;
+      padding: var(--s-2) 0;
+      transition: background var(--dur) var(--ease);
+    }
+    /* the constellation edge: an accent line draws itself along the divider on hover */
+    .shelf-list a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 1px;
+      background: repeating-linear-gradient(to right, var(--accent) 0 5px, transparent 5px 11px);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform var(--dur) var(--ease);
+    }
     .shelf-list .no { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--accent-deep); }
-    .shelf-list .t { font-family: var(--font-display); font-size: var(--text-md); }
-    .shelf-list .m { font-family: var(--font-mono); font-size: var(--text-2xs); color: var(--ink-mute); }
-    .shelf-list p { margin: 4px 0 0 6.5rem; padding-left: var(--s-3); font-size: var(--text-sm); color: var(--ink-soft); max-width: 52ch; }
+    /* the star that ignites: hidden until the row is sighted */
+    .shelf-list .no::before {
+      content: '✦';
+      display: inline-block;
+      margin-right: 0.55em;
+      color: var(--accent);
+      opacity: 0;
+      transform: scale(0.3) rotate(-120deg);
+      transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease), text-shadow var(--dur) var(--ease);
+    }
+    .shelf-list .t {
+      font-family: var(--font-display);
+      font-size: var(--text-md);
+      background: linear-gradient(currentColor, currentColor) no-repeat left 92% / 0% 1px;
+      transition: color var(--dur) var(--ease), background-size var(--dur) var(--ease), text-shadow var(--dur) var(--ease);
+    }
+    .shelf-list .m { font-family: var(--font-mono); font-size: var(--text-2xs); color: var(--ink-mute); transition: color var(--dur) var(--ease); }
+    .shelf-list p { grid-column: 2; margin: 0; padding-left: var(--s-3); font-size: var(--text-sm); color: var(--ink-soft); max-width: 52ch; }
+    .shelf-list a:hover, .shelf-list a:focus-visible {
+      background: var(--accent-wash);
+    }
+    .shelf-list a:hover::after, .shelf-list a:focus-visible::after { transform: scaleX(1); }
+    .shelf-list a:hover .no::before, .shelf-list a:focus-visible .no::before {
+      opacity: 1;
+      transform: none;
+      text-shadow: 0 0 14px var(--glow);
+    }
+    .shelf-list a:hover .t, .shelf-list a:focus-visible .t {
+      color: var(--accent-deep);
+      background-size: 100% 1px;
+      text-shadow: 0 0 20px var(--glow);
+    }
+    .shelf-list a:hover .m, .shelf-list a:focus-visible .m { color: var(--accent-deep); }
     @media (max-width: 720px) {
       .shelf-list a { grid-template-columns: 1fr auto; }
       .shelf-list .no { display: none; }
-      .shelf-list p { margin-left: 0; padding-left: 0; }
+      .shelf-list p { grid-column: 1 / -1; padding-left: 0; }
     }
   </style>
 </Base>
