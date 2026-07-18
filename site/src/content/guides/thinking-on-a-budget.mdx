@@ -1,6 +1,6 @@
 ---
 title: Thinking on a budget
-description: 'Reasoning tokens are billed at the output rate and re-read every turn thereafter. How to compress what a model says without compressing what it knows: intensity ladders, inviolables, and the carve-outs that keep brevity from costing you rework.'
+description: 'Reasoning tokens are billed at the output rate and re-read every turn after. How to compress what a model says without compressing what it knows.'
 track: prompting
 level: practitioner
 number: 11
@@ -17,7 +17,7 @@ sources: []
 selfCheck:
   - q: Why is "compress wording, not meaning" the load-bearing rule, rather than a general instruction to be concise?
     a: '"Be concise" hands the model one dial and lets it choose what to drop. Under pressure it drops qualifiers, caveats, and edge-case facts, which is meaning. A compression contract pins meaning as inviolable and lets only the wording flex: articles, filler, hedging, restatements. The savings come out of redundancy, never out of substance.'
-  - q: Name three situations where a compression mode must drop back to plain prose, and what each carve-out prevents.
+  - q: Which three situations force a compression mode back to plain prose, and what does each carve-out prevent?
     a: 'Security warnings, where a skimmed fragment under-communicates risk; irreversible-action confirmations, where the user must fully understand before something un-undoable runs; and multi-step sequences where dropped conjunctions make order ambiguous: "migrate table drop column backup first" reads two ways. Each carve-out marks a place where the failure cost of compression exceeds its token savings.'
   - q: When does a saved token become a wasted one?
     a: When the reader has to ask again. Savings are measured at the conversation level, not the message level. A terse reply that triggers a clarification round-trip costs the original message plus the question plus the re-explanation, plus the context re-read on every turn of it. The tell is a user repeating a question or asking you to re-explain; the fix is routing that topic back to plain prose.
@@ -33,7 +33,7 @@ import Chalk from '../../components/Chalk.astro';
 <p class="lede">
 Watch an agent work with the transcript open and you will see money being narrated away. It
 restates the request it was just given. It hedges ("likely", "seems to", "I'm considering")
-three times in a paragraph. It closes by summarizing a diff that is already on screen. Every one
+3 times in a paragraph. It closes by summarizing a diff that is already on screen. Every one
 of those words is billed at the output rate, the most expensive class of token there is, and the
 model's private reasoning rides the same meter. Then the bill compounds: everything written into
 a session is re-read as input on every turn that follows. Verbosity taxes you twice. This guide
@@ -60,19 +60,27 @@ instruction ("be brief") is how you end up cutting the wrong one.
 
 What works in practice is not an adjective but a contract: a written mode the agent runs under,
 with an intensity ladder, a set of inviolables, and an explicit statement of what wins when
-brevity and accuracy collide. The ladder gives you graduated stops rather than one cliff. At the
-light end, filler and hedging die but full sentences survive. The middle drops articles,
-tolerates fragments, swaps long words for short ones. The far end (call it ultra) abbreviates
-common prose words, strips conjunctions, and replaces causal narration with arrows: inline
-object prop → new reference → re-render. A sentence of explanation becomes six tokens, and loses
-nothing a practitioner needed.
+brevity and accuracy collide. The ladder gives you graduated stops rather than one cliff:
 
-The inviolables are what make the far end safe. Code, symbols, function names, API names, and
-error strings are never abbreviated: they are load-bearing, and a paraphrased error message is
-a lie. Facts, caveats, and qualifiers are never dropped to save tokens; the contract compresses
-wording, not meaning, and when terseness would risk a misread, it spends the words. And the
-contract includes an output budget with a genuinely radical clause: before writing any summary,
-ask whether the tool output already shows it. A self-evident diff needs no closing narration.
+| Stop | What changes | Prose spend, by design target |
+| --- | --- | --- |
+| Light | Filler and hedging die; full sentences survive | Roughly 30% off |
+| Full | Articles drop, fragments allowed, short synonyms | Roughly 50% off |
+| Ultra | Abbreviations, stripped conjunctions, arrows for causality | About 75% off |
+
+At the far end, a sentence of causal narration becomes an arrow chain: inline
+object prop → new reference → re-render. Six tokens, and nothing a practitioner needed is lost.
+
+The inviolables are what make the far end safe:
+
+- Code, symbols, function names, API names, and error strings are never abbreviated: they are
+  load-bearing, and a paraphrased error message is a lie.
+- Facts, caveats, and qualifiers are never dropped to save tokens; the contract compresses
+  wording, not meaning.
+- When terseness would risk a misread, spend the words: accuracy beats brevity.
+- Before writing any summary, ask whether the tool output already shows it. A self-evident diff
+  needs no closing narration.
+
 The cheapest token is the one never written.
 
 ## <span class="sec-no">03</span>Carve-outs, and the tell that you cut too deep
@@ -90,23 +98,40 @@ Which is also how you audit the whole scheme. Token savings are real only at the
 level. A terse reply that forces a clarification round-trip costs the original message plus the
 question plus the re-explanation, with the whole exchange re-read as context on every subsequent
 turn, more than plain wording would have cost once. So the tell that you have over-compressed
-is not in the message you sent; it is in the reply you get. A repeated question. A "what do you
+is not in the message you sent; it is in the reply you get.
+
+> “The tell that you have over-compressed is not in the message you sent; it is in the reply you get.”
+
+A repeated question. A "what do you
 mean by". A request to re-explain. Treat those as meter readings, and route the topics that
 generate them back up the ladder. The same accounting, incidentally, applies to what enters the
 context as much as what leaves it (filtered tool output, thin always-loaded instructions with
 detail split into files loaded on demand), but the discipline is one discipline: every token,
-in or out, either carries meaning or carries cost. Keeping that always-loaded layer thin is its
+in or out, either carries meaning or carries cost.
+
+> “Every token, in or out, either carries meaning or carries cost.”
+
+Keeping that always-loaded layer thin is its
 own craft in <a href="/guides/firmware-not-folklore/">Firmware, not folklore</a>.
 
 <Exercise>
 1. Open a recent agent session transcript and highlight every sentence that restates the
    request, narrates a change already visible in a diff, or hedges without adding information.
-   Estimate the tokens. That number is your verbosity meter, and it is probably not small.
+   Estimate the tokens; even 20 minutes of transcript usually surprises. That number is your
+   verbosity meter, and it is probably not small.
 2. Write a compression contract for your own agent: an intensity ladder with at least two
    stops, the inviolables (code, error strings, facts, caveats), and the carve-outs that force
    plain prose. Install it as a skill or standing instruction, not a per-session request; the
    packaging move is <a href="/guides/expertise-you-can-install/">Expertise you can install</a>.
-3. Run it for a week. Compare spend against the prior week, but audit the transcripts for
+3. Run it for 7 days. Compare spend against the prior week, but audit the transcripts for
    clarification round-trips: every "can you re-explain" is a topic to route back to plain
    language. Tune the ladder, keep the contract.
 </Exercise>
+
+## Further reading
+
+- [Anthropic · prompting Claude Fable 5](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5), the effort dial the deliberation meter rides on
+- [Anthropic · pricing](https://www.anthropic.com/pricing), why output tokens are the expensive class
+- [Anthropic · Claude developer documentation](https://docs.claude.com/), the harness features (skills, memory) a contract installs into
+- [Wikipedia · plain language](https://en.wikipedia.org/wiki/Plain_language), the carve-out register, studied
+- [Anthropic · engineering blog](https://www.anthropic.com/engineering), first-party notes on agent harness economics

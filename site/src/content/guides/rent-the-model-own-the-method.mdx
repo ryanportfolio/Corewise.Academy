@@ -1,6 +1,6 @@
 ---
 title: Rent the model, own the method
-description: Frontier models come and go on someone else's schedule. The durable skill is extracting how they work. That becomes skill files, routing tables, and orchestrator-worker splits that cheaper models can run.
+description: 'Renting the model means owning the method: extracting how frontier models work into skill files, routing tables, and orchestrator-worker splits cheaper models can run.'
 track: agents
 level: practitioner
 number: 9
@@ -38,7 +38,7 @@ import Chalk from '../../components/Chalk.astro';
 
 <p class="lede">
 Put the strongest model available in the hands of a beginner, and give a seasoned engineer a
-model two generations older: the engineer still ships the better result. That thought experiment
+model 2 years older: the engineer still ships the better result. That thought experiment
 opens Nate Herk's field notes on working with frontier models, and it carries an uncomfortable
 corollary: if the practitioner beats the model upgrade, then the model was never the moat. The
 instructions, the systems, and the loops around the model are. This guide is about making that
@@ -60,7 +60,7 @@ The evidence for that claim is an experiment worth internalizing. Herk ran the s
 workflows three ways: a frontier model orchestrating frontier-model workers, the same
 orchestrator over mid-tier workers, and (in a separate test) a strong orchestrator over the
 cheapest tier available. Results were roughly interchangeable; costs were not, with the cheap-
-worker runs landing around three times cheaper for the same output. The pattern generalizes:
+worker runs landing around 3 times cheaper (roughly 67% less) for the same output. The pattern generalizes:
 when the expensive model does the scoping, anticipates what could go wrong, and reviews what
 comes back (redesigning the next step from each report), the workers are executing a
 well-specified plan, and executing a well-specified plan is exactly what cheaper models are
@@ -77,10 +77,17 @@ The concrete move: when a frontier model hands you a deliverable you love but ca
 explain, do not just save the deliverable. Reopen the session and interrogate it: what did you
 consider to get here, how did you verify it, why does this output work. Then have the model
 condense those answers into an installable skill file that any model can run, the same
-portable format of packaged expertise covered in <a href="/guides/expertise-you-can-install/">Expertise you can install</a>. Herk's version
-gates work through five stages: **scope** before touching anything, gather **evidence** before
-reasoning, reason **adversarially**, **verify** before declaring done, and **report** with
-calibrated confidence.
+portable format of packaged expertise covered in <a href="/guides/expertise-you-can-install/">Expertise you can install</a>. The
+interrogation costs about 15 minutes at the end of a session; the discipline it captures outlives
+the model. Herk's version gates work through five stages:
+
+| Gate | What it forces |
+| --- | --- |
+| Scope | Devil's advocate before any steps are listed |
+| Evidence | Gather before reasoning |
+| Adversarial reasoning | Attack your own draft answer |
+| Verify | Evidence in hand before declaring done |
+| Report | Calibrated confidence, not optimism |
 
 The gate that earns its place is the first one. Scoping is not planning. A plan says "here are
 the steps"; scoping plays devil's advocate first: every assumption that might be false, every
@@ -120,12 +127,20 @@ see it, route down.
 
 <Exercise>
 1. Find one deliverable from a strong model that you loved but could not articulate why. Reopen
-   that session and ask: what did you consider, how did you verify, why does this work? Have it
-   condense the answers into an installable skill file gated by scope → evidence → adversarial
-   reasoning → verify → report.
+   that session and ask: what did you consider, how did you verify, why does this work? The whole
+   interrogation takes 10 minutes. Have it condense the answers into an installable skill file
+   gated by scope → evidence → adversarial reasoning → verify → report.
 2. Run the skill on a cheaper model against a task of the same shape. Compare the two outputs
    honestly: note where the discipline closed the gap and where raw capability still shows.
 3. Build your routing table: every model you can invoke, scored 1–5 for cost, intelligence, and
-   taste. Route your next three real tasks by the table instead of by habit, and record what the
-   week cost against the week before.
+   taste. Route your next three real tasks by the table instead of by habit, and compare 1 week
+   of spend against the week before.
 </Exercise>
+
+## Further reading
+
+- [Nate Herk · How I Make Opus Think Like Fable (5 easy steps)](https://www.youtube.com/watch?v=XTBWVVcF3Pk), the field notes this guide distills
+- [Anthropic · building effective agents](https://www.anthropic.com/engineering/building-effective-agents), the orchestrator-worker pattern from the vendor side
+- [Anthropic · Claude models overview](https://docs.claude.com/en/docs/about-claude/models/overview), the tiers a routing table scores
+- [Wikipedia · mixture of experts](https://en.wikipedia.org/wiki/Mixture_of_experts), the same routing intuition inside the models themselves
+- [Yao et al. · “ReAct: Synergizing Reasoning and Acting” (arXiv)](https://arxiv.org/abs/2210.03629), the plan-act-observe loop the gates formalize

@@ -1,13 +1,16 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import Faq from '../../components/Faq.astro';
 import { TRACKS, LEVELS } from '../../data/tracks';
+import { TRACK_NOTES } from '../../data/trackNotes';
 
 export function getStaticPaths() {
   return TRACKS.map((t) => ({ params: { slug: t.slug }, props: { track: t } }));
 }
 
 const { track } = Astro.props;
+const notes = TRACK_NOTES[track.slug];
 const guides = (await getCollection('guides')).filter(
   (g) => g.data.status === 'published' && g.data.track === track.slug,
 );
@@ -15,9 +18,34 @@ const byLevel = (level: string) =>
   guides
     .filter((g) => g.data.level === level)
     .sort((a, b) => (a.data.courseOrder ?? a.data.number) - (b.data.courseOrder ?? b.data.number));
+const levelMinutes = (level: string) => byLevel(level).reduce((sum, g) => sum + g.data.minutes, 0);
+const totalMinutes = guides.reduce((sum, g) => sum + g.data.minutes, 0);
+
+const faq = [
+  {
+    q: `What does the ${track.name} track cover?`,
+    a: `${track.description} Guides are ordered Broad, then Practitioner, then Deep, and each one lists its prerequisites.`,
+  },
+  {
+    q: 'How long does this track take to read?',
+    a:
+      guides.length > 0
+        ? `The track currently holds ${guides.length} guide${guides.length > 1 ? 's' : ''}, about ${totalMinutes} minutes of reading in total. Each guide also ends with a short exercise you can run the same day.`
+        : 'The first guides for this track are in editorial review now, so the shelves sit empty for the moment. Every guide arrives as a pull request and a human editor reviews it before it publishes.',
+  },
+  {
+    q: 'Do I need to read the guides in order?',
+    a: 'No. Levels run Broad to Deep and prerequisites are marked on every guide, so you can enter anywhere and follow the marked links back when a guide assumes something you have not read.',
+  },
+];
 ---
 
-<Base title={`${track.name} · CoreWise Academy`} description={track.description}>
+<Base
+  title={`${track.name} track: ${notes.tagline} · CoreWise Academy`}
+  description={track.description}
+  faq={faq}
+  crumbs={[{ name: `${track.name} track`, path: `/tracks/${track.slug}/` }]}
+>
   <main>
     <header class="track-head">
       <p class="mono-label accent">Track {track.numeral} · {track.constellation}</p>
@@ -56,6 +84,61 @@ const byLevel = (level: string) =>
         );
       })
     }
+
+    <section class="track-notes reveal">
+      <h2>Field notes on this track</h2>
+      {notes.notes.map((p) => <p>{p}</p>)}
+      <table class="syllabus">
+        <thead>
+          <tr><th>Level</th><th>Guides</th><th>Reading</th></tr>
+        </thead>
+        <tbody>
+          {
+            LEVELS.map((l) => (
+              <tr>
+                <td>{l.label}</td>
+                <td class="mono">{byLevel(l.id).length}</td>
+                <td class="mono">{levelMinutes(l.id)} minutes</td>
+              </tr>
+            ))
+          }
+          <tr class="total">
+            <td>Whole track</td>
+            <td class="mono">{guides.length}</td>
+            <td class="mono">{totalMinutes} minutes</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="track-quotes reveal">
+      <h2>Chalk lines from the guides</h2>
+      {
+        notes.quotes.map((q) => (
+          <blockquote>
+            <p>“{q.text}”</p>
+            <cite><a href={q.href}>{q.guideTitle}</a></cite>
+          </blockquote>
+        ))
+      }
+    </section>
+
+    <section class="track-sources reveal">
+      <h2>Primary sources this track teaches from</h2>
+      <ul class="source-roll">
+        {
+          notes.links.map((l) => (
+            <li>
+              <a href={l.href} rel="noopener">{l.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <div class="reveal">
+      <Faq heading={`FAQ · the ${track.name} track`} items={faq} />
+    </div>
   </main>
 
   <style>
@@ -130,6 +213,37 @@ const byLevel = (level: string) =>
       text-shadow: 0 0 20px var(--glow);
     }
     .shelf-list a:hover .m, .shelf-list a:focus-visible .m { color: var(--accent-deep); }
+    .track-notes, .track-quotes, .track-sources { padding: var(--s-6) 0; border-bottom: 1px solid var(--line); }
+    .track-notes h2, .track-quotes h2, .track-sources h2 {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: 400;
+      margin-bottom: var(--s-3);
+    }
+    .track-notes p { margin-bottom: var(--s-3); max-width: 68ch; color: var(--ink); }
+    .syllabus { border-collapse: collapse; font-size: var(--text-sm); min-width: min(100%, 32rem); }
+    .syllabus th {
+      font-family: var(--font-mono);
+      font-size: var(--text-2xs);
+      letter-spacing: var(--tracking-caps);
+      text-transform: uppercase;
+      color: var(--ink-mute);
+      text-align: left;
+      border-bottom: 1px solid var(--ink);
+      padding: var(--s-1) var(--s-4) var(--s-1) 0;
+    }
+    .syllabus td { border-bottom: 1px dashed var(--line); padding: var(--s-2) var(--s-4) var(--s-2) 0; }
+    .syllabus .mono { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--ink-soft); }
+    .syllabus .total td { border-bottom: none; border-top: 1px solid var(--ink); font-weight: 600; }
+    .track-quotes blockquote { margin: 0 0 var(--s-3); padding-left: var(--s-3); border-left: 3px solid var(--accent-deep); max-width: 60ch; }
+    .track-quotes blockquote p { font-style: italic; font-size: var(--text-md); line-height: 1.3; }
+    .track-quotes cite { font-family: var(--font-mono); font-size: var(--text-2xs); font-style: normal; color: var(--ink-mute); }
+    .track-quotes cite a { color: var(--ink-soft); }
+    .source-roll { list-style: none; margin: 0; padding: 0; max-width: 44rem; }
+    .source-roll li { border-bottom: 1px dashed var(--line); padding: var(--s-1) 0; font-size: var(--text-sm); }
+    .source-roll a { color: var(--ink-soft); text-decoration: none; }
+    .source-roll a:hover { color: var(--accent-deep); }
+
     @media (max-width: 720px) {
       .shelf-list a { grid-template-columns: 1fr auto; }
       .shelf-list .no { display: none; }

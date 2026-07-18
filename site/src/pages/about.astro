@@ -1,12 +1,30 @@
 ---
 import Base from '../layouts/Base.astro';
+import Faq from '../components/Faq.astro';
+
+const faq = [
+  {
+    q: 'Who is Ryan Allen?',
+    a: 'Ryan Allen is a builder who ships AI systems end to end: four live systems in 7 months, with AI agents as the workforce and a human gate on every merge. He also edits CoreWise Academy, the free guide library this page belongs to.',
+  },
+  {
+    q: 'What has Ryan Allen shipped?',
+    a: 'Four live systems: corewise.video (multi-model synthesis, 1,800 users), kinefractal.com (deterministic signals, paper trading only, $0 of real money at risk), truenote.org (cited answers or refusal), and willaicite.com (a deterministic GEO audit that scores 8 dimensions in under 60 seconds). 100% of what ships passes his review first.',
+  },
+  {
+    q: 'How do you contact Ryan Allen?',
+    a: 'Through GitHub at github.com/ryanportfolio: every public repo accepts issues, and the profile links back to each live system. This section is the contact point for the whole site.',
+  },
+];
 ---
 
 <Base
-  title="About · Ryan Allen · Approved Works"
+  title="Ryan Allen, AI systems builder · CoreWise Academy"
   description="Ryan Allen builds and ships AI systems end to end. Four live systems, drawn to drafting convention: corewise.video, kinefractal.com, truenote.org, willaicite.com."
+  faq={faq}
+  crumbs={[{ name: 'About the editor', path: '/about/' }]}
 >
-  <div id="aw">
+  <main id="aw">
     <!-- A-000 · cover -->
     <section class="sheet hero" data-sheet="A-000">
       <div class="hero-grid">
@@ -14,7 +32,7 @@ import Base from '../layouts/Base.astro';
           <p class="aw-kicker">APPROVED WORKS · DRAWING SET A · WEB EDITION</p>
           <h1 class="hero-name">Ryan Allen</h1>
           <div class="hero-rule"></div>
-          <p class="hero-line">AI systems, built and shipped end to end</p>
+          <p class="hero-line">Ryan Allen is an AI systems builder who ships end to end</p>
           <p class="hero-links">
             <a href="https://corewise.video">corewise.video</a> ·
             <a href="https://kinefractal.com">kinefractal.com</a> ·
@@ -90,8 +108,8 @@ import Base from '../layouts/Base.astro';
             <dt>SURFACES</dt><dd>WEB · MOBILE (EXPO) · DESKTOP (TAURI) · 2 BROWSER EXTS · MCP SERVER</dd>
             <dt>BILLING / EXPORT</dt><dd>STRIPE · NOTION / PDF / TTS</dd>
           </dl>
-          <p class="rail-note">Six models because one model alone lies confidently. Where they agree I
-            trust it more. Where they split, that's usually the interesting part.</p>
+          <p class="rail-note">“Six models because one model alone lies confidently. Where they agree I
+            trust it more. Where they split, that's usually the interesting part.”</p>
         </aside>
       </div>
     </section>
@@ -197,8 +215,8 @@ import Base from '../layouts/Base.astro';
             <dt>ROLES</dt><dd>4-TIER · SERVER-SIDE TENANT SCOPING</dd>
             <dt>EVAL</dt><dd>ANSWER ACC · CITATION ACC · REFUSAL RATE · P50/P95</dd>
           </dl>
-          <p class="rail-note">A guess during a live call is worse than no answer. So refusing correctly
-            counts as a score here, not an error.</p>
+          <p class="rail-note">“A guess during a live call is worse than no answer. So refusing correctly
+            counts as a score here, not an error.”</p>
         </aside>
       </div>
     </section>
@@ -281,8 +299,8 @@ import Base from '../layouts/Base.astro';
             <dt>MERGE</dt><dd>HUMAN GATE · ALWAYS</dd>
             <dt>PROCESS</dt><dd>CAN'T-DO → CAN-DO → CHEAPER AND FASTER → IMPROVE THE HARNESS → AUDIT THE OUTPUT → PRUNE WHAT DOESN'T HOLD UP → JUDGE RESULTS AND STUDY LOGS</dd>
           </dl>
-          <p class="rail-note">I don't vibe-code and hope: PRs get reviewed by independent AI agents with
-            fresh context.</p>
+          <p class="rail-note">“I don't vibe-code and hope: PRs get reviewed by independent AI agents with
+            fresh context.”</p>
         </aside>
       </div>
     </section>
@@ -369,7 +387,7 @@ import Base from '../layouts/Base.astro';
           <p class="body-block">Every figure is computed geometry: real 3D to 2D projection math running
             in your browser, emitted as vectors. The chandelier is a true perspective camera you steer.
             The corridor is one-point perspective with the human gates wired to your hand. The confluence
-            is dimetric axonometric with a live confidence gate. Where a count is drawn, the count is the
+            is <a href="https://en.wikipedia.org/wiki/Axonometric_projection" rel="noopener">dimetric axonometric</a> with a live confidence gate. Where a count is drawn, the count is the
             fact. There is also a <a href="https://github.com/ryanportfolio">print edition</a>: a 9-sheet
             vector PDF of this same set, built by the same locked facts and audited by a script that
             recounts every drawn mark.</p>
@@ -386,12 +404,28 @@ import Base from '../layouts/Base.astro';
           </table>
           <h3 class="sec-head">THE WORKS, ONE MORE TIME</h3>
           <p class="works">
-            <a href="https://corewise.video">corewise.video</a> · multi-model synthesis, 1,800+ registered users<br />
+            <a href="https://corewise.video">corewise.video</a> · multi-model synthesis, more than 1,800 users<br />
             <a href="https://kinefractal.com">kinefractal.com</a> · nightly signals, paper only, every gate drawn on A-200<br />
             <a href="https://truenote.org">truenote.org</a> · cited answers or refusal, never a guess<br />
             <a href="https://willaicite.com">willaicite.com</a> · deterministic GEO audit, spec to live in a day<br />
             <a href="https://github.com/ryanportfolio">github.com/ryanportfolio</a> · the rest of the shop
           </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- A-1000 · FAQ + contact -->
+    <section class="sheet" data-sheet="A-1000" id="contact">
+      <header class="sheet-head">
+        <div>
+          <p class="sheet-no">A-1000</p>
+          <h2 class="sheet-title">FAQ &amp; CONTACT</h2>
+        </div>
+        <p class="sheet-sub">QUESTIONS THE SET GETS ASKED</p>
+      </header>
+      <div class="cols">
+        <div class="main">
+          <Faq heading="FAQ · about Ryan Allen" items={faq} open={true} />
         </div>
       </div>
     </section>
@@ -405,7 +439,7 @@ import Base from '../layouts/Base.astro';
       <span class="tb-cell wide"><span class="tb-k">CHECKED BY</span>INDEPENDENT AGENT, FRESH CONTEXT</span>
       <span class="tb-cell"><span class="tb-k">APPROVED</span><span class="tb-approved">R. ALLEN</span></span>
     </div>
-  </div>
+  </main>
 
   <script>
     import { boot } from '../scripts/about-plates.js';

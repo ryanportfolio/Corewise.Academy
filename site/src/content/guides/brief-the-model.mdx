@@ -1,6 +1,6 @@
 ---
 title: Brief the model like a brilliant new hire
-description: 'Claude is a brilliant new hire with no context on your job. The fundamentals that hold across every current model: explicit instructions with their motivation, few-shot examples, XML tags, roles, long-context ordering, and literal instruction-following.'
+description: 'Claude is a brilliant new hire with no context on your job. Brief it like one: explicit instructions with motivation, examples, XML tags, roles, and context ordering.'
 track: prompting
 level: broad
 number: 14
@@ -48,14 +48,16 @@ Vague prompts fail because the model cannot infer what you never stated. If you 
 above-and-beyond version, ask for it. If you have a format in mind, describe it. The colleague
 test catches most of this before you hit send: read your prompt as someone who just joined and
 knows nothing about the task, and every place they would stop and ask a question is a place
-Claude will guess.
+Claude will guess. The test takes 30 seconds and pays for itself on the first prompt.
+
+> “If a colleague with minimal context would be confused by your prompt, Claude will be too.”
 
 The sharper move is to give the reason behind a rule, not just the rule. "NEVER use ellipses" is
 a bare prohibition that covers one symbol and nothing else. "Your output will be read aloud by a
 text-to-speech engine, so avoid anything that does not read cleanly when spoken" is a motivation,
 and the model generalizes from it, dropping the ellipses, yes, but also the emoji, the stray
 markdown, and the table that would come out as noise. State the why and Claude extends the rule
-to cases you never listed. That single habit does more work than a dozen more prohibitions. If
+to cases you never listed. That single habit does more work than 10 times as many prohibitions. If
 your prompts already lean hard on forceful bans and the model over-corrects, <a href="/guides/stop-shouting-at-the-model/">Stop shouting at the model</a> shows how to dial that language back.
 
 ## <span class="sec-no">02</span>Show, tag, and cast
@@ -79,8 +81,8 @@ right home for standing character; the user turn is for the task.
 
 Long prompts have a geometry. For inputs past 20k tokens, put the longform documents at the top
 and the query at the very end. Anthropic reports end-placed queries improved response quality by
-up to 30 percent on complex multidocument tests, which is a large return on rearranging text you
-already have. Give each document its own `<document>` tag with `<document_content>` and `<source>`
+up to 30 percent on complex multidocument tests, which is a large return for 5 minutes of
+rearranging text you already have. Give each document its own `<document>` tag with `<document_content>` and `<source>`
 subtags, and for retrieval-heavy work, ask Claude to pull relevant quotes into `<quotes>` tags
 before it answers. That gives the model an anchored path from source to conclusion.
 
@@ -91,6 +93,18 @@ case." The same literalness governs formatting, and it steers best when you say 
 than what to avoid. "Write in flowing prose paragraphs" beats "don't use bullet points," and if
 you want less markdown in the output, strip the markdown from your own prompt, because the model
 matches the style it is handed. Tell it the target, not the sin.
+
+> “Write in flowing prose paragraphs beats don't use bullet points: say what to do, not what to avoid.”
+
+The fundamentals, side by side:
+
+| Fundamental | The move | Why it holds |
+| --- | --- | --- |
+| Colleague test | Read the prompt as a context-free coworker | Every unasked question becomes a guess |
+| Motivation | State the why behind each rule | The model generalizes past the named case |
+| Examples | 3 to 5 diverse, tagged demonstrations | Demonstrations beat description |
+| Ordering | Documents on top, query at the end | Up to 30 percent better on multidocument tests |
+| Literalness | Imperative phrasing, positive steering | The model does what you literally say |
 
 <Exercise>
 1. Take a prompt you sent this week and run the colleague test on it. Circle every spot a
@@ -103,3 +117,11 @@ matches the style it is handed. Tell it the target, not the sin.
    tags with `<source>` subtags, and drop the question to the very end. Run both orderings on the
    same question and judge which answer holds together better.
 </Exercise>
+
+## Further reading
+
+- [Anthropic · Claude prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices), the guide this course distills
+- [Anthropic · prompt engineering overview](https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/overview), the wider technique catalogue
+- [OpenAI · prompt engineering guide](https://platform.openai.com/docs/guides/prompt-engineering), the other vendor's version of the same fundamentals
+- [Brown et al. · “Language Models are Few-Shot Learners” (arXiv)](https://arxiv.org/abs/2005.14165), why examples work at all
+- [Wikipedia · prompt engineering](https://en.wikipedia.org/wiki/Prompt_engineering), the survey view
