@@ -32,7 +32,7 @@ const isoDate = d.lastUpdated.toISOString().slice(0, 10);
   datePublished={isoDate}
   dateModified={isoDate}
   crumbs={[
-    { name: `${track.name} track`, path: `/tracks/${track.slug}/` },
+    { name: `${track.name} layer`, path: `/tracks/${track.slug}/` },
     { name: d.title, path: `/guides/${guide.id}/` },
   ]}
 >
@@ -52,7 +52,7 @@ const isoDate = d.lastUpdated.toISOString().slice(0, 10);
 
   <article>
     <p class="kicker mono-label accent">
-      {track.name} · Track {track.numeral}
+      {track.name} · Layer {track.numeral}
       <span class="lvl">/ {level.label}</span>
     </p>
     <h1 class="display">{d.title}</h1>

@@ -14,14 +14,14 @@ export const GET: APIRoute = async () => {
   const body = [
     '# CoreWise Academy',
     '',
-    '> CoreWise Academy is a free library of original guides on working with AI, organized into five tracks (Foundations, Prompting & Context, Agents & Automation, Building with AI, Practice) at three depths (Broad, Practitioner, Deep). Edited by Ryan Allen.',
+    '> CoreWise Academy is a free library of original guides on working with AI, organized into five layers (Foundations, Prompting & Context, Agents & Automation, Building with AI, Practice) at three depths (Broad, Practitioner, Deep). Edited by Ryan Allen.',
     '',
     `- [About the editor](${SITE_URL}/about/)`,
     `- [How guides get made](${SITE_URL}/how-its-built/)`,
     '',
     ...TRACKS.flatMap((t) => {
       const list = byTrack(t.slug);
-      return list ? [`## ${t.name}`, '', `- [Track page](${SITE_URL}/tracks/${t.slug}/): ${t.description}`, list, ''] : [];
+      return list ? [`## ${t.name}`, '', `- [Layer page](${SITE_URL}/tracks/${t.slug}/): ${t.description}`, list, ''] : [];
     }),
   ].join('\n');
   return new Response(body, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
