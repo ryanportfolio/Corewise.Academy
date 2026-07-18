@@ -106,6 +106,16 @@ Clear, to the point, plain words. Fewer words beat more words everywhere on the 
   reader through each stop only when they must choose between stops. An
   illustrative example earns its place only if the claim is unclear without it;
   one example is the ceiling.
+- **"Die" and "kill" are banned in site copy** (editor ruling, 2026-07-18).
+  Death-metaphor verbs ("die", "dies", "killed") hide what actually happens.
+  Say the specific thing: filler words are cut, a model is retired, a project
+  is cancelled, a transcript is gone when the session ends. Applies to every
+  figurative stand-in where a specific plain verb exists.
+- **Name the thing before any conceptual label** (editor ruling, 2026-07-18).
+  Referring to a tool or practice by an abstraction ("The contract we actually
+  run is...") reads as insider talk; most readers get nothing from it, and the
+  editor would not say it aloud. Open with the plain subject and verb ("We use
+  a skill called caveman for this"), then attach any framing.
 - **Never talk down to the reader.** No "adults learn what they can use"-style
   framing that explains the reader to themselves.
 - **Theme never beats clarity.** Decorative labels are welcome only next to plain
