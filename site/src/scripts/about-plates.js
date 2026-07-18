@@ -394,52 +394,69 @@ function initCorridor(host, controls) {
   const sIn = P(0, 26, gates[0] * 0.94);
   const dot = el('circle', { cx: fmt(sIn.x), cy: fmt(sIn.y), r: 3, class: 'nd-solid' }, svg);
   el('text', { x: fmt(sIn.x), y: fmt(sIn.y + 17), class: 'ann', 'text-anchor': 'middle' }, svg).textContent = 'EOD SIGNAL ENTERS HERE';
-  const sOut = P(0, 26, gates[9] * 1.14);
   const stamp = el('text', { x: fmt(cx), y: 18, class: 'ann ann-human', 'text-anchor': 'middle' }, svg);
   stamp.textContent = 'ORDER TRANSMITS · PAPER';
   stamp.style.opacity = '0';
 
-  // sequence: gates 01..08 close on scroll; 09 waits for ARM; 10 for the typed word
-  const state = { closed: 0, armed: false, done: false };
-  gateEls.forEach((ge, i) => { if (i < 8) ge.g.style.opacity = reduced ? '1' : '0'; });
-  new IntersectionObserver((es, io) => {
+  // Auto-demo: gates 01..08 close, a human gate 09 closes, gate 10 confirms and
+  // the order walks the corridor to the vanishing point. Then it resets and
+  // loops. Pauses when offscreen; static all-closed pose under reduced motion.
+  const armBeam = gateEls[8].beam, sendBeam = gateEls[9].beam;
+
+  if (reduced) {
+    for (let i = 0; i < 8; i++) gateEls[i].g.style.opacity = '1';
+    armBeam.style.opacity = '1'; sendBeam.style.opacity = '1';
+    const pEnd = P(0, 26, gates[9] * 1.14);
+    dot.setAttribute('cx', fmt(pEnd.x)); dot.setAttribute('cy', fmt(pEnd.y)); dot.setAttribute('r', '1.4');
+    stamp.style.opacity = '1';
+    controls.progress(10);
+    return;
+  }
+
+  let visible = false, timers = [], walkRaf = null;
+  const at = (ms, fn) => timers.push(setTimeout(fn, ms));
+  const clearAll = () => { timers.forEach(clearTimeout); timers = []; if (walkRaf) cancelAnimationFrame(walkRaf); walkRaf = null; };
+
+  const reset = () => {
+    for (let i = 0; i < 8; i++) { gateEls[i].g.style.transition = 'opacity 220ms ease'; gateEls[i].g.style.opacity = '0'; }
+    armBeam.style.opacity = '0'; sendBeam.style.opacity = '0';
+    stamp.style.opacity = '0';
+    dot.setAttribute('cx', fmt(sIn.x)); dot.setAttribute('cy', fmt(sIn.y)); dot.setAttribute('r', '3');
+    controls.progress(0);
+  };
+
+  const walk = () => {
+    const t0 = performance.now(), dur = 1600;
+    const step = (t) => {
+      const k = Math.min((t - t0) / dur, 1);
+      const z = lerp(gates[0] * 0.94, gates[9] * 1.14, k * k);
+      const p = P(0, 26, z);
+      dot.setAttribute('cx', fmt(p.x)); dot.setAttribute('cy', fmt(p.y));
+      dot.setAttribute('r', fmt(lerp(3, 1.4, k)));
+      if (k < 1) { walkRaf = requestAnimationFrame(step); }
+      else { walkRaf = null; stamp.style.transition = 'opacity 400ms ease'; stamp.style.opacity = '1'; }
+    };
+    walkRaf = requestAnimationFrame(step);
+  };
+
+  const cycle = () => {
+    if (!visible) return;
+    clearAll();
+    reset();
+    let t = 500;
+    for (let i = 0; i < 8; i++) { const gi = i; at(t, () => { gateEls[gi].g.style.transition = 'opacity 300ms ease'; gateEls[gi].g.style.opacity = '1'; controls.progress(gi + 1); }); t += 240; }
+    t += 500; at(t, () => { armBeam.style.transition = 'opacity 350ms ease'; armBeam.style.opacity = '1'; controls.progress(9); });
+    t += 950; at(t, () => { sendBeam.style.transition = 'opacity 350ms ease'; sendBeam.style.opacity = '1'; controls.progress(10); walk(); });
+    t += 3400; at(t, cycle);
+  };
+
+  new IntersectionObserver((es) => {
     es.forEach((e) => {
-      if (!e.isIntersecting) return;
-      io.unobserve(host);
-      if (reduced) return;
-      for (let i = 0; i < 8; i++) setTimeout(() => { gateEls[i].g.style.transition = 'opacity 300ms ease'; gateEls[i].g.style.opacity = '1'; controls.progress(i + 1); }, 250 + i * 200);
+      visible = e.isIntersecting;
+      if (visible) { if (!timers.length && !walkRaf) cycle(); }
+      else clearAll();
     });
   }, { threshold: 0.35 }).observe(host);
-
-  return {
-    arm() {
-      if (state.armed) return;
-      state.armed = true;
-      gateEls[8].beam.style.transition = 'opacity 350ms ease';
-      gateEls[8].beam.style.opacity = '1';
-      controls.progress(9);
-    },
-    confirm() {
-      if (!state.armed || state.done) return false;
-      state.done = true;
-      gateEls[9].beam.style.transition = 'opacity 350ms ease';
-      gateEls[9].beam.style.opacity = '1';
-      controls.progress(10);
-      // the order dot walks the corridor to the vanishing point
-      const t0 = performance.now(), dur = reduced ? 1 : 1600;
-      const step = (t) => {
-        const k = Math.min((t - t0) / dur, 1);
-        const z = lerp(gates[0] * 0.94, gates[9] * 1.14, k * k);
-        const p = P(0, 26, z);
-        dot.setAttribute('cx', fmt(p.x)); dot.setAttribute('cy', fmt(p.y));
-        dot.setAttribute('r', fmt(lerp(3, 1.4, k)));
-        if (k < 1) requestAnimationFrame(step);
-        else { stamp.style.transition = 'opacity 400ms ease'; stamp.style.opacity = '1'; }
-      };
-      requestAnimationFrame(step);
-      return true;
-    },
-  };
 }
 
 /* ---------------------------------------------------------- ledger strip - */
@@ -484,7 +501,7 @@ function initStrata(host) {
 }
 
 /* ------------------------------------------------------------ confluence - */
-function initConfluence(host, slider, readout, figure) {
+function initConfluence(host, figure) {
   const w = 520, h = 320, midY = 132;
   const proj = axonometric({ alpha: 10, beta: 34, s: 1.12, cx: 128, cy: midY });
   const svg = svgRoot(host, w, h);
@@ -539,15 +556,22 @@ function initConfluence(host, slider, readout, figure) {
   el('text', { x: fmt(b1.x), y: fmt(b1.y - 4), class: 'ann ann-key' }, svg).textContent = 'VECTOR TOP-40';
   el('text', { x: fmt(b2.x), y: fmt(b2.y + 12), class: 'ann ann-key' }, svg).textContent = 'BM25 TOP-40';
   onEnter(host, prepDraw(svg, { stagger: 7, dur: 520 }));
-  // the confidence slider decides which branch is live
-  const apply = () => {
-    const val = Number(slider.value);
-    const pass = val >= 0.30;
-    readout.textContent = `RERANK CONFIDENCE ${val.toFixed(2)} · GATE 0.30 · ${pass ? 'ANSWER PATH LIVE' : 'REFUSING'}`;
-    figure.classList.toggle('refusing', !pass);
+  // Auto-demo: retrieval confidence rises and falls on its own, crossing the
+  // 0.30 gate so the cited-answer branch and the refusal branch each light in
+  // turn. Pauses when offscreen; holds the answer-live pose under reduced motion.
+  if (reduced) { figure.classList.remove('refusing'); return; }
+  let visible = false, timer = null;
+  const flip = (refusing) => {
+    figure.classList.toggle('refusing', refusing);
+    timer = setTimeout(() => { if (visible) flip(!refusing); }, refusing ? 2600 : 3600);
   };
-  slider.addEventListener('input', apply);
-  apply();
+  new IntersectionObserver((es) => {
+    es.forEach((e) => {
+      visible = e.isIntersecting;
+      if (visible && timer == null) flip(false);
+      else if (!visible && timer != null) { clearTimeout(timer); timer = null; }
+    });
+  }, { threshold: 0.3 }).observe(host);
 }
 
 /* ------------------------------------------------------------- tally ----- */
@@ -601,7 +625,7 @@ function drawSeal(g, cx, cy, r, run) {
   el('text', { x: 0, y: r + 32, class: 'ann', 'text-anchor': 'middle' }, g).textContent = `RUN ${run}`;
   return fnv(hashSrc);
 }
-function initSeals(host, btn, meter) {
+function initSeals(host) {
   const w = 520, h = 258, r = 72, cy = h * 0.46;
   const svg = svgRoot(host, w, h);
   const gL = el('g', {}, svg), gR = el('g', {}, svg);
@@ -609,18 +633,11 @@ function initSeals(host, btn, meter) {
   const cx1 = w * 0.26, cx2 = w * 0.74;
   el('line', { x1: fmt(cx1), y1: fmt(dy), x2: fmt(cx2), y2: fmt(dy), class: 'st-carbon-thin' }, svg);
   el('text', { x: fmt((cx1 + cx2) / 2), y: fmt(dy - 7), class: 'ann', 'text-anchor': 'middle' }, svg).textContent = 'DISPLACEMENT BETWEEN RUNS = 0';
-  const h1 = drawSeal(gL, cx1, cy, r, 1);
-  let run = 1;
-  const update = (h2) => {
-    meter.textContent = `RUN 1 HASH ${h1.toUpperCase()} · RUN ${run} HASH ${h2.toUpperCase()} · ${h1 === h2 ? 'IDENTICAL' : 'MISMATCH'}`;
-  };
-  update(drawSeal(gR, cx2, cy, r, ++run));
+  // Same URL, audited twice: identical input gives an identical seal, so the two
+  // runs are the same drawing at zero displacement.
+  drawSeal(gL, cx1, cy, r, 1);
+  drawSeal(gR, cx2, cy, r, 2);
   onEnter(host, prepDraw(svg, { stagger: 8, dur: 520 }));
-  btn.addEventListener('click', () => {
-    const h2 = drawSeal(gR, cx2, cy, r, ++run);
-    prepDraw(gR, { stagger: 6, dur: 380 })(); // prepDraw accepts any query root
-    update(h2);
-  });
 }
 
 /* --------------------------------------------------------------- day bar - */
@@ -876,37 +893,14 @@ export function boot() {
   gate('chand', () => initChandelier($('fig-chandelier'), { hero: false }));
   gate('disc', () => initDisc($('fig-disc')));
   const gateReadout = $('gate-readout');
-  let corridor = { arm(){}, confirm(){ return false; } };
-  gate('corridor', () => { corridor = initCorridor($('fig-corridor'), {
+  gate('corridor', () => { initCorridor($('fig-corridor'), {
     progress(nGate) { gateReadout.textContent = `GATES CLOSED ${String(nGate).padStart(2, '0')} / 10`; },
   }); });
-  $('btn-arm').addEventListener('click', (e) => {
-    corridor.arm();
-    e.target.disabled = true;
-    e.target.textContent = 'TRADE APPROVED · GATE 09 CLOSED';
-    $('confirm-wrap').classList.add('ready');
-    $('input-confirm').focus();
-  });
-  const tryConfirm = () => {
-    const inp = $('input-confirm');
-    if (inp.value.trim().toUpperCase() === 'TRANSMIT') {
-      if (corridor.confirm()) {
-        inp.disabled = true;
-        $('btn-confirm').disabled = true;
-        $('btn-confirm').textContent = 'GATE 10 CLOSED · ORDER SENT · PAPER';
-      }
-    } else {
-      inp.classList.add('shake');
-      setTimeout(() => inp.classList.remove('shake'), 400);
-    }
-  };
-  $('btn-confirm').addEventListener('click', tryConfirm);
-  $('input-confirm').addEventListener('keydown', (e) => { if (e.key === 'Enter') tryConfirm(); });
   gate('ledger', () => initLedger($('fig-ledger')));
   gate('strata', () => initStrata($('fig-strata')));
-  gate('conf', () => initConfluence($('fig-confluence'), $('conf-slider'), $('conf-readout'), $('sec-a300')));
+  gate('conf', () => initConfluence($('fig-confluence'), $('sec-a300')));
   gate('tally', () => initTally($('fig-tally')));
-  gate('seals', () => initSeals($('fig-seals'), $('btn-run'), $('seal-meter')));
+  gate('seals', () => initSeals($('fig-seals')));
   gate('daybar', () => initDayBar($('fig-daybar')));
   gate('rings', () => initRings($('fig-rings')));
   gate('stemma', () => initStemma($('fig-stemma')));
