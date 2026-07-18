@@ -6,19 +6,19 @@ level: practitioner
 number: 11
 minutes: 9
 objectives:
-  - 'Distinguish the two meters running in every agent session (deliberation depth and prose verbosity), and name the lever that controls each.'
+  - 'Distinguish the two meters running in every agent session (how long the model thinks, and how many words it writes), and name the lever that controls each.'
   - Write a compression contract that cuts an agent's prose spend while preserving every fact, caveat, and exact technical string.
-  - Justify each carve-out where compressed prose must fall back to plain language by the failure mode it prevents.
+  - Justify each escape hatch where compressed prose must fall back to plain language by the failure mode it prevents.
   - 'Detect, from a session transcript, the point where brevity stopped saving tokens and started buying clarification round-trips.'
 prerequisites:
   - slug: rent-the-model-own-the-method
-    note: Covers the deliberation dial (model and effort routing). This guide takes the other meter.
+    note: Covers how long the model thinks (model and effort routing). This guide covers how many words it writes.
 sources: []
 selfCheck:
   - q: Why is "compress wording, not meaning" the load-bearing rule, rather than a general instruction to be concise?
-    a: '"Be concise" hands the model one dial and lets it choose what to drop. Under pressure it drops qualifiers, caveats, and edge-case facts, which is meaning. A compression contract pins meaning as inviolable and lets only the wording flex: articles, filler, hedging, restatements. The savings come out of redundancy, never out of substance.'
-  - q: Which three situations force a compression mode back to plain prose, and what does each carve-out prevent?
-    a: 'Security warnings, where a skimmed fragment under-communicates risk; irreversible-action confirmations, where the user must fully understand before something un-undoable runs; and multi-step sequences where dropped conjunctions make order ambiguous: "migrate table drop column backup first" reads two ways. Each carve-out marks a place where the failure cost of compression exceeds its token savings.'
+    a: '"Be concise" hands the model one dial and lets it choose what to drop. Under pressure it drops qualifiers, caveats, and edge-case facts, which is meaning. A compression contract protects meaning and lets only the wording flex: articles, filler, hedging, restatements. The savings come out of redundancy, never out of substance.'
+  - q: Which three situations force a compression mode back to plain prose, and what does each escape hatch prevent?
+    a: 'Security warnings, where a skimmed fragment under-communicates risk; irreversible-action confirmations, where the user must fully understand before something un-undoable runs; and multi-step sequences where dropped conjunctions make order ambiguous: "migrate table drop column backup first" reads two ways. Each escape hatch marks a place where the failure cost of compression exceeds its token savings.'
   - q: When does a saved token become a wasted one?
     a: When the reader has to ask again. Savings are measured at the conversation level, not the message level. A terse reply that triggers a clarification round-trip costs the original message plus the question plus the re-explanation, plus the context re-read on every turn of it. The tell is a user repeating a question or asking you to re-explain; the fix is routing that topic back to plain prose.
 status: published
@@ -37,30 +37,31 @@ restates the request it was just given. It hedges ("likely", "seems to", "I'm co
 of those words is billed at the output rate, the most expensive class of token there is, and the
 model's private reasoning rides the same meter. Then the bill compounds: everything written into
 a session is re-read as input on every turn that follows. Verbosity taxes you twice. This guide
-is about paying less: not by thinking less, but by saying less while knowing exactly as much.
+is about paying less by saying less, while knowing exactly as much.
 </p>
 
 ## <span class="sec-no">01</span>Two meters run in every session
 
-The first meter is deliberation depth: how long the model reasons before it answers. That one is
+The first meter is how long the model thinks before it answers. That one is
 controlled at the harness (effort levels, thinking budgets, model routing), and <a href="/guides/rent-the-model-own-the-method/">Rent the model, own the method</a>
-covered how to set it per task. The second meter is prose verbosity: how many words the
+covered how to set it per task. The second meter is how many words the
 model spends performing its work back at you. It is controlled by instruction, it is almost
 always set too high by default, and it is the one this guide turns down.
 
-The distinction matters because the two failure modes are opposites. Cut deliberation too far
-and the model gets the answer wrong. Cut prose too far and the model gets the answer right but
-the reader loses it: order becomes ambiguous, a caveat vanishes, a warning gets skimmed. So the
-levers must move independently: a hard debugging task might want maximum deliberation and
+The distinction matters because the two failure modes are opposites. Cut thinking too far and
+the model gets the answer wrong. Cut prose too far and the model gets the answer right but the
+reader loses it: order becomes ambiguous, a caveat vanishes, a warning gets skimmed.
+
+So the levers must move independently. A hard debugging task might want maximum thinking and
 minimum narration, while an irreversible migration wants the model's full prose attention
 regardless of what thinking it took to get there. Collapsing the two meters into one vague
 instruction ("be brief") is how you end up cutting the wrong one.
 
 ## <span class="sec-no">02</span>The compression contract
 
-What works in practice is not an adjective but a contract: a written mode the agent runs under,
-with an intensity ladder, a set of inviolables, and an explicit statement of what wins when
-brevity and accuracy collide. The ladder gives you graduated stops rather than one cliff:
+What works in practice is a written contract the agent runs under: graduated levels of
+compression, a list of things that never get cut, and an explicit statement of what wins when
+brevity and accuracy collide. The levels give you stops rather than one cliff:
 
 | Stop | What changes | Prose spend, by design target |
 | --- | --- | --- |
@@ -71,7 +72,7 @@ brevity and accuracy collide. The ladder gives you graduated stops rather than o
 At the far end, a sentence of causal narration becomes an arrow chain: inline
 object prop → new reference → re-render. Six tokens, and nothing a practitioner needed is lost.
 
-The inviolables are what make the far end safe:
+The never-cut list is what makes the far end safe:
 
 - Code, symbols, function names, API names, and error strings are never abbreviated: they are
   load-bearing, and a paraphrased error message is a lie.
@@ -83,7 +84,7 @@ The inviolables are what make the far end safe:
 
 The cheapest token is the one never written.
 
-## <span class="sec-no">03</span>Carve-outs, and the tell that you cut too deep
+## <span class="sec-no">03</span>Escape hatches, and the tell that you cut too deep
 
 A compression mode without escape hatches is a liability, so the contract names the places it
 must drop back to plain prose automatically. Security warnings: a skimmed fragment
@@ -91,22 +92,21 @@ under-communicates risk. Confirmations before irreversible actions: the user mus
 understand what is about to happen, at whatever token cost. Multi-step sequences where dropped
 connectives make order ambiguous: "migrate table drop column backup first" reads two ways, and
 one of them loses data. And the moment a user asks for clarification, that topic has earned
-plain language. The carve-outs are not exceptions to the economics; they are the economics:
-each one marks a spot where the failure cost of compression exceeds its savings.
+plain language.
 
-Which is also how you audit the whole scheme. Token savings are real only at the conversation
-level. A terse reply that forces a clarification round-trip costs the original message plus the
-question plus the re-explanation, with the whole exchange re-read as context on every subsequent
-turn, more than plain wording would have cost once. So the tell that you have over-compressed
-is not in the message you sent; it is in the reply you get.
+Each escape hatch marks a spot where the failure cost of compression exceeds its savings. That
+is also how you audit the whole scheme. Token savings are real only at the conversation level:
+a terse reply that forces a clarification round-trip costs the original message plus the
+question plus the re-explanation, with the whole exchange re-read as context on every
+subsequent turn. That is more than plain wording would have cost once.
 
-> “The tell that you have over-compressed is not in the message you sent; it is in the reply you get.”
+> “The tell that you have over-compressed is in the reply you get.”
 
 A repeated question. A "what do you
 mean by". A request to re-explain. Treat those as meter readings, and route the topics that
-generate them back up the ladder. The same accounting, incidentally, applies to what enters the
+generate them back to plainer language. The same accounting applies to what enters the
 context as much as what leaves it (filtered tool output, thin always-loaded instructions with
-detail split into files loaded on demand), but the discipline is one discipline: every token,
+detail split into files loaded on demand): every token,
 in or out, either carries meaning or carries cost.
 
 > “Every token, in or out, either carries meaning or carries cost.”
@@ -119,19 +119,19 @@ own craft in <a href="/guides/firmware-not-folklore/">Firmware, not folklore</a>
    request, narrates a change already visible in a diff, or hedges without adding information.
    Estimate the tokens; even 20 minutes of transcript usually surprises. That number is your
    verbosity meter, and it is probably not small.
-2. Write a compression contract for your own agent: an intensity ladder with at least two
-   stops, the inviolables (code, error strings, facts, caveats), and the carve-outs that force
+2. Write a compression contract for your own agent: at least two levels of compression, the
+   never-cut list (code, error strings, facts, caveats), and the escape hatches that force
    plain prose. Install it as a skill or standing instruction, not a per-session request; the
    packaging move is <a href="/guides/expertise-you-can-install/">Expertise you can install</a>.
 3. Run it for 7 days. Compare spend against the prior week, but audit the transcripts for
    clarification round-trips: every "can you re-explain" is a topic to route back to plain
-   language. Tune the ladder, keep the contract.
+   language. Tune the levels, keep the contract.
 </Exercise>
 
 ## Further reading
 
-- [Anthropic · prompting Claude Fable 5](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5), the effort dial the deliberation meter rides on
+- [Anthropic · prompting Claude Fable 5](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5), the effort dial that controls how long the model thinks
 - [Anthropic · pricing](https://www.anthropic.com/pricing), why output tokens are the expensive class
 - [Anthropic · Claude developer documentation](https://docs.claude.com/), the harness features (skills, memory) a contract installs into
-- [Wikipedia · plain language](https://en.wikipedia.org/wiki/Plain_language), the carve-out register, studied
+- [Wikipedia · plain language](https://en.wikipedia.org/wiki/Plain_language), the register the escape hatches drop into, studied
 - [Anthropic · engineering blog](https://www.anthropic.com/engineering), first-party notes on agent harness economics

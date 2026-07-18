@@ -65,6 +65,9 @@ contain a colon plus space). Doc-grounded deltas:
   does next. Answer early, be specific, cut any sentence that can go without loss.
 - **Ultra concise**: 550-850 words of body prose. Shorter and denser wins. Set
   `minutes` from final length (4-7 typical).
+- **No walls of text.** Paragraphs run 1-4 sentences; break at each new idea.
+  A dense block gets skimmed and forgotten, so a paragraph past ~60 words needs
+  a reason to exist at that length.
 - **Stakes woven in, never labeled.** The lede and section openers make the
   reader feel the cost or payoff (the afternoon lost, the tokens burned, the
   capability unlocked). Never a "Why this matters" or "Why you should care"

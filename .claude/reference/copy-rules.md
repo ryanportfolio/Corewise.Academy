@@ -80,6 +80,17 @@ Clear, to the point, plain words. Fewer words beat more words everywhere on the 
 - **No ten-dollar words.** If the editor has to look it up ("andragogy"), it does
   not ship. Everyday phrase first; a term of art only when it is the reader's own
   vocabulary, glossed at first use.
+- **No jargon, no invented coinages** (editor ruling, 2026-07-18). A made-up
+  label ("deliberation dial") or insider word ("colophon") is a defect even when
+  the author finds it charming: the reader has to ask what it means, so it fails.
+  Specific and simple beats unnecessary complexity, every time. The test for any
+  phrase: would a smart reader outside AI tooling have to ask? Then replace it
+  with the plain phrase ("deliberation dial" → "how hard the model thinks").
+- **No walls of text** (editor ruling, 2026-07-18). A dense block gets skimmed
+  and forgotten, so it fails no matter how good the sentences are. Paragraphs
+  run 1-4 sentences; a paragraph past ~60 words needs a reason to exist at that
+  length. Break at each new idea. Let lists, short paragraphs, and white space
+  carry the structure a long block hides.
 - **Never talk down to the reader.** No "adults learn what they can use"-style
   framing that explains the reader to themselves.
 - **Theme never beats clarity.** Decorative labels are welcome only next to plain
