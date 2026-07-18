@@ -232,30 +232,34 @@ function createChandelier(svg, { labels = true } = {}) {
 function initChandelier(host, { hero = false }) {
   const svg = svgRoot(host, 520, 470);
   const update = createChandelier(svg, { labels: !hero });
-  let az = 0.50, vel = 0, target = 0.50;
+  const REST = 0.50;
+  let az = REST, vel = 0;
   update(az);
   const play = prepDraw(svg, { stagger: 10, dur: 900 });
   let drawn = false, raf = null, visible = false, last = null;
-  // Under-damped spring: the orbit leans into the cursor and settles with a
-  // slight sway, like a gust passing through. No per-frame-rate stutter.
-  const STIFF = 36, DAMP = 2 * Math.sqrt(STIFF) * 0.85;
+  // Deterministic breeze: hovering never tracks the cursor. Entering the figure
+  // fires one fixed gust whose direction matches the side you came in from; the
+  // under-damped spring sways the orbit through a few passes and settles it home.
+  // Same entry side, same breeze, every time.
+  // Tuned so one gust reads as: strong sweep (~0.28 rad), one gentle backswing,
+  // at rest in ~3.6s. Simulated deterministically before shipping.
+  const STIFF = 14, DAMP = 2 * Math.sqrt(STIFF) * 0.5, GUST = 2.0;
   const tick = (t) => {
     raf = null;
     const dt = Math.min((last == null ? 16.7 : t - last) / 1000, 0.04);
     last = t;
-    vel += (STIFF * (target - az) - DAMP * vel) * dt;
+    vel += (STIFF * (REST - az) - DAMP * vel) * dt;
     az += vel * dt;
     if (drawn) update(az);
-    if ((Math.abs(target - az) > 0.0004 || Math.abs(vel) > 0.002) && visible) raf = requestAnimationFrame(tick);
+    if ((Math.abs(REST - az) > 0.0004 || Math.abs(vel) > 0.002) && visible) raf = requestAnimationFrame(tick);
     else last = null;
   };
   const kick = () => { if (!raf && drawn && !reduced) raf = requestAnimationFrame(tick); };
-  host.addEventListener('pointermove', (e) => {
+  host.addEventListener('pointerenter', (e) => {
     const r = host.getBoundingClientRect();
-    target = 0.50 + ((e.clientX - r.left) / r.width - 0.5) * 0.55;
+    vel = (e.clientX < r.left + r.width / 2 ? 1 : -1) * GUST;
     kick();
   });
-  host.addEventListener('pointerleave', () => { target = 0.50; kick(); });
   new IntersectionObserver((es) => {
     es.forEach((e) => {
       visible = e.isIntersecting;
