@@ -131,27 +131,27 @@ const faq = [
           <div class="fig ink-prussian" id="fig-corridor" aria-label="Ten pre-trade gates in one-point perspective"></div>
           <div class="gate-panel">
             <p class="gate-readout" id="gate-readout">GATES CLOSED 00 / 10</p>
-            <button class="aw-btn" id="btn-arm">ARM THE CELL · CLOSE GATE 09</button>
+            <button class="aw-btn" id="btn-arm">APPROVE THE TRADE · CLOSE GATE 09</button>
             <div class="confirm-wrap" id="confirm-wrap">
               <input id="input-confirm" type="text" placeholder="TYPE TRANSMIT" autocomplete="off" spellcheck="false" aria-label="Type TRANSMIT to close gate 10" />
-              <button class="aw-btn" id="btn-confirm">CONFIRM · CLOSE GATE 10</button>
+              <button class="aw-btn" id="btn-confirm">SEND THE ORDER · CLOSE GATE 10</button>
             </div>
-            <p class="gate-note">This is the real protocol, miniaturized: no order transmits unless a human
-              arms the exact cell and types the confirmation. Paper account only.</p>
+            <p class="gate-note">This is the real protocol, miniaturized: no order goes out unless a human
+              clicks approve on the exact trade, then types TRANSMIT to send it. Paper account only.</p>
           </div>
           <div class="gatekey">
             <p><b>01</b> DECISION FROM PREVIOUS CLOSED NYSE SESSION</p>
             <p><b>03</b> LEDGER AND BROKER QUANTITIES MUST AGREE</p>
             <p><b>05</b> BUYS CANNOT EXCEED AVAILABLE FUNDS</p>
             <p><b>07</b> STALE GATEWAY FAILS CLOSED</p>
-            <p class="human"><b>09</b> ARM SENTINEL · HUMAN</p>
-            <p class="human"><b>10</b> TYPED CONFIRMATION · HUMAN</p>
+            <p class="human"><b>09</b> A HUMAN APPROVES THE TRADE</p>
+            <p class="human"><b>10</b> A HUMAN TYPES TRANSMIT</p>
           </div>
           <p class="fig-cap"><span class="fig-no">FIG 1</span>Ten pre-trade gates in one-point perspective; all ten
             must close before anything transmits. Six are named in the schedule (the full list is in the
             repo README). The last two belong to a human, which is why this page makes you be one.</p>
-          <div class="fig ink-prussian" id="fig-strata" aria-label="Percentile fear floors for the three live cells"></div>
-          <p class="fig-cap"><span class="fig-no">FIG 2</span>The three live cells in section: each buys only when
+          <div class="fig ink-prussian" id="fig-strata" aria-label="Percentile fear floors for the three live strategies"></div>
+          <p class="fig-cap"><span class="fig-no">FIG 2</span>The three live strategies in section: each buys only when
             its fear reading (Williams VIX Fix vs its own history) rises past the floor.</p>
           <div class="fig ink-prussian" id="fig-ledger" aria-label="69 dated ledger entries"></div>
           <p class="fig-cap"><span class="fig-no">FIG 3</span>69 dated entries in a 219 KB experiment ledger. Kills
@@ -581,7 +581,7 @@ const faq = [
     #input-confirm {
       font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.14em; text-transform: uppercase;
       background: none; border: 1.5px solid var(--line); border-bottom-color: var(--awc); color: var(--ink);
-      padding: 10px 12px; width: 15ch;
+      padding: 10px 12px; width: 18ch;
     }
     #input-confirm:focus { outline: none; border-color: var(--aw-verm); }
     :global(.shake) { animation: aw-shake 0.35s; }
