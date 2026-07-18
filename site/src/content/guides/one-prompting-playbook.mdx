@@ -53,7 +53,8 @@ Claude's guide lands in the same place from the other side. It tells you to soft
 anti-undertriggering language, the "CRITICAL, you MUST use this tool" phrasing that current
 models over-respond to, down to plain "use this tool when." And it warns that these models
 overengineer by default, reaching for extra files and unrequested abstractions, so a minimalism
-instruction earns its place.
+instruction earns its place. Calibrating that language up and down is the whole subject of
+<a href="/guides/stop-shouting-at-the-model/">Stop shouting at the model</a>.
 
 Both diagnoses share a root cause. The emphasis and repetition you learned were compensating for
 models that under-followed instructions. Current models follow them literally and weight an
@@ -68,7 +69,9 @@ cosmetic.
 Reasoning control. OpenAI exposes a numeric ladder, reasoning.effort from none through max, plus
 a reasoning.mode "pro" switch that spends more model work on one request before returning a single
 answer. Claude runs adaptive thinking calibrated by an effort parameter and query complexity,
-with the model deciding depth per turn rather than you selecting a rung.
+with the model deciding depth per turn rather than you selecting a rung. That effort parameter
+doubles as an intelligence dial, which
+<a href="/guides/guardrails-for-long-runs/">Guardrails for hours-long agent runs</a> puts to work.
 
 Tool orchestration. OpenAI's Programmatic Tool Calling lets the model write code that calls tools
 server-side, process several results, and hand back one small structured payload. It's meant for

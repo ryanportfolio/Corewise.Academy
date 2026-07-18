@@ -54,7 +54,8 @@ routine work, and here is the part that changes your intuition: low effort on Fa
 exceed xhigh on prior models. So "cheap and fast" no longer means "dumb." The reflex to reach for
 a bigger model on a hard task is often better answered by leaving the model and raising the
 effort, and the reflex to save money by downgrading the model is often better answered by
-dropping effort on Fable 5 instead.
+dropping effort on Fable 5 instead. For when a bigger model does earn its keep and where more
+effort stops paying off, see <a href="/guides/rent-the-model-own-the-method/">Rent the model, own the method</a>.
 
 ## <span class="sec-no">02</span>The long run lies to you, unless you make it check
 
@@ -84,7 +85,8 @@ see <a href="/guides/give-your-agent-a-memory/">Give your agent a memory</a>.
 
 For checking work, prefer a fresh-context verifier subagent over self-critique. A model reviewing
 its own transcript shares its blind spots; a subagent that reads only the artifact and the
-criteria does not. And if you want the model to send you a verbatim message mid-task, define a
+criteria does not. Keeping the evaluator separate from the worker is the same split behind
+<a href="/guides/automate-the-bottleneck/">Automate the bottleneck, not the busywork</a>. And if you want the model to send you a verbatim message mid-task, define a
 client-side send_to_user tool, then prompt for it explicitly. Defining the tool alone is not
 enough. Fable 5 needs the elicitation, a clear instruction on when and how to call it, or it
 stays silent.

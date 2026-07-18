@@ -67,7 +67,9 @@ a bug, not a matter of taste. A solid line on a killed project is now a factual 
 correct fix, which means an agent can catch it, a reviewer can flag it, and nobody has to win
 an argument about aesthetics. This is what makes the method work with AI in the loop at all.
 Models are mediocre at taste and excellent at rule-following, so convert as much taste as
-possible into rules. The reader never sees the contract as rules; they experience it as
+possible into rules. Turning that taste into instructions a model follows reliably is its own
+craft, covered in <a href="/guides/brief-the-model/">Brief the model like a brilliant new hire</a>.
+The reader never sees the contract as rules; they experience it as
 coherence, the quiet sense that everything on the page is there on purpose. Coherence reads as
 intent, and intent is precisely the thing slop lacks.
 
@@ -85,7 +87,9 @@ or a borrowed effect does not, and zooming in is exactly what a skeptical reader
 When a draft renders, the pull toward "looks good, ship it" is strong and wrong. Schedule at
 least three adversarial passes, each with a distinct lens, and aim them at the rendered output,
 never at the source. Code can be immaculate while the render is broken, and the render is the
-only thing the reader receives.
+only thing the reader receives. Keeping the critic separate from the maker generalizes well past
+design; <a href="/guides/automate-the-bottleneck/">Automate the bottleneck, not the busywork</a>
+argues for separating the evaluator from the worker so nothing grades its own output.
 
 The lenses that earned their keep: the audience lens (a recruiter skimming on a deadline; what
 do they take away, and is it the right thing), the craft lens (alignment, spacing rhythm,
