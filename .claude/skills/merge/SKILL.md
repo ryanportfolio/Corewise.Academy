@@ -62,6 +62,26 @@ gh pr merge <number> --merge
 ### 7. Report
 Confirm the merge landed, give the PR URL, note the branch was kept. If anything blocked it (failing checks, protection, unresolved/ambiguous conflict), report the exact `gh`/`git` output and the reason — never claim success you did not verify.
 
+## Deploy budget: batch the merges
+
+Every merge to `main` triggers a production deploy, and this repo deploys on
+Vercel's free tier: **100 deployments per rolling 24 hours, previews included**
+(hit on 2026-07-18; the error is "Deployment rate limited — retry in 24 hours"
+and the live site silently goes stale while `main` is correct).
+
+So inside Auto-Merge Mode, commit and push continuously but run the
+merge-to-main step on a batch cadence:
+
+- Merge when a coherent chunk of work is done (a whole editorial ruling applied,
+  a feature finished), not once per micro-task. Several small completed tasks
+  waiting together ride one merge.
+- A direct user request to merge, or the end of the session, always flushes the
+  batch immediately.
+- After each merge, check the deploy landed:
+  `gh api repos/<owner>/<repo>/commits/main/status --jq .state`. On `failure`
+  with a rate-limit message, tell the user live is stale and when it clears; do
+  not keep merging micro-batches into a rate-limited window.
+
 ## Why no per-merge confirm
 
 Merging into `main` is outward-facing and hard to fully undo. The single confirmation is **turning the mode on** — that is the explicit, standing authorization for the session. After that, per-merge prompts would defeat the purpose. The safety valves that remain:
@@ -76,6 +96,8 @@ Turn the mode OFF when the user says "stop merge", "stop auto-merge", "normal mo
 
 ## Anti-patterns
 
+- Don't merge once per micro-task — each merge burns a production deploy from a
+  100/day budget; batch completed work (see Deploy budget above).
 - Don't skip the retroactive sweep — "the cycle fires on the next completion" is wrong; activation merges the session's existing completed work too.
 - Don't hold back review-gated PRs from this session after activation — `/merge` is the reviewer's/editor's standing approval.
 - Don't merge mid-task, exploratory, or unverified work — "complete + verified" is the gate.
