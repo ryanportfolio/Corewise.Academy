@@ -43,6 +43,12 @@ which video to ingest.
 - **Cross-link every real overlap.** When the draft touches a topic another guide
   covers, link that guide inline at the mention, title as link text. Run a
   cross-link check against the catalogue before Step 6.
+- **Self-contained, tic-free, provenance-honest.** Every passage must land for a
+  first-time reader with no private context (show the referenced artifact or cut
+  the passage). Sweep the finished draft for word tics: an abstract word repeated
+  across the piece marks sentences to rewrite as concrete statements. Claims
+  about how something was made are facts; methods distilled afterward are
+  disclosed as such. Full rulings: `.claude/reference/copy-rules.md`.
 
 ## Step 1: Get the transcript
 

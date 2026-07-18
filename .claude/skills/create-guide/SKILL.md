@@ -25,6 +25,13 @@ set of readers right now.
   (and the deploy) on any em dash in `site/src`.
 - **Docs are cited inline** as links where a claim leans on them. Frontmatter
   `sources` stays `[]` (that field is for video sources).
+- **Provenance is factual.** Any claim about how something was made is verified
+  like a technical claim; a method distilled after the fact is disclosed as
+  such, never narrated as the recipe that produced the work. When the lesson
+  exists as a usable artifact (a prompt, a skill file, a script), embed it
+  copy-ready instead of describing it; edited material is never labeled
+  verbatim. Full ruling: `.claude/reference/copy-rules.md`, Provenance and
+  artifacts.
 
 ## Step 1: Research the ground truth
 
@@ -131,7 +138,12 @@ that only explains gets an example or gets cut; (7) title check: would a reader
 who has not opened the guide know what they are getting? If not, retitle;
 (8) cross-link check: scan the draft against every existing guide's title and
 description; add an inline link wherever the draft touches a topic another
-guide covers.
+guide covers; (9) self-containment check: every passage lands for a first-time
+reader with no private context; if it only makes sense to someone who has seen
+the artifact it references, show the artifact or cut the passage; (10) word-tic
+sweep: count repeats of abstract nouns and adjectives across the draft ("true",
+"real", "powerful"); a word leaned on repeatedly marks sentences to rewrite as
+concrete statements.
 
 ## Step 5: Verify and open the PR
 

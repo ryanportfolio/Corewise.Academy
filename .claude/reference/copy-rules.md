@@ -112,6 +112,39 @@ Clear, to the point, plain words. Fewer words beat more words everywhere on the 
   function words, never instead of them. "Upon leaving this room, you can" loses
   to "After this guide, you can".
 
+## Provenance and artifacts (editor rulings, 2026-07-18)
+
+From the design-concept guide rewrite: the guide narrated a tidy method as the
+origin of the about page, when the method was actually distilled after the fact.
+
+- **Tell the making the way it happened.** A claim about how something was built
+  is a fact and gets verified like one. A method extracted after the work is
+  presented as extracted afterward, never as the recipe that produced it.
+- **Ship the artifact, not a description of it.** When the lesson exists as a
+  usable file (a prompt, a skill, a config, a script), embed it copy-ready with
+  commentary on why it works. Short artifacts go in a fenced block; long ones
+  get a preview plate with a copy CTA (`site/src/components/SkillCopy.astro` is
+  the pattern). Embedded artifacts obey the site gates: swap em dashes out and
+  disclose the swap, and never label an edited artifact verbatim.
+- **Personal prompts are tidied for print.** The editor's raw working prompts
+  get a light rewrite before publication (wording polish, substance untouched)
+  and the guide discloses it ("tidied for print").
+- **Fenced text blocks: one line per paragraph.** Guide `pre` styling wraps
+  (`pre-wrap`); hard line breaks inside a paragraph render as ragged
+  mid-sentence breaks at every viewport width.
+
+## Self-contained passages, no word tics (editor rulings, 2026-07-18)
+
+- **Every passage lands without private context.** If a paragraph only makes
+  sense to someone who has already seen the artifact it references (the about
+  page, a past session, an internal file), show the thing in the guide or cut
+  the passage. Test: can a first-time reader act on it?
+- **Sweep for word tics.** A word repeated across a draft ("true" 8 times,
+  "truth" 4, "real" 3, in one 900-word guide) means the prose is orbiting an
+  abstraction instead of giving instructions. On the finished draft, count
+  repeats of abstract nouns and adjectives and rewrite the sentences that lean
+  on them into concrete statements.
+
 ## Quotes and titles are copied by hand (2026-07-18)
 
 Guide Chalk lines and pull-quotes are quoted verbatim in `site/src/data/trackNotes.ts`
