@@ -1,0 +1,144 @@
+---
+title: Stop hitting your token limit
+description: 'Your limit is a compute budget: tokens consumed times the model that reads them. Audit where a session spends, trim the context every chat preloads, and send grunt work to cheaper models so the budget lasts the day.'
+track: practice
+level: practitioner
+number: 20
+minutes: 9
+objectives:
+  - 'Audit a Claude setup with /usage and /context, and attribute each cost to one of the two variables: tokens consumed or model used.'
+  - 'Trim the preloaded context tax: unused MCP servers, bloated skill descriptions, and an oversized CLAUDE.md.'
+  - Route repeatable grunt work to the cheapest model that could have done it a year ago, and to zero-token scripts inside skills.
+  - 'Compare the aggressive options (compressed inputs, image-encoded context, harness swaps, local models) by trade-off rather than headline savings.'
+prerequisites:
+  - slug: thinking-on-a-budget
+    note: The output half of this bill. That guide compresses what the model says; this one shrinks everything else.
+sources:
+  - url: https://www.youtube.com/watch?v=SFh6MMe-XcM
+    creator: Austin Marchese
+    video: Paste This Into Claude, Never Hit a Token Limit Again
+    timestamps: ['0:55', '1:14', '2:23', '3:20', '4:28', '7:54', '9:11', '10:56', '13:01']
+    watched: July 2026
+selfCheck:
+  - q: Your subscription limit is not a fixed number of tokens. What is it, and why does that change how you fix it?
+    a: 'It is a compute budget: tokens consumed times the compute cost of the model that processes them. That gives you two independent levers. You can shrink the tokens (context hygiene, compression, shorter preloads) or downshift the model (cheaper models for grunt work), and the biggest wins usually come from moving both.'
+  - q: A fresh chat shows tens of thousands of tokens used before you type a word. Where does that come from, and how do you shrink it?
+    a: 'From everything preloaded into every conversation: MCP server tool definitions, skill names and descriptions, and your CLAUDE.md, which is re-read on every message. Shrink it by deleting MCP servers you do not use, archiving unused skills and shortening the descriptions of the rest, and cutting CLAUDE.md down to how Claude should work with your project, with detail split into files loaded on demand.'
+  - q: What is the minimum viable model rule, and where do you encode it so it applies without you thinking about it?
+    a: If AI could solve the task a year ago, it does not need a frontier model today. Scraping, formatting, summarizing, and fetching all run fine on a small model at a fraction of the compute. Encode the choice in the skill definition, by pinning the model (and forking context when the task needs none), so every future run inherits the routing automatically.
+status: published
+lastUpdated: 2026-07-18
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+
+<Chalk>the bill is tokens times model: every fix moves one of the two</Chalk>
+
+<p class="lede">
+The limit that stops your afternoon is not really a token count. Subscriptions budget compute,
+and compute spent is tokens consumed times the cost of the model that reads them. A heavy model
+re-reading a bloated context burns the budget from both ends at once. That formula is the whole
+strategy: every fix in this guide either shrinks the tokens or downshifts the model, and once you
+see the two variables you can stop guessing about where your afternoon went.
+</p>
+
+<PullQuote
+  quote="Compute budget used equals tokens consumed times model used."
+  creator="Austin Marchese"
+  video="Paste This Into Claude, Never Hit a Token Limit Again"
+  href="https://www.youtube.com/watch?v=SFh6MMe-XcM"
+  timestamp="0:55"
+/>
+
+## <span class="sec-no">01</span>Audit before you optimize
+
+You cannot fix a spend you have not seen. In Claude Code, `/usage` shows how much of your limit
+is gone and a breakdown of what is using it. Two findings show up for almost everyone: a large
+share of usage running above 150K context, and a large share coming from subagent-heavy work.
+Both are token problems, not model problems, so that is where to start.
+
+The second instrument is `/context`, run twice. Mid-conversation, it shows how fast the window
+is filling. In a brand-new chat, it shows something more surprising: everything preloaded before
+you type a word. Tens of thousands of tokens at message zero is common, and that number is your
+minimum spend for every conversation you will ever start.
+
+## <span class="sec-no">02</span>Shrink the tokens
+
+Session habits come first because they cost nothing. Run `/clear` when you switch tasks instead
+of letting an old conversation's context ride along under the new one. Reply while the prompt
+cache is still warm: the discount expires after a few idle minutes, and a cold cache means the
+whole context is re-read at full price. Match the effort setting to the task instead of leaving
+it high for everything. And when the context indicator passes about 60 percent, `/compact` folds
+the history into a short summary rather than dragging every earlier turn into every later one.
+
+Then clean up the preload you found in Section 01. Delete MCP servers you do not use; each one
+loads its tool definitions into every conversation. Archive skills you never invoke and shorten
+the descriptions of the ones you keep, because names and descriptions load at every session
+start. Cut CLAUDE.md hardest of all: it is re-read on every message, so a 4,000-token file taxes
+every exchange. Keep it to how Claude should work with your project, a couple hundred lines at
+most, with detail split into files loaded on demand. That thin-kernel discipline is the subject
+of <a href="/guides/firmware-not-folklore/">Firmware, not folklore</a>.
+
+Output is the same bill from the other side: every word the model says back to you is billed and
+then re-read on every following turn. <a href="/guides/thinking-on-a-budget/">Thinking on a budget</a>
+covers that half, from a one-line "be concise" to a full compression contract.
+
+## <span class="sec-no">03</span>Downshift the model
+
+The second variable is the model itself, and the rule of thumb is blunt: if AI could solve the
+task a year ago, it does not need a frontier model today. Scraping, summarizing, formatting,
+fetching files. Running those on your most expensive model is hiring the law firm's senior
+partner to do the photocopying; the partner should lead the case while junior associates carry
+the grunt work at a fraction of the rate.
+
+<PullQuote
+  quote="If AI could solve this task a year ago, you don't need a frontier model."
+  creator="Austin Marchese"
+  video="Paste This Into Claude, Never Hit a Token Limit Again"
+  href="https://www.youtube.com/watch?v=SFh6MMe-XcM"
+  timestamp="9:11"
+/>
+
+The way to apply this without re-deciding every time is to encode it in your skills. A skill
+definition can pin the model it runs on, so the minimum viable model becomes a one-time decision
+that every future run inherits. It can also fork its context, starting the task on a fresh
+thread when it needs nothing from the conversation, which cuts the token side at the same time.
+The economics of this orchestrator-and-workers split, and how to route by taste as well as cost,
+are the subject of <a href="/guides/rent-the-model-own-the-method/">Rent the model, own the method</a>.
+
+The floor below the cheapest model is no model. A script runs the same way every time, costs
+zero tokens, and never hallucinates, so any step of a skill that is deterministic (renaming,
+parsing, moving files, formatting output) belongs in code, with the model kept for the parts
+that need judgment.
+
+## <span class="sec-no">04</span>The aggressive aisle, priced honestly
+
+Past the habits and the routing sit heavier interventions, each with a real trade-off attached.
+Input compression tools such as RTK sit between your commands and the model, deterministically
+stripping boilerplate and repetition from tool output before Claude reads it; the project claims
+60 to 90 percent savings on the text it filters, and the trade is another moving part in your
+pipeline. Stranger, there is pxpipe, which renders bulky context as PNG images because dense
+text packs about three characters per image token against one per text token. It is genuinely
+clever and genuinely lossy: exact strings can come back garbled, and the pricing quirk it
+exploits may not survive.
+
+Further out: routing execution-heavy work to a second harness with its own budget, swapping
+Claude Code's backing model for a cheaper provider via environment variables, or running an open
+model on your own hardware. Each buys capacity and sells something you may care about, whether
+model quality, data governance, or your evenings spent maintaining a server. The honest reading
+of this aisle is an ordering: exhaust the free fixes in Sections 02 and 03 first, because they
+attack the same two variables without adding a single new failure mode.
+
+<Exercise>
+1. Run `/usage` and write down the top item under what is using your limits. Then run
+   `/context` in a brand-new chat and write down the preloaded total. These two numbers are
+   your baseline.
+2. Do the cleanup pass: delete MCP servers you have not used this month, archive unused skills
+   and shorten the remaining descriptions, and cut CLAUDE.md toward a couple hundred lines with
+   detail moved to on-demand files. Re-run `/context` and compare against the baseline.
+3. Pick one task you repeat weekly that AI could already handle a year ago. Turn it into a
+   skill that pins the smallest model that works, with any deterministic step moved into a
+   script. Run it once and check the output against what the frontier model produced.
+</Exercise>
