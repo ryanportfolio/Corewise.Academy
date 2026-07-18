@@ -2,41 +2,663 @@
 import Base from '../layouts/Base.astro';
 ---
 
-<Base title="About · CoreWise Academy">
-  <main>
-    <p class="mono-label accent">About the Academy</p>
-    <h1 class="display">A publication, not a feed.</h1>
+<Base
+  title="About · Ryan Allen · Approved Works"
+  description="Ryan Allen builds and ships AI systems end to end. Four live systems, drawn to drafting convention: corewise.video, kinefractal.com, truenote.org, willaicite.com."
+>
+  <div id="aw">
+    <!-- A-000 · cover -->
+    <section class="sheet hero" data-sheet="A-000">
+      <div class="hero-grid">
+        <div class="hero-mast">
+          <p class="aw-kicker">APPROVED WORKS · DRAWING SET A · WEB EDITION</p>
+          <h1 class="hero-name">Ryan Allen</h1>
+          <div class="hero-rule"></div>
+          <p class="hero-line">AI systems, built and shipped end to end. Four of them live.</p>
+          <p class="hero-links">
+            <a href="https://corewise.video">corewise.video</a> ·
+            <a href="https://kinefractal.com">kinefractal.com</a> ·
+            <a href="https://truenote.org">truenote.org</a> ·
+            <a href="https://willaicite.com">willaicite.com</a><br />
+            <a class="gh" href="https://github.com/ryanportfolio">github.com/ryanportfolio</a>
+          </p>
+          <p class="hero-hint">The chandelier is live: move your pointer across it. Every figure on this
+            page is projected 3D geometry, computed in your browser from the same math that drew the
+            print edition.</p>
+        </div>
+        <div class="hero-fig" id="fig-hero" aria-label="Six model strands converging to one synthesis, drawn in true perspective"></div>
+      </div>
+    </section>
 
-    <div class="prose">
-      <p>
-        CoreWise Academy is an editorial publication about working with AI. Every guide is an
-        original synthesis, written from multiple sources, structured to teach. Never a transcript
-        summary, never a repost. Guides are charted into five fixed constellations, each with three
-        shelves: Broad for the naked eye, Practitioner for the telescope, Deep for the observatory.
-        Empty shelves stay visible. That is the roadmap, honestly drawn.
-      </p>
+    <!-- A-001 · index + line law -->
+    <section class="sheet" data-sheet="A-001" id="sec-a001">
+      <header class="sheet-head">
+        <div>
+          <p class="sheet-no">A-001</p>
+          <h2 class="sheet-title">INDEX OF SHEETS · LINE CONVENTIONS · HOLDINGS</h2>
+        </div>
+        <p class="sheet-sub">READ THIS SHEET FIRST</p>
+      </header>
 
-      <h2>The editorial bar</h2>
-      <p>
-        A video qualifies as a source only if the editor personally learned something from it. Not
-        "found it", not "skimmed it": learned from it. Every guide credits its sources by creator,
-        video, and timestamp, and quotes are short and attributed. Merging a guide into the atlas is
-        an editorial act: nothing publishes without review.
-      </p>
+      <ol class="idx">
+        <li><a href="#sec-a100"><span class="idx-no">A-100</span><span class="idx-name">CoreWise · six-model synthesis</span><span class="idx-live"><span class="ext">corewise.video ↗</span> LIVE</span></a></li>
+        <li><a href="#sec-a200"><span class="idx-no">A-200</span><span class="idx-name">KineFractal · deterministic signal engine</span><span class="idx-live"><span class="ext">kinefractal.com ↗</span> LIVE</span></a></li>
+        <li><a href="#sec-a300"><span class="idx-no">A-300</span><span class="idx-name">Truenote · cited answers or refusal</span><span class="idx-live"><span class="ext">truenote.org ↗</span> LIVE</span></a></li>
+        <li><a href="#sec-a400"><span class="idx-no">A-400</span><span class="idx-name">WillAICite · deterministic GEO audit</span><span class="idx-live"><span class="ext">willaicite.com ↗</span> LIVE</span></a></li>
+        <li><a href="#sec-a500"><span class="idx-no">A-500</span><span class="idx-name">Method of construction</span><span class="idx-tag">METHOD</span></a></li>
+        <li><a href="#sec-a600"><span class="idx-no">A-600</span><span class="idx-name">Ancillary works</span><span class="idx-tag">TOOLING</span></a></li>
+        <li><a href="#sec-a999"><span class="idx-no">A-999</span><span class="idx-name">Colophon</span><span class="idx-tag">END OF SET</span></a></li>
+      </ol>
 
-      <h2>Founder &amp; editor</h2>
-      <p>
-        CoreWise Academy is founded and edited by Ryan. There is no staff, no content team, no
-        growth department. One editor, a strict bar, and an atlas that grows only as fast as real
-        learning does.
-      </p>
+      <h3 class="sec-head">LINE CONVENTIONS · BINDING FOR EVERY SHEET · HOVER TO AUDIT</h3>
+      <div class="legend">
+        <button class="legend-row" data-legend="solid">
+          <svg viewBox="0 0 120 12" aria-hidden="true"><line x1="4" y1="6" x2="116" y2="6" class="lg-solid" /></svg>
+          <span>SOLID · SHIPPED, LIVE, VERIFIED</span>
+        </button>
+        <button class="legend-row" data-legend="dashed">
+          <svg viewBox="0 0 120 12" aria-hidden="true"><line x1="4" y1="6" x2="116" y2="6" class="lg-dashed" /></svg>
+          <span>DASHED · PRUNED, KILLED, RETIRED</span>
+        </button>
+        <button class="legend-row" data-legend="phantom">
+          <svg viewBox="0 0 120 12" aria-hidden="true"><line x1="4" y1="6" x2="116" y2="6" class="lg-phantom" /></svg>
+          <span>PHANTOM · UNRELEASED, IN PROGRESS</span>
+        </button>
+      </div>
+
+      <h3 class="sec-head">HOLDINGS · THE TEN-SECOND VERSION</h3>
+      <div class="hold">
+        <div class="hold-cell"><p class="hold-big" data-count="6">6</p><p class="hold-k">MODELS IN PARALLEL · 1,800+ REGISTERED USERS · COREWISE.VIDEO</p></div>
+        <div class="hold-cell"><p class="hold-big" data-count="1227">1,227</p><p class="hold-k">COMMITS · 519 MERGED PRS · PAPER TRADING ONLY</p></div>
+        <div class="hold-cell"><p class="hold-big funnel">40+40→8→1</p><p class="hold-k">RETRIEVAL FUNNEL · CITED ANSWER OR EXPLICIT REFUSAL</p></div>
+        <div class="hold-cell"><p class="hold-big" data-count="8">8</p><p class="hold-k">AUDIT DIMENSIONS · 0 LLM CALLS · SPEC TO LIVE IN A DAY</p></div>
+      </div>
+
+      <p class="body-block">Four live systems, drawn to drafting convention because that is how they were
+        built: specified, gated, checked, and approved. The agents drafted. An independent agent with
+        fresh context checked. I approved. The title block pinned to the bottom of this page is true of
+        every sheet on it.</p>
+    </section>
+
+    <!-- A-100 · CoreWise -->
+    <section class="sheet" data-sheet="A-100" id="sec-a100">
+      <header class="sheet-head ink-vermilion">
+        <div>
+          <p class="sheet-no">A-100</p>
+          <h2 class="sheet-title">COREWISE · SYNTHESIS CHANDELIER</h2>
+        </div>
+        <p class="sheet-sub">MULTI-MODEL SYNTHESIS · LIVE</p>
+      </header>
+      <div class="cols">
+        <div class="main">
+          <p class="lede">One URL goes in. Six models read it in parallel. Out comes a synthesis: where
+            they agree, where they split, and what only one of them saw.</p>
+          <div class="fig ink-vermilion" id="fig-chandelier" aria-label="The synthesis chandelier, six strands converging to one apex"></div>
+          <p class="fig-cap"><span class="fig-no">FIG 1</span>Six model strands descend from one source, cross the
+            ring, and converge to one synthesis. Outputs are weight-graded: heavy convergence, medium
+            divergence, fine for what only one model saw. True perspective; stroke weight falls with depth.
+            This one rebuilds its projection as your pointer moves the camera.</p>
+          <div class="fig-row">
+            <div class="fig ink-vermilion" id="fig-disc" aria-label="108 engraved spokes, one per hundred commits"></div>
+            <p class="fig-cap narrow"><span class="fig-no">FIG 2</span>108 engraved spokes, one per 100 commits:
+              ~10.8k GitHub-attributed commits across ~7 months. Every ninth spoke is cut heavier, so the
+              twelve groups of nine can be counted by eye. Watch it count itself in.</p>
+          </div>
+        </div>
+        <aside class="rail ink-vermilion">
+          <p class="rail-head">COREWISE</p>
+          <a class="rail-url" href="https://corewise.video">corewise.video ↗</a>
+          <div class="rail-rule"></div>
+          <dl>
+            <dt>STATUS</dt><dd>LIVE · VERIFIED REACHABLE</dd>
+            <dt>MODELS IN PARALLEL</dt><dd>6</dd>
+            <dt>REGISTERED USERS</dt><dd>1,800+</dd>
+            <dt>COMMITS</dt><dd>~10.8K / ~7 MO</dd>
+            <dt>SURFACES</dt><dd>WEB · MOBILE (EXPO) · DESKTOP (TAURI) · 2 BROWSER EXTS · MCP SERVER</dd>
+            <dt>BILLING / EXPORT</dt><dd>STRIPE · NOTION / PDF / TTS</dd>
+          </dl>
+          <p class="rail-note">Six models because one model alone lies confidently. Where they agree I
+            trust it more. Where they split, that's usually the interesting part.</p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- A-200 · KineFractal -->
+    <section class="sheet" data-sheet="A-200" id="sec-a200">
+      <header class="sheet-head ink-prussian">
+        <div>
+          <p class="sheet-no">A-200</p>
+          <h2 class="sheet-title">KINEFRACTAL · TEN-GATE CORRIDOR</h2>
+        </div>
+        <p class="sheet-sub">DETERMINISTIC SIGNAL ENGINE · LIVE · PAPER</p>
+      </header>
+      <div class="cols">
+        <div class="main">
+          <p class="lede">It buys broad-market fear and trims into strength. One engine produces every
+            backtest and the nightly public signal. Ten gates stand between signal and order, and on this
+            page the last two are yours to operate.</p>
+          <div class="fig ink-prussian" id="fig-corridor" aria-label="Ten pre-trade gates in one-point perspective"></div>
+          <div class="gate-panel">
+            <p class="gate-readout" id="gate-readout">GATES CLOSED 00 / 10</p>
+            <button class="aw-btn" id="btn-arm">ARM THE CELL · CLOSE GATE 09</button>
+            <div class="confirm-wrap" id="confirm-wrap">
+              <input id="input-confirm" type="text" placeholder="TYPE TRANSMIT" autocomplete="off" spellcheck="false" aria-label="Type TRANSMIT to close gate 10" />
+              <button class="aw-btn" id="btn-confirm">CONFIRM · CLOSE GATE 10</button>
+            </div>
+            <p class="gate-note">This is the real protocol, miniaturized: no order transmits unless a human
+              arms the exact cell and types the confirmation. Paper account only.</p>
+          </div>
+          <div class="gatekey">
+            <p><b>01</b> DECISION FROM PREVIOUS CLOSED NYSE SESSION</p>
+            <p><b>03</b> LEDGER AND BROKER QUANTITIES MUST AGREE</p>
+            <p><b>05</b> BUYS CANNOT EXCEED AVAILABLE FUNDS</p>
+            <p><b>07</b> STALE GATEWAY FAILS CLOSED</p>
+            <p class="human"><b>09</b> ARM SENTINEL · HUMAN</p>
+            <p class="human"><b>10</b> TYPED CONFIRMATION · HUMAN</p>
+          </div>
+          <p class="fig-cap"><span class="fig-no">FIG 1</span>Ten pre-trade gates in one-point perspective; all ten
+            must close before anything transmits. Six are named in the schedule (the full list is in the
+            repo README). The last two belong to a human, which is why this page makes you be one.</p>
+          <div class="fig ink-prussian" id="fig-strata" aria-label="Percentile fear floors for the three live cells"></div>
+          <p class="fig-cap"><span class="fig-no">FIG 2</span>The three live cells in section: each buys only when
+            its fear reading (Williams VIX Fix vs its own history) rises past the floor.</p>
+          <div class="fig ink-prussian" id="fig-ledger" aria-label="69 dated ledger entries"></div>
+          <p class="fig-cap"><span class="fig-no">FIG 3</span>69 dated entries in a 219 KB experiment ledger. Kills
+            logged beside wins, and they stay in the book.</p>
+        </div>
+        <aside class="rail ink-prussian">
+          <p class="rail-head">KINEFRACTAL</p>
+          <a class="rail-url" href="https://kinefractal.com">kinefractal.com ↗</a>
+          <div class="rail-rule"></div>
+          <dl>
+            <dt>STATUS</dt><dd>LIVE · NIGHTLY EOD SIGNALS</dd>
+            <dt>COMMITS / PRS</dt><dd>1,227 · 519 MERGED / ~1 MO</dd>
+            <dt>TESTS</dt><dd>~600 ACROSS 54 FILES</dd>
+            <dt>LEDGER</dt><dd>219 KB · 69 DATED ENTRIES</dd>
+            <dt>PIPELINE</dt><dd>CRON → PYTHON ENGINE → POSTGRES → PUBLIC DASHBOARD</dd>
+          </dl>
+          <p class="rail-boxed">IBKR PAPER ACCOUNT ONLY. NOT REAL-MONEY TRADING. BACKTESTS ARE HYPOTHETICAL.</p>
+          <p class="rail-note">The point is the discipline, not a returns pitch. Nothing transmits unless
+            I arm it by hand.</p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- A-300 · Truenote -->
+    <section class="sheet" data-sheet="A-300" id="sec-a300">
+      <header class="sheet-head ink-viridian">
+        <div>
+          <p class="sheet-no">A-300</p>
+          <h2 class="sheet-title">TRUENOTE · RETRIEVAL CONFLUENCE</h2>
+        </div>
+        <p class="sheet-sub">RAG FOR LIVE CALLS · LIVE · PUBLIC REPO</p>
+      </header>
+      <div class="cols">
+        <div class="main">
+          <p class="lede">Built for call-center reps mid-call: every answer carries a clickable citation,
+            or the system refuses out loud. Never a guess. Drag the confidence down and watch it refuse.</p>
+          <div class="fig ink-viridian" id="fig-confluence" aria-label="Eighty retrieval filaments narrowing to one cited answer"></div>
+          <div class="conf-panel">
+            <label for="conf-slider" class="conf-label">RERANK CONFIDENCE</label>
+            <input id="conf-slider" type="range" min="0" max="1" step="0.01" value="0.62" />
+            <p class="conf-readout" id="conf-readout"></p>
+          </div>
+          <p class="fig-cap"><span class="fig-no">FIG 1</span>80 candidate filaments, 40 vector and 40 BM25, flow to
+            the rerank portal in dimetric projection. Eight pass at double weight; one leaves as the cited
+            answer. Below the 0.30 gate the answer path goes dark and REFUSES lights, because on weak
+            retrieval the LLM is never called at all. The refusal branch is drawn solid: refusing is
+            shipped behavior.</p>
+          <div class="fig-row">
+            <div class="fig ink-viridian" id="fig-tally" aria-label="43 test files tallied"></div>
+          </div>
+        </div>
+        <aside class="rail ink-viridian">
+          <p class="rail-head">TRUENOTE</p>
+          <a class="rail-url" href="https://truenote.org">truenote.org ↗</a>
+          <div class="rail-rule"></div>
+          <dl>
+            <dt>STATUS</dt><dd>LIVE · VERIFIED REACHABLE</dd>
+            <dt>PUBLIC REPO</dt><dd><a href="https://github.com/ryanportfolio/Truenote">github.com/ryanportfolio/Truenote</a></dd>
+            <dt>RETRIEVAL</dt><dd>VECTOR 40 + BM25 40 → RERANK 8 → 1</dd>
+            <dt>TEST FILES</dt><dd>43 (VITEST)</dd>
+            <dt>ROLES</dt><dd>4-TIER · SERVER-SIDE TENANT SCOPING</dd>
+            <dt>EVAL</dt><dd>ANSWER ACC · CITATION ACC · REFUSAL RATE · P50/P95</dd>
+          </dl>
+          <p class="rail-note">A guess during a live call is worse than no answer. So refusing correctly
+            counts as a score here, not an error.</p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- A-400 · WillAICite -->
+    <section class="sheet" data-sheet="A-400" id="sec-a400">
+      <header class="sheet-head ink-ochre">
+        <div>
+          <p class="sheet-no">A-400</p>
+          <h2 class="sheet-title">WILLAICITE · PROOF OF DETERMINISM</h2>
+        </div>
+        <p class="sheet-sub">GEO AUDIT · LIVE · SPEC TO PRODUCTION IN A DAY</p>
+      </header>
+      <div class="cols">
+        <div class="main">
+          <p class="lede">SEO gets you listed. GEO gets you quoted. It scores whether AI answer engines
+            can access, extract, and quote a page. The audit deliberately contains no AI, and you can
+            prove it here: run it again.</p>
+          <div class="fig ink-ochre" id="fig-seals" aria-label="Two identical audit seals with zero displacement between runs"></div>
+          <div class="seal-panel">
+            <button class="aw-btn" id="btn-run">RUN THE AUDIT AGAIN</button>
+            <p class="seal-meter" id="seal-meter"></p>
+          </div>
+          <p class="fig-cap"><span class="fig-no">FIG 1</span>The same URL, audited twice. The seals are the same
+            drawing because the score is the same number: rule-based checks, no LLM calls, identical
+            input, identical output. Every press of the button re-derives the right seal from scratch and
+            hashes its geometry. The hash never changes. Dimensions I to VIII: AI crawler access,
+            renderability, answer-readiness, topical focus &amp; metadata, evidence density, structured
+            data, freshness, entity / E-E-A-T.</p>
+          <div class="fig ink-ochre" id="fig-daybar" aria-label="Timeline of one day from spec to live with 22 PR ticks"></div>
+          <p class="fig-cap"><span class="fig-no">FIG 2</span>One day, drawn to scale of itself: spec in the morning,
+            live the same day. Each tick is one of 22+ PRs merged through claude/* branches, all through
+            the human merge gate.</p>
+          <div class="fig ink-ochre" id="fig-rings" aria-label="Three concentric SSRF guards around the hosted fetcher"></div>
+          <p class="fig-cap"><span class="fig-no">FIG 3</span>The hosted fetcher inside its three guards. Plus
+            politeness: robots.txt respected, a ten-fetch cap, "could not verify" over guessing.</p>
+        </div>
+        <aside class="rail ink-ochre">
+          <p class="rail-head">WILLAICITE</p>
+          <a class="rail-url" href="https://willaicite.com">willaicite.com ↗</a>
+          <div class="rail-rule"></div>
+          <dl>
+            <dt>STATUS</dt><dd>LIVE · VERIFIED REACHABLE</dd>
+            <dt>SCORED DIMENSIONS</dt><dd>8</dd>
+            <dt>LLM CALLS IN AUDIT PATH</dt><dd>0 · DETERMINISTIC BY DESIGN</dd>
+            <dt>SPEC → LIVE</dt><dd>SAME DAY · 22+ PRS MERGED</dd>
+            <dt>FETCHER</dt><dd>SSRF-GUARDED · RATE-LIMITED</dd>
+          </dl>
+          <p class="rail-note">And no, the audit isn't "AI-powered." It's deterministic on purpose.
+            That's the whole point of a score you can trust.</p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- A-500 · Method -->
+    <section class="sheet" data-sheet="A-500" id="sec-a500">
+      <header class="sheet-head">
+        <div>
+          <p class="sheet-no">A-500</p>
+          <h2 class="sheet-title">METHOD OF CONSTRUCTION · STEMMA OF REVIEW</h2>
+        </div>
+        <p class="sheet-sub">HOW EVERY SHEET IN THIS SET GOT BUILT</p>
+      </header>
+      <div class="cols">
+        <div class="main">
+          <p class="lede">I ship with AI agents as the workforce. And a builder never grades its own work.</p>
+          <div class="fig" id="fig-stemma" aria-label="The sixteen-agent design workflow drawn as a stemma"></div>
+          <p class="fig-cap"><span class="fig-no">FIG 1</span>The 16-agent design workflow that chose
+            kinefractal.com's production architecture, every agent numbered: five code readers and four
+            web researchers feed three independent proposals; a three-lens judge panel scores them; one
+            agent synthesizes. Then the claims were re-verified by hand (the node in the human accent)
+            before production.</p>
+        </div>
+        <aside class="rail">
+          <p class="rail-head">THE METHOD</p>
+          <div class="rail-rule"></div>
+          <dl>
+            <dt>WORKFORCE</dt><dd>AI AGENTS</dd>
+            <dt>REVIEW</dt><dd>INDEPENDENT AGENT, FRESH CONTEXT</dd>
+            <dt>MERGE</dt><dd>HUMAN GATE · ALWAYS</dd>
+            <dt>PROCESS</dt><dd>CAN'T-DO → CAN-DO → CHEAPER AND FASTER → IMPROVE THE HARNESS → AUDIT THE OUTPUT → PRUNE WHAT DOESN'T HOLD UP → JUDGE RESULTS AND STUDY LOGS</dd>
+          </dl>
+          <p class="rail-note">I don't vibe-code and hope: PRs get reviewed by independent AI agents with
+            fresh context.</p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- A-600 · Ancillary works -->
+    <section class="sheet" data-sheet="A-600" id="sec-a600">
+      <header class="sheet-head">
+        <div>
+          <p class="sheet-no">A-600</p>
+          <h2 class="sheet-title">ANCILLARY WORKS · TOOLING &amp; WORKS IN PROGRESS</h2>
+        </div>
+        <p class="sheet-sub">THE SHOP THAT BUILDS THE SHIPS</p>
+      </header>
+      <div class="cols">
+        <div class="main">
+          <div class="fig-row">
+            <div>
+              <div class="fig" id="fig-skills" aria-label="34 skill cells, one per skill"></div>
+              <p class="fig-cap narrow"><span class="fig-no">FIG 1</span><span id="skill-count">0</span> cells, one
+                per skill, counted from the repo tree.</p>
+            </div>
+            <div class="side-copy">
+              <h3 class="sec-head">AI-FIRMWARE</h3>
+              <p class="body-block small">A self-syncing template: an always-loaded kernel of rules, 34
+                on-demand skills, committed memory, and session hooks that catch drift. One source of
+                truth for two agent runtimes. Versioned plugin, v1.1.1.</p>
+              <p class="mono-link"><a href="https://github.com/ryanportfolio/AI-Firmware">github.com/ryanportfolio/AI-Firmware ↗</a></p>
+            </div>
+          </div>
+          <h3 class="sec-head">LOCAL-CPU-ONLY-PTT</h3>
+          <div class="fig" id="fig-ptt" aria-label="Offline dictation pipeline inside a boundary box"></div>
+          <p class="fig-cap"><span class="fig-no">FIG 2</span>Offline push-to-talk dictation for Windows:
+            microphone, voice activity detection, Whisper on CPU only, clipboard. The boundary box is the
+            feature: no cloud, no network path, nothing leaves the machine.
+            <a href="https://github.com/ryanportfolio/Local-CPU-only-PTT">Public repo ↗</a></p>
+          <h3 class="sec-head">GITHELP</h3>
+          <div class="fig" id="fig-githelp" aria-label="Discussion-scouting pipeline with a normally-open human switch"></div>
+          <div class="go-panel"><button class="aw-btn" id="btn-go">GIVE THE HUMAN GO</button></div>
+          <p class="fig-cap"><span class="fig-no">FIG 3</span>A workspace that scouts GitHub Discussions, ranks
+            what's answerable, reads the full thread, and drafts a verified answer. The posting switch is
+            normally open: nothing goes to GitHub without an explicit human go, same turn. Yours to flip,
+            here only.</p>
+          <div class="fig-row">
+            <div class="fig" id="fig-pixelswarm" aria-label="PixelSwarm drawn entirely in phantom line"></div>
+            <div class="side-copy">
+              <h3 class="sec-head">PIXELSWARM</h3>
+              <p class="fig-cap"><span class="fig-no">FIG 4</span>A desktop survivors-like in Tauri 2 + React with a
+                Rust/Steamworks bridge, ~37k lines of game code. Unreleased, so it is drawn entirely in
+                phantom line, per the conventions on A-001. The swarm drifts anyway.</p>
+            </div>
+          </div>
+        </div>
+        <aside class="rail">
+          <p class="rail-head">ANCILLARY</p>
+          <div class="rail-rule"></div>
+          <dl>
+            <dt>AI-FIRMWARE</dt><dd>PUBLIC · PLUGIN v1.1.1 · 34 SKILLS</dd>
+            <dt>LOCAL-CPU-ONLY-PTT</dt><dd>PUBLIC · OFFLINE · CPU-ONLY WHISPER</dd>
+            <dt>GITHELP</dt><dd>PRIVATE · HUMAN-GO GATE</dd>
+            <dt>PIXELSWARM</dt><dd>UNRELEASED · PHANTOM LINE</dd>
+          </dl>
+          <p class="rail-note">None of these are products. They're the tooling that makes the products
+            shippable.</p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- A-999 · Colophon -->
+    <section class="sheet last" data-sheet="A-999" id="sec-a999">
+      <header class="sheet-head">
+        <div>
+          <p class="sheet-no">A-999</p>
+          <h2 class="sheet-title">COLOPHON · HOW THIS PAGE WAS DRAWN</h2>
+        </div>
+        <p class="sheet-sub">END OF SET</p>
+      </header>
+      <div class="cols">
+        <div class="main">
+          <p class="body-block">This page was built the same way the systems on it were built. A locked
+            fact sheet first: every number traced to a verified catalogue before a single line was drawn.
+            Then three competing art directions from independent AI agents, scored by a three-lens judge
+            panel (a recruiter's eye, a book designer's eye, and one agent whose only job was hunting
+            AI-generated design tells). Then the build, then the review passes.</p>
+          <p class="body-block">Every figure is computed geometry: real 3D to 2D projection math running
+            in your browser, emitted as vectors. The chandelier is a true perspective camera you steer.
+            The corridor is one-point perspective with the human gates wired to your hand. The confluence
+            is dimetric axonometric with a live confidence gate. Where a count is drawn, the count is the
+            fact. There is also a <a href="https://github.com/ryanportfolio">print edition</a>: a 9-sheet
+            vector PDF of this same set, built by the same locked facts and audited by a script that
+            recounts every drawn mark.</p>
+          <h3 class="sec-head">REVISIONS</h3>
+          <table class="rev">
+            <thead><tr><th>REV</th><th>DESCRIPTION</th><th>DATE</th></tr></thead>
+            <tbody>
+              <tr><td>△1</td><td>DRAFTED · AI AGENTS, THREE COMPETING DIRECTIONS</td><td>2026-07-17</td></tr>
+              <tr><td>△2</td><td>CHECKED · INDEPENDENT AGENTS, FRESH CONTEXT</td><td>2026-07-17</td></tr>
+              <tr><td>△3</td><td>REVISED · EVERY COUNT RE-AUDITED AGAINST SOURCE</td><td>2026-07-17</td></tr>
+              <tr><td>△4</td><td>APPROVED · R. ALLEN</td><td>2026-07-17</td></tr>
+              <tr><td>△5</td><td>WEB EDITION · THE SET LEARNS TO MOVE</td><td>2026-07-18</td></tr>
+            </tbody>
+          </table>
+          <h3 class="sec-head">THE WORKS, ONE MORE TIME</h3>
+          <p class="works">
+            <a href="https://corewise.video">corewise.video</a> · multi-model synthesis, 1,800+ registered users<br />
+            <a href="https://kinefractal.com">kinefractal.com</a> · nightly signals, paper only, every gate drawn on A-200<br />
+            <a href="https://truenote.org">truenote.org</a> · cited answers or refusal, never a guess<br />
+            <a href="https://willaicite.com">willaicite.com</a> · deterministic GEO audit, spec to live in a day<br />
+            <a href="https://github.com/ryanportfolio">github.com/ryanportfolio</a> · the rest of the shop
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- pinned title block -->
+    <div class="tb" role="contentinfo" aria-label="Drawing title block">
+      <span class="tb-cell"><span class="tb-k">PROJECT</span>RYAN ALLEN · APPROVED WORKS · SET A</span>
+      <span class="tb-cell"><span class="tb-k">SHEET</span><span id="tb-sheet">A-000</span></span>
+      <span class="tb-cell tb-zonecell"><span class="tb-k">POINTER</span><span id="tb-zone"></span></span>
+      <span class="tb-cell wide"><span class="tb-k">DRAWN BY</span>AI AGENTS</span>
+      <span class="tb-cell wide"><span class="tb-k">CHECKED BY</span>INDEPENDENT AGENT, FRESH CONTEXT</span>
+      <span class="tb-cell"><span class="tb-k">APPROVED</span><span class="tb-approved">R. ALLEN</span></span>
     </div>
-  </main>
+  </div>
+
+  <script>
+    import { boot } from '../scripts/about-plates.js';
+    boot();
+  </script>
 
   <style>
-    main { max-width: calc(var(--measure) + 2 * var(--s-4)); margin: 0 auto; padding: var(--s-8) var(--s-4) var(--s-12); }
-    h1 { font-family: var(--font-display); font-size: clamp(2.4rem, 6vw, var(--text-3xl)); margin: var(--s-2) 0 var(--s-4); }
-    .prose p { margin-bottom: var(--s-3); }
-    .prose h2 { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 400; margin: var(--s-6) 0 var(--s-2); }
+    /* ============================================================
+       Approved Works · drawing-set language on Academy paper.
+       Scoped tokens: chapter inks tuned for day and night themes.
+       ============================================================ */
+    #aw {
+      --awc: var(--ink);                 /* carbon key */
+      --awg: var(--ink-mute);            /* graphite */
+      --awf: var(--line);                /* faint construction */
+      --aw-verm: #b23a24;
+      --aw-prus: #2c4e71;
+      --aw-viri: #33685a;
+      --aw-ochr: #a0731f;
+      --aw-sepia: #7c5c43;
+      position: relative;
+      padding-bottom: 64px;
+    }
+    :global([data-theme='night']) #aw {
+      --aw-verm: #e0765c;
+      --aw-prus: #85a5cd;
+      --aw-viri: #74b39a;
+      --aw-ochr: #d2a24e;
+      --aw-sepia: #bb9878;
+    }
+
+    .sheet {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: var(--s-8) var(--s-4) var(--s-6);
+      border-bottom: 1px solid var(--line);
+      position: relative;
+    }
+    .sheet.last { border-bottom: 0; }
+
+    /* ---- hero ---- */
+    .hero { padding-top: var(--s-6); }
+    .hero-grid { display: grid; grid-template-columns: minmax(300px, 1fr) minmax(320px, 520px); gap: var(--s-4); align-items: center; }
+    .aw-kicker { font-family: var(--font-mono); font-weight: 500; font-size: var(--text-2xs); letter-spacing: 0.24em; color: var(--awg); }
+    .hero-name { font-family: var(--font-display); font-weight: 400; font-size: clamp(3rem, 7vw, var(--text-4xl)); line-height: 1.02; margin-top: var(--s-2); }
+    .hero-rule { width: 120px; height: 2px; background: var(--awc); margin: var(--s-3) 0; }
+    .hero-line { font-family: var(--font-body); font-size: var(--text-md); max-width: 26ch; }
+    .hero-links { font-family: var(--font-mono); font-size: var(--text-xs); margin-top: var(--s-2); line-height: 2; }
+    .hero-links a { color: var(--ink-soft); text-decoration-color: var(--line); }
+    .hero-links a:hover { color: var(--accent-deep); }
+    .hero-hint { font-family: var(--font-body); font-style: italic; font-size: var(--text-sm); color: var(--aw-sepia); max-width: 40ch; margin-top: var(--s-3); }
+    .hero-fig { min-height: 340px; cursor: crosshair; }
+
+    /* ---- sheet head ---- */
+    .sheet-head { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--s-2); border-bottom: 1.5px solid var(--awc); padding-bottom: var(--s-2); margin-bottom: var(--s-4); }
+    .sheet-no { font-family: var(--font-mono); font-weight: 500; font-size: var(--text-xl); letter-spacing: 0.04em; color: var(--sheet-ink, var(--awc)); }
+    .sheet-title { font-family: var(--font-mono); font-weight: 500; font-size: var(--text-sm); letter-spacing: 0.18em; margin-top: 4px; }
+    .sheet-sub { font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.2em; color: var(--awg); text-align: right; max-width: 30ch; }
+    .ink-vermilion { --sheet-ink: var(--aw-verm); }
+    .ink-prussian { --sheet-ink: var(--aw-prus); }
+    .ink-viridian { --sheet-ink: var(--aw-viri); }
+    .ink-ochre { --sheet-ink: var(--aw-ochr); }
+
+    /* ---- columns ---- */
+    .cols { display: grid; grid-template-columns: minmax(0, 1fr) 240px; gap: var(--s-6); }
+    .lede { font-family: var(--font-body); font-size: var(--text-md); line-height: 1.5; max-width: 46ch; margin-bottom: var(--s-3); }
+    .body-block { font-family: var(--font-body); font-size: var(--text-base); max-width: 58ch; margin-bottom: var(--s-3); }
+    .body-block.small { font-size: var(--text-sm); }
+    .fig { margin: var(--s-2) 0 0; }
+    .fig-row { display: flex; gap: var(--s-4); align-items: center; flex-wrap: wrap; }
+    .side-copy { max-width: 300px; }
+    .fig-cap { font-family: var(--font-body); font-size: var(--text-sm); color: var(--ink-soft); max-width: 60ch; margin: var(--s-1) 0 var(--s-3); }
+    .fig-cap.narrow { max-width: 32ch; }
+    .fig-no { font-family: var(--font-mono); font-weight: 500; font-size: var(--text-2xs); letter-spacing: 0.12em; color: var(--awc); padding-right: 10px; }
+    .sec-head { font-family: var(--font-mono); font-weight: 500; font-size: var(--text-xs); letter-spacing: 0.2em; margin: var(--s-4) 0 var(--s-2); }
+    .mono-link { font-family: var(--font-mono); font-size: var(--text-2xs); margin-top: var(--s-1); }
+    .mono-link a, .works a, .rail-url { color: var(--ink-soft); }
+
+    /* ---- index ---- */
+    .idx { list-style: none; padding: 0; margin: 0 0 var(--s-2); }
+    .idx li { border-bottom: 1px solid var(--line-soft); }
+    .idx a { display: grid; grid-template-columns: 90px 1fr auto; gap: var(--s-2); align-items: baseline; padding: 10px 0; text-decoration: none; color: var(--ink); }
+    .idx a:hover .idx-name { color: var(--accent-deep); }
+    .idx-no { font-family: var(--font-mono); font-weight: 500; font-size: var(--text-xs); }
+    .idx-name { font-family: var(--font-body); font-size: var(--text-base); transition: color var(--dur) var(--ease); }
+    .idx-live, .idx-tag { font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.1em; color: var(--awg); }
+    .idx-live .ext { border-bottom: 1px solid var(--line); }
+
+    /* ---- legend ---- */
+    .legend { display: flex; flex-direction: column; gap: 6px; margin-bottom: var(--s-2); }
+    .legend-row { display: flex; align-items: center; gap: var(--s-2); background: none; border: 0; padding: 4px 0; cursor: pointer; text-align: left; }
+    .legend-row svg { width: 120px; height: 12px; flex: 0 0 auto; }
+    .legend-row span { font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.12em; color: var(--ink-soft); }
+    .legend-row:hover span, .legend-row:focus-visible span { color: var(--accent-deep); }
+    .lg-solid { stroke: var(--awc); stroke-width: 1.6; }
+    .lg-dashed { stroke: var(--awc); stroke-width: 1.3; stroke-dasharray: 6, 4; }
+    .lg-phantom { stroke: var(--awc); stroke-width: 1.3; stroke-dasharray: 8, 4, 2, 4, 2, 4; }
+
+    /* legend audit: dim everything that is not the hovered convention */
+    :global(#aw[data-hl] .plate-svg [data-conv]) { transition: opacity 0.25s ease; opacity: 0.12; }
+    :global(#aw[data-hl='solid'] .plate-svg [data-conv='solid']) { opacity: 1; }
+    :global(#aw[data-hl='dashed'] .plate-svg [data-conv='dashed']) { opacity: 1; }
+    :global(#aw[data-hl='phantom'] .plate-svg [data-conv='phantom']) { opacity: 1; }
+
+    /* ---- holdings ---- */
+    .hold { display: grid; grid-template-columns: repeat(4, 1fr); border: 1.5px solid var(--awc); margin-bottom: var(--s-3); }
+    .hold-cell { padding: var(--s-2); border-right: 1px solid var(--awc); }
+    .hold-cell:last-child { border-right: 0; }
+    .hold-big { font-family: var(--font-mono); font-weight: 500; font-size: var(--text-lg); }
+    .hold-big.funnel { font-size: var(--text-md); padding-top: 6px; }
+    .hold-k { font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.08em; color: var(--awg); margin-top: 6px; line-height: 1.5; }
+
+    /* ---- rail ---- */
+    .rail { border-left: 1px solid var(--line); padding-left: var(--s-3); align-self: start; position: sticky; top: 92px; }
+    .rail-head { font-family: var(--font-mono); font-weight: 500; font-size: var(--text-sm); letter-spacing: 0.14em; color: var(--sheet-ink, var(--awc)); }
+    .rail-url { display: inline-block; font-family: var(--font-mono); font-size: var(--text-2xs); margin-top: 4px; }
+    .rail-rule { width: 34px; height: 2px; background: var(--sheet-ink, var(--awc)); margin: var(--s-2) 0; }
+    .rail dl { margin: 0; }
+    .rail dt { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.14em; color: var(--awg); margin-top: var(--s-2); }
+    .rail dd { font-family: var(--font-mono); font-size: var(--text-2xs); margin: 2px 0 0; line-height: 1.6; }
+    .rail-boxed { border: 1.5px solid var(--awc); padding: 8px 10px; font-family: var(--font-mono); font-weight: 500; font-size: 0.62rem; letter-spacing: 0.1em; margin-top: var(--s-2); line-height: 1.7; }
+    .rail-note { font-family: var(--font-body); font-style: italic; font-size: var(--text-sm); color: var(--aw-sepia); margin-top: var(--s-3); line-height: 1.6; }
+
+    /* ---- controls ---- */
+    .aw-btn {
+      font-family: var(--font-mono); font-weight: 500; font-size: var(--text-2xs); letter-spacing: 0.14em;
+      background: none; border: 1.5px solid var(--awc); color: var(--ink); padding: 10px 16px; cursor: pointer;
+      transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+    }
+    .aw-btn:hover:not(:disabled) { background: var(--awc); color: var(--paper); }
+    .aw-btn:disabled { opacity: 0.6; cursor: default; }
+    .gate-panel { margin: var(--s-2) 0; display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; }
+    .gate-readout { font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.12em; color: var(--aw-prus); flex-basis: 100%; }
+    .confirm-wrap { display: none; gap: var(--s-1); }
+    .confirm-wrap.ready { display: inline-flex; }
+    #input-confirm {
+      font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.14em; text-transform: uppercase;
+      background: none; border: 1.5px solid var(--line); border-bottom-color: var(--awc); color: var(--ink);
+      padding: 10px 12px; width: 15ch;
+    }
+    #input-confirm:focus { outline: none; border-color: var(--aw-verm); }
+    :global(.shake) { animation: aw-shake 0.35s; }
+    @keyframes aw-shake { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+    .gate-note { font-family: var(--font-body); font-style: italic; font-size: var(--text-sm); color: var(--aw-sepia); flex-basis: 100%; max-width: 52ch; }
+    .gatekey { display: grid; grid-template-columns: 1fr 1fr; gap: 4px var(--s-4); margin: var(--s-2) 0; max-width: 640px; }
+    .gatekey p { font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.06em; color: var(--awg); }
+    .gatekey b { color: var(--aw-prus); font-weight: 500; padding-right: 6px; }
+    .gatekey .human, .gatekey .human b { color: var(--aw-verm); }
+    .conf-panel { margin: var(--s-2) 0; max-width: 420px; }
+    .conf-label { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.16em; color: var(--awg); }
+    #conf-slider { width: 100%; accent-color: var(--aw-viri); margin: 8px 0 4px; }
+    .conf-readout { font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.1em; color: var(--aw-viri); }
+    :global(#sec-a300.refusing .conf-readout) { color: var(--aw-verm); }
+    .seal-panel { display: flex; gap: var(--s-2); align-items: center; flex-wrap: wrap; margin: var(--s-2) 0; }
+    .seal-meter { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.08em; color: var(--awg); }
+    .go-panel { margin: var(--s-1) 0; }
+
+    /* ---- figures: stroke classes (global: SVG is built at runtime) ---- */
+    :global(#aw .plate-svg) { width: 100%; height: auto; overflow: visible; }
+    :global(#aw .plate-svg text) { user-select: none; }
+    :global(#aw .st-key) { stroke: var(--sheet-ink, var(--awc)); fill: none; }
+    :global(#aw .st-key-thin) { stroke: var(--sheet-ink, var(--awc)); stroke-width: 0.55; fill: none; }
+    :global(#aw .st-key-heavy) { stroke: var(--sheet-ink, var(--awc)); stroke-width: 1.35; fill: none; }
+    :global(#aw .st-carbon) { stroke: var(--awc); stroke-width: 1; fill: none; }
+    :global(#aw .st-carbon-thin) { stroke: var(--awc); stroke-width: 0.55; fill: none; }
+    :global(#aw .st-graphite) { stroke: var(--awg); stroke-width: 0.55; fill: none; }
+    :global(#aw .st-faint) { stroke: var(--awf); stroke-width: 0.6; fill: none; }
+    :global(#aw .st-center) { stroke: var(--awc); stroke-width: 0.5; stroke-dasharray: 16, 4, 2.5, 4; }
+    :global(#aw .st-human) { stroke: var(--aw-verm); fill: none; }
+    :global(#aw .nd) { fill: var(--paper); stroke: var(--sheet-ink, var(--awc)); stroke-width: 0.9; }
+    :global(#aw .nd-solid) { fill: var(--sheet-ink, var(--awc)); }
+    :global(#aw .nd-solid.key) { fill: var(--sheet-ink, var(--awc)); }
+    :global(#aw .nd-graphite) { fill: var(--awg); }
+    :global(#aw .ann) { font-family: var(--font-mono); font-weight: 500; font-size: 10.5px; letter-spacing: 0.07em; fill: var(--awc); }
+    :global(#aw .annf) { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.05em; fill: var(--awg); }
+    :global(#aw .ann-key) { fill: var(--sheet-ink, var(--awc)); }
+    :global(#aw .ann-human) { fill: var(--aw-verm); }
+    :global(#aw .dim) { opacity: 0.55; }
+    :global(#aw .med) { stroke-width: 1; }
+    :global(#aw .flow) { }
+
+    /* confluence: the gate decides which branch is alive */
+    :global(#sec-a300 .answer) { transition: opacity 0.35s ease; }
+    :global(#sec-a300 .refuse-box), :global(#sec-a300 .refuse-txt), :global(#sec-a300 .refuse-path) { transition: all 0.35s ease; }
+    :global(#sec-a300.refusing .answer) { opacity: 0.12; }
+    :global(#sec-a300.refusing .refuse-box) { stroke: var(--aw-verm); stroke-width: 1.8; }
+    :global(#sec-a300.refusing .refuse-txt) { fill: var(--aw-verm); }
+    :global(#sec-a300.refusing .refuse-path) { stroke: var(--aw-verm); }
+    :global(#aw .post-live) { stroke: var(--aw-viri); stroke-width: 1.8; }
+
+    /* ---- revisions table ---- */
+    .rev { border-collapse: collapse; font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.06em; }
+    .rev th { font-size: 0.58rem; letter-spacing: 0.16em; color: var(--awg); text-align: left; padding: 6px 18px 6px 0; border-bottom: 1px solid var(--awc); }
+    .rev td { padding: 8px 18px 8px 0; border-bottom: 1px solid var(--line-soft); }
+    .works { font-family: var(--font-mono); font-size: var(--text-2xs); line-height: 2.1; }
+
+    /* ---- pinned title block ---- */
+    .tb {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+      display: flex; align-items: stretch;
+      border-top: 1.5px solid var(--awc);
+      /* no backdrop-filter here: a fixed blur over this much vector forces a
+         full repaint per frame and drops the page to 2 fps */
+      background: color-mix(in srgb, var(--paper) 97%, var(--ink) 3%);
+      font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.08em;
+    }
+    .tb-cell { display: flex; flex-direction: column; gap: 1px; padding: 6px 12px; border-right: 1px solid var(--line); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+    .tb-cell.wide { flex: 1; }
+    .tb-k { font-size: 0.5rem; letter-spacing: 0.18em; color: var(--awg); }
+    .tb-approved { color: var(--aw-verm); }
+    #tb-sheet { color: var(--accent-deep); }
+    .tb-zonecell { min-width: 96px; }
+
+    /* ---- responsive ---- */
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .cols { grid-template-columns: 1fr; }
+      .rail { position: static; border-left: 0; border-top: 1px solid var(--line); padding: var(--s-3) 0 0; }
+      .hold { grid-template-columns: repeat(2, 1fr); }
+      .hold-cell:nth-child(2) { border-right: 0; }
+      .tb-cell.wide, .tb-zonecell { display: none; }
+    }
+    @media (max-width: 560px) {
+      .idx a { grid-template-columns: 64px 1fr; }
+      .idx-live, .idx-tag { display: none; }
+      .gatekey { grid-template-columns: 1fr; }
+    }
   </style>
 </Base>
