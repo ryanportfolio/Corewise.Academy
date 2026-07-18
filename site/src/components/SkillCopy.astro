@@ -1,0 +1,221 @@
+---
+// The /showpiece skill offered as a copyable plate: a short specimen of the
+// file, then one action that copies the whole thing to the clipboard.
+import { SHOWPIECE_SKILL } from '../data/showpieceSkill';
+
+const SKILL = SHOWPIECE_SKILL.replace(/\r\n/g, '\n');
+const PREVIEW_LINES = 16;
+const lines = SKILL.replace(/\n$/, '').split('\n');
+const preview = lines.slice(0, PREVIEW_LINES);
+const remaining = lines.length - PREVIEW_LINES;
+---
+
+<figure class="skill-plate" data-lines={lines.length}>
+  <figcaption class="plate-head">
+    <span class="mono-label accent">file · SKILL.md</span>
+    <span class="mono-label">/showpiece</span>
+    <span class="mono-label tail">{lines.length} lines · markdown</span>
+  </figcaption>
+
+  <pre class="specimen" aria-label={`First ${PREVIEW_LINES} lines of the skill file`}>{preview.map((l) => <span class="row"><span class="no"></span><span class="tx">{l === '' ? ' ' : l}</span></span>)}</pre>
+
+  <p class="more mono-label">+ {remaining} more lines · the copy includes all of them</p>
+
+  <div class="plate-foot">
+    <button class="copy-cta" type="button" aria-live="polite">
+      <span class="star" aria-hidden="true">✦</span>
+      <span class="cta-label">Copy the full skill</span>
+    </button>
+    <span class="hint">then save as <code>.claude/skills/showpiece/SKILL.md</code></span>
+  </div>
+
+  <template class="skill-src">{SKILL}</template>
+</figure>
+
+<script>
+  const plate = document.querySelector('.skill-plate') as HTMLElement | null;
+  if (plate) {
+    const btn = plate.querySelector('.copy-cta') as HTMLButtonElement;
+    const label = btn.querySelector('.cta-label') as HTMLElement;
+    const src = (plate.querySelector('.skill-src') as HTMLTemplateElement).content.textContent ?? '';
+    const idle = label.textContent;
+    let resetTimer: number | undefined;
+
+    const fallbackCopy = (text: string) => {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      let ok = false;
+      try {
+        ok = document.execCommand('copy');
+      } catch {
+        ok = false;
+      }
+      ta.remove();
+      return ok;
+    };
+
+    const burst = () => {
+      for (let i = 0; i < 12; i++) {
+        const s = document.createElement('span');
+        s.className = 'burst-star';
+        s.textContent = '✦';
+        const angle = (i / 12) * Math.PI * 2 + Math.random() * 0.5;
+        const dist = 34 + Math.random() * 46;
+        s.style.setProperty('--dx', `${Math.cos(angle) * dist}px`);
+        s.style.setProperty('--dy', `${Math.sin(angle) * dist - 14}px`);
+        s.style.setProperty('--rot', `${Math.random() * 240 - 120}deg`);
+        s.style.setProperty('--sc', `${0.5 + Math.random() * 0.8}`);
+        btn.appendChild(s);
+        s.addEventListener('animationend', () => s.remove());
+      }
+    };
+
+    btn.addEventListener('click', async () => {
+      let ok = false;
+      try {
+        await navigator.clipboard.writeText(src);
+        ok = true;
+      } catch {
+        ok = fallbackCopy(src);
+      }
+      window.clearTimeout(resetTimer);
+      plate.classList.toggle('copied', ok);
+      label.textContent = ok ? `Copied · ${plate.dataset.lines} lines` : 'Copy blocked by the browser';
+      burst();
+      resetTimer = window.setTimeout(() => {
+        plate.classList.remove('copied');
+        label.textContent = idle;
+      }, 2600);
+    });
+  }
+</script>
+
+<style>
+  .skill-plate {
+    margin: var(--s-4) 0;
+    border: 1px solid var(--line);
+    border-top: 3px solid var(--accent-deep);
+    background: var(--panel);
+    transition: border-color var(--dur) var(--ease);
+  }
+  .skill-plate.copied {
+    border-color: var(--accent-deep);
+  }
+
+  .plate-head {
+    display: flex;
+    gap: var(--s-1) var(--s-2);
+    align-items: baseline;
+    flex-wrap: wrap;
+    padding: var(--s-1) var(--s-2);
+    border-bottom: 1px solid var(--line);
+  }
+  .plate-head .mono-label { white-space: nowrap; }
+  .plate-head .tail { margin-left: auto; }
+
+  .specimen {
+    margin: 0;
+    border: 0;
+    background: none;
+    padding: var(--s-2) var(--s-2) 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    line-height: 1.7;
+    color: var(--ink-soft);
+    overflow: hidden;
+    overflow-wrap: normal;
+    counter-reset: skl;
+    position: relative;
+    mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
+  }
+  .specimen .row {
+    display: grid;
+    grid-template-columns: 3em 1fr;
+    column-gap: 1em;
+    counter-increment: skl;
+  }
+  .specimen .no::before {
+    content: counter(skl, decimal-leading-zero);
+    color: var(--ink-mute);
+    opacity: 0.55;
+    text-align: right;
+    border-right: 1px solid var(--line-soft);
+    padding-right: 0.8em;
+    display: block;
+  }
+  .specimen .tx {
+    white-space: pre;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
+
+  .more {
+    margin: 0;
+    padding: 0 var(--s-2) var(--s-2);
+    color: var(--ink-mute);
+  }
+
+  .plate-foot {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+    flex-wrap: wrap;
+    padding: var(--s-2);
+    border-top: 1px solid var(--line);
+  }
+  .copy-cta {
+    position: relative;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    color: var(--accent-deep);
+    background: none;
+    border: 1px solid var(--accent-deep);
+    padding: var(--s-1) var(--s-2);
+    cursor: pointer;
+    transition:
+      background var(--dur) var(--ease),
+      color var(--dur) var(--ease);
+  }
+  .copy-cta:hover,
+  .skill-plate.copied .copy-cta {
+    background: var(--accent-deep);
+    color: var(--paper);
+  }
+  .copy-cta .star { display: inline-block; margin-right: 0.5em; }
+  .copy-cta:hover .star { animation: spin 0.9s var(--ease); }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .copy-cta :global(.burst-star) {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    pointer-events: none;
+    color: var(--accent);
+    text-shadow: 0 0 8px var(--glow);
+    animation: fly 0.9s var(--ease) forwards;
+  }
+  @keyframes fly {
+    from { transform: translate(-50%, -50%) scale(var(--sc, 1)); opacity: 1; }
+    to {
+      transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) rotate(var(--rot)) scale(0.2);
+      opacity: 0;
+    }
+  }
+
+  .hint {
+    font-size: var(--text-sm);
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .hint code { font-family: var(--font-mono); font-size: 0.85em; background: var(--accent-wash); padding: 1px 5px; font-style: normal; }
+</style>
