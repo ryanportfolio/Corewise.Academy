@@ -233,31 +233,35 @@ function initChandelier(host, { hero = false }) {
   const svg = svgRoot(host, 520, 470);
   const update = createChandelier(svg, { labels: !hero });
   const REST = 0.50;
-  let az = REST, vel = 0;
+  let az = REST;
   update(az);
   const play = prepDraw(svg, { stagger: 10, dur: 900 });
-  let drawn = false, raf = null, visible = false, last = null;
+  let drawn = false, raf = null, visible = false;
   // Deterministic breeze: hovering never tracks the cursor. Entering the figure
-  // fires one fixed gust whose direction matches the side you came in from; the
-  // under-damped spring sways the orbit through a few passes and settles it home.
-  // Same entry side, same breeze, every time.
-  // Tuned so one gust reads as: strong sweep (~0.28 rad), one gentle backswing,
-  // at rest in ~3.6s. Simulated deterministically before shipping.
-  const STIFF = 14, DAMP = 2 * Math.sqrt(STIFF) * 0.5, GUST = 2.0;
+  // plays one fixed gust whose direction matches the side you came in from.
+  // The orbit is a pure function of elapsed time (alpha curve k*e^(1-k)):
+  // fast sweep to the peak at TAU seconds, then one long smooth exhale home.
+  // No integration, no stall at the apex; same entry side, same breeze, always.
+  const AMP = 0.4, TAU = 0.55, RES_TAU = 0.25, DONE = 0.0005;
+  let gustStart = null, gustDir = 1, residual = 0;
   const tick = (t) => {
     raf = null;
-    const dt = Math.min((last == null ? 16.7 : t - last) / 1000, 0.04);
-    last = t;
-    vel += (STIFF * (REST - az) - DAMP * vel) * dt;
-    az += vel * dt;
+    if (gustStart == null) return;
+    const s = Math.max(t - gustStart, 0) / 1000;
+    const k = s / TAU;
+    const gust = AMP * gustDir * k * Math.exp(1 - k);
+    const res = residual * Math.exp(-s / RES_TAU);
+    az = REST + gust + res;
     if (drawn) update(az);
-    if ((Math.abs(REST - az) > 0.0004 || Math.abs(vel) > 0.002) && visible) raf = requestAnimationFrame(tick);
-    else last = null;
+    if ((s < TAU || Math.abs(gust) + Math.abs(res) > DONE) && visible) raf = requestAnimationFrame(tick);
+    else { gustStart = null; az = REST; if (drawn) update(az); }
   };
-  const kick = () => { if (!raf && drawn && !reduced) raf = requestAnimationFrame(tick); };
+  const kick = () => { if (!raf && drawn && !reduced && gustStart != null) raf = requestAnimationFrame(tick); };
   host.addEventListener('pointerenter', (e) => {
     const r = host.getBoundingClientRect();
-    vel = (e.clientX < r.left + r.width / 2 ? 1 : -1) * GUST;
+    residual = az - REST; // carry any in-flight offset so a re-entry never snaps
+    gustDir = e.clientX < r.left + r.width / 2 ? 1 : -1;
+    gustStart = performance.now();
     kick();
   });
   new IntersectionObserver((es) => {
