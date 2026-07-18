@@ -234,14 +234,22 @@ function pickWaypoint() {
 pickWaypoint();
 
 canvas.parentElement.addEventListener('pointermove', (e) => {
-  pointerActive = true;
   const r = canvas.getBoundingClientRect();
+  if (!r.width || !r.height) return; // zero-size canvas would divide to NaN
+  pointerActive = true;
   mouseNdc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+  parallaxTarget.copy(mouseNdc);
   raycaster.setFromCamera(mouseNdc, camera);
   const hit = new THREE.Vector3();
   if (raycaster.ray.intersectPlane(plane, hit)) lanternTarget.copy(sky.worldToLocal(hit));
 });
 canvas.parentElement.addEventListener('pointerleave', () => { pointerActive = false; });
+
+// Parallax eases toward the cursor instead of tracking it raw, so the first
+// hover (mouseNdc jumping from its offscreen sentinel to the pointer) glides
+// into place rather than snapping.
+const parallaxTarget = new THREE.Vector2(0, 0);
+const parallax = new THREE.Vector2(0, 0);
 
 const LANTERN_R = 1.6;
 const smooth = (t) => t * t * (3 - 2 * t); // smoothstep 0..1
@@ -249,6 +257,7 @@ const smooth = (t) => t * t * (3 - 2 * t); // smoothstep 0..1
 // fraction of remaining distance covered per second, applied as 1-e^(-k*dt)
 const ease = (k, dt) => 1 - Math.exp(-k * dt);
 function updateLantern(dt) {
+  parallax.lerp(parallaxTarget, ease(4, dt));
   if (!pointerActive) {
     // unattended: glide toward the current waypoint, then choose the next room
     lanternTarget.lerp(wander.wp, ease(0.5, dt));
@@ -386,9 +395,9 @@ resize();
 let t0 = performance.now();
 function render(now = t0) {
   starUniforms.uTime.value = (now - t0) / 1000;
-  // slow celestial drift + cursor parallax
-  sky.rotation.y = Math.sin(starUniforms.uTime.value * 0.05) * 0.06 + mouseNdc.x * 0.03 * (Math.abs(mouseNdc.x) < 2 ? 1 : 0);
-  sky.rotation.x = mouseNdc.y * -0.02 * (Math.abs(mouseNdc.y) < 2 ? 1 : 0);
+  // slow celestial drift + eased cursor parallax
+  sky.rotation.y = Math.sin(starUniforms.uTime.value * 0.05) * 0.06 + parallax.x * 0.03;
+  sky.rotation.x = parallax.y * -0.02;
   sky.position.y = Math.sin(starUniforms.uTime.value * 0.11) * 0.05;
   renderer.render(scene, camera);
 }
@@ -412,7 +421,7 @@ if (reduced) {
 
 // dev hook for automated visual checks (harmless in production)
 window.__sky = {
-  aLantern, edgeLife, lantern, lanternTarget, lanternGeo,
+  aLantern, edgeLife, lantern, lanternTarget, lanternGeo, sky, parallax,
   // advance the simulation deterministically, independent of rAF throttling
   step(frames = 1, dt = 1 / 60) { for (let i = 0; i < frames; i++) { updateLantern(dt); updateMeteors(dt); } render(performance.now()); },
 };
