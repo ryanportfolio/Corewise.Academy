@@ -23,6 +23,12 @@ figure titles. "The pipeline behind the atlas." → "The pipeline behind the atl
 Applies sitewide, all pages and guides. Question marks and other terminal marks
 are allowed only when the heading genuinely is a question.
 
+Periods never appear on big font at all, including mid-text: hero and display
+lines drop internal sentence periods too ("Every guide is a star. Connect
+them." → "Every guide is a star / Connect them" as stacked lines). And headings
+stay short enough to sit on one line at their rendered size; if a heading
+wraps, shorten the words, not the font.
+
 Enforcement: `site/scripts/no-em-dash.mjs` runs first in `npm run build`
 (`npm run lint:copy` runs it alone) and fails the build with file:line:col for every
 hit in `site/src`. Vercel runs the same build, so a violation cannot deploy. The
