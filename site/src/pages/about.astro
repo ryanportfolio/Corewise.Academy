@@ -11,10 +11,6 @@ const faq = [
     q: 'What has Ryan Allen shipped?',
     a: 'Four live systems: corewise.video (six models read in parallel, 1,800+ users), kinefractal.com (519 agent-written PRs merged through a human gate, paper trading only), truenote.org (cited answers or refusal), and willaicite.com (a deterministic GEO audit, spec to live in a day). 100% of what ships passes his review first.',
   },
-  {
-    q: 'How do you contact Ryan Allen?',
-    a: 'Through GitHub at github.com/ryanportfolio: every public repo accepts issues, and the profile links back to each live system. This section is the contact point for the whole site.',
-  },
 ];
 ---
 
@@ -455,6 +451,8 @@ const faq = [
        ============================================================ */
     /* this page is Ryan's, not the Academy's: the wordmark drops its suffix here */
     :global(.masthead .wordmark em) { display: none; }
+    /* the pinned title block covers the bottom edge; lift the site footer above it */
+    :global(.site-footer) { margin-bottom: 56px; }
 
     #aw {
       --awc: var(--ink);                 /* carbon key */
