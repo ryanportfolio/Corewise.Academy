@@ -68,7 +68,8 @@ parameter plus the query's own complexity rather than a number you pick. On Fabl
 thinking is always on and adaptive is the only mode. On Opus 4.6 through 4.8 and Sonnet 4.6,
 omitting the thinking parameter leaves thinking off. Anthropic's internal evaluations show
 adaptive thinking reliably outperforms the old budgeted extended thinking, so this is an upgrade
-you were going to want anyway.
+you were going to want anyway. The current lineup, and every 400 error it throws on migration,
+is catalogued in <a href="/guides/new-claude-lineup/">The new Claude lineup and what it breaks</a>.
 
 Assistant prefill is the other casualty. Starting with 4.6 models, a prefilled assistant response
 on the last turn returns a 400 error. Prefill did real work: constraining format, stripping

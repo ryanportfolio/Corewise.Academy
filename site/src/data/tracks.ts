@@ -12,9 +12,9 @@ export interface Track {
 }
 
 export const LEVELS = [
-  { id: 'broad', label: 'Broad', shelf: 'naked eye' },
-  { id: 'practitioner', label: 'Practitioner', shelf: 'telescope' },
-  { id: 'deep', label: 'Deep', shelf: 'observatory' },
+  { id: 'broad', label: 'Broad' },
+  { id: 'practitioner', label: 'Practitioner' },
+  { id: 'deep', label: 'Deep' },
 ] as const;
 
 export type LevelId = (typeof LEVELS)[number]['id'];
@@ -26,7 +26,7 @@ export const TRACKS: Track[] = [
     name: 'Foundations',
     constellation: 'THE LENS',
     description:
-      'How these minds actually work: capabilities, limits, and the mental models that keep you honest. Ground truth before telescope time.',
+      'How these models actually work: capabilities, limits, and the mental models that keep you honest.',
     sky: { cx: -3.4, cy: 0.9, spread: 1.0 },
   },
   {
@@ -35,7 +35,7 @@ export const TRACKS: Track[] = [
     name: 'Prompting & Context',
     constellation: 'THE LOOM',
     description:
-      'From plain asks to engineered context: instructions, references, and retrieved material, woven so the model attends to what matters.',
+      'From plain asks to engineered context: instructions, references, and retrieved material, arranged so the model attends to what matters.',
     sky: { cx: -1.5, cy: -0.5, spread: 1.15 },
   },
   {
@@ -44,7 +44,7 @@ export const TRACKS: Track[] = [
     name: 'Agents & Automation',
     constellation: 'THE COURIER',
     description:
-      'Tools, MCP, and multi-step workflows: teaching the mind to run errands without losing the plot.',
+      'Tools, MCP, and multi-step workflows: getting reliable results from a model that acts on its own.',
     sky: { cx: 0.4, cy: 0.8, spread: 0.95 },
   },
   {
@@ -53,7 +53,7 @@ export const TRACKS: Track[] = [
     name: 'Building with AI',
     constellation: 'THE FORGE',
     description:
-      'APIs, retrieval, evals, and shipping: where charts become instruments other people can steer by.',
+      'APIs, retrieval, evals, and shipping AI features other people can rely on.',
     sky: { cx: 2.1, cy: -0.6, spread: 1.05 },
   },
   {
@@ -62,7 +62,7 @@ export const TRACKS: Track[] = [
     name: 'Practice',
     constellation: 'THE METRONOME',
     description:
-      'Daily habits, verification, taste, and the discipline of knowing when to leave the telescope covered.',
+      'Daily habits, verification, taste, and knowing when not to use the model.',
     sky: { cx: 3.6, cy: 0.7, spread: 0.85 },
   },
 ];

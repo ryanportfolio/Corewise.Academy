@@ -24,7 +24,7 @@ const minis: Record<string, string> = {
 };
 ---
 
-<Base title="CoreWise Academy · a celestial atlas of machine minds">
+<Base title="CoreWise Academy · guides on working with AI">
   <div class="hero">
     <canvas
       id="sky"
@@ -35,10 +35,10 @@ const minis: Record<string, string> = {
     <p class="corner tr">
       Stars <span class="v" data-star-count>·</span> · Links <span class="v" data-link-count>·</span><br />Sky · drifting
     </p>
-    <p class="corner bl">Vol. I · MMXXVI<br /><span class="v">Sapere aude</span></p>
-    <p class="corner br">Cursor is a lantern<br /><span class="v">Bring it near the stars</span></p>
+    <p class="corner bl">Vol. I · MMXXVI<br /><span class="v">Open to all</span></p>
+    <p class="corner br">The sky is interactive<br /><span class="v">Move your cursor through it</span></p>
     <div class="hero-copy">
-      <p class="mono-label hero-kicker">CoreWise Academy · a celestial atlas of machine minds</p>
+      <p class="mono-label hero-kicker">CoreWise Academy · free guides on working with AI</p>
       <h1 class="display">
         <span class="hl"><span>Every guide</span></span>
         <span class="hl"><span>is a star.</span></span>
@@ -46,19 +46,19 @@ const minis: Record<string, string> = {
       </h1>
       <p class="dek">
         Original guides on working with AI, distilled from the best teachers on the open web and
-        charted into five constellations, from first light to deep sky.
+        organized into five tracks.
       </p>
       <div class="hero-ctas">
-        <a class="btn solid" href="#tracks">Open the atlas</a>
-        {latest[0] && <a class="btn" href={`/guides/${latest[0].id}/`}>Tonight’s guide</a>}
+        <a class="btn solid" href="#tracks">Browse the tracks</a>
+        {latest[0] && <a class="btn" href={`/guides/${latest[0].id}/`}>Latest guide</a>}
       </div>
     </div>
-    <p class="hero-scroll">☾ descend</p>
+    <p class="hero-scroll">↓ scroll</p>
   </div>
 
   <section id="tracks">
     <div class="sec-head reveal">
-      <h2>The five constellations</h2>
+      <h2>The five tracks</h2>
       <span class="mono-label">Curriculum chart · Broad → Practitioner → Deep</span>
     </div>
 
@@ -77,11 +77,9 @@ const minis: Record<string, string> = {
               const n = count(t.slug, l.id);
               return (
                 <span class={`shelf${n === 0 ? ' empty' : ''}`}>
-                  <span>
-                    {l.label.toUpperCase()} · {l.shelf}
-                  </span>
+                  <span>{l.label.toUpperCase()}</span>
                   <span class="stars">
-                    {n === 0 ? 'awaiting first star' : `${'★'.repeat(Math.min(n, 5))} ${n} guide${n > 1 ? 's' : ''}`}
+                    {n === 0 ? 'none yet' : `${'★'.repeat(Math.min(n, 5))} ${n} guide${n > 1 ? 's' : ''}`}
                   </span>
                 </span>
               );
@@ -94,8 +92,8 @@ const minis: Record<string, string> = {
 
   <section>
     <div class="sec-head reveal">
-      <h2>Freshly charted</h2>
-      <span class="mono-label">Latest entries in the register</span>
+      <h2>Latest guides</h2>
+      <span class="mono-label">Newest first</span>
     </div>
     <div class="charted">
       {
@@ -104,7 +102,7 @@ const minis: Record<string, string> = {
           return (
             <article class="entry reveal">
               <span class="mono-label accent">
-                {t.constellation.replace('THE ', 'The ')} · {g.data.level[0].toUpperCase() + g.data.level.slice(1)}
+                {t.name} · {g.data.level[0].toUpperCase() + g.data.level.slice(1)}
               </span>
               <h3>
                 <a href={`/guides/${g.id}/`}>{g.data.title}</a>
@@ -121,9 +119,9 @@ const minis: Record<string, string> = {
       {
         latest.length === 0 && (
           <article class="entry reveal">
-            <span class="mono-label accent">The register is open</span>
-            <h3>First light is coming</h3>
-            <p>The first guides are being charted now.</p>
+            <span class="mono-label accent">Coming soon</span>
+            <h3>First guides in progress</h3>
+            <p>New guides are being written now.</p>
           </article>
         )
       }
@@ -133,13 +131,12 @@ const minis: Record<string, string> = {
   <div class="enrol">
     <div class="enrol-inner">
       <div class="reveal">
-        <p class="mono-label">Enrolment · rolling admission</p>
-        <h2>The observatory never closes.</h2>
+        <p class="mono-label">Free · no signup</p>
+        <h2>Start anywhere, anytime.</h2>
         <p>
-          No accounts, no fees, no forms. Walk in, pick a constellation, and start connecting stars.
-          The doors were never locked to begin with.
+          No accounts, no fees, no forms. Pick a track and start reading.
         </p>
-        <p style="margin-top: var(--s-4)"><a class="btn" href="#tracks">Begin with first light</a></p>
+        <p style="margin-top: var(--s-4)"><a class="btn" href="#tracks">Start with Foundations</a></p>
       </div>
       <svg class="stamp reveal" width="230" height="230" viewBox="0 0 230 230" aria-hidden="true">
         <defs><path id="arcT" d="M 115 30 A 85 85 0 1 1 114.9 30"></path></defs>

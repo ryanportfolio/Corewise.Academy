@@ -3,50 +3,48 @@ import Base from '../layouts/Base.astro';
 
 const principles = [
   {
-    name: 'Andragogy',
-    line: 'Adults learn what they can use: every guide opens with why it matters to real work and ends with an exercise you run tonight.',
+    name: 'Useful first',
+    line: 'Every guide opens with why it matters to real work and ends with an exercise you can run tonight.',
   },
   {
-    name: "Bloom's-taxonomy objectives",
-    line: 'The objective box promises observable verbs (estimate, restructure, diagnose), never "understand"; you can check whether you left the room with them.',
+    name: 'Checkable objectives',
+    line: 'The objective box promises observable verbs (estimate, restructure, diagnose), never "understand"; you can check whether you got them.',
   },
   {
-    name: 'Retrieval practice',
-    line: 'The oral examination at the end of each guide makes you pull the ideas back out of your own head: reveal-style answers, no grades, pure recall.',
+    name: 'Active recall',
+    line: 'The self-check at the end of each guide makes you pull the ideas back out of your own head: reveal-style answers, no grades.',
   },
   {
-    name: 'Scaffolding',
-    line: 'Prerequisite links and the Broad → Practitioner → Deep shelves let each guide stand on charted ground instead of assuming it.',
+    name: 'Prerequisites are explicit',
+    line: 'Prerequisite links and the Broad → Practitioner → Deep levels mean each guide builds on ones you have read instead of assuming them.',
   },
 ];
 ---
 
-<Base title="How it’s charted · CoreWise Academy">
+<Base title="How it’s built · CoreWise Academy">
   <main>
-    <p class="mono-label accent">Colophon · How it’s charted</p>
-    <h1 class="display">The pipeline behind the atlas.</h1>
+    <p class="mono-label accent">How it’s built</p>
+    <h1 class="display">How guides get made.</h1>
 
     <div class="prose">
-      <h2><span class="no">01</span>Sources are watched, not scraped</h2>
+      <h2><span class="no">01</span>Every guide starts with a video the editor learned from</h2>
       <p>
-        The pipeline starts with a video the editor actually learned from. Its transcript is
-        fetched; the material is broken into concepts, prerequisites, misconceptions, exercises,
-        and quotable moments with timestamps. A source registry records every ingested video and
-        why it qualified.
+        The transcript is fetched and broken into concepts, prerequisites, misconceptions,
+        exercises, and quotable moments with timestamps. A source registry records every ingested
+        video and why it qualified.
       </p>
 
-      <h2><span class="no">02</span>Synthesis, not summary</h2>
+      <h2><span class="no">02</span>Several sources become one original guide</h2>
       <p>
-        Notes from multiple sources are woven into an original guide; the atlas never republishes
+        Notes from multiple sources are combined into an original guide; the site never republishes
         anyone's lecture. The writing tool reads the whole curriculum first and decides whether the
         material becomes a new guide, extends an existing one, or splits across several.
       </p>
 
-      <h2><span class="no">03</span>The pull request is the editorial desk</h2>
+      <h2><span class="no">03</span>An editor reviews every guide before it publishes</h2>
       <p>
         Nothing publishes directly. Every draft arrives as a pull request; the editor reviews,
-        corrects, and merges. Merging is publishing: the site rebuilds and the new star appears on
-        its shelf.
+        corrects, and merges. Merging is publishing: the site rebuilds and the guide goes live.
       </p>
 
       <h2><span class="no">04</span>Learning science, applied</h2>
@@ -64,7 +62,7 @@ const principles = [
       <p>
         The site itself is a static Astro build: design tokens in one documented file, a custom
         titling typeface generated from stroke skeletons, and a WebGL star chart whose stars are
-        the guides themselves. The craft is the credential.
+        the guides themselves.
       </p>
     </div>
   </main>

@@ -29,12 +29,10 @@ import Chalk from '../../components/Chalk.astro';
 <Chalk>the model you learned last quarter is not the model shipping now</Chalk>
 
 <p class="lede">
-The names on the <a href="https://platform.claude.com/docs/en/release-notes/overview">Claude
-release notes</a> turn over fast enough that a guide written from memory is wrong before it
-ships. So this one is a snapshot, dated: mid-July 2026. The point is not to admire the lineup.
-It is that moving a working prompt onto a current model can hand you a 400 error, a 30% bigger
-token bill, or a hard retirement deadline you did not know was on the calendar. Here is what
-changed, and what bites.
+Moving a working prompt onto a current Claude model can hand you a 400 error, a 30% bigger
+token bill, or a retirement deadline you did not know about. This guide is a dated snapshot
+(mid-July 2026, per the <a href="https://platform.claude.com/docs/en/release-notes/overview">official
+release notes</a>) of what changed and what bites.
 </p>
 
 ## <span class="sec-no">01</span>The lineup, and what they share
@@ -58,6 +56,8 @@ thinking is always on and adaptive. On Fable 5 and Mythos 5 there is no other mo
 extended thinking (`thinking` type `enabled` with `budget_tokens`) returns a 400 error, and so
 does `thinking` type `disabled`. If your code sets a thinking
 budget, it stops working. Use the `effort` parameter or `max_tokens` instead.
+<a href="/guides/stop-shouting-at-the-model/">Stop shouting at the model</a> walks the full
+migration off budgets and prefill.
 
 Second, non-default sampling is gone. Passing a non-default `temperature`, `top_p`, or `top_k`
 returns a 400 error on Sonnet 5 and Opus 4.8. Any prompt that pinned
@@ -67,7 +67,9 @@ Third, and quietest, the tokenizer. Fable 5, Mythos 5, and Sonnet 5 use the toke
 with Opus 4.7, which produces roughly 30% more tokens for the same text than older models. Nothing
 errors. Your prompts just cost about a third more and hit output limits sooner than the old count
 predicted. Re-measure before you migrate: the token counting API accepts `claude-fable-5` to count
-under the new scheme.
+under the new scheme. And once the bigger bill lands,
+<a href="/guides/thinking-on-a-budget/">Thinking on a budget</a> is the guide to cutting
+reasoning-token spend without cutting depth.
 
 ## <span class="sec-no">03</span>Refusals, and the dates on the calendar
 

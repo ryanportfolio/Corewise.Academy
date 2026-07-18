@@ -87,6 +87,16 @@ contain a colon plus space). Doc-grounded deltas:
   only on top of specific ("Thinking on a budget" names its topic). Same rule
   for the description: a concrete promise, not atmosphere. Slug matches the
   title.
+- **Say what it is, not what it is not.** Headings and claims defined by
+  negation ("Synthesis, not summary") are banned; state the positive fact.
+  Lead with the point: if a paragraph's payoff sentence could open it, move it
+  up and cut the wind-up. Never talk down to the reader (no "adults learn what
+  they can use"-style framing). Full ruling:
+  `.claude/reference/copy-rules.md`, Plain language.
+- **Cross-link at every real overlap.** While writing, keep the catalogue's
+  titles and descriptions at hand; when a sentence touches a topic another
+  guide covers (token spend, memory, skills, migration errors, prompting
+  fundamentals), link that guide inline at the mention, title as link text.
 - **Every concept lands twice**: what it means in plain words, and how the
   reader applies it in practice. A claim with no concrete application (a tiny
   example prompt, a before/after, a specific thing to do differently today)
@@ -104,7 +114,10 @@ schema; (4) cut any paragraph that restates; (5) hunt jargon: every term of art
 is either glossed on first use or replaced with plain words; (6) application
 check: every section leaves the reader with something concrete to do; a section
 that only explains gets an example or gets cut; (7) title check: would a reader
-who has not opened the guide know what they are getting? If not, retitle.
+who has not opened the guide know what they are getting? If not, retitle;
+(8) cross-link check: scan the draft against every existing guide's title and
+description; add an inline link wherever the draft touches a topic another
+guide covers.
 
 ## Step 5: Verify and open the PR
 

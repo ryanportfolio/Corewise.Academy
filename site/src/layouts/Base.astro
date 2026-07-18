@@ -3,7 +3,7 @@ interface Props {
   title: string;
   description?: string;
 }
-const { title, description = 'CoreWise Academy · a celestial atlas of machine minds. Original guides on working with AI, distilled from the best teachers on the open web.' } = Astro.props;
+const { title, description = 'CoreWise Academy · free original guides on working with AI, distilled from the best teachers on the open web.' } = Astro.props;
 ---
 
 <!doctype html>
@@ -28,9 +28,9 @@ const { title, description = 'CoreWise Academy · a celestial atlas of machine m
     <header class="masthead">
       <a class="wordmark" href="/">CoreWise <em>Academy</em></a>
       <nav>
-        <a href="/#tracks">Constellations</a>
+        <a href="/#tracks">Tracks</a>
         <a href="/about/">About</a>
-        <a href="/how-its-built/">How it’s charted</a>
+        <a href="/how-its-built/">How it’s built</a>
         <button class="session-toggle" id="toggle" aria-label="Switch between day and night theme">
           <span class="dot"></span><span id="toggle-label">DAY LECTURE</span>
         </button>
@@ -40,8 +40,8 @@ const { title, description = 'CoreWise Academy · a celestial atlas of machine m
     <slot />
 
     <footer class="site-footer">
-      <span>CoreWise Academy · charted nightly · no mind left unmapped</span>
-      <span><a href="/how-its-built/">How it’s charted →</a></span>
+      <span>CoreWise Academy · free guides on working with AI</span>
+      <span><a href="/how-its-built/">How it’s built →</a></span>
       <span>Edited by Ryan · Vol. I</span>
     </footer>
 
