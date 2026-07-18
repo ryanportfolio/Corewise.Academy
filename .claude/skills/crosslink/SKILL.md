@@ -6,7 +6,23 @@ description: Sweep CoreWise Academy guides and add inline links where topics ove
 
 Finds places where one guide's prose touches a topic another guide covers, and adds an inline link at the mention. Output is edited guide MDX files, verified with a build, delivered per the session's git conventions (branch, PR; merge only if auto-merge mode is on).
 
+## The goal
+
+A reader who pauses mid-sentence with a question ("how do I cut that token bill?") should find the guide that answers it linked right there, not have to discover it from the track page. The catalogue reads as one connected curriculum, not twelve isolated articles. Editor's standing request (2026-07-17): the site needs far more cross-linking than guides naturally acquire, so this sweep is expected to run whenever new guides land.
+
 Editorial basis: the cross-linking ruling in `.claude/reference/copy-rules.md`.
+
+## Calibration examples (first pass, 2026-07-17)
+
+Links that earned their place, use them as the quality bar:
+
+- new-claude-lineup's tokenizer paragraph ("roughly 30% more tokens... your prompts just cost about a third more") → Thinking on a budget. The reader just learned their bill grew; that guide is how to shrink it.
+- new-claude-lineup's deprecated thinking-budget paragraph → Stop shouting at the model, which walks the migration; and the reverse link from that guide's migration section back to the lineup catalogue. Each direction earned its own mention.
+- guardrails-for-long-runs' Markdown-memory paragraph → Give your agent a memory (the managed-agent version of the same idea).
+- firmware-not-folklore's layers paragraph → Expertise you can install (skills layer) and Give your agent a memory (memory layer).
+- brief-the-model's lede claim that fundamentals hold across models → Claude and OpenAI, one prompting playbook (the proof).
+
+Shape that worked: weave into the existing sentence or append one short pointer sentence ("And once the bigger bill lands, [guide] is the guide to cutting reasoning-token spend without cutting depth."). Never a bare "See also".
 
 ## Step 1: Build the topic map
 
