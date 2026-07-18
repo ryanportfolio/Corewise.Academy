@@ -141,59 +141,113 @@ function chandelierGeometry(az, fov) {
   });
   return { cam, S, A, nodes, strands };
 }
-function renderChandelier(svg, az, { labels = true } = {}) {
+function createChandelier(svg, { labels = true } = {}) {
   // labeled version needs headroom for the source annotation; fov widens the frame
-  const { cam, S, A, nodes, strands } = chandelierGeometry(az, labels ? 42 : 34);
-  svg.innerHTML = '';
-  const ringPts = [...nodes, nodes[0]].map((p) => cam.project(p));
-  el('path', { d: pathFrom(ringPts), class: 'st-faint', fill: 'none' }, svg);
-  const ps = cam.project(S), pa = cam.project(A);
-  el('line', { x1: ps.x, y1: ps.y - 30, x2: pa.x, y2: pa.y + 34, class: 'st-center', 'data-nodraw': 1 }, svg);
-  const order = strands.map((pts, i) => ({ pts, d: cam.project(nodes[i]).depth, i })).sort((a, b) => b.d - a.d);
-  for (const s of order) {
-    const pp = s.pts.map((p) => cam.project(p));
-    const depths = pp.map((p) => p.depth);
-    const lo = Math.min(...depths), hi = Math.max(...depths);
-    const chunks = 8, per = Math.ceil((pp.length - 1) / chunks);
-    for (let c = 0; c < chunks; c++) {
-      const seg = pp.slice(c * per, Math.min(c * per + per + 1, pp.length));
-      if (seg.length < 2) continue;
-      const mid = (seg[0].depth + seg[seg.length - 1].depth) / 2;
-      const wgt = hi === lo ? 1 : 1.15 - ((mid - lo) / (hi - lo)) * 0.7;
-      el('path', { d: pathFrom(seg), class: 'st-key', fill: 'none', 'stroke-width': fmt(wgt), 'stroke-linecap': 'round', 'data-conv': 'solid' }, svg);
-    }
+  const fov = labels ? 42 : 34;
+  const CHUNKS = 8;
+  // Built once; update(az) only rewrites attributes and z-reorders strand groups.
+  // Full innerHTML rebuilds per frame were the jitter: layout + GC churn at 60fps.
+  const ringPath = el('path', { class: 'st-faint', fill: 'none' }, svg);
+  const centerLine = el('line', { class: 'st-center', 'data-nodraw': 1 }, svg);
+  const strandsG = el('g', {}, svg);
+  const strandGs = [], chunkPaths = [];
+  for (let i = 0; i < 6; i++) {
+    const g = el('g', {}, strandsG);
+    strandGs.push(g);
+    const arr = [];
+    for (let c = 0; c < CHUNKS; c++) arr.push(el('path', { class: 'st-key', fill: 'none', 'stroke-linecap': 'round', 'data-conv': 'solid' }, g));
+    chunkPaths.push(arr);
   }
-  nodes.forEach((N, i) => {
-    const p = cam.project(N);
-    el('circle', { cx: fmt(p.x), cy: fmt(p.y), r: 2.6, class: 'nd', 'data-conv': 'solid' }, svg);
-    if (labels) el('text', { x: fmt(p.x + (p.x > 260 ? 10 : -10)), y: fmt(p.y + 3.5), class: 'annf', 'text-anchor': p.x > 260 ? 'start' : 'end' }, svg).textContent = `M${i + 1}`;
-  });
-  el('circle', { cx: fmt(ps.x), cy: fmt(ps.y), r: 3.4, class: 'nd-solid', 'data-conv': 'solid' }, svg);
-  el('circle', { cx: fmt(pa.x), cy: fmt(pa.y), r: 3.4, class: 'nd', 'data-conv': 'solid' }, svg);
+  const nodeDots = [], nodeTexts = [];
+  for (let i = 0; i < 6; i++) {
+    nodeDots.push(el('circle', { r: 2.6, class: 'nd', 'data-conv': 'solid' }, svg));
+    if (labels) nodeTexts.push(el('text', { class: 'annf' }, svg));
+  }
+  const sDot = el('circle', { r: 3.4, class: 'nd-solid', 'data-conv': 'solid' }, svg);
+  const aDot = el('circle', { r: 3.4, class: 'nd', 'data-conv': 'solid' }, svg);
+  const outs = [[-128, 1.6, 'CONVERGENCE'], [0, 0.9, 'DIVERGENCE'], [128, 0.45, 'UNIQUE INSIGHTS']];
+  let srcTxt, outPaths = [], outTexts = [], sepLine, synthTxt;
   if (labels) {
-    el('text', { x: fmt(ps.x + 11), y: fmt(ps.y - 2), class: 'ann' }, svg).textContent = 'SOURCE · ONE URL';
-    const outs = [[-128, 1.6, 'CONVERGENCE'], [0, 0.9, 'DIVERGENCE'], [128, 0.45, 'UNIQUE INSIGHTS']];
-    const oy = pa.y + 12, ey = pa.y + 54;
-    for (const [dx, sw, label] of outs) {
-      const ex = pa.x + dx;
-      el('path', { d: `M${fmt(pa.x)} ${fmt(oy)} C ${fmt(pa.x)} ${fmt(oy + 20)}, ${fmt(ex)} ${fmt(ey - 20)}, ${fmt(ex)} ${fmt(ey)}`, class: 'st-key', fill: 'none', 'stroke-width': sw, 'stroke-linecap': 'round', 'data-conv': 'solid' }, svg);
-      el('text', { x: fmt(ex), y: fmt(ey + 14), class: 'annf ann-key', 'text-anchor': 'middle' }, svg).textContent = label;
+    srcTxt = el('text', { class: 'ann' }, svg);
+    srcTxt.textContent = 'SOURCE · ONE URL';
+    for (const [, sw, label] of outs) {
+      outPaths.push(el('path', { class: 'st-key', fill: 'none', 'stroke-width': sw, 'stroke-linecap': 'round', 'data-conv': 'solid' }, svg));
+      const t = el('text', { class: 'annf ann-key', 'text-anchor': 'middle' }, svg);
+      t.textContent = label;
+      outTexts.push(t);
     }
-    el('line', { x1: fmt(pa.x - 158), y1: fmt(ey + 24), x2: fmt(pa.x + 158), y2: fmt(ey + 24), class: 'st-carbon-thin' }, svg);
-    el('text', { x: fmt(pa.x), y: fmt(ey + 38), class: 'ann', 'text-anchor': 'middle' }, svg).textContent = 'ONE SYNTHESIS';
+    sepLine = el('line', { class: 'st-carbon-thin' }, svg);
+    synthTxt = el('text', { class: 'ann', 'text-anchor': 'middle' }, svg);
+    synthTxt.textContent = 'ONE SYNTHESIS';
   }
+  return function update(az) {
+    const { cam, S, A, nodes, strands } = chandelierGeometry(az, fov);
+    ringPath.setAttribute('d', pathFrom([...nodes, nodes[0]].map((p) => cam.project(p))));
+    const ps = cam.project(S), pa = cam.project(A);
+    centerLine.setAttribute('x1', fmt(ps.x)); centerLine.setAttribute('y1', fmt(ps.y - 30));
+    centerLine.setAttribute('x2', fmt(pa.x)); centerLine.setAttribute('y2', fmt(pa.y + 34));
+    const order = strands.map((pts, i) => ({ pts, d: cam.project(nodes[i]).depth, i })).sort((a, b) => b.d - a.d);
+    for (const s of order) {
+      strandsG.appendChild(strandGs[s.i]); // re-sort back-to-front; moves nodes, no rebuild
+      const pp = s.pts.map((p) => cam.project(p));
+      const depths = pp.map((p) => p.depth);
+      const lo = Math.min(...depths), hi = Math.max(...depths);
+      const per = Math.ceil((pp.length - 1) / CHUNKS);
+      for (let c = 0; c < CHUNKS; c++) {
+        const seg = pp.slice(c * per, Math.min(c * per + per + 1, pp.length));
+        const path = chunkPaths[s.i][c];
+        if (seg.length < 2) { path.setAttribute('d', ''); continue; }
+        const mid = (seg[0].depth + seg[seg.length - 1].depth) / 2;
+        const wgt = hi === lo ? 1 : 1.15 - ((mid - lo) / (hi - lo)) * 0.7;
+        path.setAttribute('d', pathFrom(seg));
+        path.setAttribute('stroke-width', fmt(wgt));
+      }
+    }
+    nodes.forEach((N, i) => {
+      const p = cam.project(N);
+      nodeDots[i].setAttribute('cx', fmt(p.x)); nodeDots[i].setAttribute('cy', fmt(p.y));
+      if (labels) {
+        nodeTexts[i].setAttribute('x', fmt(p.x + (p.x > 260 ? 10 : -10)));
+        nodeTexts[i].setAttribute('y', fmt(p.y + 3.5));
+        nodeTexts[i].setAttribute('text-anchor', p.x > 260 ? 'start' : 'end');
+        nodeTexts[i].textContent = `M${i + 1}`;
+      }
+    });
+    sDot.setAttribute('cx', fmt(ps.x)); sDot.setAttribute('cy', fmt(ps.y));
+    aDot.setAttribute('cx', fmt(pa.x)); aDot.setAttribute('cy', fmt(pa.y));
+    if (labels) {
+      srcTxt.setAttribute('x', fmt(ps.x + 11)); srcTxt.setAttribute('y', fmt(ps.y - 2));
+      const oy = pa.y + 12, ey = pa.y + 54;
+      outs.forEach(([dx], i) => {
+        const ex = pa.x + dx;
+        outPaths[i].setAttribute('d', `M${fmt(pa.x)} ${fmt(oy)} C ${fmt(pa.x)} ${fmt(oy + 20)}, ${fmt(ex)} ${fmt(ey - 20)}, ${fmt(ex)} ${fmt(ey)}`);
+        outTexts[i].setAttribute('x', fmt(ex)); outTexts[i].setAttribute('y', fmt(ey + 14));
+      });
+      sepLine.setAttribute('x1', fmt(pa.x - 158)); sepLine.setAttribute('y1', fmt(ey + 24));
+      sepLine.setAttribute('x2', fmt(pa.x + 158)); sepLine.setAttribute('y2', fmt(ey + 24));
+      synthTxt.setAttribute('x', fmt(pa.x)); synthTxt.setAttribute('y', fmt(ey + 38));
+    }
+  };
 }
 function initChandelier(host, { hero = false }) {
   const svg = svgRoot(host, 520, 470);
-  let az = 0.50, target = 0.50;
-  renderChandelier(svg, az, { labels: !hero });
+  const update = createChandelier(svg, { labels: !hero });
+  let az = 0.50, vel = 0, target = 0.50;
+  update(az);
   const play = prepDraw(svg, { stagger: 10, dur: 900 });
-  let drawn = false, raf = null, visible = false;
-  const tick = () => {
+  let drawn = false, raf = null, visible = false, last = null;
+  // Under-damped spring: the orbit leans into the cursor and settles with a
+  // slight sway, like a gust passing through. No per-frame-rate stutter.
+  const STIFF = 36, DAMP = 2 * Math.sqrt(STIFF) * 0.85;
+  const tick = (t) => {
     raf = null;
-    az += (target - az) * 0.08;
-    if (drawn) renderChandelier(svg, az, { labels: !hero });
-    if (Math.abs(target - az) > 0.0004 && visible) raf = requestAnimationFrame(tick);
+    const dt = Math.min((last == null ? 16.7 : t - last) / 1000, 0.04);
+    last = t;
+    vel += (STIFF * (target - az) - DAMP * vel) * dt;
+    az += vel * dt;
+    if (drawn) update(az);
+    if ((Math.abs(target - az) > 0.0004 || Math.abs(vel) > 0.002) && visible) raf = requestAnimationFrame(tick);
+    else last = null;
   };
   const kick = () => { if (!raf && drawn && !reduced) raf = requestAnimationFrame(tick); };
   host.addEventListener('pointermove', (e) => {
