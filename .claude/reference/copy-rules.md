@@ -21,3 +21,20 @@ Enforcement: `site/scripts/no-em-dash.mjs` runs first in `npm run build`
 hit in `site/src`. Vercel runs the same build, so a violation cannot deploy. The
 /ingest and /create-guide skills both restate the rule at writing time; the gate is
 the backstop, not the process.
+
+## Titles are plain and specific (editor ruling, 2026-07-17)
+
+Every title (guide, page, section) says what the reader gets, in plain words,
+before any wordplay. The test: a reader who has not opened the piece can say what
+it is about from the title alone. If decoding requires the body, retitle.
+
+- Evocative is welcome only on top of specific ("Thinking on a budget" names its
+  topic; "The firmament moved" decodes to nothing, so nobody clicks).
+- The description is a concrete promise, not atmosphere, and it is not a rescue
+  hatch for a cryptic title.
+- Terms of art ("conceit", "harness", "substrate") do not carry a title; use the
+  everyday phrase.
+- Guide slug matches the title.
+
+No build gate for this one; the /ingest and /create-guide skills restate it at
+writing time, and the PR review is the backstop.

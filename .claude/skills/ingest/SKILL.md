@@ -29,6 +29,13 @@ which video to ingest.
   (`scripts/no-em-dash.mjs`), so a violation cannot ship, but write clean from the
   start instead of leaning on the gate. Sweep the finished draft for the character
   before Step 6.
+- **Titles are plain and specific, never cryptic.** The title says what the reader
+  gets, in plain words, before any wordplay. Test: a reader who has not opened the
+  guide can say what it is about from the title alone; if decoding requires the
+  body, retitle. Evocative only on top of specific ("Give your agent a memory"
+  works; "The firmament moved" fails). No terms of art carrying a title. The
+  description is a concrete promise, not atmosphere. Slug matches the title. Full
+  ruling in `.claude/reference/copy-rules.md`.
 
 ## Step 1: Get the transcript
 
@@ -120,6 +127,7 @@ review and that merging is publishing.
 - Don't invent a transcript, a quote, a timestamp, or a source. If you don't have the
   words, ask for them.
 - Don't use vague objectives ("understand X"). Only observable, checkable verbs.
+- Don't ship a cryptic title. Plain and specific first; wordplay only on top.
 - Don't use em dashes anywhere, and don't substitute lookalikes (en dash, double
   hyphen). Plain punctuation only; the build gate will reject the PR otherwise.
 - Don't skip the registry row or the build check.
