@@ -1,5 +1,5 @@
 ---
-title: Automate the bottleneck, not the busywork
+title: Automate the bottleneck
 description: 'Automating the bottleneck means finding the constraint that sets your pace and pointing Claude at it: four working rules distilled from Anthropic''s own engineers.'
 track: agents
 level: broad
@@ -25,7 +25,7 @@ selfCheck:
   - q: When handing Claude an objective instead of a task, what two structures must exist before any work starts?
     a: A granular definition of done (contract criteria specific enough that a failure points at an exact line) and an independent evaluator with the access it needs to actually run the result. The worker never grades its own output.
 status: published
-lastUpdated: 2026-07-17
+lastUpdated: 2026-07-18
 ---
 
 import PullQuote from '../../components/PullQuote.astro';
@@ -35,11 +35,12 @@ import Chalk from '../../components/Chalk.astro';
 <Chalk>the line moves at the pace of the slowest hiker: find yours before you build anything</Chalk>
 
 <p class="lede">
-The first instinct with automation is to aim it at whatever annoys you most. That instinct wastes
-weeks. The people who build these systems for a living (Anthropic's own engineers, whose public
-talks and interviews this guide distills) work in a different order: locate the constraint, solve
-it once by hand, and only then encode the solution so it never needs solving again. Everything
-else in this guide hangs off that ordering.
+Aim automation at your constraint: the step that sets the pace of everything behind it. Often
+that is exactly the busywork eating your day; checking first just confirms it, because an hour
+saved anywhere else quietly evaporates. The people who build these systems for a living
+(Anthropic's own engineers, whose public talks and interviews this guide distills) work in that
+order: locate the constraint, solve it once by hand, then encode the solution so it never needs
+solving again. Everything else in this guide hangs off that ordering.
 </p>
 
 The logic comes from operations theory, and the classic picture is a scout troop on a trail. The
