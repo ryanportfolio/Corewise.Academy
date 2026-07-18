@@ -1,5 +1,5 @@
 ---
-title: Scaffolding the long run
+title: Guardrails for hours-long agent runs
 description: Claude Fable 5 takes multi-minute turns and runs for hours on its own. That capability is wasted, or worse, without the scaffolding that keeps it honest. An audit instruction that kills fabricated status reports, a memory system that survives context resets, and verifiers that see with fresh eyes.
 track: prompting
 level: deep
@@ -12,9 +12,9 @@ objectives:
   - Build a Markdown memory system and fresh-context verifier subagents that outlast a single context window.
   - Audit a skill for show-your-thinking language that triggers the reasoning_extraction refusal.
 prerequisites:
-  - slug: the-model-hears-you-now
+  - slug: stop-shouting-at-the-model
     note: Covers softening trigger language and steering adaptive thinking. This guide takes those to autonomous, hours-long runs.
-  - slug: the-firmament-moved
+  - slug: new-claude-lineup
     note: Assumes you know Fable 5's always-on thinking, refusal stop_reason, and effort model from the overview guide.
 sources: []
 selfCheck:
