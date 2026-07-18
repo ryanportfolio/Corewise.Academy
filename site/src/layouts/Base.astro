@@ -32,7 +32,27 @@ const { title, description = 'CoreWise Academy · free original guides on workin
         <a href="/about/">About</a>
         <a href="/how-its-built/">How it’s built</a>
         <button class="session-toggle" id="toggle" aria-label="Switch between day and night theme">
-          <span class="dot"></span><span id="toggle-label">DAY LECTURE</span>
+          <span class="toggle-icon" aria-hidden="true">
+            <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g class="ti-sun">
+                <circle cx="8" cy="8" r="2.6" stroke="currentColor" stroke-width="1" />
+                <g class="ti-rays" stroke="currentColor" stroke-width="0.9" stroke-linecap="round">
+                  <line x1="12.3" y1="8" x2="13.9" y2="8" />
+                  <line x1="3.7" y1="8" x2="2.1" y2="8" />
+                  <line x1="8" y1="12.3" x2="8" y2="13.9" />
+                  <line x1="8" y1="3.7" x2="8" y2="2.1" />
+                  <line x1="11.04" y1="11.04" x2="11.75" y2="11.75" />
+                  <line x1="4.96" y1="4.96" x2="4.25" y2="4.25" />
+                  <line x1="11.04" y1="4.96" x2="11.75" y2="4.25" />
+                  <line x1="4.96" y1="11.04" x2="4.25" y2="11.75" />
+                </g>
+              </g>
+              <g class="ti-moon">
+                <path d="M9.8 3.2 A4.9 4.9 0 1 0 9.8 12.8 A5.8 5.8 0 0 1 9.8 3.2 Z" stroke="currentColor" stroke-width="1" stroke-linejoin="round" />
+                <path class="ti-star" d="M12.2 3 L12.62 3.98 L13.6 4.4 L12.62 4.82 L12.2 5.8 L11.78 4.82 L10.8 4.4 L11.78 3.98 Z" fill="currentColor" />
+              </g>
+            </svg>
+          </span><span id="toggle-label">DAY</span>
         </button>
       </nav>
     </header>
@@ -50,7 +70,7 @@ const { title, description = 'CoreWise Academy · free original guides on workin
       const label = document.getElementById('toggle-label')!;
       const apply = (t: string) => {
         root.dataset.theme = t;
-        label.textContent = t === 'night' ? 'NIGHT LECTURE' : 'DAY LECTURE';
+        label.textContent = t === 'night' ? 'NIGHT' : 'DAY';
       };
       apply(localStorage.getItem('cw-theme') || 'day');
       document.getElementById('toggle')!.addEventListener('click', () => {
@@ -123,12 +143,37 @@ const { title, description = 'CoreWise Academy · free original guides on workin
         transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
       }
       .session-toggle:hover { color: var(--accent-deep); border-color: var(--accent); }
-      .session-toggle .dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: var(--accent);
-        box-shadow: 0 0 8px var(--glow);
+      .session-toggle .toggle-icon {
+        width: 15px;
+        height: 15px;
+        display: inline-flex;
+        color: var(--accent);
+        filter: drop-shadow(0 0 3px var(--glow));
+      }
+      .session-toggle .toggle-icon svg { width: 100%; height: 100%; overflow: visible; }
+      /* engraved sun and crescent share the box; the active one shows.
+         Both rotate through the swap so the change reads as one dial turning. */
+      .ti-sun, .ti-moon {
+        transform-origin: 8px 8px;
+        transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+      }
+      .ti-moon { opacity: 0; transform: rotate(-60deg) scale(0.55); }
+      [data-theme='night'] .ti-sun { opacity: 0; transform: rotate(60deg) scale(0.55); }
+      [data-theme='night'] .ti-moon { opacity: 1; transform: none; }
+      /* ambient: the sun's rays revolve like a slow instrument dial */
+      .ti-rays {
+        transform-origin: 8px 8px;
+        animation: ti-revolve 80s linear infinite;
+      }
+      @keyframes ti-revolve { to { transform: rotate(360deg); } }
+      /* ambient: the star in the crescent's opening breathes */
+      .ti-star {
+        transform-origin: 12.2px 4.4px;
+        animation: ti-twinkle 4.5s var(--ease) infinite;
+      }
+      @keyframes ti-twinkle {
+        0%, 100% { opacity: 0.35; transform: scale(0.8); }
+        55% { opacity: 1; transform: scale(1); }
       }
 
       .site-footer {
