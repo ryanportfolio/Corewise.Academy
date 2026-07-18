@@ -18,9 +18,9 @@ selfCheck:
   - q: Both vendors now tell you to cut something from prompts you were previously told to add. What is it, and why the reversal?
     a: 'Repetition and heavy approval-gating. Older guidance leaned on "CRITICAL, you MUST" emphasis and scattered "ask first" phrases to force behavior on weaker instruction-followers. Current models over-react to that language, pausing when they should act, treating an emphasized rule as louder than the others. OpenAI says state each instruction exactly once and define autonomy in one place; Claude says soften the aggressive forceful language meant to stop the model doing too little. Same fix, two companies.'
   - q: Where do the two vendors genuinely diverge, beyond a difference in wording?
-    a: 'Coordinating tools. OpenAI Programmatic Tool Calling has the model write server-side code that calls tools, processes several results, and returns one small structured result, good for bounded filter/aggregate/validate work. Claude keeps the coordinating in the app''s own request loop or its code-execution tool. That is a real architectural split, not a phrasing difference. Reasoning reuse diverges too: OpenAI carries encrypted reasoning across turns via previous_response_id plus reasoning.context, where Claude re-sends thinking blocks in the conversation history.'
+    a: 'Coordinating tools. OpenAI Programmatic Tool Calling has the model write server-side code that calls tools, processes several results, and returns one small structured result, good for bounded filter/aggregate/validate work. Claude keeps the coordinating in the app''s own request loop or its code-execution tool. That is a real architectural split. Reasoning reuse diverges too: OpenAI carries encrypted reasoning across turns via previous_response_id plus reasoning.context, where Claude re-sends thinking blocks in the conversation history.'
   - q: OpenAI reports leaner prompts scoring 10-15% higher while cutting cost 33-67%. How much weight should that carry?
-    a: 'Directional, not settled. The numbers are self-reported internal tests with no methodology, task mix, or baseline disclosed, so you cannot check whether they transfer to your workload. Treat them as a reason to run the experiment yourself, not as a measured result to quote. The direction is corroborated by the other vendor moving the same way; the magnitude is not something you should bank on.'
+    a: 'Read it as a rough direction worth checking. The numbers are self-reported internal tests with no methodology, task mix, or baseline disclosed, so you cannot check whether they transfer to your workload. Treat them as a reason to run the experiment yourself, not as a measured result to quote. The direction is corroborated by the other vendor moving the same way; the magnitude is not something you should bank on.'
 status: published
 lastUpdated: 2026-07-17
 ---
@@ -63,12 +63,11 @@ Both diagnoses share a root cause. The emphasis and repetition you learned were 
 models that under-followed instructions. Current models follow them literally and weight an
 over-emphasized rule too heavily, so the compensation now backfires.
 
-> “Lean prompts are not a style preference; they are the correction for a capability that improved underneath your habits.”
+> “Lean prompts correct for models that got better at following instructions while your habits stayed the same.”
 
 ## <span class="sec-no">02</span>Where they genuinely diverge
 
-Convergence on the prompt doesn't mean agreement on the underlying systems. Three splits are real, not
-cosmetic:
+Convergence on the prompt doesn't mean agreement on the underlying systems. Three splits are real:
 
 | Split | OpenAI | Claude |
 | --- | --- | --- |
@@ -80,7 +79,7 @@ Reasoning control. OpenAI exposes a numbered scale, reasoning.effort from none t
 a reasoning.mode "pro" switch that spends more model work on one request before returning a single
 answer. Claude runs adaptive thinking calibrated by an effort parameter and query complexity,
 with the model deciding depth per turn rather than you picking a step. That effort parameter
-doubles as an intelligence dial, which
+also controls how hard the model thinks, which
 <a href="/guides/guardrails-for-long-runs/">Guardrails for hours-long agent runs</a> puts to work.
 
 Coordinating tools. OpenAI's Programmatic Tool Calling lets the model write code that calls tools

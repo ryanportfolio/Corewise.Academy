@@ -16,7 +16,7 @@ prerequisites:
 sources: []
 selfCheck:
   - q: 'Why does "CRITICAL: You MUST use this tool" now hurt on Opus 4.5 and 4.6, when it used to help?'
-    a: 'Those models are far more responsive to system prompts, so forceful language that once nudged a reluctant model into using a tool now backfires. The model reaches for the tool when it should not. The fix is conditional phrasing that says when to act: "Use this tool when...". You are steering a model that already listens, so you turn the volume down, not up.'
+    a: 'Those models are far more responsive to system prompts, so forceful language that once nudged a reluctant model into using a tool now backfires. The model reaches for the tool when it should not. The fix is conditional phrasing that says when to act: "Use this tool when...". You are steering a model that already listens, so you turn the volume down.'
   - q: You have a prompt that sets thinking with budget_tokens and prefills the assistant turn for format control. What breaks on the newest models, and what replaces each?
     a: 'budget_tokens extended thinking is deprecated on Opus 4.6 and Sonnet 4.6 and returns a 400 error on Opus 4.7 and later, Fable 5, and Mythos 5, so replace it with adaptive thinking calibrated by the effort parameter. Prefilled assistant responses on the last turn return a 400 error starting with 4.6 models, so replace format control with Structured Outputs and a system-prompt "no preamble" instruction.'
   - q: A responsive model spawns a subagent where a grep would do and adds abstractions you never asked for. Which two levers address this?
@@ -55,8 +55,8 @@ trigger, so the model applies it where it belongs.
 The same instinct shows up as over-prompting elsewhere. Blanket tool defaults ("if in doubt, use
 [tool]") push a model that already explores plenty into more of it. Replace them with conditional
 guidance, cut the "if in doubt" hedges, and if a model still explores too hard at high effort,
-lower the effort parameter as a fallback. That same effort parameter doubles as an intelligence
-dial, which <a href="/guides/guardrails-for-long-runs/">Guardrails for hours-long agent runs</a>
+lower the effort parameter as a fallback. That same effort parameter also controls how hard the model thinks,
+which <a href="/guides/guardrails-for-long-runs/">Guardrails for hours-long agent runs</a>
 leans on to keep long runs sharp. These models also follow instructions literally. "Can
 you suggest some changes" gets you suggestions, not edits. If you want action by default, say so
 imperatively or install a `<default_to_action>` block. One clear autonomy statement beats

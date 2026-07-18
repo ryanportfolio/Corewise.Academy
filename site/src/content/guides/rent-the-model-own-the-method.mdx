@@ -34,7 +34,7 @@ import PullQuote from '../../components/PullQuote.astro';
 import Exercise from '../../components/Exercise.astro';
 import Chalk from '../../components/Chalk.astro';
 
-<Chalk>a better telescope does not make an astronomer: the discipline does</Chalk>
+<Chalk>discipline makes the astronomer; the telescope only helps</Chalk>
 
 <p class="lede">
 Put the strongest model available in the hands of a beginner, and give a seasoned engineer a
@@ -66,7 +66,7 @@ comes back (redesigning the next step from each report), the workers are executi
 well-specified plan, and executing a well-specified plan is exactly what cheaper models are
 good at.
 
-Which reframes the top model's job. It is not a workhorse; it is the senior engineer about
+Which reframes the top model's job. It is the senior engineer about
 to rotate off the team, and your task is to have it package up everything it knows for the
 cohort that replaces it. Treat it as a teacher: have it review your setups, improve your
 skills, and, most importantly, explain its own reasoning while you still have it.
@@ -91,12 +91,7 @@ the model. Herk's version gates work through five stages:
 
 The gate that earns its place is the first one. Scoping is not planning. A plan says "here are
 the steps"; scoping plays devil's advocate first: every assumption that might be false, every
-unknown the plan silently walks past. The difference is invisible in the happy case and decisive
-everywhere else, and it is precisely the habit worth stealing: the same discipline shows up in
-the (reportedly leaked, so treat its origin accordingly) system prompt of the strongest
-current model: recognizing something from training does not mean current knowledge, a file
-implied to exist is not a file verified to exist, check at every step that what you have done is
-what you think you have done. That habit of auditing every claim against what the tools actually
+unknown the plan silently walks past. The difference is invisible in the happy case and decisive everywhere else, and the habit is worth stealing. The same discipline shows up in the system prompt of the strongest current model, which was reportedly leaked, so treat its origin accordingly. Recognizing something from training does not mean it is current knowledge. A file implied to exist is not a file verified to exist. At every step, check that what you have done is what you think you have done. That habit of auditing every claim against what the tools actually
 returned is the backbone of <a href="/guides/guardrails-for-long-runs/">Guardrails for hours-long agent runs</a>. Encoded as a skill, that discipline clearly improves a
 mid-tier model, and it runs on anything, including models you host yourself.
 
@@ -112,8 +107,7 @@ Hand the table to your orchestrator and let it delegate against it.
 
 The second setting is effort. Published score-versus-cost curves show effort levels overlapping
 across model tiers (a top model on low effort landing near the previous tier on high), so the
-pairing, not the model name, is the real unit of choice. And more is not always better:
-past a point, maximum effort buys longer runs, second-guessing, and worse output than the tier
+pairing, not the model name, is the real unit of choice. Effort has a ceiling. Past a point, maximum effort buys longer runs, second-guessing, and worse output than the tier
 below on high. The tell is a response that argues against its own correct first answer. When you
 see it, route down.
 
