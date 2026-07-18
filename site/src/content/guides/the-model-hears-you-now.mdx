@@ -1,0 +1,110 @@
+---
+title: The model hears you now
+description: The newest Claude models respond hard to system prompts, so the old habit of shouting backfires. How to soften anti-undertriggering language, migrate off deprecated thinking budgets and prefill, and install the behavior levers that keep a responsive model in bounds.
+track: prompting
+level: practitioner
+number: 15
+minutes: 5
+objectives:
+  - 'Diagnose an over-triggering prompt and rewrite aggressive tool-use language into conditional guidance the newest models follow correctly.'
+  - Migrate a prompt off deprecated thinking budgets and assistant prefill onto adaptive thinking, effort, and Structured Outputs.
+  - 'Compare adaptive thinking to manual extended thinking, and set thinking depth with the effort parameter instead of a token budget.'
+  - Install the five behavior levers that keep a responsive model from overtriggering, overengineering, or taking irreversible actions.
+prerequisites:
+  - slug: the-brilliant-new-employee
+    note: 'Assumes you know the fundamentals (clarity, XML tags, examples, roles) before tuning them for the newest models.'
+sources: []
+selfCheck:
+  - q: 'Why does "CRITICAL: You MUST use this tool" now hurt on Opus 4.5 and 4.6, when it used to help?'
+    a: 'Those models are far more responsive to system prompts, so anti-undertriggering language that once nudged a reluctant model into using a tool now overtriggers. The model reaches for the tool when it should not. The fix is conditional phrasing that says when to act: "Use this tool when...". You are steering a model that already listens, so you turn the volume down, not up.'
+  - q: You have a prompt that sets thinking with budget_tokens and prefills the assistant turn for format control. What breaks on the newest models, and what replaces each?
+    a: 'budget_tokens extended thinking is deprecated on Opus 4.6 and Sonnet 4.6 and returns a 400 error on Opus 4.7 and later, Fable 5, and Mythos 5, so replace it with adaptive thinking calibrated by the effort parameter. Prefilled assistant responses on the last turn return a 400 error starting with 4.6 models, so replace format control with Structured Outputs and a system-prompt "no preamble" instruction.'
+  - q: A responsive model spawns a subagent where a grep would do and adds abstractions you never asked for. Which two levers address this?
+    a: 'A subagent-scope instruction restricting proactive subagents to parallel, isolated-context, independent workstreams stops the reflexive spawning. A minimalism prompt covering scope, documentation, defensive coding, and abstractions curbs the overengineering. Both are standing system-prompt blocks, not per-task reminders, because the behavior is a default you are correcting once.'
+status: review
+lastUpdated: 2026-07-17
+courseSlug: prompting-best-practices
+courseOrder: 2
+---
+
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+
+<Chalk>you are steering a model that already listens</Chalk>
+
+<p class="lede">
+Open a system prompt you wrote a year ago and you will find yourself shouting. "CRITICAL: You
+MUST use this tool." "NEVER skip this step." That language earned its place back when models
+under-triggered, when a tool sat unused unless you leaned on it. The newest Claude models flipped
+the problem. They respond hard to system prompts, so the same shouting now overtriggers: the
+model grabs the tool when a plain answer would do, or drops everything to obey a rule that was
+meant as a nudge. The fix runs against instinct. You turn the volume down.
+</p>
+
+## <span class="sec-no">01</span>Stop shouting
+
+Anthropic's <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices">prompting
+best practices</a> put it plainly: Opus 4.5 and 4.6 are more responsive to system prompts, so
+aggressive anti-undertriggering language like "CRITICAL: You MUST use this tool" should soften to
+"Use this tool when...". The rewrite is small and the difference is large. The first phrasing is
+a command with no condition, so the model applies it everywhere. The second names the trigger, so
+the model applies it where it belongs.
+
+The same instinct shows up as over-prompting elsewhere. Blanket tool defaults ("if in doubt, use
+[tool]") push a model that already explores plenty into more of it. Replace them with conditional
+guidance, cut the "if in doubt" hedges, and if a model still explores too hard at high effort,
+lower the effort parameter as a fallback. These models also follow instructions literally. "Can
+you suggest some changes" gets you suggestions, not edits. If you want action by default, say so
+imperatively or install a `<default_to_action>` block.
+
+## <span class="sec-no">02</span>The thinking dials moved
+
+Two mechanisms you may still be reaching for are gone or going.
+
+Manual extended thinking with a `budget_tokens` cap is deprecated on Opus 4.6 and Sonnet 4.6, and
+it returns a 400 error on Opus 4.7 and later, on Fable 5, and on Mythos 5. The replacement is
+adaptive thinking (`thinking: {type: "adaptive"}`), where depth is calibrated by the effort
+parameter plus the query's own complexity rather than a number you pick. On Fable 5 and Mythos 5
+thinking is always on and adaptive is the only mode. On Opus 4.6 through 4.8 and Sonnet 4.6,
+omitting the thinking parameter leaves thinking off. Anthropic's internal evaluations show
+adaptive thinking reliably outperforms the old budgeted extended thinking, so this is an upgrade
+you were going to want anyway.
+
+Assistant prefill is the other casualty. Starting with 4.6 models, a prefilled assistant response
+on the last turn returns a 400 error. Prefill did real work: constraining format, stripping
+preamble, resuming an interrupted response. Each job has a new home. For format constraints, use
+Structured Outputs. To kill preamble, put a "no preamble" instruction in the system prompt. To
+resume an interrupted response, continue it from the user message. To rehydrate context, use tools
+or compaction. One old lever, four cleaner ones.
+
+## <span class="sec-no">03</span>The behavior levers
+
+A model that listens well will also run past you if you let it. The best-practices doc names five
+standing blocks that keep a responsive model in bounds. Install them in the system prompt, not as
+per-task reminders, because you are correcting a default once.
+
+A `<use_parallel_tool_calls>` prompt pushes independent tool calls (speculative searches,
+multi-file reads, parallel bash) toward roughly 100 percent parallel execution. A subagent-scope
+instruction restricts proactive subagents to parallel, isolated-context, independent workstreams,
+because Opus 4.6 has a strong predilection for spawning them where a direct grep would suffice. A
+minimalism prompt covering scope, documentation, defensive coding, and abstractions curbs the
+overengineering these models drift into (extra files, unrequested abstractions). A reversibility
+prompt lists the destructive, hard-to-reverse, and externally-visible operations (deleting files,
+force-pushing, posting externally) and tells the model to confirm before them and skip shortcuts
+like `--no-verify`. And an `<investigate_before_answering>` block (never speculate about unopened
+code, always read referenced files first) cuts codebase hallucinations at the root.
+
+None of these is a shout. Each one hands a responsive model a clear condition and trusts it to
+follow. That is the whole shift: the model hears you now, so you write like it does.
+
+<Exercise>
+1. Grep your system prompts for "CRITICAL", "MUST", "NEVER", and "ALWAYS". For each hit, ask
+   whether the model actually under-triggers there. If not, rewrite it as "Use this when..." or a
+   conditional, and delete the ones that were nudging a model that no longer needs nudging.
+2. Find every `budget_tokens` and last-turn prefill in your code. Replace budgets with adaptive
+   thinking plus an effort setting; replace prefill with Structured Outputs and a "no preamble"
+   system instruction. Run one request per model you target and confirm none returns a 400.
+3. Add the reversibility and `<investigate_before_answering>` blocks to one agent's system prompt,
+   then run a task that tempts a destructive shortcut and a task that references an unopened file.
+   Confirm it confirms, and confirm it reads before it answers.
+</Exercise>
