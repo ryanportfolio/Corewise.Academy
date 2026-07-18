@@ -59,8 +59,15 @@ gh pr merge <number> --merge
 - **No `--squash` / `--rebase`** unless the user explicitly asked.
 - **No `--admin`** — do not bypass branch protection or failing required checks. If the merge is blocked by checks/protection, report why and stop (pause the cycle for that task); do not force it.
 
-### 7. Report
-Confirm the merge landed, give the PR URL, note the branch was kept. If anything blocked it (failing checks, protection, unresolved/ambiguous conflict), report the exact `gh`/`git` output and the reason — never claim success you did not verify.
+### 7. Confirm it went live
+Merging is publishing: the cycle is not done until the change is on the live site (or the deploy blocker is reported). Identify the project's deploy platform from `.claude/reference/deployment.md` or auto-memory (this repo: Vercel, root dir `site/`, `main` auto-deploys; other projects may use Railway etc.).
+
+- **Auto-deploy platforms (Vercel/Railway on `main`):** the merge itself triggers the deploy — do not trigger a second one. Verify it: check the platform's commit status on the merge commit (`gh api repos/{owner}/{repo}/commits/<merge-sha>/status`) or the platform CLI, and confirm it reaches success. A cheap live check (e.g. `curl -s https://<site>/ | grep` for the changed copy) is the gold standard when the change is greppable.
+- **Deploy blocked (rate limit, quota, build failure):** report it plainly with the platform's message and when it will clear — never imply the change is live. If the block is a build FAILURE (not a limit), treat it like a failing check: diagnose before merging further UI work.
+- **Manual-deploy platforms:** run the documented deploy command after merge (see `deployment.md`); if credentials/environment make that impossible here, say so and hand the exact command to the user.
+
+### 8. Report
+Confirm the merge landed, give the PR URL, note the branch was kept, and state the live-deploy status from step 7 (deployed / queued / blocked-with-reason). If anything blocked it (failing checks, protection, unresolved/ambiguous conflict), report the exact `gh`/`git` output and the reason — never claim success you did not verify.
 
 ## Deploy budget: batch the merges
 
@@ -109,3 +116,4 @@ Turn the mode OFF when the user says "stop merge", "stop auto-merge", "normal mo
 - Don't bypass protections/checks (`--admin`) without an explicit ask — report the block and stop.
 - Don't guess on semantic merge conflicts — resolve the unambiguous ones, stop and ask on the rest.
 - Don't fabricate success — report the real `gh pr merge` / `git merge` outcome.
+- Don't stop at the merge — a merge whose deploy silently failed or is rate-limited is NOT live; verify or report per step 7.
