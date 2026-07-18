@@ -4,7 +4,7 @@ import Faq from '../components/Faq.astro';
 
 const faq = [
   {
-    q: 'Who is Ryan Allen?',
+    q: 'Who am I?',
     a: 'Builder who ships AI systems end to end, with AI agents as the workforce and a human gate on every merge. Editor of CoreWise Academy.',
   },
   {
@@ -15,8 +15,8 @@ const faq = [
 ---
 
 <Base
-  title="Ryan Allen, AI systems builder · CoreWise Academy"
-  description="Ryan Allen builds and ships AI systems end to end. Four live systems, presented as a technical drawing set: corewise.video, kinefractal.com, truenote.org, willaicite.com."
+  title="Ryan D. Allen, AI systems builder · CoreWise Academy"
+  description="Ryan D. Allen builds and ships AI systems end to end. Four live systems, presented as a technical drawing set: corewise.video, kinefractal.com, truenote.org, willaicite.com."
   faq={faq}
   crumbs={[{ name: 'About the editor', path: '/about/' }]}
 >
@@ -26,7 +26,7 @@ const faq = [
       <div class="hero-grid">
         <div class="hero-mast">
           <p class="aw-kicker">APPROVED WORKS · DRAWING SET A · WEB EDITION</p>
-          <h1 class="hero-name">Ryan Allen</h1>
+          <h1 class="hero-name">Ryan D. Allen</h1>
           <div class="hero-rule"></div>
           <p class="hero-line">AI systems builder<br />shipping end to end</p>
           <p class="hero-links">
@@ -53,7 +53,6 @@ const faq = [
         <li><a href="#sec-a999"><span class="idx-no">A-999</span><span class="idx-name">How this page was drawn</span><span class="idx-tag">END OF SET</span></a></li>
       </ol>
 
-      <h3 class="sec-head">HOLDINGS · THE TEN-SECOND VERSION</h3>
       <div class="hold">
         <div class="hold-cell"><p class="hold-big" data-count="6">6</p><p class="hold-k">MODELS IN PARALLEL · 1,800+ REGISTERED USERS · COREWISE.VIDEO</p></div>
         <div class="hold-cell"><p class="hold-big" data-count="1227">1,227</p><p class="hold-k">COMMITS · 519 MERGED PRS · PAPER TRADING ONLY</p></div>
@@ -88,8 +87,7 @@ const faq = [
           <div class="fig-row">
             <div class="fig ink-vermilion" id="fig-disc" aria-label="108 engraved spokes, one per hundred commits"></div>
             <p class="fig-cap narrow"><span class="fig-no">FIG 2</span>108 engraved spokes, one per 100 commits:
-              ~10.8k GitHub-attributed commits across ~7 months. Every ninth spoke is cut heavier, so the
-              twelve groups of nine can be counted by eye. Watch it count itself in.</p>
+              ~10.8k GitHub-attributed commits across ~7 months.</p>
           </div>
         </div>
         <aside class="rail ink-vermilion">
@@ -122,18 +120,13 @@ const faq = [
       <div class="cols">
         <div class="main">
           <p class="lede">It buys broad-market fear and sells gradually as prices rise. One engine produces every
-            backtest and the nightly public signal. Ten gates stand between signal and order, and on this
-            page the last two are yours to operate.</p>
+            backtest and the nightly public signal. Ten gates stand between signal and order, and the last
+            two belong to a human.</p>
           <div class="fig ink-prussian" id="fig-corridor" aria-label="Ten pre-trade gates in one-point perspective"></div>
           <div class="gate-panel">
             <p class="gate-readout" id="gate-readout">GATES CLOSED 00 / 10</p>
-            <button class="aw-btn" id="btn-arm">APPROVE THE TRADE · CLOSE GATE 09</button>
-            <div class="confirm-wrap" id="confirm-wrap">
-              <input id="input-confirm" type="text" placeholder="TYPE TRANSMIT" autocomplete="off" spellcheck="false" aria-label="Type TRANSMIT to close gate 10" />
-              <button class="aw-btn" id="btn-confirm">SEND THE ORDER · CLOSE GATE 10</button>
-            </div>
-            <p class="gate-note">This is the real protocol, miniaturized: no order goes out unless a human
-              clicks approve on the exact trade, then types TRANSMIT to send it. Paper account only.</p>
+            <p class="gate-note">This is the real protocol, miniaturized: no order transmits until a human
+              approves the exact trade, then confirms it by hand. Paper account only.</p>
           </div>
           <div class="gatekey">
             <p><b>01</b> DECISION FROM PREVIOUS CLOSED NYSE SESSION</p>
@@ -145,13 +138,12 @@ const faq = [
           </div>
           <p class="fig-cap"><span class="fig-no">FIG 1</span>Ten pre-trade gates in one-point perspective; all ten
             must close before anything transmits. Six are named in the schedule (the full list is in the
-            repo README). The last two belong to a human, which is why this page makes you be one.</p>
+            repo README). The last two belong to a human.</p>
           <div class="fig ink-prussian" id="fig-strata" aria-label="Percentile fear floors for the three live strategies"></div>
           <p class="fig-cap"><span class="fig-no">FIG 2</span>The three live strategies in section: each buys only when
-            its fear reading (Williams VIX Fix vs its own history) rises past the floor.</p>
+            its fear reading rises past the floor.</p>
           <div class="fig ink-prussian" id="fig-ledger" aria-label="69 dated ledger entries"></div>
-          <p class="fig-cap"><span class="fig-no">FIG 3</span>69 dated entries in a 219 KB experiment ledger. Kills
-            logged beside wins, and they stay in the book.</p>
+          <p class="fig-cap"><span class="fig-no">FIG 3</span>60+ dated entries in a 219 KB experiment ledger.</p>
         </div>
         <aside class="rail ink-prussian">
           <p class="rail-head">KINEFRACTAL</p>
@@ -183,18 +175,12 @@ const faq = [
       <div class="cols">
         <div class="main">
           <p class="lede">Built for call-center reps mid-call: every answer carries a clickable citation,
-            or the system refuses out loud instead of guessing. Drag the confidence down and watch it refuse.</p>
+            or the system refuses out loud instead of guessing.</p>
           <div class="fig ink-viridian" id="fig-confluence" aria-label="Eighty retrieval filaments narrowing to one cited answer"></div>
-          <div class="conf-panel">
-            <label for="conf-slider" class="conf-label">RE-RANKING CONFIDENCE</label>
-            <input id="conf-slider" type="range" min="0" max="1" step="0.01" value="0.62" />
-            <p class="conf-readout" id="conf-readout"></p>
-          </div>
           <p class="fig-cap"><span class="fig-no">FIG 1</span>80 candidate filaments, 40 vector and 40 BM25, flow to
             the rerank portal in dimetric projection. Eight pass at double weight; one leaves as the cited
             answer. Below the 0.30 gate the answer path goes dark and REFUSES lights, because on weak
-            retrieval the LLM is never called at all. The refusal branch is drawn solid: refusing is
-            shipped behavior.</p>
+            retrieval the LLM is never called at all.</p>
           <div class="fig-row">
             <div class="fig ink-viridian" id="fig-tally" aria-label="43 test files tallied"></div>
           </div>
@@ -229,17 +215,9 @@ const faq = [
       <div class="cols">
         <div class="main">
           <p class="lede">SEO gets you listed. GEO gets you quoted. It scores whether AI answer engines
-            can access, extract, and quote a page. The audit deliberately contains no AI, and you can
-            prove it here: run it again.</p>
+            can access, extract, and quote a page.</p>
           <div class="fig ink-ochre" id="fig-seals" aria-label="Two identical audit seals with zero displacement between runs"></div>
-          <div class="seal-panel">
-            <button class="aw-btn" id="btn-run">RUN THE AUDIT AGAIN</button>
-            <p class="seal-meter" id="seal-meter"></p>
-          </div>
-          <p class="fig-cap"><span class="fig-no">FIG 1</span>The same URL, audited twice. The seals are the same
-            drawing because the score is the same number: rule-based checks, no LLM calls, identical
-            input, identical output. Every press of the button re-derives the right seal from scratch and
-            hashes its geometry. The hash never changes. Dimensions I to VIII: AI crawler access,
+          <p class="fig-cap"><span class="fig-no">FIG 1</span>Dimensions I to VIII: AI crawler access,
             renderability, answer-readiness, topical focus &amp; metadata, evidence density, structured
             data, freshness, entity / E-E-A-T.</p>
           <div class="fig ink-ochre" id="fig-daybar" aria-label="Timeline of one day from spec to live with 22 PR ticks"></div>
@@ -345,8 +323,7 @@ const faq = [
               <h3 class="sec-head">MAIMCOIL</h3>
               <p class="fig-cap"><span class="fig-no">FIG 4</span>A survivors-style action game headed for Steam:
                 Tauri 2 + React with a Rust/Steamworks bridge, ~37k lines of game code. A playable
-                prototype is live at <a href="https://corewise.video/play">corewise.video/play ↗</a>. The
-                swarm drifts anyway.</p>
+                prototype is live at <a href="https://corewise.video/play">corewise.video/play ↗</a>.</p>
             </div>
           </div>
         </div>
@@ -382,12 +359,7 @@ const faq = [
             panel (a recruiter's eye, a book designer's eye, and one agent whose only job was hunting
             AI-generated design tells). Then the build, then the review passes.</p>
           <p class="body-block">Every figure is computed geometry: real 3D to 2D projection math running
-            in your browser, emitted as vectors. The chandelier is a true perspective camera you steer.
-            The corridor is one-point perspective with the human gates wired to your hand. The confluence
-            is <a href="https://en.wikipedia.org/wiki/Axonometric_projection" rel="noopener">angled 3D view</a> with a live confidence gate. Where a count is drawn, the count is the
-            fact. There is also a <a href="https://github.com/ryanportfolio">print edition</a>: a 9-sheet
-            vector PDF of this same set, built by the same locked facts and audited by a script that
-            recounts every drawn mark.</p>
+            in your browser, emitted as vectors.</p>
           <h3 class="sec-head">REVISIONS</h3>
           <table class="rev">
             <thead><tr><th>REV</th><th>DESCRIPTION</th><th>DATE</th></tr></thead>
@@ -422,14 +394,14 @@ const faq = [
       </header>
       <div class="cols">
         <div class="main">
-          <Faq heading="FAQ · about Ryan Allen" items={faq} open={true} />
+          <Faq heading="FAQ · about Ryan D. Allen" items={faq} open={true} />
         </div>
       </div>
     </section>
 
     <!-- pinned title block -->
     <div class="tb" role="contentinfo" aria-label="Drawing title block">
-      <span class="tb-cell"><span class="tb-k">PROJECT</span>RYAN ALLEN · APPROVED WORKS · SET A</span>
+      <span class="tb-cell"><span class="tb-k">PROJECT</span>RYAN D. ALLEN · APPROVED WORKS · SET A</span>
       <span class="tb-cell"><span class="tb-k">SHEET</span><span id="tb-sheet">A-000</span></span>
       <span class="tb-cell tb-zonecell"><span class="tb-k">POINTER</span><span id="tb-zone"></span></span>
       <span class="tb-cell wide"><span class="tb-k">DRAWN BY</span>AI AGENTS</span>
@@ -575,28 +547,11 @@ const faq = [
     .aw-btn:disabled { opacity: 0.6; cursor: default; }
     .gate-panel { margin: var(--s-2) 0; display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; }
     .gate-readout { font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.12em; color: var(--aw-prus); flex-basis: 100%; }
-    .confirm-wrap { display: none; gap: var(--s-1); }
-    .confirm-wrap.ready { display: inline-flex; }
-    #input-confirm {
-      font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.14em; text-transform: uppercase;
-      background: none; border: 1.5px solid var(--line); border-bottom-color: var(--awc); color: var(--ink);
-      padding: 10px 12px; width: 18ch;
-    }
-    #input-confirm:focus { outline: none; border-color: var(--aw-verm); }
-    :global(.shake) { animation: aw-shake 0.35s; }
-    @keyframes aw-shake { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
     .gate-note { font-family: var(--font-body); font-style: italic; font-size: var(--text-sm); color: var(--aw-sepia); flex-basis: 100%; max-width: 52ch; }
     .gatekey { display: grid; grid-template-columns: 1fr 1fr; gap: 4px var(--s-4); margin: var(--s-2) 0; max-width: 640px; }
     .gatekey p { font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.06em; color: var(--awg); }
     .gatekey b { color: var(--aw-prus); font-weight: 500; padding-right: 6px; }
     .gatekey .human, .gatekey .human b { color: var(--aw-verm); }
-    .conf-panel { margin: var(--s-2) 0; max-width: 420px; }
-    .conf-label { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.16em; color: var(--awg); }
-    #conf-slider { width: 100%; accent-color: var(--aw-viri); margin: 8px 0 4px; }
-    .conf-readout { font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.1em; color: var(--aw-viri); }
-    :global(#sec-a300.refusing .conf-readout) { color: var(--aw-verm); }
-    .seal-panel { display: flex; gap: var(--s-2); align-items: center; flex-wrap: wrap; margin: var(--s-2) 0; }
-    .seal-meter { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.08em; color: var(--awg); }
     .go-panel { margin: var(--s-1) 0; }
 
     /* ---- figures: stroke classes (global: SVG is built at runtime) ---- */

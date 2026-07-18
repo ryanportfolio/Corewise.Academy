@@ -14,7 +14,7 @@ export const GET: APIRoute = async () => {
   const body = [
     '# CoreWise Academy',
     '',
-    '> CoreWise Academy is a free library of original guides on working with AI, organized into five layers (Foundations, Prompting & Context, Agents & Automation, Building with AI, Practice) at three depths (Broad, Practitioner, Deep). Edited by Ryan Allen.',
+    '> CoreWise Academy is a free library of original guides on working with AI, organized into five layers (Foundations, Prompting & Context, Agents & Automation, Building with AI, Practice) at three depths (Broad, Practitioner, Deep). Edited by Ryan D. Allen.',
     '',
     `- [About the editor](${SITE_URL}/about/)`,
     `- [How guides get made](${SITE_URL}/how-its-built/)`,
