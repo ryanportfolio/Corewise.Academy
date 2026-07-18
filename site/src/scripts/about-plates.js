@@ -163,6 +163,23 @@ function createChandelier(svg, { labels = true } = {}) {
     nodeDots.push(el('circle', { r: 2.6, class: 'nd', 'data-conv': 'solid' }, svg));
     if (labels) nodeTexts.push(el('text', { class: 'annf' }, svg));
   }
+  // Hover FX: two chromatic echoes of the strand linework plus a bright tracer
+  // that runs along each strand. Hidden until update() receives an fx state.
+  const fxG = el('g', {}, svg);
+  fxG.style.opacity = '0';
+  fxG.style.pointerEvents = 'none';
+  const echoLayer = (stroke, glow, width) => {
+    const g = el('g', {}, fxG);
+    g.style.stroke = stroke;
+    g.style.filter = `drop-shadow(0 0 ${glow}px ${stroke})`;
+    const paths = [];
+    for (let i = 0; i < 6; i++) paths.push(el('path', { fill: 'none', 'stroke-width': width, 'stroke-linecap': 'round', 'data-nodraw': 1 }, g));
+    return { g, paths };
+  };
+  const echoA = echoLayer('var(--accent)', 4, 0.8);
+  const echoB = echoLayer('var(--accent-deep)', 4, 0.8);
+  const tracer = echoLayer('var(--accent)', 5, 1.7);
+  tracer.paths.forEach((p) => p.setAttribute('stroke-dasharray', '12 228'));
   const sDot = el('circle', { r: 3.4, class: 'nd-solid', 'data-conv': 'solid' }, svg);
   const aDot = el('circle', { r: 3.4, class: 'nd', 'data-conv': 'solid' }, svg);
   const outs = [[-128, 1.6, 'CONVERGENCE'], [0, 0.9, 'DIVERGENCE'], [128, 0.45, 'UNIQUE INSIGHTS']];
@@ -180,7 +197,7 @@ function createChandelier(svg, { labels = true } = {}) {
     synthTxt = el('text', { class: 'ann', 'text-anchor': 'middle' }, svg);
     synthTxt.textContent = 'ONE SYNTHESIS';
   }
-  return function update(az, windAt) {
+  return function update(az, windAt, fx) {
     const { cam, S, A, nodes, strands } = chandelierGeometry(az, fov);
     // windAt(p) is a world-space x displacement; both anchors sit where its
     // height envelope is zero, so the spire and apex stay pinned.
@@ -189,10 +206,23 @@ function createChandelier(svg, { labels = true } = {}) {
     const ps = proj(S), pa = proj(A);
     centerLine.setAttribute('x1', fmt(ps.x)); centerLine.setAttribute('y1', fmt(ps.y - 30));
     centerLine.setAttribute('x2', fmt(pa.x)); centerLine.setAttribute('y2', fmt(pa.y + 34));
+    const fxOn = fx && fx.e > 0.004;
+    fxG.style.opacity = fxOn ? fmt(fx.e) : '0';
+    if (fxOn) {
+      echoA.g.setAttribute('transform', `translate(${fmt(fx.off)} ${fmt(-fx.off * 0.35)})`);
+      echoB.g.setAttribute('transform', `translate(${fmt(-fx.off)} ${fmt(fx.off * 0.35)})`);
+      tracer.paths.forEach((p) => p.setAttribute('stroke-dashoffset', fmt(fx.dash)));
+    }
     const order = strands.map((pts, i) => ({ pts, d: proj(nodes[i]).depth, i })).sort((a, b) => b.d - a.d);
     for (const s of order) {
       strandsG.appendChild(strandGs[s.i]); // re-sort back-to-front; moves nodes, no rebuild
       const pp = s.pts.map(proj);
+      if (fxOn) {
+        const dFull = pathFrom(pp);
+        echoA.paths[s.i].setAttribute('d', dFull);
+        echoB.paths[s.i].setAttribute('d', dFull);
+        tracer.paths[s.i].setAttribute('d', dFull);
+      }
       const depths = pp.map((p) => p.depth);
       const lo = Math.min(...depths), hi = Math.max(...depths);
       const per = Math.ceil((pp.length - 1) / CHUNKS);
@@ -239,35 +269,43 @@ function initChandelier(host, { hero = false }) {
   update(REST);
   const play = prepDraw(svg, { stagger: 10, dur: 900 });
   let drawn = false, raf = null, visible = false;
-  // Deterministic breeze: the wind bends the strands, the camera barely moves.
-  // Entering the figure releases one gust front that travels across the model
-  // from the entry side; each strand bows as the front reaches it (pinned at
-  // spire and apex, deepest bow mid-height) and relaxes on a long exhale.
-  // Pure function of elapsed time; one gust at a time, so it can never stutter.
-  const TAU = 0.7, AMP_X = 16, AMP_AZ = 0.045, SPEED = 420, YT = 172, YB = -14;
-  const alpha = (k) => (k > 0 ? k * Math.exp(1 - k) : 0);
-  let gustStart = null, gustDir = 1;
+  // Two independent layers, both pure functions of time:
+  //  - Ambient breeze, always on: the strands sway on slow overlapping waves
+  //    (pinned at spire and apex) and the camera drifts a few degrees. No
+  //    pointer input touches the geometry, so it can never stutter.
+  //  - Hover FX: the pointer feeds an eased energy level that fades in a
+  //    chromatic echo (two glowing offset copies of the linework) plus a
+  //    bright tracer running along each strand, direction set by entry side.
+  const YT = 172, YB = -14;
+  let energy = 0, target = 0, dir = 1, last = null;
   const tick = (t) => {
     raf = null;
-    if (gustStart == null) return;
-    const s = Math.max(t - gustStart, 0) / 1000;
+    if (!visible) { last = null; return; }
+    const dt = last == null ? 0 : Math.min((t - last) / 1000, 0.1);
+    last = t;
+    const ts = t / 1000;
+    energy += (target - energy) * (1 - Math.exp(-dt / 0.22));
+    if (!target && energy < 0.004) energy = 0;
+    const az = REST + 0.055 * Math.sin(ts * 0.11) + 0.02 * Math.sin(ts * 0.043 + 2.1);
     const windAt = (p) => {
-      const lag = (gustDir > 0 ? p.x + 110 : 110 - p.x) / SPEED;
       const env = Math.sin(Math.PI * Math.min(Math.max((YT - p.y) / (YT - YB), 0), 1));
-      return gustDir * AMP_X * alpha((s - lag) / TAU) * env;
+      return env * (4.5 * Math.sin(ts * 0.45 - p.x * 0.013) + 2.5 * Math.sin(ts * 0.19 + p.z * 0.011 + 1.7));
     };
-    if (drawn) update(REST + gustDir * AMP_AZ * alpha(s / TAU), windAt);
-    if (s < 220 / SPEED + TAU * 7 && visible) raf = requestAnimationFrame(tick);
-    else { gustStart = null; if (drawn) update(REST); }
+    const fx = {
+      e: energy,
+      off: dir * energy * (2.4 + 0.5 * Math.sin(ts * 1.6)),
+      dash: dir * ts * -170,
+    };
+    if (drawn) update(az, windAt, fx);
+    raf = requestAnimationFrame(tick);
   };
-  const kick = () => { if (!raf && drawn && !reduced && gustStart != null) raf = requestAnimationFrame(tick); };
+  const kick = () => { if (!raf && !reduced && visible) raf = requestAnimationFrame(tick); };
   host.addEventListener('pointerenter', (e) => {
-    if (gustStart != null) return; // let the current gust finish; no restarts
     const r = host.getBoundingClientRect();
-    gustDir = e.clientX < r.left + r.width / 2 ? 1 : -1;
-    gustStart = performance.now();
-    kick();
+    dir = e.clientX < r.left + r.width / 2 ? 1 : -1;
+    target = 1;
   });
+  host.addEventListener('pointerleave', () => { target = 0; });
   new IntersectionObserver((es) => {
     es.forEach((e) => {
       visible = e.isIntersecting;
