@@ -16,6 +16,13 @@ the publication's bar is zero AI-slop perception.
 - No lookalike substitutes: no en dash (U+2013) standing in for an em dash, no
   double hyphen.
 
+## Headings never end with a period (editor ruling, 2026-07-17)
+
+No trailing period on any heading: h1-h6, section titles, kickers, panel labels,
+figure titles. "The pipeline behind the atlas." → "The pipeline behind the atlas".
+Applies sitewide, all pages and guides. Question marks and other terminal marks
+are allowed only when the heading genuinely is a question.
+
 Enforcement: `site/scripts/no-em-dash.mjs` runs first in `npm run build`
 (`npm run lint:copy` runs it alone) and fails the build with file:line:col for every
 hit in `site/src`. Vercel runs the same build, so a violation cannot deploy. The
