@@ -17,7 +17,7 @@ export const TRACK_NOTES: Record<string, TrackNotes> = {
     ],
     quotes: [
       {
-        text: 'The model you learned last quarter is not the model shipping now.',
+        text: 'This quarter’s Claude lineup already replaced last quarter’s.',
         guideTitle: 'The new Claude lineup and what it breaks',
         href: '/guides/new-claude-lineup/',
       },
@@ -27,7 +27,7 @@ export const TRACK_NOTES: Record<string, TrackNotes> = {
         href: '/guides/one-prompting-playbook/',
       },
       {
-        text: 'A better telescope does not make an astronomer: the discipline does.',
+        text: 'Discipline makes the astronomer; the telescope only helps.',
         guideTitle: 'Rent the model, own the method',
         href: '/guides/rent-the-model-own-the-method/',
       },
@@ -58,7 +58,7 @@ export const TRACK_NOTES: Record<string, TrackNotes> = {
         href: '/guides/stop-shouting-at-the-model/',
       },
       {
-        text: 'The cheapest token is the one never written.',
+        text: 'Reasoning tokens are billed twice.',
         guideTitle: 'Thinking on a budget',
         href: '/guides/thinking-on-a-budget/',
       },
@@ -84,7 +84,7 @@ export const TRACK_NOTES: Record<string, TrackNotes> = {
         href: '/guides/automate-the-bottleneck/',
       },
       {
-        text: 'You are not installing a tool: you are installing someone’s judgment.',
+        text: 'Installing a skill means installing someone’s judgment.',
         guideTitle: 'Expertise you can install',
         href: '/guides/expertise-you-can-install/',
       },
@@ -120,7 +120,7 @@ export const TRACK_NOTES: Record<string, TrackNotes> = {
         href: '/guides/firmware-not-folklore/',
       },
       {
-        text: 'You are not installing a tool: you are installing someone’s judgment.',
+        text: 'Installing a skill means installing someone’s judgment.',
         guideTitle: 'Expertise you can install',
         href: '/guides/expertise-you-can-install/',
       },
@@ -141,17 +141,17 @@ export const TRACK_NOTES: Record<string, TrackNotes> = {
     ],
     quotes: [
       {
-        text: 'The cheapest token is the one never written.',
+        text: 'Reasoning tokens are billed twice.',
         guideTitle: 'Thinking on a budget',
         href: '/guides/thinking-on-a-budget/',
       },
       {
-        text: 'A model that runs for hours needs a support structure, not a longer prompt.',
+        text: 'A model that runs for hours needs a support structure.',
         guideTitle: 'Guardrails for hours-long agent runs',
         href: '/guides/guardrails-for-long-runs/',
       },
       {
-        text: 'A better telescope does not make an astronomer: the discipline does.',
+        text: 'Discipline makes the astronomer; the telescope only helps.',
         guideTitle: 'Rent the model, own the method',
         href: '/guides/rent-the-model-own-the-method/',
       },
