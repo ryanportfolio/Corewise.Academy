@@ -45,3 +45,28 @@ it is about from the title alone. If decoding requires the body, retitle.
 
 No build gate for this one; the /ingest and /create-guide skills restate it at
 writing time, and the PR review is the backstop.
+
+## Plain language (editor ruling, 2026-07-17)
+
+Clear, to the point, plain words. Fewer words beat more words everywhere on the site.
+
+- **Say what it is, not what it is not.** "Several sources become one original
+  guide" beats "Synthesis, not summary". Negative-definition headings are banned.
+- **Lead with the point.** A lede or paragraph earns its wind-up only after the
+  point has landed. If the payoff sentence could open the paragraph, move it there
+  and cut what it replaced.
+- **No ten-dollar words.** If the editor has to look it up ("andragogy"), it does
+  not ship. Everyday phrase first; a term of art only when it is the reader's own
+  vocabulary, glossed at first use.
+- **Never talk down to the reader.** No "adults learn what they can use"-style
+  framing that explains the reader to themselves.
+- **Theme never beats clarity.** Decorative labels are welcome only next to plain
+  function words, never instead of them. "Upon leaving this room, you can" loses
+  to "After this guide, you can".
+
+## Cross-linking (editor ruling, 2026-07-17)
+
+When a guide touches a topic another guide covers (token spend, memory, skills,
+migration errors, prompting fundamentals), link to that guide inline at the
+mention, with the guide's title as the link text. Every new guide gets a
+cross-link pass before its PR; the /crosslink skill sweeps the whole catalogue.

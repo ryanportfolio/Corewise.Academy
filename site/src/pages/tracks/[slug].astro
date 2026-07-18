@@ -20,7 +20,7 @@ const byLevel = (level: string) =>
 <Base title={`${track.name} · CoreWise Academy`} description={track.description}>
   <main>
     <header class="track-head">
-      <p class="mono-label accent">Constellation {track.numeral} · {track.constellation}</p>
+      <p class="mono-label accent">Track {track.numeral} · {track.constellation}</p>
       <h1 class="display">{track.name}</h1>
       <p class="dek">{track.description}</p>
     </header>
@@ -31,18 +31,13 @@ const byLevel = (level: string) =>
         return (
           <section class="shelf-section reveal">
             <div class="shelf-head">
-              <h2>
-                {l.label} <span class="shelf-name">· {l.shelf}</span>
-              </h2>
+              <h2>{l.label}</h2>
               <span class="mono-label">
-                {shelf.length === 0 ? 'awaiting first star' : `${shelf.length} guide${shelf.length > 1 ? 's' : ''}`}
+                {shelf.length === 0 ? 'none yet' : `${shelf.length} guide${shelf.length > 1 ? 's' : ''}`}
               </span>
             </div>
             {shelf.length === 0 ? (
-              <p class="empty-shelf">
-                This shelf awaits its first star. The roadmap is honest: nothing hangs here until a
-                guide earns its place.
-              </p>
+              <p class="empty-shelf">No guides at this level yet.</p>
             ) : (
               <ol class="shelf-list">
                 {shelf.map((g) => (

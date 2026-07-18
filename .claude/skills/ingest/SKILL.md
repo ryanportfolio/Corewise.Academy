@@ -36,6 +36,13 @@ which video to ingest.
   works; "The firmament moved" fails). No terms of art carrying a title. The
   description is a concrete promise, not atmosphere. Slug matches the title. Full
   ruling in `.claude/reference/copy-rules.md`.
+- **Plain language, fewer words.** Say what it is, not what it is not (no
+  "Synthesis, not summary" headings). Lead with the point; cut wind-ups. No
+  ten-dollar words ("andragogy"), no talking down to the reader, theme never
+  over clarity. Full ruling in `.claude/reference/copy-rules.md`.
+- **Cross-link every real overlap.** When the draft touches a topic another guide
+  covers, link that guide inline at the mention, title as link text. Run a
+  cross-link check against the catalogue before Step 6.
 
 ## Step 1: Get the transcript
 

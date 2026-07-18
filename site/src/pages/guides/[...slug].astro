@@ -40,18 +40,18 @@ const no = String(d.number).padStart(3, '0');
 
   <article>
     <p class="kicker mono-label accent">
-      {track.constellation.replace('THE ', 'The ')} · Constellation {track.numeral}
-      <span class="lvl">/ {level.label} · {level.shelf}</span>
+      {track.name} · Track {track.numeral}
+      <span class="lvl">/ {level.label}</span>
     </p>
     <h1 class="display">{d.title}</h1>
     <p class="dek">{d.description}</p>
     <p class="byline">
       <span>Nº {no} · Vol. I</span><span>·</span><span>{d.minutes} min read</span><span>·</span>
-      <span>Charted {d.lastUpdated.toLocaleString('en', { month: 'long', year: 'numeric' })}</span>
+      <span>Updated {d.lastUpdated.toLocaleString('en', { month: 'long', year: 'numeric' })}</span>
     </p>
 
     <aside class="objectives">
-      <span class="panel-label">Upon leaving this room, you can</span>
+      <span class="panel-label">After this guide, you can</span>
       <ul>
         {d.objectives.map((o) => <li set:html={o.replace(/^(\w+)/, '<b>$1</b>')} />)}
       </ul>
@@ -72,7 +72,7 @@ const no = String(d.number).padStart(3, '0');
             </g>
           </svg>
           <span>
-            <span class="panel-label inline">Approach via</span>&ensp;
+            <span class="panel-label inline">Read first</span>&ensp;
             {prereqs.map((p, i) => (
               <>
                 {p.target ? <a href={`/guides/${p.target.id}/`}>{p.target.data.title}</a> : p.slug}
@@ -90,7 +90,7 @@ const no = String(d.number).padStart(3, '0');
     </div>
 
     <section class="selfcheck">
-      <span class="panel-label">Oral examination · self-administered</span>
+      <span class="panel-label">Self-check</span>
       {
         d.selfCheck.map((item) => (
           <details>
@@ -102,7 +102,7 @@ const no = String(d.number).padStart(3, '0');
     </section>
 
     <section class="sources">
-      <span class="panel-label">Star catalogue · sources credited</span>
+      <span class="panel-label">Sources</span>
       {
         d.sources.length > 0 ? (
           <ol>
@@ -117,9 +117,7 @@ const no = String(d.number).padStart(3, '0');
             ))}
           </ol>
         ) : (
-          <p class="original-note">
-            Original field notes, charted in-house from the editor's own practice.
-          </p>
+          <p class="original-note">Original work by the editor, no video source.</p>
         )
       }
     </section>
