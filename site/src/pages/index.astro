@@ -21,7 +21,7 @@ const faq = [
   },
   {
     q: 'Where should I start?',
-    a: 'Start with the Foundations track if you are new to working with AI, or jump straight to the track that matches your problem: Prompting & Context, Agents & Automation, Building with AI, or Practice. Levels run Broad, then Practitioner, then Deep, and prerequisites are marked on every guide.',
+    a: 'Start with the Foundations layer if you are new to working with AI, or jump straight to the layer that matches your problem: Prompting & Context, Agents & Automation, Building with AI, or Practice. Levels run Broad, then Practitioner, then Deep, and prerequisites are marked on every guide.',
   },
 ];
 
@@ -94,10 +94,10 @@ const minis: Record<string, string> = {
       </h1>
       <p class="dek">
         CoreWise Academy is a free library of original guides on working with AI, distilled from
-        lectures, official docs, and field notes on the open web and connected into five tracks.
+        lectures, official docs, and field notes on the open web and connected into five layers.
       </p>
       <div class="hero-ctas">
-        <a class="btn solid" href="#tracks">Browse the tracks</a>
+        <a class="btn solid" href="#tracks">Browse the layers</a>
         {latest[0] && <a class="btn" href={`/guides/${latest[0].id}/`}>Latest guide</a>}
       </div>
     </div>
@@ -106,7 +106,7 @@ const minis: Record<string, string> = {
 
   <section id="tracks">
     <div class="sec-head reveal">
-      <h2>The five tracks</h2>
+      <h2>5 Layers</h2>
       <span class="mono-label">Curriculum chart · Broad → Practitioner → Deep</span>
     </div>
 
@@ -179,13 +179,13 @@ const minis: Record<string, string> = {
   <section class="ledger">
     <div class="sec-head reveal">
       <h2>The catalogue at a glance</h2>
-      <span class="mono-label">Working with AI · five tracks · three depths</span>
+      <span class="mono-label">Working with AI · five layers · three depths</span>
     </div>
     <div class="ledger-grid reveal">
       <div>
         <table class="curriculum">
           <thead>
-            <tr><th>Track</th><th>Constellation</th><th>Guides</th><th>Reading</th></tr>
+            <tr><th>Layer</th><th>Constellation</th><th>Guides</th><th>Reading</th></tr>
           </thead>
           <tbody>
             {
@@ -248,7 +248,7 @@ const minis: Record<string, string> = {
         <p class="mono-label">Free · no signup</p>
         <h2>Start anywhere, anytime</h2>
         <p>
-          No accounts, no fees, no forms. Pick a track and start reading.
+          No accounts, no fees, no forms. Pick a layer and start reading.
         </p>
         <p style="margin-top: var(--s-4)"><a class="btn" href="#tracks">Start with Foundations</a></p>
       </div>

@@ -23,15 +23,15 @@ const totalMinutes = guides.reduce((sum, g) => sum + g.data.minutes, 0);
 
 const faq = [
   {
-    q: `What does the ${track.name} track cover?`,
+    q: `What does the ${track.name} layer cover?`,
     a: `${track.description} Guides are ordered Broad, then Practitioner, then Deep, and each one lists its prerequisites.`,
   },
   {
-    q: 'How long does this track take to read?',
+    q: 'How long does this layer take to read?',
     a:
       guides.length > 0
-        ? `The track currently holds ${guides.length} guide${guides.length > 1 ? 's' : ''}, about ${totalMinutes} minutes of reading in total. Each guide also ends with a short exercise you can run the same day.`
-        : 'The first guides for this track are in editorial review now, so there is nothing to read here yet. Every guide arrives as a pull request and a human editor reviews it before it publishes.',
+        ? `The layer currently holds ${guides.length} guide${guides.length > 1 ? 's' : ''}, about ${totalMinutes} minutes of reading in total. Each guide also ends with a short exercise you can run the same day.`
+        : 'The first guides for this layer are in editorial review now, so there is nothing to read here yet. Every guide arrives as a pull request and a human editor reviews it before it publishes.',
   },
   {
     q: 'Do I need to read the guides in order?',
@@ -41,14 +41,14 @@ const faq = [
 ---
 
 <Base
-  title={`${track.name} track: ${notes.tagline} · CoreWise Academy`}
+  title={`${track.name} layer: ${notes.tagline} · CoreWise Academy`}
   description={track.description}
   faq={faq}
-  crumbs={[{ name: `${track.name} track`, path: `/tracks/${track.slug}/` }]}
+  crumbs={[{ name: `${track.name} layer`, path: `/tracks/${track.slug}/` }]}
 >
   <main>
     <header class="track-head">
-      <p class="mono-label accent">Track {track.numeral} · {track.constellation}</p>
+      <p class="mono-label accent">Layer {track.numeral} · {track.constellation}</p>
       <h1 class="display">{track.name}</h1>
       <p class="dek">{track.description}</p>
     </header>
@@ -86,7 +86,7 @@ const faq = [
     }
 
     <section class="track-notes reveal">
-      <h2>Field notes on this track</h2>
+      <h2>Field notes on this layer</h2>
       {notes.notes.map((p) => <p>{p}</p>)}
       <table class="syllabus">
         <thead>
@@ -103,7 +103,7 @@ const faq = [
             ))
           }
           <tr class="total">
-            <td>Whole track</td>
+            <td>Whole layer</td>
             <td class="mono">{guides.length}</td>
             <td class="mono">{totalMinutes} minutes</td>
           </tr>
@@ -124,7 +124,7 @@ const faq = [
     </section>
 
     <section class="track-sources reveal">
-      <h2>Primary sources this track teaches from</h2>
+      <h2>Primary sources this layer teaches from</h2>
       <ul class="source-roll">
         {
           notes.links.map((l) => (
@@ -137,7 +137,7 @@ const faq = [
     </section>
 
     <div class="reveal">
-      <Faq heading={`FAQ · the ${track.name} track`} items={faq} />
+      <Faq heading={`FAQ · the ${track.name} layer`} items={faq} />
     </div>
   </main>
 
