@@ -1,15 +1,15 @@
 /* ============================================================
-   CoreWise Academy — design tokens v2 "Celestial Atlas"
+   CoreWise Academy · design tokens v2 "Celestial Atlas"
    One documented source of truth. Everything reads from here.
 
    Identity: a celestial atlas of machine minds. Vintage star-atlas
-   editorial — ultramarine ink on warm paper by day, luminous
+   editorial · ultramarine ink on warm paper by day, luminous
    periwinkle on night slate after dark. Custom display face:
    Alembic Titling (built in design/typeface/build-alembic.mjs).
 
    Type scale: major third (1.25) on a 17px body.
    Spacing: 8px base unit.
-   Accent budget: ultramarine only — emphasis words, links, key
+   Accent budget: ultramarine only · emphasis words, links, key
    numerals, one drop cap per feature, the brightest star state.
    ============================================================ */
 
@@ -27,16 +27,16 @@
   --font-hand: 'Caveat', cursive;            /* margin chalk notes only */
 
   /* ---- type scale (major third) ---- */
-  --text-2xs: 0.68rem;    /* 11.5 — graticule labels */
-  --text-xs: 0.76rem;     /* 13 — mono labels, kickers */
-  --text-sm: 0.88rem;     /* 15 — meta, captions */
-  --text-base: 1.0625rem; /* 17 — body */
+  --text-2xs: 0.68rem;    /* 11.5 · graticule labels */
+  --text-xs: 0.76rem;     /* 13 · mono labels, kickers */
+  --text-sm: 0.88rem;     /* 15 · meta, captions */
+  --text-base: 1.0625rem; /* 17 · body */
   --text-md: 1.33rem;     /* 22.6 */
   --text-lg: 1.66rem;     /* 28 */
   --text-xl: 2.07rem;     /* 35 */
   --text-2xl: 2.6rem;     /* 44 */
   --text-3xl: 3.25rem;    /* 55 */
-  --text-4xl: 4.75rem;    /* 81 — hero display */
+  --text-4xl: 4.75rem;    /* 81 · hero display */
   --leading-body: 1.68;
   --leading-tight: 1.08;
   --measure: 62ch;
@@ -69,7 +69,7 @@
 }
 
 [data-theme='night'] {
-  /* ---- night session (dark) — the observatory ---- */
+  /* ---- night session (dark) · the observatory ---- */
   --paper: #121420;        /* night slate (deep indigo-charcoal) */
   --paper-2: #0d0f18;
   --panel: #181b2a;
@@ -117,7 +117,7 @@ a:hover { text-decoration-color: var(--accent); }
 .display { font-family: var(--font-display); font-weight: 400; line-height: var(--leading-tight); }
 .rule { border: 0; border-top: 1px solid var(--line); }
 
-/* paper grain — procedural, both themes */
+/* paper grain · procedural, both themes */
 .grain::after {
   content: '';
   position: fixed; inset: 0;

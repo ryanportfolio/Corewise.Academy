@@ -19,8 +19,10 @@ set of readers right now.
   a page fetched this run. If a fetch fails, narrow the guide or stop; never fill
   gaps from memory, which is stale by definition for this material.
 - **Em dashes are banned** everywhere: prose, frontmatter, objectives, self-check
-  answers. Use periods, commas, or parentheses. Existing guides that contain them
-  are not a license.
+  answers. Use periods, commas, colons, or parentheses; label-style separators use
+  " · ". No lookalike substitutes (en dash, double hyphen). Enforced by
+  `scripts/no-em-dash.mjs`, which runs first in `npm run build` and fails the build
+  (and the deploy) on any em dash in `site/src`.
 - **Docs are cited inline** as links where a claim leans on them. Frontmatter
   `sources` stays `[]` (that field is for video sources).
 

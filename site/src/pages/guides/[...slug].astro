@@ -23,7 +23,7 @@ const prereqs = d.prerequisites.map((p) => {
 const no = String(d.number).padStart(3, '0');
 ---
 
-<Base title={`${d.title} — CoreWise Academy`} description={d.description}>
+<Base title={`${d.title} · CoreWise Academy`} description={d.description}>
   <div class="ambient"></div>
   <div class="twinkle" style="top:18%; left:6%; animation-delay:0s"></div>
   <div class="twinkle" style="top:42%; left:9%; animation-delay:2.2s"></div>
@@ -41,7 +41,7 @@ const no = String(d.number).padStart(3, '0');
   <article>
     <p class="kicker mono-label accent">
       {track.constellation.replace('THE ', 'The ')} · Constellation {track.numeral}
-      <span class="lvl">/ {level.label} — {level.shelf}</span>
+      <span class="lvl">/ {level.label} · {level.shelf}</span>
     </p>
     <h1 class="display">{d.title}</h1>
     <p class="dek">{d.description}</p>
@@ -90,7 +90,7 @@ const no = String(d.number).padStart(3, '0');
     </div>
 
     <section class="selfcheck">
-      <span class="panel-label">Oral examination — self-administered</span>
+      <span class="panel-label">Oral examination · self-administered</span>
       {
         d.selfCheck.map((item) => (
           <details>
@@ -102,23 +102,23 @@ const no = String(d.number).padStart(3, '0');
     </section>
 
     <section class="sources">
-      <span class="panel-label">Star catalogue — sources credited</span>
+      <span class="panel-label">Star catalogue · sources credited</span>
       {
         d.sources.length > 0 ? (
           <ol>
             {d.sources.map((s) => (
               <li>
-                <span class="creator">{s.creator}</span> — <a href={s.url}>“{s.video}”</a>
+                <span class="creator">{s.creator}</span> · <a href={s.url}>“{s.video}”</a>
                 <br />
                 <span class="stamps">
-                  cited at {s.timestamps.join(' · ')} — observed {s.watched}
+                  cited at {s.timestamps.join(' · ')} · observed {s.watched}
                 </span>
               </li>
             ))}
           </ol>
         ) : (
           <p class="original-note">
-            Original field notes — charted in-house from the editor's own practice.
+            Original field notes, charted in-house from the editor's own practice.
           </p>
         )
       }
