@@ -1,25 +1,25 @@
 ---
 title: The design concept does the work
-description: 'How the about page on this site got its whole design from one true sentence about the subject, plus the method for doing it on a different page.'
+description: 'The exact prompt and the reusable skill file behind the about page on this site, with the reason each part earns its place.'
 track: building
 level: practitioner
 number: 19
 minutes: 9
 objectives:
-  - Derive a design concept from something true about the subject, and test whether it is load-bearing before committing to it.
-  - Write a constraint contract that turns visual coherence into checkable rules, so violations are bugs instead of taste disputes.
-  - Run at least three fault-finding critique passes against rendered output using distinct lenses, and recognize why a pass that finds nothing has failed.
-  - Explain why reusing a successful concept on a new subject produces slop, and re-derive instead.
+  - 'Reuse the prompt pattern that produced the about page: name the audience and the stakes, demand critique passes, and leave the visual direction open.'
+  - Install the showpiece skill and work its six steps in order on an artifact of your own.
+  - Explain why binding meanings to visual elements turns design review from a taste dispute into bug-finding.
+  - Explain why reusing a finished look on a new subject produces slop, and re-derive instead.
 sources: []
 selfCheck:
-  - q: What is the test that decides whether a concept is load-bearing?
-    a: Ask it design questions it was not built for. What typeface? What does red mean? What goes in the margins? A load-bearing concept answers them from its own logic. A decorative one goes silent, and silence means you discard it.
-  - q: Why does a constraint contract beat a style guide for AI-assisted design work?
-    a: A style guide describes preferences, so every deviation becomes a taste dispute. A contract binds meaning to form (solid means shipped, dashed means killed), so a solid line on dead work is a factual error anyone, including an agent, can catch and fix.
-  - q: A critique pass on the rendered page comes back with "looks good." What does that tell you?
-    a: That the pass failed, not that the page passed. Every render has real faults; a lens that finds none was pointed wrong. Rerun with a sharper, more specific lens, and critique the rendered output, never the source code, because the render is what the reader gets.
+  - q: The prompt that produced the about page contains no visual direction. What does it specify instead?
+    a: 'The audience and the stakes (recruiters at AI companies who recognize AI-slop design), the effort level, a quality gate (at least three iteration passes, with the pass defined inside the prompt), and the machinery (parallel subagents at high reasoning effort). The design itself is left open so the concept can come from the subject.'
+  - q: What is the test that separates a working design concept from decoration?
+    a: Ask it design questions it was never built to answer. What typeface? What does red mean? What goes in the margins? A working concept answers them from its own logic; a decorative one goes silent, and silence means you discard it and dig again.
+  - q: A critique pass on the rendered page comes back with "looks good." What does the skill say that means?
+    a: The pass failed, not the page. Every render has real faults, so a lens that finds none was pointed wrong. Reviewers are instructed up front that finding nothing is failure, and the pass gets rerun with a sharper lens against the rendered output, never the source code.
 status: published
-lastUpdated: 2026-07-17
+lastUpdated: 2026-07-18
 ---
 
 import Exercise from '../../components/Exercise.astro';
@@ -29,107 +29,251 @@ import Chalk from '../../components/Chalk.astro';
 
 <p class="lede">
 The about page on this site is drawn as an architectural drawing set: numbered sheets, a title
-block, line conventions declared on sheet A-001 and binding everywhere after. Nobody asked for
-that. It came out of one true sentence about how the work was actually built: agents drafted,
-an independent agent checked, a human approved. That is a drafting workflow, so the page became
-a drawing set, and once it did, every design question that usually eats 30 minutes of meeting
-answered itself. This guide is the method behind that page: how you get the next drawing set, for a
-different subject, without copying this one.
+block, line conventions declared on sheet A-001 and binding everywhere after. It started as a
+prompt that named the audience, set a quality bar, and demanded critique passes, while leaving
+every visual decision open. The agent found the drawing-set idea during the work, and afterward
+the method got written down as a skill file any agent can run. This guide hands you both: the
+exact prompt, the full skill, and why each part is there.
 </p>
 
-## <span class="sec-no">01</span>Find the load-bearing concept
+## <span class="sec-no">01</span>The actual prompt
 
-Start with something true about the subject, not something pretty near it. The portfolio's
-truth was procedural: specified, gated, checked, approved. The concept, the single organizing
-idea a design hangs on, is that truth given a body: a drawing set. This is the opposite of moodboarding, which starts from how things look and
-works backward toward a justification.
+Here is the prompt that started it, unedited:
 
-Then apply the one test that matters: ask the concept design questions it was never explicitly
-built to answer. What typeface? A drawing set says monospaced and engineering-lettered, because
-drawings are annotated, not typeset. What does red mean? Drafting convention reserves it for
-markup and approval, so on this page red belongs to the human alone. What lives in the margins?
-Title blocks, revision history, sheet numbers, all of which the page actually has. A
-decorative one answers none of them; it sits on top of the page like a sticker. If the concept
-decorates but decides nothing, discard it and go find a truer sentence. The test costs 10 minutes, and it separates a concept from a theme.
+```text
+I'd like to make a super creative PDF to showcase my github portfolio and
+public sites. Lets push what is thought possible with PDF's.
 
-> “A load-bearing concept answers question after question from its own internal logic.”
+Lets spend a super long time on the design. This is going to be seen by job
+recruiters from AI-based jobs I'm applying for. They would know AI slop
+design, we must critically avoid that perception.
 
-## <span class="sec-no">02</span>Contract first, layout second
+You can be as creative as possible; involve a mixture of advanced visual
+techniques, some of which would include high-quality 3D tactics; otherworldly,
+beautiful animations; exceptional color palettes; and whatever you deem fit as
+a way to showcase your skill. You have total creative freedom to design in a
+way that you believe best illustrates your capabilities. Before you "ok" it,
+make sure you do at least three iteration passes. An iteration pass is where,
+after completing the code, you go through it with a fine-toothed comb, looking
+for design problems, opportunities to improve/complexify the design, and more.
 
-Before any layout work, write the semantic rules and make them binding. On the about page:
-solid lines mean shipped and live, dashed means pruned or killed, phantom means unreleased, red
-ink is reserved for human action. Those rules are published on the page itself, on the first
-sheet, labeled binding for every sheet after.
+Run a /workflows of Fable subagents on "High" thinking
+```
 
-The point of writing them down is the reframe it buys: once the contract exists, a violation is
-a bug, not a matter of taste. A solid line on a killed project is now a factual error with a
-correct fix, which means an agent can catch it, a reviewer can flag it, and nobody has to win
-an argument about aesthetics. This is what makes the method work with AI in the loop at all.
-Models are mediocre at taste and excellent at rule-following, so convert as much taste as
-possible into rules. Turning that taste into instructions a model follows reliably is its own
+Notice what it pins down and what it leaves open. Pinned: the audience and the stakes
+(recruiters who recognize AI-slop design on sight), the effort level, a quality gate of at
+least three iteration passes with the pass defined right in the prompt, and the machinery to
+run it (parallel subagents at high reasoning effort).
+
+Left open: every visual decision. The drawing-set concept appears nowhere in the prompt. That
+is the useful part: the prompt buys the conditions for a concept to be found, and the concept
+itself comes out of the subject during the work. Writing this kind of brief well is its own
 craft, covered in <a href="/guides/brief-the-model/">Brief the model like a brilliant new hire</a>.
-The reader never sees the contract as rules; they experience it as
-coherence, the quiet sense that everything on the page is there on purpose.
 
-> “Coherence reads as intent, and intent is precisely the thing slop lacks.”
+The web version came from a second, much shorter prompt:
 
-Two more rules belong in the contract even though they are not visual. First, facts before
-form: every number on the page gets verified at its source before it gets drawn, and a small
-verify script rechecks 100% of the drawn claims, which makes the page carry its own built-in checks. If you draw
-eight of something, there are eight, countable. Second, real machinery: the figures on the
-about page are projected 3D geometry computed in the browser, drawn by the same math that
-produced the print edition, seeded so the output is reproducible. Generated-from-data survives
-zooming in; a pasted texture
-or a borrowed effect does not, and zooming in is exactly what a skeptical reader does.
+```text
+next, lets make a website version of this, and really go all out on the
+website version that isn't possible on pdf
 
-## <span class="sec-no">03</span>Critique the render three ways
+same style as pdf though, just its 'upgraded' version
 
-When a draft renders, the pull toward "looks good, ship it" is strong and wrong. Schedule at
-least 3 fault-finding passes of 15 minutes each, every one with a distinct lens, and aim them at
-the rendered output, never at the source. Code can be immaculate while the render is broken, and the render is the
-only thing the reader receives. Keeping the critic separate from the maker generalizes well past
-design; <a href="/guides/automate-the-bottleneck/">Automate the step that slows you down</a>
-argues for separating the evaluator from the worker so nothing grades its own output.
+and lets put it on corewise.academy/about
+```
 
-The lenses that earned their keep:
+One honest note on ordering: PDF first, website second happened because the PDF was needed for
+a separate project. The part that generalizes is the porting rule, which the skill below states
+as step 6: keep the concept and the rules identical, add only what the new medium uniquely
+enables.
 
-| Lens | The question it asks | The failure it catches |
-| --- | --- | --- |
-| Audience | What does a recruiter skimming for 30 seconds take away? | The right page for the wrong reader |
-| Craft | Does the contract hold on every sheet? | Alignment, spacing rhythm, typographic drift |
-| Anti-slop | Which of the tells below is present? | Decoration with no semantic job |
+## <span class="sec-no">02</span>The skill that came out of it
 
-The anti-slop lens hunts a specific list of tells. Gradient glows nothing asked for. Decoration with no
-semantic job. Perfectly symmetric filler content. Numbers that feel invented. Effects that fall
-apart under zoom. Style imported from some other subject's truth. Each pass must return
-findings. A pass that comes back clean did not certify the page; it failed, because every
-render has real faults and a lens that found none was pointed in the wrong direction. Rerun it
-narrower.
+After the session ended, what had worked got distilled into a skill file: a written-down method
+an agent loads and follows, the same kind of artifact <a href="/guides/expertise-you-can-install/">Expertise
+you can install</a> covers adopting from others and <a href="/guides/rent-the-model-own-the-method/">Rent
+the model, own the method</a> covers extracting from your own sessions. So the six steps below
+are a distillation made afterward, with hindsight, from a session that went well. They are the
+recipe for next time, extracted from the one time it worked.
 
-The last rule is the one that keeps the method alive: never carry the concept to the next
-subject. The drawing set worked because it was derived from this portfolio's truth. Reaching
-for it again on a different subject is skipping step one, and skipping step one is the exact
-move that produces slop, your own greatest hits pasted where they no longer mean anything. The
-method transfers. The concept never does. Each new subject needs its own true sentence and derivation.
+The full file, ready to drop into `.claude/skills/showpiece/SKILL.md`:
+
+```markdown
+---
+description: Recipe for making one-of-a-kind creative artifacts (PDF, site,
+  deck, poster, video, any medium) that read as crafted, not AI slop. Use when
+  the user says /showpiece, asks to "make something super creative", "push
+  what's possible with X", wants a portfolio-grade / recruiter-facing artifact,
+  or says "avoid AI slop". This is a thinking method, not a style; it produced
+  the Approved Works drawing set and generalizes to any subject and medium.
+---
+
+# Showpiece: method for one-of-a-kind artifacts
+
+Not a style guide. The drawing-set aesthetic is one output of this method;
+copying it would itself be slop. The method is what transfers. Work the steps
+in order; each one gates the next.
+
+## Step 1: Find the load-bearing conceit
+
+One metaphor, drawn from something **true about the subject**, that the whole
+artifact lives inside.
+
+- Start from the subject's most distinctive true fact, not from visuals.
+  (Approved Works: "AI agents draft, an independent agent checks, a human
+  approves" became an engineering drawing set with DRAWN BY / CHECKED BY /
+  APPROVED title blocks.)
+- **The test: the conceit must answer design questions for you.** What
+  typeface? What does color mean? What goes in the margin? How are pages
+  numbered? If the conceit only decorates and decides nothing, discard it and
+  dig again.
+- Generate 3+ candidate conceits before committing. Judge them on: truth to
+  subject, decision-generating power, and distance from anything a template
+  would produce. If the user asked for heavy exploration, run competing
+  directions as parallel agents and judge with independent lenses.
+- The conceit should permit **wit**: small details that reward close reading
+  (a revision table that logs the artifact's own edits, a scale cell reading
+  "1 TICK = 1 PR"). Wit is the strongest anti-slop signal because templates
+  cannot do it.
+
+## Step 2: Write the constraint contract
+
+Before any layout, write binding rules the artifact must obey everywhere.
+Constraints create coherence; coherence reads as intent; intent is what slop
+lacks.
+
+- Give visual elements **semantics**, then never violate them. (Line
+  convention: solid = shipped, dashed = killed, phantom = unreleased. One red,
+  spent only on human decision points.)
+- Set budgets: one accent color with a stated meaning, one type system, one
+  easing curve, N decorative notes per page max.
+- Treat a contract violation as a **bug**, not a taste call. In review passes,
+  hunt for violations explicitly.
+
+## Step 3: Lock facts before form
+
+- Collect every number, name, and claim the artifact will show. Verify each
+  against the primary source **before** designing around it. Never design
+  around an unverified number; reflowing later is expensive and tempts you to
+  keep the wrong number.
+- **Countable honesty:** if a graphic depicts N of something, draw exactly N
+  real ones, and make N auditable. Decorative fake data is slop and, in front
+  of an expert audience, a credibility hole.
+- Write a tiny verify script that counts/checks the claims embedded in the
+  artifact's source or output and fails loudly on mismatch. The artifact gets
+  its own eval harness.
+
+## Step 4: Earn the visuals with real machinery
+
+- Build effects from actual math (true 3D projection, real geometry, seeded
+  deterministic randomness), not filters, stock textures, or library defaults.
+  Real machinery survives zoom-in, stays consistent across instances, and can
+  do things (provable determinism, weight-encoded meaning) that pasted
+  effects cannot.
+- Prefer generated-from-data over drawn-by-hand: when the graphic is computed
+  from the true numbers, honesty and beauty stop competing.
+- Know the render target's quirks empirically: render a specimen early and
+  inspect it (font fallbacks, missing glyphs, collapsed variable-font axes,
+  antialiasing eating thin dashes). Assume nothing survives the pipeline
+  untested.
+
+## Step 5: Adversarial passes, minimum three
+
+- Critique the **final rendered output** at full fidelity (rasterized pages,
+  real-browser screenshots), never the source code or your memory of it. Most
+  defects live only in the render.
+- Use independent fresh-context reviewers with **distinct lenses**: the target
+  audience's eyes, craft/typography, and a dedicated anti-slop detector.
+  Distinct lenses catch what redundant ones miss.
+- Every pass must produce concrete defects AND at least one opportunity to
+  deepen the conceit. A pass that returns "looks good" was a wasted pass;
+  instruct reviewers that finding nothing is failure.
+- Fix blockers, re-render, re-verify counts, repeat. Stop only when a pass
+  surfaces no contract violations and no factual errors.
+
+## Step 6: Escalate across media, don't re-theme
+
+Porting the artifact to a new medium (PDF to web, deck to video): keep the
+conceit and the contract identical, and add **only what the new medium
+uniquely enables**: interaction, live proof, steerable views, real-time
+verification. The new version is the same work "upgraded", not a redesign. If
+a feature was possible in the old medium, adding it now is noise.
+
+## Anti-slop tells (hunt these in every pass)
+
+- Default gradients, glassmorphism, purple-blue "AI product" palettes,
+  centered hero + floating blobs.
+- Decoration with no semantics; effects without a system; conventions applied
+  inconsistently.
+- Fake or unverifiable data in graphics; placeholder-flavored microcopy.
+- Template symmetry: everything centered, everything rounded, nothing earns
+  its position.
+- Style borrowed from a past success instead of derived from this subject's
+  truth (including this skill's own drawing-set look).
+
+## Anti-patterns
+
+- Don't pick visuals first and retrofit a story; conceit precedes style.
+- Don't skip source-verifying a number because it "was right last time".
+- Don't review source code as a proxy for the rendered artifact.
+- Don't accept a review pass that found nothing.
+- Don't carry a conceit to a new subject; re-derive from the new subject's
+  truth.
+```
+
+## <span class="sec-no">03</span>Why each step works
+
+**Step 1, the concept.** The skill calls it a conceit: the one organizing idea the whole
+artifact lives inside, taken from a fact about the subject. The test is the useful part. Ask
+the idea design questions it was never built to answer. On the about page, the drawing set
+answered "what typeface?" (monospaced and engineering-lettered, because drawings are annotated,
+not typeset), "what does red mean?" (drafting reserves it for markup and approval, so red
+belongs to the human), and "what goes in the margins?" (title blocks, sheet numbers, revision
+history). An idea that decorates but decides nothing fails the test, and the test costs
+minutes.
+
+**Step 2, the contract.** Once "solid means shipped, dashed means killed" is written down, a
+solid line on a dead project is a factual error with a correct fix. Anyone can catch it,
+including an agent, and nobody has to win an argument about aesthetics. Models are mediocre at
+taste and excellent at rule-following, so the contract converts as much taste as possible into
+rules.
+
+**Steps 3 and 4, facts and machinery.** These two exist because the audience was defined as
+skeptical experts. If the page draws eight of something, there are eight, countable, and a
+verify script recounts them on every build. The figures are computed 3D geometry, seeded so the
+output is reproducible, which is why they survive the zoom-in a skeptical reader will try.
+
+**Step 5, the passes.** The original prompt asked for three iteration passes; the skill
+sharpens that into three passes with distinct lenses, aimed at the rendered output. It also
+adds the rule that makes the passes honest: a pass that returns "looks good" failed, because
+every render has real faults and a lens that found none was pointed wrong. Keeping the critic
+separate from the maker is the same evaluator split
+<a href="/guides/automate-the-bottleneck/">Automate the step that slows you down</a> argues for.
+
+**Step 6, the port.** Compare the skill's wording to the second prompt above. "Same style as
+pdf though, just its 'upgraded' version" became "keep the conceit and the contract identical,
+and add only what the new medium uniquely enables". The step is that session's move, generalized.
+
+The rule that keeps all of this alive is the last anti-pattern: never carry the finished look
+to the next subject. The drawing set means something on this portfolio because it matches how
+the work was made. Pasted onto your product page it means nothing, and decoration that means
+nothing is the slop this whole method exists to avoid. Rerun the method; discard the output
+style.
 
 <Exercise>
-1. Take a page you need to design and write five true sentences about its subject, none of them
-   visual. Pick the truest and propose a concept from it. Then interrogate the concept with five
-   design questions it was not built for (typeface, color semantics, margins, motion, empty
-   states). Give it 20 minutes, no more. Fewer than four confident answers, discard it and try
-   the next sentence.
-2. Write the constraint contract before touching layout: every visual element that carries
-   meaning, and what it is forbidden to mean. Hand the contract to your agent with the build
-   brief, then audit the render against it line by line and file each violation as a bug.
-3. Run three critique passes on the rendered page with three lenses: your actual audience on a
-   deadline, a typographer, and a slop-hunter armed with the tells list above. Each pass must
-   produce written findings. Fix, re-render, repeat until the findings stop being structural.
+1. Install the skill: create `.claude/skills/showpiece/SKILL.md` with the file above. Then
+   write your own version of the opening prompt for an artifact you actually need: name the
+   real audience, what they are experts at spotting, the quality gate, and nothing visual.
+2. Run steps 1 through 3 before any layout: three candidate concepts from facts about your
+   subject, five design questions fired at the best one, and a written contract binding meaning
+   to form. Fewer than four confident answers from the concept, discard it and take the next.
+3. Run step 5 on the rendered result: three critique passes, three distinct lenses, written
+   findings from each. A clean pass gets rerun narrower. Fix, re-render, repeat until the
+   findings stop being structural.
 </Exercise>
 
 ## Further reading
 
+- [Anthropic · agent skills documentation](https://docs.claude.com/en/docs/claude-code/skills), how a skill file like this one loads and runs
 - [Wikipedia · engineering drawing](https://en.wikipedia.org/wiki/Engineering_drawing), the conventions the about page borrows
 - [Butterick · Practical Typography](https://practicaltypography.com/), the craft lens in book form
-- [Wikipedia · design language](https://en.wikipedia.org/wiki/Design_language), the general idea a constraint contract formalizes
 - [Anthropic · engineering blog](https://www.anthropic.com/engineering), AI-in-the-loop build practice from the vendor side
-- [Anthropic · Claude developer documentation](https://docs.claude.com/), for handing the contract to an agent as instructions
