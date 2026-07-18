@@ -78,6 +78,13 @@ contain a colon plus space). Doc-grounded deltas:
   it freely. If a jargon word can be swapped for plain words with no loss of
   precision, swap it. No insider shorthand (ctx, evals, "the harness") without
   explanation.
+- **Titles are simple and specific.** The title says what the reader gets, in
+  plain words, before any wordplay. "Give your agent a memory" and "Stop
+  shouting at the model" work; "The firmament moved" fails because nobody can
+  decode it without opening the guide, so nobody clicks. Evocative is welcome
+  only on top of specific ("Thinking on a budget" names its topic). Same rule
+  for the description: a concrete promise, not atmosphere. Slug matches the
+  title.
 - **Every concept lands twice**: what it means in plain words, and how the
   reader applies it in practice. A claim with no concrete application (a tiny
   example prompt, a before/after, a specific thing to do differently today)
@@ -94,7 +101,8 @@ sheet, soften or delete anything unsupported; (3) verify frontmatter against the
 schema; (4) cut any paragraph that restates; (5) hunt jargon: every term of art
 is either glossed on first use or replaced with plain words; (6) application
 check: every section leaves the reader with something concrete to do; a section
-that only explains gets an example or gets cut.
+that only explains gets an example or gets cut; (7) title check: would a reader
+who has not opened the guide know what they are getting? If not, retitle.
 
 ## Step 5: Verify and open the PR
 
