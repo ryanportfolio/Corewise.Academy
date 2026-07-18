@@ -9,8 +9,8 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "lint:copy": "node scripts/no-em-dash.mjs",
-    "build": "node scripts/no-em-dash.mjs && astro build",
+    "lint:copy": "node scripts/no-em-dash.mjs && node scripts/heading-length.mjs",
+    "build": "node scripts/no-em-dash.mjs && node scripts/heading-length.mjs && astro build",
     "preview": "astro preview"
   },
   "dependencies": {
