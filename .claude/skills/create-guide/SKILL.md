@@ -72,13 +72,20 @@ contain a colon plus space). Doc-grounded deltas:
   First person where genuine. Honest edges: say plainly what is uncertain or
   version-dependent. No AI tells (delve, robust, seamless, "not just X, it's Y",
   rule-of-three lists, Title Case headings, trailing summaries).
+- **Plain language, no jargon.** Assume a smart reader who does not live in AI
+  tooling. Prefer the everyday phrase; when a term of art is genuinely needed
+  (context window, token, MCP), gloss it in plain words on first use, then use
+  it freely. If a jargon word can be swapped for plain words with no loss of
+  precision, swap it. No insider shorthand (ctx, evals, "the harness") without
+  explanation.
 
 ## Step 4: Review pass
 
 On the finished file, in order: (1) search for em dashes and double-hyphen
 stand-ins, replace every one; (2) audit each technical claim against the fact
 sheet, soften or delete anything unsupported; (3) verify frontmatter against the
-schema; (4) cut any paragraph that restates.
+schema; (4) cut any paragraph that restates; (5) hunt jargon: every term of art
+is either glossed on first use or replaced with plain words.
 
 ## Step 5: Verify and open the PR
 
