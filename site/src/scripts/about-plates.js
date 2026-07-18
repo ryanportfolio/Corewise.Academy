@@ -237,7 +237,7 @@ function initChandelier(host, { hero = false }) {
   const play = prepDraw(svg, { stagger: 10, dur: 900 });
   let drawn = false, raf = null, visible = false, last = null;
   // Under-damped spring: the orbit leans into the cursor and settles with a
-  // slight sway, like a gust passing through — no per-frame-rate stutter.
+  // slight sway, like a gust passing through. No per-frame-rate stutter.
   const STIFF = 36, DAMP = 2 * Math.sqrt(STIFF) * 0.85;
   const tick = (t) => {
     raf = null;
