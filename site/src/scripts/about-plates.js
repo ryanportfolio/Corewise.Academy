@@ -277,7 +277,7 @@ function initChandelier(host, { hero = false }) {
   //    chromatic echo (two glowing offset copies of the linework) plus a
   //    bright tracer running along each strand, direction set by entry side.
   const YT = 172, YB = -14;
-  let energy = 0, target = 0, dir = 1, last = null;
+  let energy = 0, target = 0, dir = 1, last = null, ambient0 = null;
   const tick = (t) => {
     raf = null;
     if (!visible) { last = null; return; }
@@ -286,10 +286,15 @@ function initChandelier(host, { hero = false }) {
     const ts = t / 1000;
     energy += (target - energy) * (1 - Math.exp(-dt / 0.22));
     if (!target && energy < 0.004) energy = 0;
-    const az = REST + 0.055 * Math.sin(ts * 0.11) + 0.02 * Math.sin(ts * 0.043 + 2.1);
+    // Amplitude ramps from zero after the draw-in, so the first animated frame
+    // is the rest pose itself and the sway grows out of it with no snap.
+    if (ambient0 == null && drawn) ambient0 = t;
+    const k = ambient0 == null ? 0 : Math.min((t - ambient0) / 2500, 1);
+    const ramp = k * k * (3 - 2 * k);
+    const az = REST + ramp * (0.055 * Math.sin(ts * 0.11) + 0.02 * Math.sin(ts * 0.043 + 2.1));
     const windAt = (p) => {
       const env = Math.sin(Math.PI * Math.min(Math.max((YT - p.y) / (YT - YB), 0), 1));
-      return env * (4.5 * Math.sin(ts * 0.45 - p.x * 0.013) + 2.5 * Math.sin(ts * 0.19 + p.z * 0.011 + 1.7));
+      return ramp * env * (4.5 * Math.sin(ts * 0.45 - p.x * 0.013) + 2.5 * Math.sin(ts * 0.19 + p.z * 0.011 + 1.7));
     };
     const fx = {
       e: energy,
