@@ -755,7 +755,7 @@ function initPtt(host) {
   });
   onEnter(host, prepDraw(svg, { stagger: 25, dur: 420 }));
 }
-function initGithelp(host, goBtn) {
+function initGithelp(host) {
   const w = 520, h = 84, y = 40;
   const svg = svgRoot(host, w, h);
   const stages = [['SCOUT', 56], ['RANK', 148], ['READ', 240], ['DRAFT', 332]];
@@ -774,14 +774,6 @@ function initGithelp(host, goBtn) {
   const post = el('rect', { x: w - 76, y: y - 11, width: 62, height: 22, class: 'st-carbon', fill: 'none' }, svg);
   el('text', { x: w - 45, y: y + 3.5, class: 'annf', 'text-anchor': 'middle' }, svg).textContent = 'POST';
   onEnter(host, prepDraw(svg, { stagger: 20, dur: 420 }));
-  let closed = false;
-  goBtn.addEventListener('click', () => {
-    closed = !closed;
-    arm.setAttribute('x2', closed ? sx + 9 : sx + 7);
-    arm.setAttribute('y2', closed ? y : y - 11);
-    post.classList.toggle('post-live', closed);
-    goBtn.textContent = closed ? 'GO GIVEN · SWITCH CLOSED' : 'GIVE THE HUMAN GO';
-  });
 }
 
 /* ----------------------------------------------------------- pixelswarm -- */
@@ -906,7 +898,7 @@ export function boot() {
   gate('stemma', () => initStemma($('fig-stemma')));
   gate('skills', () => initSkillGrid($('fig-skills'), $('skill-count')));
   gate('ptt', () => initPtt($('fig-ptt')));
-  gate('githelp', () => initGithelp($('fig-githelp'), $('btn-go')));
+  gate('githelp', () => initGithelp($('fig-githelp')));
   gate('pixel', () => initPixelswarm($('fig-pixelswarm')));
   gate('counters', () => initCounters());
   gate('furniture', () => initFurniture());
