@@ -291,10 +291,10 @@ function initChandelier(host, { hero = false }) {
     if (ambient0 == null && drawn) ambient0 = t;
     const k = ambient0 == null ? 0 : Math.min((t - ambient0) / 2500, 1);
     const ramp = k * k * (3 - 2 * k);
-    const az = REST + ramp * (0.055 * Math.sin(ts * 0.11) + 0.02 * Math.sin(ts * 0.043 + 2.1));
+    const az = REST + ramp * (0.085 * Math.sin(ts * 0.13) + 0.03 * Math.sin(ts * 0.051 + 2.1));
     const windAt = (p) => {
       const env = Math.sin(Math.PI * Math.min(Math.max((YT - p.y) / (YT - YB), 0), 1));
-      return ramp * env * (4.5 * Math.sin(ts * 0.45 - p.x * 0.013) + 2.5 * Math.sin(ts * 0.19 + p.z * 0.011 + 1.7));
+      return ramp * env * (9 * Math.sin(ts * 0.55 - p.x * 0.013) + 5 * Math.sin(ts * 0.23 + p.z * 0.011 + 1.7));
     };
     const fx = {
       e: energy,
