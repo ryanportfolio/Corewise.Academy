@@ -68,6 +68,12 @@ contain a colon plus space). Doc-grounded deltas:
 - **No walls of text.** Paragraphs run 1-4 sentences; break at each new idea.
   A dense block gets skimmed and forgotten, so a paragraph past ~60 words needs
   a reason to exist at that length.
+- **State the rule, skip the flourish.** No aphorism capstones, no dramatic
+  justifications on self-evident rules, no praise of the guide's own advice,
+  no coined names. Rules read as flat plain declaratives. When a mechanism has
+  levels or stages, say what the end state buys; tour the stops only if the
+  reader must choose one. One example per claim, and only if the claim is
+  unclear without it. Full rulings: `.claude/reference/copy-rules.md`.
 - **Stakes woven in, never labeled.** The lede and section openers make the
   reader feel the cost or payoff (the afternoon lost, the tokens burned, the
   capability unlocked). Never a "Why this matters" or "Why you should care"

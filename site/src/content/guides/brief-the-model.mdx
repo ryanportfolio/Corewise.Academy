@@ -8,8 +8,8 @@ minutes: 6
 objectives:
   - 'Apply the golden rule of prompt clarity (if a colleague with minimal context would be confused, so will Claude) to diagnose a vague prompt.'
   - Write instructions that state their motivation so the rule generalizes past the single case you named.
-  - Structure a multidocument prompt so documents sit at the top, the query at the end, and each source is tagged for retrieval.
-  - Rewrite a request into literal imperative phrasing and positive format steering that Claude follows exactly.
+  - Structure a multidocument prompt so documents sit at the top, the query at the end, and each source is tagged so it can be found.
+  - Rewrite a request into literal imperative phrasing and positive formatting instructions that Claude follows exactly.
 prerequisites: []
 sources: []
 selfCheck:
@@ -65,7 +65,7 @@ your prompts already lean hard on forceful bans and the model over-corrects, <a 
 Three techniques carry across every model. First, examples. Wrap three to five in
 `<example>` tags inside an `<examples>` block, and make them relevant and diverse rather than
 five near-copies. The model learns your desired output far better from demonstrations than from
-description, and diversity is what stops it overfitting to one shape.
+description, and diversity is what stops it latching onto one shape.
 
 Second, tags. When a prompt mixes instructions, context, and the thing to act on, XML tags stop
 Claude from confusing one for another. Name them for what they hold (`<instructions>`,
@@ -83,7 +83,7 @@ Long prompts have a geometry. For inputs past 20k tokens, put the longform docum
 and the query at the very end. Anthropic reports end-placed queries improved response quality by
 up to 30 percent on complex multidocument tests, which is a large return for 5 minutes of
 rearranging text you already have. Give each document its own `<document>` tag with `<document_content>` and `<source>`
-subtags, and for retrieval-heavy work, ask Claude to pull relevant quotes into `<quotes>` tags
+subtags, and for work that leans on pulling facts from sources, ask Claude to pull relevant quotes into `<quotes>` tags
 before it answers. That gives the model an anchored path from source to conclusion.
 
 The last fundamental is the one people trip over most: the latest models do what you literally

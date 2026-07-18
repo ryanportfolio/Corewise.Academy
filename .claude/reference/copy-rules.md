@@ -91,6 +91,18 @@ Clear, to the point, plain words. Fewer words beat more words everywhere on the 
   run 1-4 sentences; a paragraph past ~60 words needs a reason to exist at that
   length. Break at each new idea. Let lists, short paragraphs, and white space
   carry the structure a long block hides.
+- **State the rule, skip the flourish** (editor ruling, 2026-07-18, from the
+  editor's own rewrite of the compression-contract passage). Cut, every time:
+  aphorism capstones ("The cheapest token is the one never written"), dramatic
+  justifications bolted onto self-evident rules ("a paraphrased error message
+  is a lie"), praise of the writing's own advice ("a genuinely radical clause"),
+  coined names nobody needs ("call it ultra"), and qualifiers that restate a
+  rule already given. A list of rules reads as flat plain declaratives.
+- **Don't tour the mechanism** (editor ruling, 2026-07-18). When a thing has
+  levels or stages, say that it has them and what the end state buys; walk the
+  reader through each stop only when they must choose between stops. An
+  illustrative example earns its place only if the claim is unclear without it;
+  one example is the ceiling.
 - **Never talk down to the reader.** No "adults learn what they can use"-style
   framing that explains the reader to themselves.
 - **Theme never beats clarity.** Decorative labels are welcome only next to plain
