@@ -1,0 +1,110 @@
+---
+title: Give your agent a memory
+description: A managed agent starts every session with fresh context and no recollection of the last one. A memory store is the fix, a workspace-scoped directory the agent reads and writes with its normal file tools, carrying preferences, conventions, and prior mistakes forward across sessions.
+track: agents
+level: deep
+number: 17
+minutes: 6
+objectives:
+  - 'Explain why Managed Agents sessions start with fresh context, and how a mounted memory store carries state across them.'
+  - 'Choose read_only versus read_write for a mount by the prompt-injection risk the choice controls.'
+  - 'Estimate when a store hits its limits (100 kB per memory, 2,000 per store, 8 stores per session) and what fails at each cap.'
+  - 'Design a multi-store layout (per user, per project, shared read-only reference) and a pruning or dreaming plan to keep it healthy.'
+prerequisites:
+  - slug: firmware-not-folklore
+    note: Extends the committed-memory-that-travels idea from repo firmware to a managed agent's own persistent store.
+sources: []
+selfCheck:
+  - q: Why is the read_write default a dangerous one, and when should you override it to read_only?
+    a: 'Because a prompt injection from untrusted input during one session can write malicious content that a later session reads back as trusted memory. The write happens under untrusted conditions, the read happens under trusted ones. The docs warn about exactly this. Override to read_only for reference material and any store the agent has no reason to modify, so the mount rejects writes at the filesystem level.'
+  - q: A store has 1,999 memories and the agent tries to write a new file to an unmapped path. What happens, and what still works?
+    a: 'The write fails once the store is at its 2,000-memory cap, blocking both direct memories.create calls and the agent''s own file writes to new paths. Existing memories stay readable and editable; only new memories are blocked. The fix is pruning stale memories with memories.delete, or moving to a fresh store, since each store carries its own 2,000-memory limit.'
+  - q: You need to roll a memory back to last week''s content, and you leaked a secret into an old version. What are the two mechanisms?
+    a: 'There is no restore endpoint. To roll back, retrieve the desired memory version (memver_) and write its content back with memories.update, or memories.create if the parent was deleted. To scrub the secret, use the redact endpoint, which removes content from a historical version while keeping the who-did-what-when metadata. You cannot redact a version that is the current head, so write a new version or delete the memory first.'
+status: review
+lastUpdated: 2026-07-17
+---
+
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+
+<Chalk>a session ends and the agent forgets everything, unless you give it somewhere to write</Chalk>
+
+<p class="lede">
+A Managed Agents session starts fresh. Whatever the agent learned last time (that you prefer
+two-space indent, that the deploy step needs a manual approval, that it botched the same migration
+last week) is gone the moment the session ends. That is the default, and for a one-shot task it is
+the right one. But an agent you come back to should not relearn you every morning. The mechanism
+that fixes it is a <a href="https://platform.claude.com/docs/en/managed-agents/memory">memory
+store</a>: a workspace-scoped collection of text documents that mounts as a directory the agent
+reads and writes with its ordinary file tools. Preferences, conventions, prior mistakes, domain
+context. They go in the directory, and the next session finds them there.
+</p>
+
+## <span class="sec-no">01</span>A directory, versioned
+
+A memory store is deliberately unexciting: text files, each addressed by a path like
+`/formatting_standards.md`. Attach one at session creation and it mounts under `/mnt/memory/` at a
+slug derived from the store's name. Read the authoritative `mount_path` off the session's
+memory-store resource rather than constructing it yourself. The agent needs its file tools enabled
+at agent creation to touch the mount at all. A description of every mount lands in the system prompt
+automatically, so the agent knows what each store holds.
+
+Two details make this safe to run in production. Every change creates an immutable memory version
+(id prefix `memver_`), which is your audit trail and your point-in-time recovery. Versions belong
+to the store and survive after a memory is deleted, so the history stays complete. And writes only
+persist if they land under the real mount path; a write anywhere else under `/mnt/memory/` goes to
+container-local scratch and vanishes when the session ends. The store stays in sync across every
+session that shares it.
+
+## <span class="sec-no">02</span>read_only is the load-bearing setting
+
+The `access` field defaults to `read_write`, and that default deserves suspicion. The docs are
+blunt about the reason: a prompt injection from untrusted input can make one session write
+malicious content, and a later session reads that content back as trusted memory. The write happens
+under attacker influence, the read happens under your trust. Access is enforced at the filesystem
+level, so `read_only` genuinely rejects writes. Use it for reference material and any store the
+agent has no business modifying. Reserve `read_write` for the sessions that actually add memories.
+Every write to a `read_write` mount is attributed to its session in the version history, so you can
+always see who wrote what.
+
+## <span class="sec-no">03</span>Know the caps before you hit them
+
+The limits are hard, and each one fails in a specific way. A single memory caps at 100 kB, roughly
+25k tokens, which is why the docs push many small focused files over a few large ones. A store
+holds at most 2,000 memories; at the cap, new writes fail (both `memories.create` and the agent's
+own writes to new paths) while existing memories stay readable and editable. A session attaches at
+most 8 stores, and only in the `resources[]` array at creation time. You cannot add or drop a
+store mid-session. Plan the attach list up front.
+
+Because each store carries its own 2,000-memory budget, the shape of a healthy setup is several
+focused stores, not one giant one: a store per end user, a shared domain-knowledge store, a store
+per project. A common pattern is one `read_only` shared reference store fanned out across many
+sessions, plus a `read_write` store scoped to whoever is actually writing.
+
+## <span class="sec-no">04</span>Keeping it healthy over time
+
+Stores rot the way any pile of notes rots. Three tools keep them clean. Prune stale entries with
+`memories.delete`, cheap and direct, and do it regularly. When a store fragments, a
+<a href="https://platform.claude.com/docs/en/managed-agents/dreams">dreaming session</a>
+consolidates its content into a separate new output store without touching the original; you then
+switch sessions to the output store and archive the old one. And when a store outgrows its scope,
+attach a fresh store for new content while reattaching the original as `read_only`, so the agent
+reads both but writes only to the new one.
+
+Two more endpoints matter for compliance. Rolling back has no dedicated restore call. Retrieve the
+`memver_` version you want and write it back with `memories.update`. And the redact endpoint scrubs
+content from a historical version while preserving its metadata, for leaked secrets, PII, or a user
+deletion request. You cannot redact a live memory's current head, so write a new version or delete
+the memory first, then redact the old one.
+
+<Exercise>
+1. Create a store, attach it `read_write` to a session, and have the agent write one small file
+   under the mount path. Then read its `memory_versions` and confirm the `memver_` entry and its
+   session attribution appear.
+2. Sketch the store layout for one real agent you run: which stores are per-user, which is shared
+   reference, and which of those should be `read_only`. Write one sentence per store on why that
+   access mode.
+3. Pick a store that has drifted and prune it with `memories.delete`, or run a dreaming session to
+   consolidate it into a fresh output store. Note how many memories you removed against the 2,000 cap.
+</Exercise>

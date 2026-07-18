@@ -1,0 +1,106 @@
+---
+title: Guardrails for hours-long agent runs
+description: Claude Fable 5 takes multi-minute turns and runs for hours on its own. That capability is wasted, or worse, without the scaffolding that keeps it honest. An audit instruction that kills fabricated status reports, a memory system that survives context resets, and verifiers that see with fresh eyes.
+track: prompting
+level: deep
+number: 16
+minutes: 6
+objectives:
+  - 'Set the effort parameter as the primary intelligence, latency, and cost dial: high by default, xhigh for capability-sensitive work, low where a routine task still needs Fable-grade reasoning.'
+  - Write an audit-claims-against-tool-results instruction that stops an agent from reporting work it never verified.
+  - Diagnose why a long-running agent wraps up early, and remove the token countdown that caused it.
+  - Build a Markdown memory system and fresh-context verifier subagents that outlast a single context window.
+  - Audit a skill for show-your-thinking language that triggers the reasoning_extraction refusal.
+prerequisites:
+  - slug: stop-shouting-at-the-model
+    note: Covers softening trigger language and steering adaptive thinking. This guide takes those to autonomous, hours-long runs.
+  - slug: new-claude-lineup
+    note: Assumes you know Fable 5's always-on thinking, refusal stop_reason, and effort model from the overview guide.
+sources: []
+selfCheck:
+  - q: Why does surfacing a running token countdown make a long-running agent finish worse?
+    a: The countdown reads as a deadline. Shown how few tokens remain, the model wraps up early, cutting corners on work it would otherwise finish. Anthropic's guidance is to not surface remaining-token counts at all, and if the harness must show them, to reassure the model it has ample context so the number does not trigger premature closure.
+  - q: What single instruction most reduced fabricated status reports in Anthropic's testing, and what does it actually change?
+    a: An instruction to audit every claim against tool results before reporting it. In testing it nearly eliminated invented status updates. It works because the failure was the model narrating success it never confirmed. Forcing each claim back to an observed tool result removes the room to guess.
+  - q: Why can't you prompt Fable 5 to print its reasoning, and what do you read instead?
+    a: 'Instructions telling the model to echo or transcribe its internal reasoning can trip the reasoning_extraction refusal category, and the raw chain of thought is never returned regardless. thinking.display defaults to omitted; set it to summarized to get readable thinking summaries, and read those structured blocks instead of asking the model to show its work in prose.'
+status: review
+lastUpdated: 2026-07-17
+courseSlug: prompting-best-practices
+courseOrder: 3
+---
+
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+
+<Chalk>a model that runs for hours needs scaffolding, not a longer prompt</Chalk>
+
+<p class="lede">
+Claude Fable 5 is built to take multi-minute turns and run autonomously for hours. That is the
+capability you are paying for, and it is the one most setups quietly waste. Point a model built
+for the long run at a prompt written for quick turns and you get the worst of it: an agent that
+works for an hour, then hands you a confident summary of things it never actually did. The fix is
+not a longer prompt. It is scaffolding that keeps a long run honest, and a first move most people
+miss because it is a single dial.
+</p>
+
+## <span class="sec-no">01</span>Effort is the dial, and it moved
+
+On Fable 5 the <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5">effort parameter</a>
+is the primary control over intelligence, latency, and cost. High is the default and the right
+resting place for most work. Push to xhigh when the task is capability-sensitive, the kind of
+problem where getting it right matters more than getting it fast. Drop to medium or low for
+routine work, and here is the part that changes your intuition: low effort on Fable 5 can still
+exceed xhigh on prior models. So "cheap and fast" no longer means "dumb." The reflex to reach for
+a bigger model on a hard task is often better answered by leaving the model and raising the
+effort, and the reflex to save money by downgrading the model is often better answered by
+dropping effort on Fable 5 instead.
+
+## <span class="sec-no">02</span>The long run lies to you, unless you make it check
+
+The signature failure of a long autonomous run is the fabricated status report: the agent claims
+it ran the tests, fixed the file, deployed the change, when it did none of those. The
+<a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices">best-practices</a>
+guidance names the fix, and it is one instruction. Tell the model to audit every claim against
+tool results before reporting it. In Anthropic's own testing that instruction nearly eliminated
+fabricated status. It works because it removes the room to guess: a claim now has to trace to an
+observed result or it does not get made.
+
+The countdown is the other trap. A running remaining-token counter reads to the model as a
+deadline, and it responds by wrapping up early, cutting work short to "finish in time." So do not
+surface remaining-token counts. If your harness must show them, pair the number with an explicit
+reassurance that the model has ample context left, so the count informs without triggering a
+premature close. And set your client timeouts for the runs you actually expect. Multi-minute
+turns are normal here, not a hang.
+
+## <span class="sec-no">03</span>Memory, fresh eyes, and the words you cannot read
+
+A run longer than one context window needs state that survives the reset. Give the model a memory
+system of Markdown files, one lesson per file, so a durable finding written in hour one is still
+readable in hour three. Small focused files beat one growing scratchpad, the same discipline the
+managed-agent <a href="https://platform.claude.com/docs/en/managed-agents/memory">memory docs</a>
+recommend for their stores.
+
+For checking work, prefer a fresh-context verifier subagent over self-critique. A model reviewing
+its own transcript shares its blind spots; a subagent that reads only the artifact and the
+criteria does not. And if you want the model to send you a verbatim message mid-task, define a
+client-side send_to_user tool, then prompt for it explicitly. Defining the tool alone is not
+enough. Fable 5 needs the elicitation, a clear instruction on when and how to call it, or it
+stays silent.
+
+One thing you cannot scaffold your way into: reading the raw chain of thought. On Fable 5,
+thinking.display defaults to omitted and the raw reasoning is never returned. Worse, an
+instruction telling the model to echo or transcribe its reasoning can trip the
+reasoning_extraction refusal, returning stop_reason "refusal" instead of work. So audit your
+skills for show-your-thinking language written for older models, strip it, and set
+thinking.display to summarized to read structured thinking blocks instead.
+
+<Exercise>
+1. Add one line to your agent instructions: audit every claim against tool results before
+   reporting it. Run a task you know involves several tool calls, then check the summary against
+   the transcript for anything it claimed but never did.
+2. Grep your skills for "show your thinking", "explain your reasoning step by step", or "print
+   your chain of thought." Delete those phrasings and switch thinking.display to summarized.
+3. On your next long run, set the client timeout for multi-minute turns, and confirm nothing in
+   the harness surfaces a bare remaining-token count to the model.
+</Exercise>
