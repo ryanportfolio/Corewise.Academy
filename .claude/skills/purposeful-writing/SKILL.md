@@ -79,7 +79,7 @@ Certain words and shapes mark writing as machine-made. Scan for them, then cut o
 
 - **Inflated vocabulary:** delve, crucial, pivotal, testament, showcase, foster, leverage, utilize, robust, seamless, vibrant, tapestry, underscore, landscape (abstract). Use the plain word.
 - **Copula dodges:** "serves as," "stands as," "boasts." Say "is" or "has."
-- **Fake structure:** rule-of-three lists ("innovation, inspiration, and insight"), "not just X, it's Y," and "from X to Y" ranges where X and Y are not a real scale.
+- **Fake structure:** rule-of-three lists ("innovation, inspiration, and insight"), "from X to Y" ranges where X and Y are not a real scale, and negation pivots in every disguise: "not just X, it's Y," "The point isn't X. It's Y," "This isn't about A; it's about B," "less about X than Y." Splitting across sentences doesn't cure it. Delete the denial half and open with the point.
 - **Filler openers and closers:** "Great question," "Let's dive in," "It's important to note," "I hope this helps," "In today's world."
 - **Formula sections:** "Despite these challenges, X continues to thrive," "The future looks bright."
 - **Style tics:** em dashes, colons used as mid-sentence connectors, boldface on every noun, inline-header bullets that restate their own label, Title Case headings, decorative emojis.

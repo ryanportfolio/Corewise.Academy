@@ -72,7 +72,7 @@ contain a colon plus space). Doc-grounded deltas:
 - Typing-voice, not blog-voice: plain sentences a sharp person would type to a
   colleague. No idiom flourishes or vibe-labels; state the concrete cost instead.
   First person where genuine. Honest edges: say plainly what is uncertain or
-  version-dependent. No AI tells (delve, robust, seamless, "not just X, it's Y",
+  version-dependent. No AI tells (delve, robust, seamless, negation pivots,
   rule-of-three lists, Title Case headings, trailing summaries).
 - **Plain language, no jargon.** Assume a smart reader who does not live in AI
   tooling. Prefer the everyday phrase; when a term of art is genuinely needed
@@ -89,6 +89,11 @@ contain a colon plus space). Doc-grounded deltas:
   title.
 - **Say what it is, not what it is not.** Headings and claims defined by
   negation ("Synthesis, not summary") are banned; state the positive fact.
+  The negation pivot is banned in every disguise, including split across
+  sentences: "It's not just X, it's Y", "The interesting part is not X. It is
+  Y", "This isn't about A; it's about B", "less about X than Y". Delete the
+  denial half, open with the point; a negation survives only when it corrects
+  a real misconception the reader holds, after the positive claim.
   Lead with the point: if a paragraph's payoff sentence could open it, move it
   up and cut the wind-up. Never talk down to the reader (no "adults learn what
   they can use"-style framing). Full ruling:
