@@ -62,7 +62,34 @@ const minis: Record<string, string> = {
     <div class="hero-copy">
       <p class="mono-label hero-kicker">CoreWise Academy · free guides on working with AI</p>
       <h1 class="display">
-        <span class="hl"><span>Working with AI</span></span>
+        <span class="hl"><span>Working with</span></span>
+        <span class="hl"
+          ><span class="ai"
+            >AI<svg
+              class="ai-stars"
+              viewBox="0 0 100 100"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+            >
+              <path
+                class="cline"
+                d="M30.5 5 L5 79 M30.5 5 L50 79 M16.5 58 L52.5 58 M30.5 5 L77 5 M77 5 L77 79"
+              ></path>
+            </svg><i class="cst" style="--x: 30.5%; --y: 5%; --s: 0.085em"></i><i
+              class="cst"
+              style="--x: 5%; --y: 79%; --s: 0.065em; animation-delay: 0.7s"></i><i
+              class="cst"
+              style="--x: 50%; --y: 79%; --s: 0.065em; animation-delay: 1.4s"></i><i
+              class="cst"
+              style="--x: 16.5%; --y: 58%; --s: 0.05em; animation-delay: 2.1s"></i><i
+              class="cst"
+              style="--x: 52.5%; --y: 58%; --s: 0.05em; animation-delay: 2.8s"></i><i
+              class="cst"
+              style="--x: 77%; --y: 5%; --s: 0.085em; animation-delay: 1s"></i><i
+              class="cst"
+              style="--x: 77%; --y: 79%; --s: 0.065em; animation-delay: 1.8s"></i></span
+          ></span
+        >
         <span class="hl"><span class="lit">Start anywhere</span></span>
       </h1>
       <p class="dek">
@@ -289,6 +316,69 @@ const minis: Record<string, string> = {
     .hero h1 .hl:nth-child(3) > span { animation-delay: 0.24s; }
     @keyframes rise { to { transform: none; } }
     .hero h1 .lit { color: var(--accent-deep); text-shadow: 0 0 24px var(--glow); }
+    .hero h1 .ai {
+      position: relative;
+      width: fit-content;
+      font-size: 1.8em;
+      line-height: 1;
+      padding-right: 0.1em;
+      background: linear-gradient(
+        105deg,
+        var(--ink) 0%,
+        var(--accent-deep) 30%,
+        color-mix(in srgb, var(--accent) 55%, var(--paper)) 50%,
+        var(--accent) 62%,
+        var(--accent-deep) 78%,
+        var(--ink) 100%
+      );
+      background-size: 220% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 34px var(--glow);
+      animation:
+        rise 0.9s var(--ease) forwards,
+        ink-drift 8s ease-in-out 1.1s infinite alternate;
+    }
+    @keyframes ink-drift {
+      from { background-position: 0% 0; }
+      to { background-position: 100% 0; }
+    }
+    .ai-stars {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: visible;
+    }
+    .ai-stars .cline {
+      fill: none;
+      stroke: var(--star-dim);
+      stroke-width: 1;
+      stroke-dasharray: 3 5;
+      vector-effect: non-scaling-stroke;
+    }
+    .hero h1 .ai .cst {
+      position: absolute;
+      left: var(--x);
+      top: var(--y);
+      width: var(--s);
+      height: var(--s);
+      transform: translate(-50%, -50%);
+      background: var(--star);
+      clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+      filter: drop-shadow(0 0 4px var(--glow));
+      animation: twinkle 3.2s var(--ease) infinite alternate;
+    }
+    @keyframes twinkle {
+      from { opacity: 0.35; }
+      to { opacity: 1; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero h1 .ai { animation: rise 0.9s var(--ease) forwards; }
+      .hero h1 .ai .cst { animation: none; opacity: 0.85; }
+    }
     .hero .dek, .hero-ctas, .hero-kicker { animation: fadein 1s var(--ease) both; }
     .hero .dek { animation-delay: 0.35s; }
     .hero-ctas { animation-delay: 0.5s; }
