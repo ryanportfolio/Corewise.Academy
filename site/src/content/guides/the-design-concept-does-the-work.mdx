@@ -25,6 +25,7 @@ lastUpdated: 2026-07-18
 import Exercise from '../../components/Exercise.astro';
 import Chalk from '../../components/Chalk.astro';
 import SkillCopy from '../../components/SkillCopy.astro';
+import { SHOWPIECE_SKILL } from '../../data/showpieceSkill';
 
 <Chalk>slop is what a page looks like when nothing decided it</Chalk>
 
@@ -88,7 +89,7 @@ recipe for next time, extracted from the one time it worked.
 
 The plate below shows the top of the file; the button copies every line of it.
 
-<SkillCopy />
+<SkillCopy skill={SHOWPIECE_SKILL} name="/showpiece" savePath=".claude/skills/showpiece/SKILL.md" />
 
 ## <span class="sec-no">03</span>Why each step works
 

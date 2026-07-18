@@ -1,9 +1,14 @@
 ---
-// The /showpiece skill offered as a copyable plate: a short specimen of the
-// file, then one action that copies the whole thing to the clipboard.
-import { SHOWPIECE_SKILL } from '../data/showpieceSkill';
+// A skill file offered as a copyable plate: a short specimen of the file,
+// then one action that copies the whole thing to the clipboard.
+interface Props {
+  skill: string;
+  name: string;
+  savePath: string;
+}
+const { skill, name, savePath } = Astro.props;
 
-const SKILL = SHOWPIECE_SKILL.replace(/\r\n/g, '\n');
+const SKILL = skill.replace(/\r\n/g, '\n');
 const PREVIEW_LINES = 16;
 const lines = SKILL.replace(/\n$/, '').split('\n');
 const preview = lines.slice(0, PREVIEW_LINES);
@@ -13,7 +18,7 @@ const remaining = lines.length - PREVIEW_LINES;
 <figure class="skill-plate" data-lines={lines.length}>
   <figcaption class="plate-head">
     <span class="mono-label accent">file · SKILL.md</span>
-    <span class="mono-label">/showpiece</span>
+    <span class="mono-label">{name}</span>
     <span class="mono-label tail">{lines.length} lines · markdown</span>
   </figcaption>
 
@@ -26,15 +31,14 @@ const remaining = lines.length - PREVIEW_LINES;
       <span class="star" aria-hidden="true">✦</span>
       <span class="cta-label">Copy the full skill</span>
     </button>
-    <span class="hint">then save as <code>.claude/skills/showpiece/SKILL.md</code></span>
+    <span class="hint">then save as <code>{savePath}</code></span>
   </div>
 
   <template class="skill-src">{SKILL}</template>
 </figure>
 
 <script>
-  const plate = document.querySelector('.skill-plate') as HTMLElement | null;
-  if (plate) {
+  for (const plate of document.querySelectorAll<HTMLElement>('.skill-plate')) {
     const btn = plate.querySelector('.copy-cta') as HTMLButtonElement;
     const label = btn.querySelector('.cta-label') as HTMLElement;
     const src = (plate.querySelector('.skill-src') as HTMLTemplateElement).content.textContent ?? '';

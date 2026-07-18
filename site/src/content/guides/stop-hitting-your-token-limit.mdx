@@ -4,7 +4,7 @@ description: 'Your limit is a compute budget: tokens consumed times the model th
 track: practice
 level: practitioner
 number: 20
-minutes: 9
+minutes: 10
 objectives:
   - 'Audit a Claude setup with /usage and /context, and attribute each cost to one of the two variables: tokens consumed or model used.'
   - 'Trim the preloaded context tax: unused MCP servers, bloated skill descriptions, and an oversized CLAUDE.md.'
@@ -17,7 +17,7 @@ sources:
   - url: https://www.youtube.com/watch?v=SFh6MMe-XcM
     creator: Austin Marchese
     video: Paste This Into Claude, Never Hit a Token Limit Again
-    timestamps: ['0:55', '1:14', '2:23', '3:20', '4:28', '7:54', '9:11', '10:56', '13:01']
+    timestamps: ['0:55', '1:14', '2:23', '3:20', '4:28', '4:59', '7:54', '9:11', '10:56', '13:01']
     watched: July 2026
 selfCheck:
   - q: Your subscription limit is not a fixed number of tokens. What is it, and why does that change how you fix it?
@@ -33,6 +33,8 @@ lastUpdated: 2026-07-18
 import PullQuote from '../../components/PullQuote.astro';
 import Exercise from '../../components/Exercise.astro';
 import Chalk from '../../components/Chalk.astro';
+import SkillCopy from '../../components/SkillCopy.astro';
+import { CAVEMAN_SKILL } from '../../data/cavemanSkill';
 
 <Chalk>the bill is tokens times model: every fix moves one of the two</Chalk>
 
@@ -84,6 +86,18 @@ of <a href="/guides/firmware-not-folklore/">Every new repo starts with your less
 Output is the same bill from the other side: every word the model says back to you is billed and
 then re-read on every following turn. <a href="/guides/thinking-on-a-budget/">Thinking on a budget</a>
 covers that half, from a one-line "be concise" to a full compression contract.
+
+The contract we actually run, on every session behind this site, is a skill called caveman, the
+same one the video reaches for. It makes the model answer like a smart caveman: articles and
+filler die, fragments are fine, arrows replace causal narration, and the things that matter
+(code, error strings, facts, caveats) are never touched. The plate below shows the top of our
+version; the button copies every line of it.
+
+<SkillCopy skill={CAVEMAN_SKILL} name="/caveman" savePath=".claude/skills/caveman/SKILL.md" />
+
+Run it at whatever rung matches your tolerance; ours stays on ultra. The design reasoning
+behind every line of it (the never-cut list, the escape hatches, the conversation-level audit)
+is the thinking-on-a-budget guide's subject.
 
 ## <span class="sec-no">03</span>Downshift the model
 
