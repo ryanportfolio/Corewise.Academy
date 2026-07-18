@@ -24,8 +24,8 @@ Applies sitewide, all pages and guides. Question marks and other terminal marks
 are allowed only when the heading genuinely is a question.
 
 Periods never appear on big font at all, including mid-text: hero and display
-lines drop internal sentence periods too ("Every guide is a star. Connect
-them." → "Every guide is a star / Connect them" as stacked lines). And headings
+lines drop internal sentence periods too ("Start anywhere. Every guide builds."
+→ "Start anywhere / Every guide builds" as stacked lines). And headings
 stay short enough to sit on one line at their rendered size; if a heading
 wraps, shorten the words, not the font.
 
