@@ -78,6 +78,13 @@ contain a colon plus space). Doc-grounded deltas:
   it freely. If a jargon word can be swapped for plain words with no loss of
   precision, swap it. No insider shorthand (ctx, evals, "the harness") without
   explanation.
+- **Every concept lands twice**: what it means in plain words, and how the
+  reader applies it in practice. A claim with no concrete application (a tiny
+  example prompt, a before/after, a specific thing to do differently today)
+  gets cut. Test each section: could the reader do something differently right
+  after reading it? "Put the instructions before the document, not after" beats
+  "structure your prompt well", and a two-line example beats both. A concept
+  the reader cannot use is worthless, however accurate.
 
 ## Step 4: Review pass
 
@@ -85,7 +92,9 @@ On the finished file, in order: (1) search for em dashes and double-hyphen
 stand-ins, replace every one; (2) audit each technical claim against the fact
 sheet, soften or delete anything unsupported; (3) verify frontmatter against the
 schema; (4) cut any paragraph that restates; (5) hunt jargon: every term of art
-is either glossed on first use or replaced with plain words.
+is either glossed on first use or replaced with plain words; (6) application
+check: every section leaves the reader with something concrete to do; a section
+that only explains gets an example or gets cut.
 
 ## Step 5: Verify and open the PR
 
