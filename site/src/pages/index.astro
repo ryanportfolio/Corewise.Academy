@@ -1,9 +1,30 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
+import Faq from '../components/Faq.astro';
 import { TRACKS, LEVELS } from '../data/tracks';
 
 const guides = (await getCollection('guides')).filter((g) => g.data.status === 'published');
+const totalMinutes = guides.reduce((sum, g) => sum + g.data.minutes, 0);
+const trackMinutes = (slug: string) =>
+  guides.filter((g) => g.data.track === slug).reduce((sum, g) => sum + g.data.minutes, 0);
+const trackCount = (slug: string) => guides.filter((g) => g.data.track === slug).length;
+
+const faq = [
+  {
+    q: 'What is CoreWise Academy?',
+    a: `CoreWise Academy is a free library of original guides on working with AI. Each guide distills real sources (lectures, official docs, field notes) into a short read with objectives, an exercise, and a self-check. There are ${guides.length} published guides, about ${totalMinutes} minutes of reading in total.`,
+  },
+  {
+    q: 'How much does it cost?',
+    a: 'Nothing: $0, no account, no signup, no newsletter gate. Admission is 100% free and every guide is open to read in full.',
+  },
+  {
+    q: 'Where should I start?',
+    a: 'Start with the Foundations track if you are new to working with AI, or jump straight to the track that matches your problem: Prompting & Context, Agents & Automation, Building with AI, or Practice. Levels run Broad, then Practitioner, then Deep, and prerequisites are marked on every guide.',
+  },
+];
+
 const latest = [...guides].sort((a, b) => +b.data.lastUpdated - +a.data.lastUpdated).slice(0, 3);
 const count = (track: string, level: string) =>
   guides.filter((g) => g.data.track === track && g.data.level === level).length;
@@ -24,7 +45,8 @@ const minis: Record<string, string> = {
 };
 ---
 
-<Base title="CoreWise Academy · guides on working with AI">
+<Base title="Guides on working with AI · CoreWise Academy" faq={faq}>
+  <main>
   <div class="hero">
     <canvas
       id="sky"
@@ -40,12 +62,13 @@ const minis: Record<string, string> = {
     <div class="hero-copy">
       <p class="mono-label hero-kicker">CoreWise Academy · free guides on working with AI</p>
       <h1 class="display">
-        <span class="hl"><span>Start anywhere</span></span>
-        <span class="hl"><span class="lit">Every guide builds</span></span>
+        <span class="hl"><span>Working with AI</span></span>
+        <span class="hl"><span>start anywhere</span></span>
+        <span class="hl"><span class="lit">every guide builds</span></span>
       </h1>
       <p class="dek">
-        Original guides on working with AI, distilled from the best teachers on the open web and
-        organized into five tracks.
+        CoreWise Academy is a free library of original guides on working with AI, distilled from
+        the best teachers on the open web and connected into five tracks.
       </p>
       <div class="hero-ctas">
         <a class="btn solid" href="#tracks">Browse the tracks</a>
@@ -127,6 +150,72 @@ const minis: Record<string, string> = {
     </div>
   </section>
 
+  <section class="ledger">
+    <div class="sec-head reveal">
+      <h2>The catalogue at a glance</h2>
+      <span class="mono-label">Working with AI · five tracks · three depths</span>
+    </div>
+    <div class="ledger-grid reveal">
+      <div>
+        <table class="curriculum">
+          <thead>
+            <tr><th>Track</th><th>Constellation</th><th>Guides</th><th>Reading</th></tr>
+          </thead>
+          <tbody>
+            {
+              TRACKS.map((t) => (
+                <tr>
+                  <td><a href={`/tracks/${t.slug}/`}>{t.name}</a></td>
+                  <td class="mono">{t.constellation}</td>
+                  <td class="mono">{trackCount(t.slug)}</td>
+                  <td class="mono">{trackMinutes(t.slug)} minutes</td>
+                </tr>
+              ))
+            }
+            <tr class="total">
+              <td>Whole catalogue</td>
+              <td class="mono">VOL. I</td>
+              <td class="mono">{guides.length}</td>
+              <td class="mono">{totalMinutes} minutes</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="ledger-note">
+          Every star on the chart above is one of these guides. Admission is $0 and 100% of the
+          catalogue is free to read; a typical guide takes 8 minutes, the longest about 10 minutes.
+        </p>
+      </div>
+      <div class="margin-notes">
+        <span class="panel-label">Chalk lines from the guides</span>
+        <blockquote>
+          <p>“The cheapest token is the one never written.”</p>
+          <cite><a href="/guides/thinking-on-a-budget/">Thinking on a budget</a></cite>
+        </blockquote>
+        <blockquote>
+          <p>“A better telescope does not make an astronomer: the discipline does.”</p>
+          <cite><a href="/guides/rent-the-model-own-the-method/">Rent the model, own the method</a></cite>
+        </blockquote>
+        <blockquote>
+          <p>“A model that runs for hours needs scaffolding, not a longer prompt.”</p>
+          <cite><a href="/guides/guardrails-for-long-runs/">Guardrails for hours-long agent runs</a></cite>
+        </blockquote>
+      </div>
+    </div>
+    <div class="reveal">
+      <span class="panel-label">Primary sources the guides teach from</span>
+      <ul class="source-roll">
+        <li><a href="https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/overview" rel="noopener">Anthropic · prompt engineering documentation</a></li>
+        <li><a href="https://platform.openai.com/docs/guides/prompt-engineering" rel="noopener">OpenAI · prompt engineering guide</a></li>
+        <li><a href="https://arxiv.org/abs/1706.03762" rel="noopener">Vaswani et al. · “Attention Is All You Need” (arXiv)</a></li>
+        <li><a href="https://www.anthropic.com/engineering" rel="noopener">Anthropic · engineering blog</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/Large_language_model" rel="noopener">Wikipedia · large language model</a></li>
+      </ul>
+    </div>
+    <div class="reveal">
+      <Faq heading="FAQ · working with the Academy" items={faq} />
+    </div>
+  </section>
+
   <div class="enrol">
     <div class="enrol-inner">
       <div class="reveal">
@@ -155,6 +244,8 @@ const minis: Record<string, string> = {
       </svg>
     </div>
   </div>
+
+  </main>
 
   <script>
     import '../scripts/hero.js';
@@ -288,6 +379,32 @@ const minis: Record<string, string> = {
     .entry h3 a:hover { color: var(--accent-deep); }
     .entry p { font-size: var(--text-sm); color: var(--ink-soft); flex: 1; }
     .entry .foot { font-family: var(--font-mono); font-size: var(--text-2xs); color: var(--ink-mute); margin-top: var(--s-3); display: flex; justify-content: space-between; }
+    .ledger-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: var(--s-6); margin-top: var(--s-4); }
+    .curriculum { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
+    .curriculum th {
+      font-family: var(--font-mono);
+      font-size: var(--text-2xs);
+      letter-spacing: var(--tracking-caps);
+      text-transform: uppercase;
+      color: var(--ink-mute);
+      text-align: left;
+      border-bottom: 1px solid var(--ink);
+      padding: var(--s-1) var(--s-2) var(--s-1) 0;
+    }
+    .curriculum td { border-bottom: 1px dashed var(--line); padding: var(--s-2) var(--s-2) var(--s-2) 0; }
+    .curriculum td a { color: var(--ink); text-decoration: none; border-bottom: 1px dashed var(--accent); }
+    .curriculum td a:hover { color: var(--accent-deep); }
+    .curriculum .mono { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--ink-soft); }
+    .curriculum .total td { border-bottom: none; border-top: 1px solid var(--ink); font-weight: 600; }
+    .ledger-note { font-size: var(--text-sm); color: var(--ink-soft); margin-top: var(--s-3); max-width: 60ch; }
+    .margin-notes blockquote { margin: 0 0 var(--s-3); padding-left: var(--s-3); border-left: 3px solid var(--accent-deep); }
+    .margin-notes blockquote p { font-style: italic; font-size: var(--text-md); line-height: 1.3; }
+    .margin-notes cite { font-family: var(--font-mono); font-size: var(--text-2xs); font-style: normal; color: var(--ink-mute); }
+    .margin-notes cite a { color: var(--ink-soft); }
+    .source-roll { list-style: none; margin: var(--s-2) 0 var(--s-4); padding: 0; }
+    .source-roll li { border-bottom: 1px dashed var(--line); padding: var(--s-1) 0; font-size: var(--text-sm); }
+    .source-roll a { color: var(--ink-soft); text-decoration: none; }
+    .source-roll a:hover { color: var(--accent-deep); }
     .enrol { background: var(--ink); color: var(--paper); padding: var(--s-12) var(--s-4); position: relative; overflow: hidden; }
     .enrol-inner { max-width: 70rem; margin: 0 auto; display: grid; grid-template-columns: 1.4fr 1fr; gap: var(--s-8); align-items: center; }
     .enrol h2 { font-family: var(--font-display); font-size: var(--text-2xl); margin-bottom: var(--s-3); }
@@ -301,6 +418,7 @@ const minis: Record<string, string> = {
       .track { grid-template-columns: 56px 1fr; }
       .shelves, .track p { grid-column: 2; }
       .charted { grid-template-columns: 1fr; }
+      .ledger-grid { grid-template-columns: 1fr; }
       .enrol-inner { grid-template-columns: 1fr; }
       .corner.tr, .corner.br { display: none; }
       .shelf { font-size: 10px; letter-spacing: 0.03em; }

@@ -1,6 +1,6 @@
 ---
 title: Expertise you can install
-description: Career-long judgment now ships as skill files your agent can run (engineering practice, YC-style interrogation, entire security frameworks). How to adopt someone's method, and why you scan it like untrusted input first.
+description: A skill file is career-long judgment packaged as instructions your agent can run. How to adopt someone's method, and why you scan it like untrusted input first.
 track: agents
 level: broad
 number: 10
@@ -101,11 +101,22 @@ anything reaches your agent.
 />
 
 The discipline is the same one this publication applies to sources: nothing gets in unread.
+The arithmetic favors it too: 20 minutes of reading is cheap insurance against an instruction
+that walks off with your credentials.
 Scan with a purpose-built tool where one exists; where it does not, have a *separate* agent
-session (one with no tools and no access) read the skill and answer three questions. What
+session (one with no tools and no access), the same fresh-context verifier pattern <a href="/guides/guardrails-for-long-runs/">Guardrails for hours-long agent runs</a> leans on, read the skill and answer three questions. What
 does this instruct my agent to do with data it touches? What does it tell my agent to fetch,
 send, or execute? And is there any instruction addressed to the agent that the installing
 human was clearly not meant to read?
+
+The whole vetting pass, with rough time costs:
+
+| Step | Time it takes | What it catches |
+| --- | --- | --- |
+| Read the top-level skill files | 20 minutes | Whether there is a real process, or just a feature list |
+| Vet the author | 10 minutes | Judgment you would not take as mentorship |
+| Scan like untrusted input | 5 minutes | Injection, exfiltration, excessive agency |
+| Run the full sequence once, in order | 2 hours | The stage you wanted to skip, and what it exists to catch |
 
 <Exercise>
 1. Pick a skills repository from a practitioner whose judgment you already respect. Before
@@ -113,6 +124,15 @@ human was clearly not meant to read?
    process they encode. If you cannot, that is your answer.
 2. Scan it before install: a dedicated skill scanner if available, otherwise a toolless agent
    session prompted with the three questions from section 03.
-3. Run the full sequence in its intended order on one small, real task. Note which stage you
-   wanted to skip and what it caught, then decide, from evidence, what to keep.
+3. Run the full sequence in its intended order on one small, real task of 60 minutes or less.
+   Note which stage you wanted to skip and what it caught, then decide, from evidence, what to
+   keep.
 </Exercise>
+
+## Further reading
+
+- [Matthew Berman · You NEED to try these 12 open-source AI projects RIGHT NOW](https://www.youtube.com/watch?v=2lmBj_XQq0I), the curation round this guide samples
+- [Anthropic · agent skills documentation](https://docs.claude.com/en/docs/claude-code/skills), how skill files load and run
+- [MITRE ATT&CK](https://attack.mitre.org/), one of the security frameworks now shipping as skills
+- [Wikipedia · supply chain attack](https://en.wikipedia.org/wiki/Supply_chain_attack), the class of risk an installable skill belongs to
+- [Anthropic · engineering blog](https://www.anthropic.com/engineering), first-party practice from the harness vendor

@@ -1,6 +1,6 @@
 ---
 title: 'Claude and OpenAI, one prompting playbook'
-description: OpenAI and Anthropic publish separate prompting guides, but read them side by side and they point the same way. Lean out the prompt. Where the two vendors converge, where they genuinely diverge, and which of your habits both are now telling you to drop.
+description: 'OpenAI and Anthropic prompting guides are one playbook when read side by side: lean out the prompt. Where they converge, where they diverge, which habits to drop.'
 track: foundations
 level: practitioner
 number: 18
@@ -17,7 +17,7 @@ sources: []
 selfCheck:
   - q: Both vendors now tell you to cut something from prompts you were previously told to add. What is it, and why the reversal?
     a: 'Repetition and heavy approval-gating. Older guidance leaned on "CRITICAL, you MUST" emphasis and scattered "ask first" phrases to force behavior on weaker instruction-followers. Current models over-trigger on that language, pausing when they should act, treating an emphasized rule as louder than the others. OpenAI says state each instruction exactly once and define autonomy in one place; Claude says soften the aggressive anti-undertriggering language. Same fix, two houses.'
-  - q: Name one place the two vendors genuinely diverge, not just differ in wording.
+  - q: Where do the two vendors genuinely diverge, beyond a difference in wording?
     a: 'Tool orchestration. OpenAI Programmatic Tool Calling has the model write server-side code that calls tools, processes several results, and returns one small structured payload, good for bounded filter/aggregate/validate work. Claude keeps orchestration in the client loop or its code-execution tool. That is a real architectural split, not a phrasing difference. Reasoning reuse diverges too: OpenAI carries encrypted reasoning across turns via previous_response_id plus reasoning.context, where Claude re-sends thinking blocks in the conversation history.'
   - q: OpenAI reports leaner prompts scoring 10-15% higher while cutting cost 33-67%. How much weight should that carry?
     a: 'Directional, not settled. The numbers are self-reported internal evals with no methodology, task mix, or baseline disclosed, so you cannot check whether they transfer to your workload. Treat them as a reason to run the experiment yourself, not as a measured result to quote. The direction is corroborated by the other vendor moving the same way; the magnitude is not something you should bank on.'
@@ -42,10 +42,14 @@ wrestle older, weaker models are the exact habits both vendors are now telling y
 
 ## <span class="sec-no">01</span>Where they converge
 
-OpenAI's core advice is blunt: remove repetition, simplify tool descriptions, and state each
-instruction exactly once. It calls out approval-gating specifically. Strip the scattered "ask
-first" and "wait for approval" phrases, and instead define once what level of action each request
-authorizes. Say explicitly which actions the model may take on its own and which need a human,
+OpenAI's core advice is blunt:
+
+- Remove repetition; state each instruction exactly once.
+- Simplify tool descriptions until they say only what the tool does.
+- Strip the scattered "ask first" and "wait for approval" phrases.
+- Define once, up top, what level of action each request authorizes.
+
+Say explicitly which actions the model may take on its own and which need a human,
 so it stops pausing where it shouldn't while still blocking anything external, destructive, or
 costly.
 
@@ -53,22 +57,32 @@ Claude's guide lands in the same place from the other side. It tells you to soft
 anti-undertriggering language, the "CRITICAL, you MUST use this tool" phrasing that current
 models over-respond to, down to plain "use this tool when." And it warns that these models
 overengineer by default, reaching for extra files and unrequested abstractions, so a minimalism
-instruction earns its place.
+instruction earns its place. Calibrating that language up and down is the whole subject of
+<a href="/guides/stop-shouting-at-the-model/">Stop shouting at the model</a>.
 
 Both diagnoses share a root cause. The emphasis and repetition you learned were compensating for
 models that under-followed instructions. Current models follow them literally and weight an
-over-emphasized rule too heavily, so the compensation now backfires. Lean prompts aren't a style
-preference here. They are the correction for a capability that improved underneath your habits.
+over-emphasized rule too heavily, so the compensation now backfires.
+
+> “Lean prompts are not a style preference; they are the correction for a capability that improved underneath your habits.”
 
 ## <span class="sec-no">02</span>Where they genuinely diverge
 
 Convergence on the prompt doesn't mean convergence on the machine. Three splits are real, not
-cosmetic.
+cosmetic:
+
+| Split | OpenAI | Claude |
+| --- | --- | --- |
+| Reasoning control | Numeric ladder: `reasoning.effort` none → max, plus mode "pro" | Adaptive thinking calibrated by an effort parameter |
+| Tool orchestration | Programmatic Tool Calling runs server-side | Orchestration stays in the client loop or code execution |
+| Reasoning reuse | Encrypted reasoning via `previous_response_id` | Thinking blocks re-sent in conversation history |
 
 Reasoning control. OpenAI exposes a numeric ladder, reasoning.effort from none through max, plus
 a reasoning.mode "pro" switch that spends more model work on one request before returning a single
 answer. Claude runs adaptive thinking calibrated by an effort parameter and query complexity,
-with the model deciding depth per turn rather than you selecting a rung.
+with the model deciding depth per turn rather than you selecting a rung. That effort parameter
+doubles as an intelligence dial, which
+<a href="/guides/guardrails-for-long-runs/">Guardrails for hours-long agent runs</a> puts to work.
 
 Tool orchestration. OpenAI's Programmatic Tool Calling lets the model write code that calls tools
 server-side, process several results, and hand back one small structured payload. It's meant for
@@ -91,19 +105,30 @@ advice.
 
 What makes the direction trustworthy is that the other vendor moved the same
 way independently. Two houses telling you to cut repetition, from different eval harnesses
-and different model architectures, is stronger evidence than either vendor's percentage. So take
-the direction as settled and the numbers as an invitation. Run the before-and-after on your own
+and different model architectures, is stronger evidence than either vendor's percentage.
+
+> “Take the direction as settled and the numbers as an invitation.”
+
+Run the before-and-after on your own
 prompts and measure your own delta, because that is the only number that describes your system.
 
 <Exercise>
 1. Take one production prompt and grep it for "ask first", "wait for approval", "CRITICAL", and
    "you MUST". Replace every hit with a single autonomy statement up top: what the model may do
    alone, what needs a human. Count the tokens you removed.
-2. Run the original and the leaned version against ten representative tasks. Compare quality and
-   token spend yourself rather than trusting either vendor's percentage. That delta is your real
+2. Run the original and the leaned version against ten representative tasks over 7 days. Compare
+   quality and token spend yourself rather than trusting either vendor's percentage. That delta is your real
    number (and <a href="/guides/thinking-on-a-budget/">Thinking on a budget</a> is the guide to
    shrinking it further).
 3. If you run both families, list the three divergences that don't port (reasoning control, tool
    orchestration, reasoning reuse) and note which of your integration code assumes one vendor's
    plumbing.
 </Exercise>
+
+## Further reading
+
+- [OpenAI · latest-model prompting guide](https://developers.openai.com/api/docs/guides/latest-model), one half of the playbook
+- [Anthropic · Claude prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices), the other half
+- [OpenAI · prompt engineering guide](https://platform.openai.com/docs/guides/prompt-engineering), the fuller technique catalogue
+- [Wikipedia · prompt engineering](https://en.wikipedia.org/wiki/Prompt_engineering), the survey view
+- [Anthropic · engineering blog](https://www.anthropic.com/engineering), where the Claude-side advice keeps evolving

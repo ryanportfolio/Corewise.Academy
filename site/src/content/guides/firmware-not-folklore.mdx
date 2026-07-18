@@ -1,6 +1,6 @@
 ---
 title: Firmware, not folklore
-description: Every agent setup learns lessons (a debug loop here, a deploy gotcha there) and the lessons stay where they happened. AI Firmware is the fix, a boot layer of kernel rules, installable skills, and committed memory that makes every new repo start senior.
+description: AI Firmware is a boot layer of kernel rules, installable skills, and committed memory that makes every new agent repo start senior instead of relearning old lessons.
 track: agents
 level: broad
 number: 12
@@ -31,8 +31,8 @@ import Chalk from '../../components/Chalk.astro';
 <Chalk>one repo learns; the next should not start dumb</Chalk>
 
 <p class="lede">
-Watch what happens to agent setups over a few months. One repo learns a better debugging loop.
-Another learns a deployment gotcha that cost an afternoon. A third learns which standing rules
+Watch what happens to agent setups over 6 months. One repo learns a better debugging loop.
+Another learns a deployment gotcha that cost 3 hours. A third learns which standing rules
 are worth their token weight and which are not. And all of it stays where it happened: folklore,
 locked in transcripts and one-off prompt files, relearned from scratch by every new project.
 <a href="https://github.com/ryanportfolio/AI-Firmware">AI Firmware</a> is the counter-move: a
@@ -43,8 +43,12 @@ enough to shape how an agent boots, remembers, checks itself, and ships.
 ## <span class="sec-no">01</span>The firmware split
 
 The design answers a tension every agent setup hits. Put everything in the prompt and every turn
-gets heavier: always-loaded instructions are a tax paid on every single request. Store nothing
-and every project repeats every mistake. Firmware splits the difference by giving each kind of
+gets heavier: always-loaded instructions are a tax paid on 100% of requests. Store nothing
+and every project repeats every mistake.
+
+> “Always-loaded instructions are a tax paid on every single request.”
+
+Firmware splits the difference by giving each kind of
 knowledge the cheapest home that still works: a **kernel** of standing rules that stays small
 and always loaded (cross-cutting safety and process only); **skills** that hold the long
 playbooks and load only when a task triggers them; **committed reference memory** that keeps
@@ -56,6 +60,16 @@ whole guides of their own: <a href="/guides/expertise-you-can-install/">Expertis
 install</a> on skills, and <a href="/guides/give-your-agent-a-memory/">Give your agent a
 memory</a> on memory that persists.
 
+The split in one view:
+
+| Layer | When it loads | What belongs there |
+| --- | --- | --- |
+| Kernel | Every turn, so it stays small | Cross-cutting safety and process rules only |
+| Skills | On demand, when a task triggers them | Long playbooks and repeatable procedures |
+| Reference memory | When consulted, committed to the repo | Project quirks, pitfalls, commands |
+| Session hooks | At boot | Cheap startup checks and drift nudges |
+| Sync scripts | When you run them | Improvements moving between projects |
+
 The routing rule that falls out of the split: when a lesson proves durable, ask which layer it
 belongs to. Cross-cutting discipline goes in the kernel (rarely). A repeatable procedure becomes
 a skill. A project quirk goes to reference memory. Getting this wrong in either direction costs
@@ -63,12 +77,12 @@ you: resident rules you rarely need, or on-demand files the agent forgets to con
 
 ## <span class="sec-no">02</span>What ships in the box
 
-The template arrives with thirty-one skills (installable judgment, in the sense the previous
-guide gave that word). The load-bearing ones: **recall**, which routes durable project knowledge
+The template arrives with thirty-one skills (installable judgment, in the sense
+<a href="/guides/expertise-you-can-install/">Expertise you can install</a> gave that word). The load-bearing ones: **recall**, which routes durable project knowledge
 (pitfalls, commands, architecture) into committed reference files and consults them before
 unfamiliar work; **verification-before-completion**, which demands evidence before any claim
 that something works; **systematic-debugging**, which forces reproduction before fixes;
-**caveman**, the token-economy prose mode; and **init-project**, the guided setup that
+**caveman**, the token-economy prose mode that <a href="/guides/thinking-on-a-budget/">Thinking on a budget</a> unpacks; and **init-project**, the guided setup that
 configures a fresh spawn. Around the skills sit the session hooks: every boot re-asserts the
 active defaults and quietly checks whether the template has improved since the repo was spawned.
 
@@ -82,25 +96,36 @@ defaults is not.
 ## <span class="sec-no">03</span>Spawn fast, learn as a fleet
 
 Setup is deliberately near-instant: create a repository from the template, open it, run one
-command. The initializer detects the stack, asks a short round of questions about verification
+command, and be working inside 5 minutes. The initializer detects the stack, asks a short round of questions about verification
 and deployment, seeds the reference files, prunes the skills that don't apply, and commits the
 result. From the first turn, the new project has the full discipline installed: it starts
 senior, not blank.
 
 The part that compounds is the sync. Spawned projects freeze the template at spawn date, but the
-template keeps improving, so a weekly hook nudges when the shared surface has drifted, and the
+template keeps improving, so a hook checks every 7 days whether the shared surface has drifted, and the
 sync skill closes the gap in both directions: pull the template's improvements into the project,
 or push a lesson that proved generic back up to the template, where every future spawn, and
-every synced sibling, inherits it. That is the whole thesis in one loop. A gotcha hit once, in
-one repo, becomes firmware everywhere. Folklore evaporates; firmware accumulates.
+every synced sibling, inherits it. That is the whole thesis in one loop.
+
+> “A gotcha hit once, in one repo, becomes firmware everywhere.”
+
+Folklore evaporates; firmware accumulates.
 
 <Exercise>
 1. Spawn a project from the <a href="https://github.com/ryanportfolio/AI-Firmware">AI Firmware</a>
-   template and run its initializer. Time it: the point is that the cost of starting senior is
-   minutes, not an afternoon.
+   template and run its initializer. Time it: the point is that starting senior costs about
+   5 minutes, not an afternoon.
 2. The next durable gotcha you hit, route it deliberately: kernel, skill, or reference memory?
    Save it to the layer you chose and write one sentence on why that layer.
 3. Find one improvement in your spawned repo that is generic rather than project-specific. Push
    it back to the template with the sync skill, then pull it into a second project: watch one
    lesson become fleet-wide.
 </Exercise>
+
+## Further reading
+
+- [ryanportfolio · AI-Firmware template](https://github.com/ryanportfolio/AI-Firmware), the boot layer this guide describes
+- [Anthropic · Claude Code memory documentation](https://docs.claude.com/en/docs/claude-code/memory), the CLAUDE.md mechanics the kernel rides on
+- [Anthropic · agent skills documentation](https://docs.claude.com/en/docs/claude-code/skills), how the on-demand layer loads
+- [Wikipedia · firmware](https://en.wikipedia.org/wiki/Firmware), the metaphor taken literally
+- [Anthropic · engineering blog](https://www.anthropic.com/engineering), first-party accounts of agent harness design
