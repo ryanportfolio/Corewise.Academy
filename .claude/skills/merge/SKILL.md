@@ -6,17 +6,20 @@ description: Use only when the user explicitly asks to enable session-wide autom
 
 > Note: inside a git worktree this skill may be exposed under a directory-scoped name (e.g. `.claude/worktrees/<name>:merge`). Invoke the scoped name — same skill, same behavior.
 
-Invoking `/merge` does NOT do a one-off merge. It **flips on Auto-Merge Mode for the rest of the session**, like `/caveman` persists. From the moment it is on, every time a task is complete and verified (to the extent this environment allows), you run the **integration cycle** below automatically — no waiting to be asked, no per-merge confirmation.
+Invoking `/merge` does NOT do a one-off merge. It **flips on Auto-Merge Mode for the rest of the session**, like `/caveman` persists, and it covers the session in BOTH directions:
 
-Invoking `/merge` IS the user's standing authorization to merge into `main` repeatedly for the session. That is why there is no per-merge confirm gate (see [Why no confirm](#why-no-per-merge-confirm)).
+- **Backward (retroactive sweep):** any work already completed and verified earlier in this session that is not yet on `main` — open PRs, pushed branches, committed-but-unmerged changes — gets the integration cycle immediately on activation.
+- **Forward:** every task completed after activation gets the cycle the moment it is complete and verified — no waiting to be asked, no per-merge confirmation.
+
+Invoking `/merge` IS the user's standing authorization to merge into `main` repeatedly for the session — **everything before it and everything after it**. That includes PRs this session deliberately left for review (e.g. editorial-content PRs under a "the editor merges" convention): activating the mode IS the editor's approval, so merge those too. That is why there is no per-merge confirm gate (see [Why no confirm](#why-no-per-merge-confirm)).
 
 ## Step 0: Activate the mode
 
 On `/merge`, announce activation in **plain prose** (not caveman), so the user can immediately correct a misread of this standing authorization. Say, concisely:
 
-> **Auto-Merge Mode is ON for this session.** From now on, when a task is complete I will, without asking: commit the touched files, push, ensure a PR exists, and merge it into `main` (resolving conflicts where unambiguous). The session branch is kept the whole session. Say "stop merge" to turn this off.
+> **Auto-Merge Mode is ON for this session.** I will now merge into `main`, without asking: (1) everything this session already completed that isn't merged yet — including any PRs left open for review — and (2) every task completed from here on: commit the touched files, push, ensure a PR exists, and merge (resolving conflicts where unambiguous). The session branch is kept the whole session. Say "stop merge" to turn this off.
 
-Then continue the current work. The cycle fires on the **next** task completion (and every one after), not retroactively.
+Then run the **retroactive sweep** before continuing other work: list this session's unmerged output (`gh pr list --author @me --state open`, plus any pushed-but-PR-less or committed-but-unpushed session branches), and run the integration cycle on each item that is complete and verified. Only genuinely unfinished or unverified work is excluded — and say so explicitly if anything is skipped. After the sweep, the cycle fires on every task completion.
 
 ## The Integration Cycle
 
@@ -73,6 +76,8 @@ Turn the mode OFF when the user says "stop merge", "stop auto-merge", "normal mo
 
 ## Anti-patterns
 
+- Don't skip the retroactive sweep — "the cycle fires on the next completion" is wrong; activation merges the session's existing completed work too.
+- Don't hold back review-gated PRs from this session after activation — `/merge` is the reviewer's/editor's standing approval.
 - Don't merge mid-task, exploratory, or unverified work — "complete + verified" is the gate.
 - Don't fabricate verification just to trigger the cycle.
 - Don't blanket-commit unrelated files — stage only what the task touched.
