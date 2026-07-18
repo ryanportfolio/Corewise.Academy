@@ -43,8 +43,8 @@ is about paying less: not by thinking less, but by saying less while knowing exa
 ## <span class="sec-no">01</span>Two meters run in every session
 
 The first meter is deliberation depth: how long the model reasons before it answers. That one is
-controlled at the harness (effort levels, thinking budgets, model routing), and the previous
-guide covered how to set it per task. The second meter is prose verbosity: how many words the
+controlled at the harness (effort levels, thinking budgets, model routing), and <a href="/guides/rent-the-model-own-the-method/">Rent the model, own the method</a>
+covered how to set it per task. The second meter is prose verbosity: how many words the
 model spends performing its work back at you. It is controlled by instruction, it is almost
 always set too high by default, and it is the one this guide turns down.
 
@@ -95,7 +95,8 @@ mean by". A request to re-explain. Treat those as meter readings, and route the 
 generate them back up the ladder. The same accounting, incidentally, applies to what enters the
 context as much as what leaves it (filtered tool output, thin always-loaded instructions with
 detail split into files loaded on demand), but the discipline is one discipline: every token,
-in or out, either carries meaning or carries cost.
+in or out, either carries meaning or carries cost. Keeping that always-loaded layer thin is its
+own craft in <a href="/guides/firmware-not-folklore/">Firmware, not folklore</a>.
 
 <Exercise>
 1. Open a recent agent session transcript and highlight every sentence that restates the
@@ -103,7 +104,8 @@ in or out, either carries meaning or carries cost.
    Estimate the tokens. That number is your verbosity meter, and it is probably not small.
 2. Write a compression contract for your own agent: an intensity ladder with at least two
    stops, the inviolables (code, error strings, facts, caveats), and the carve-outs that force
-   plain prose. Install it as a skill or standing instruction, not a per-session request.
+   plain prose. Install it as a skill or standing instruction, not a per-session request; the
+   packaging move is <a href="/guides/expertise-you-can-install/">Expertise you can install</a>.
 3. Run it for a week. Compare spend against the prior week, but audit the transcripts for
    clarification round-trips: every "can you re-explain" is a topic to route back to plain
    language. Tune the ladder, keep the contract.

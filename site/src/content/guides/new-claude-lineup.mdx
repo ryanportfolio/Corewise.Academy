@@ -78,7 +78,8 @@ Fable 5 runs safety classifiers before and during generation. A declined request
 The `stop_details.category` field tells you which classifier fired: the familiar `cyber` and
 `bio`, plus a newer `reasoning_extraction`, which blocks requests aimed at reverse-engineering or
 duplicating the model's output. It needs no beta header. If you audit skills, watch for
-show-your-thinking language that could trip it. An opt-in `fallbacks` beta can re-run a refused
+show-your-thinking language that could trip it, a hazard
+<a href="/guides/guardrails-for-long-runs/">Guardrails for hours-long agent runs</a> covers in depth. An opt-in `fallbacks` beta can re-run a refused
 request on another model at that model's rates, though not on the Message Batches API.
 
 Then the deadlines. **Claude Sonnet 4 and Claude Opus 4 were retired June 15, 2026** and now

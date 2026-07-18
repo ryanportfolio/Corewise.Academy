@@ -38,7 +38,8 @@ the right one. But an agent you come back to should not relearn you every mornin
 that fixes it is a <a href="https://platform.claude.com/docs/en/managed-agents/memory">memory
 store</a>: a workspace-scoped collection of text documents that mounts as a directory the agent
 reads and writes with its ordinary file tools. Preferences, conventions, prior mistakes, domain
-context. They go in the directory, and the next session finds them there.
+context. They go in the directory, and the next session finds them there. For the repo-level
+counterpart, where committed memory travels with the codebase itself, see <a href="/guides/firmware-not-folklore/">Firmware, not folklore</a>.
 </p>
 
 ## <span class="sec-no">01</span>A directory, versioned
@@ -62,7 +63,7 @@ session that shares it.
 The `access` field defaults to `read_write`, and that default deserves suspicion. The docs are
 blunt about the reason: a prompt injection from untrusted input can make one session write
 malicious content, and a later session reads that content back as trusted memory. The write happens
-under attacker influence, the read happens under your trust. Access is enforced at the filesystem
+under attacker influence, the read happens under your trust. It is the same threat model that <a href="/guides/expertise-you-can-install/">Expertise you can install</a> applies to a downloaded skill file: untrusted input you cannot afford to trust blindly. Access is enforced at the filesystem
 level, so `read_only` genuinely rejects writes. Use it for reference material and any store the
 agent has no business modifying. Reserve `read_write` for the sessions that actually add memories.
 Every write to a `read_write` mount is attributed to its session in the version history, so you can
