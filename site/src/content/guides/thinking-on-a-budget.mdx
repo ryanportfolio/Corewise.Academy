@@ -28,7 +28,7 @@ lastUpdated: 2026-07-17
 import Exercise from '../../components/Exercise.astro';
 import Chalk from '../../components/Chalk.astro';
 
-<Chalk>the cheapest token is the one never written</Chalk>
+<Chalk>reasoning tokens are billed twice</Chalk>
 
 <p class="lede">
 Watch an agent work with the transcript open and you will see money being narrated away. It
@@ -37,7 +37,7 @@ restates the request it was just given. It hedges ("likely", "seems to", "I'm co
 of those words is billed at the output rate, the most expensive class of token there is, and the
 model's private reasoning rides the same meter. Then the bill compounds: everything written into
 a session is re-read as input on every turn that follows. Verbosity taxes you twice. This guide
-is about paying less by saying less, while knowing exactly as much.
+is about spending fewer tokens while keeping everything the model knows.
 </p>
 
 ## <span class="sec-no">01</span>Two meters run in every session
@@ -88,19 +88,15 @@ a terse reply that forces a clarification round-trip costs the original message 
 question plus the re-explanation, with the whole exchange re-read as context on every
 subsequent turn. That is more than plain wording would have cost once.
 
-> “The tell that you have over-compressed is in the reply you get.”
-
-A repeated question. A "what do you
+You can tell you have over-compressed from the reply you get. A repeated question. A "what do you
 mean by". A request to re-explain. Treat those as meter readings, and route the topics that
 generate them back to plainer language. The same accounting applies to what enters the
 context as much as what leaves it (filtered tool output, thin always-loaded instructions with
 detail split into files loaded on demand): every token,
 in or out, either carries meaning or carries cost.
 
-> “Every token, in or out, either carries meaning or carries cost.”
-
 Keeping that always-loaded layer thin is its
-own craft in <a href="/guides/firmware-not-folklore/">Firmware, not folklore</a>.
+own craft in <a href="/guides/firmware-not-folklore/">Every new repo starts with your lessons</a>.
 
 <Exercise>
 1. Open a recent agent session transcript and highlight every sentence that restates the

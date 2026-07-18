@@ -31,7 +31,7 @@ const faq = [
     a:
       guides.length > 0
         ? `The track currently holds ${guides.length} guide${guides.length > 1 ? 's' : ''}, about ${totalMinutes} minutes of reading in total. Each guide also ends with a short exercise you can run the same day.`
-        : 'The first guides for this track are in editorial review now, so the shelves sit empty for the moment. Every guide arrives as a pull request and a human editor reviews it before it publishes.',
+        : 'The first guides for this track are in editorial review now, so there is nothing to read here yet. Every guide arrives as a pull request and a human editor reviews it before it publishes.',
   },
   {
     q: 'Do I need to read the guides in order?',
@@ -112,7 +112,7 @@ const faq = [
     </section>
 
     <section class="track-quotes reveal">
-      <h2>Chalk lines from the guides</h2>
+      <h2>Quotes from the guides</h2>
       {
         notes.quotes.map((q) => (
           <blockquote>
