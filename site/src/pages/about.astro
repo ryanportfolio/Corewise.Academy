@@ -453,6 +453,8 @@ const faq = [
        ============================================================ */
     /* this page is Ryan's, not the Academy's: the wordmark drops its suffix here */
     :global(.masthead .wordmark em) { display: none; }
+    /* the pinned title block covers the bottom edge; lift the site footer above it */
+    :global(.site-footer) { margin-bottom: 56px; }
 
     #aw {
       --awc: var(--ink);                 /* carbon key */
