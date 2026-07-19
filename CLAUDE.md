@@ -59,6 +59,7 @@ Overrides the Bash tool's built-in "commit only when asked" default: task comple
 - Branch, never main. If on main, create a feature branch first.
 - Stage intentionally. Never blanket-commit unrelated changes.
 - Open/update a PR after pushing. A merged branch's PR is closed → a reused branch needs a fresh PR.
+- Merging a PR → squash by default (`gh pr merge --squash`); merge commit or rebase only on explicit request.
 - Never force-push or run destructive git operations without an explicit request.
 - "Complete" = the requested change finished and verified to this environment's limits. Mid-task or exploratory work is NOT a commit trigger.
 - End commit messages with the standard `Co-Authored-By:` trailer.
