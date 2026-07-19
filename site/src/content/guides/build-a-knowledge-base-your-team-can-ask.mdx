@@ -4,11 +4,12 @@ description: 'Retrieval augmented generation in plain terms: put the relevant fa
 track: building
 level: broad
 number: 23
-minutes: 6
+minutes: 7
 objectives:
   - 'Restate what retrieval adds in one plain sentence: the relevant facts, placed in front of the question.'
   - Identify which of your team's tools to feed a knowledge base first.
   - Explain why weighting recent and trusted sources beats raw document count.
+  - Explain why matching on exact words and on meaning together beats either alone.
   - Build a working pipeline for one source with a coding agent.
 prerequisites: []
 sources:
@@ -39,8 +40,10 @@ The hype version of a company knowledge base is a glowing 3D brain floating on
 screen. The useful version has no picture at all. It is a system that reads
 everywhere your team already writes, the chat threads, the wiki, the code, and lets
 anyone ask a plain question and get an answer drawn from all of it. Nick Saraev
-walked through one that a chip company, Cerebras, runs internally, fielding about
-15,000 questions a day. The method under it is worth stealing.
+walked through one that a chip company, Cerebras, runs internally and <a
+href="https://www.cerebras.ai/blog/how-we-built-our-knowledge-base">wrote up in
+detail</a>, fielding about 15,000 questions a day. The method under it is worth
+stealing.
 </p>
 
 ## <span class="sec-no">01</span>Put the answer up front
@@ -85,6 +88,18 @@ It is also why document count is a weak measure of quality. Nick's knowledge bas
 held about 640 items and Cerebras holds hundreds of thousands, yet the one that
 answers well is the one that pulls the few most relevant items.
 
+## <span class="sec-no">04</span>Match on words and on meaning
+
+When a question comes in, the knowledge base has to find the right saved item, and
+matching on meaning alone is not enough. Cerebras tried that first and it fell short,
+so it now runs two kinds of match together.
+
+Exact word matching catches an error string, a host name, or a flag someone pasted
+in, where the precise characters are the whole point. Meaning matching catches the
+question worded nothing like the answer: someone asks why a restore hangs, the saved
+thread says the checkpoint stalls on the mount, and the two share no words at all.
+Run both, let the newer answer win a tie, and each one covers the other's blind spot.
+
 <PullQuote
   quote="how effectively can you retrieve the highest quality ones, the most relevant ones"
   creator="Nick Saraev"
@@ -93,7 +108,7 @@ answers well is the one that pulls the few most relevant items.
   timestamp="22:05"
 />
 
-## <span class="sec-no">04</span>Build it with a coding agent
+## <span class="sec-no">05</span>Build it with a coding agent
 
 You do not need a specialist to wire this up. Nick built his by pasting the
 company's write-up into a coding agent and asking it to build the ingestion
@@ -121,7 +136,8 @@ outlives the session.
 1. Pick one source your team already uses: a Slack or Discord channel, an email
    inbox, or a single GitHub repo.
 2. Open a coding agent and describe the source and what you want: pull each item,
-   label it with who, when, and why, and store it so you can search by meaning.
+   label it with who, when, and why, and store it so you can search it both by
+   meaning and by exact words.
 3. Ask the agent how to connect that source (the API and the one-time login), then
    let it build the pipeline. Give it five to ten minutes.
 4. Run the same handful of real questions with and without the knowledge base, and
@@ -130,6 +146,7 @@ outlives the session.
 
 ## Further reading
 
+- [Cerebras · How we built our knowledge base](https://www.cerebras.ai/blog/how-we-built-our-knowledge-base), the primary write-up by Isaac Tai, Daniel Kim, and Mike Gao, with the hybrid search and reranking in full depth
 - [Nick Saraev · Cerebras Just Killed Second Brains](https://www.youtube.com/watch?v=eCx3SSCcISo), the walkthrough this guide is drawn from
 - [Brief the model like a brilliant new hire](/guides/brief-the-model/), the by-hand version of putting the right context in front of the question
 - [Give your agent a memory](/guides/give-your-agent-a-memory/), the single-agent cousin of a team knowledge base
