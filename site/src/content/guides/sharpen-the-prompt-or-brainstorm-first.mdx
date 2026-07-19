@@ -1,0 +1,125 @@
+---
+title: Sharpen the prompt or brainstorm first
+description: 'Two ways to start an AI task: deepen a rough prompt when you know the goal, or brainstorm first when the goal or the tradeoffs are still open. A quick test for which one you are in.'
+track: prompting
+level: practitioner
+number: 24
+minutes: 5
+objectives:
+  - 'Distinguish a prompt that is merely underspecified from a task whose goal is genuinely unsettled, using the success-signal and output-shape test.'
+  - 'Deepen a rough prompt into a briefed one with explicit action verbs, a stated output shape, context, and a self-check, grounded in Anthropic''s prompting best practices.'
+  - 'Decide when to brainstorm first, matching the depth of up-front discovery to the uncertainty and the cost of an irreversible change.'
+  - 'Chain the two moves on a larger task: brainstorm to settle the goal and its slices, then sharpen one prompt per slice.'
+prerequisites:
+  - slug: brief-the-model
+    note: 'Assumes you know how to write a briefed prompt (explicit instructions, examples, XML tags, output format) before deciding when to bother.'
+sources: []
+selfCheck:
+  - q: 'You typed "review the auth module" and got vague suggestions you did not want. Sharpen or brainstorm, and what specifically do you add?'
+    a: 'Sharpen. You knew the goal, a review, and only underspecified it. Add the pieces the model was left to guess: the file paths, an explicit action verb (audit and list findings, do not edit), the output shape (a severity-tagged list), and a self-check against a stated bar. Anthropic''s best practices are blunt here: an explicit verb decides whether you get suggestions or edits, and naming the output format steers the result. The goal was clear, so no brainstorming was needed.'
+  - q: 'Two dashboard designs both look reasonable and you cannot say which serves the user better. Why does deepening the prompt not help?'
+    a: 'Deepening makes the model execute a known goal precisely, and your goal is still open. A sharper prompt would get you a clean build of whichever design you happened to name, which you may then throw away. This is the brainstorm case: settle the decision that changes the build, which design and why, then sharpen a prompt for the winner. Sharpening first buys a fast, precise answer to a question you had not settled.'
+  - q: 'How do the two moves chain on a large project, and what tells you to stop brainstorming?'
+    a: 'Brainstorm to settle the goal, the tradeoffs, and the slices the work breaks into, then sharpen one prompt per slice and run them. You stop brainstorming when the open decisions no longer change implementation, which is the moment you can name the success signal and the output shape. Past that point more discussion is ceremony, and the lighter sharpen move takes over. Match the depth of the front-loading to the uncertainty and the cost of being wrong.'
+status: review
+lastUpdated: 2026-07-19
+---
+
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+
+<Chalk>sharpen the ask, or settle the goal first</Chalk>
+
+<p class="lede">
+You have a rough idea and a blank prompt box. You could type the idea and hit go, and you will
+get a median answer, because a vague prompt asks the model to guess what you meant. There are two
+better moves, and they solve different problems. When you know what you want and typed it lazily,
+deepen the prompt. When you do not yet know what you want, because the goal is fuzzy or two
+directions both look reasonable, stop and brainstorm before any prompt. Pick the wrong move and
+you lose the afternoon: brainstorming a settled task is ceremony, and sharpening a prompt whose
+goal is unsettled buys a precise answer to the wrong question.
+</p>
+
+## <span class="sec-no">01</span>Sharpen when the goal is clear
+
+A prompt like "review this file" leaves the model guessing at the scope, the output, and whether
+you even want edits. You know all three. You just did not type them. Deepening the prompt is the
+act of writing them down before you send.
+
+Anthropic's <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices">prompting
+best practices</a> name the levers that matter most here. Be clear and direct, and if you want
+work that goes beyond the basics, ask for it rather than hoping the model infers it. Give the
+reason behind an instruction, because the model generalizes from the why. Use an explicit action
+verb: "can you suggest some changes" gets you suggestions, while "change this function" gets you
+edits. Put any long input at the top and your question at the bottom, which tested up to 30 percent
+better on complex inputs. End by asking the model to check its answer against the bar you set. The
+full craft of a briefed prompt lives in <a href="/guides/brief-the-model/">Brief the model like a
+brilliant new hire</a>; both vendors land on the same lean-out advice in <a href="/guides/one-prompting-playbook/">Claude
+and OpenAI, one prompting playbook</a>.
+
+This is what the `/enhance-prompt` skill does in one step: it turns a rough line into a prompt a
+cold session can act on. The same meta-prompt works in any tool. Paste your rough request under it:
+
+```text
+Rewrite the request below into a prompt a fresh agent can act on with no other context.
+- State the real goal and the success signal.
+- Name the exact files or inputs, with paths.
+- Use an explicit action verb: "change" or "implement" for edits, "propose" or "list" for advice.
+- State the output shape you want: a file, a table, a ranked list.
+- If the work touches anything costly to undo, split it into a propose step and an apply step.
+- End with a self-check against the success signal.
+Ask me one question only if a missing answer would change the result.
+
+Request: <paste your rough request>
+```
+
+Two minutes of this beats ten minutes of re-prompting a model that keeps guessing.
+
+## <span class="sec-no">02</span>Brainstorm when the goal is open
+
+No amount of prompt polish helps when you cannot yet say what a good answer looks like. Three
+signals put you here: the goal is ambiguous, two or more approaches differ in ways that matter, or
+the change is expensive to undo, like a schema, a public API, or user-facing copy.
+
+The move is to resolve the decisions that materially affect the build first, then prompt. Match
+the depth to the uncertainty. A settled request skips discovery and goes straight to work. One
+open choice needs a quick alignment: name the choice, recommend a direction, and continue. A new
+workflow or a cross-cutting change earns a full pass over goals, constraints, and the approaches
+worth comparing.
+
+This is what the `brainstorming` skill front-loads, and it is where the token cost of guessing
+wrong shows up. A precise deep run against the wrong goal spends real budget, the kind <a href="/guides/stop-hitting-your-token-limit/">Stop
+hitting your token limit</a> teaches you to protect. Settling the goal for the price of a short
+conversation is the cheaper trade.
+
+## <span class="sec-no">03</span>Which one am I in
+
+The fork comes down to two questions. Can you name the success signal and the shape of the output
+you want? If yes, you are underspecified, so sharpen. Is there more than one materially different
+direction, or is the work costly to reverse? If yes, the goal is unsettled, so brainstorm.
+
+The two moves chain on anything large. Brainstorm to settle the goal and the slices the work
+breaks into, then sharpen one prompt per slice and run them. A rough request is a prompt to ask
+which move you are in, not a failing you correct by typing faster. Both moves also travel as
+installed skills, the pattern behind <a href="/guides/expertise-you-can-install/">Expertise you
+can install</a>: the judgment about how much to settle before you start is exactly the kind of
+method worth packaging once and reusing.
+
+> “A precise answer to the wrong question still costs you the afternoon.”
+
+<Exercise>
+1. Take a request you are about to send. Write one line naming the success signal and one line
+   naming the output shape. If you can write both, sharpen: run the meta-prompt above (or
+   `/enhance-prompt`) and send the fuller version instead.
+2. If you cannot write both, the goal is not settled. List the decisions still open and the
+   directions that differ, and brainstorm those to a short plan before you prompt anything.
+3. On a task with two real approaches, do it wrong on purpose. Sharpen a prompt for one approach
+   without settling which one wins, run it, and notice you got a clean answer you then discard.
+   That discarded work is the cost the fork saves you.
+</Exercise>
+
+## Further reading
+
+- [Anthropic · Claude prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices), the source for the sharpening levers
+- [Anthropic · prompt engineering overview](https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/overview), when prompt work is worth the effort at all
+- [OpenAI · latest-model prompting guide](https://developers.openai.com/api/docs/guides/latest-model), the other vendor arriving at the same lean-out advice
