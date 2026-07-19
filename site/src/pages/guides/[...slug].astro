@@ -3,7 +3,9 @@ import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Faq from '../../components/Faq.astro';
 import AudioPlayer from '../../components/AudioPlayer.astro';
+import SkillCopy from '../../components/SkillCopy.astro';
 import { trackBySlug, LEVELS } from '../../data/tracks';
+import { guideToAgentSkill } from '../../lib/agentSkill';
 import audioManifest from '../../data/audioManifest.json';
 
 export async function getStaticPaths() {
@@ -26,6 +28,7 @@ const prereqs = d.prerequisites.map((p) => {
 const no = String(d.number).padStart(3, '0');
 const isoDate = d.lastUpdated.toISOString().slice(0, 10);
 const audio = (audioManifest as Record<string, { hash: string }>)[guide.id];
+const agentSkill = guideToAgentSkill(guide);
 ---
 
 <Base
@@ -107,6 +110,16 @@ const audio = (audioManifest as Record<string, { hash: string }>)[guide.id];
     </div>
 
     <Faq heading="FAQ" items={d.selfCheck} />
+
+    <section class="agent-copy">
+      <span class="panel-label">For your agent</span>
+      <p>
+        The whole guide, packed into one skill file your coding agent can read. Copy it below, or
+        point the agent at
+        <a href={`/guides/${guide.id}.md`}><code>corewise.academy/guides/{guide.id}.md</code></a>.
+      </p>
+      <SkillCopy skill={agentSkill} name={guide.id} savePath={`.claude/skills/${guide.id}/SKILL.md`} />
+    </section>
 
     <section class="sources">
       <span class="panel-label">Sources</span>
@@ -261,6 +274,10 @@ const audio = (audioManifest as Record<string, { hash: string }>)[guide.id];
       padding: var(--s-1) var(--s-3) var(--s-1) 0;
     }
     .body-text :global(td) { border-bottom: 1px dashed var(--line); padding: var(--s-2) var(--s-3) var(--s-2) 0; vertical-align: top; }
+
+    .agent-copy { margin-top: var(--s-8); padding-top: var(--s-4); border-top: 3px double var(--line); }
+    .agent-copy p { font-size: var(--text-sm); color: var(--ink-soft); margin: 0; }
+    .agent-copy code { font-family: var(--font-mono); font-size: 0.85em; background: var(--accent-wash); padding: 1px 5px; }
 
     .sources { margin-top: var(--s-8); padding-top: var(--s-4); border-top: 3px double var(--line); }
     .sources ol { margin: 0 0 0 var(--s-3); font-size: var(--text-sm); }
