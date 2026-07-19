@@ -90,7 +90,7 @@ covers that half, from a one-line "be concise" to a full compression contract.
 We use a skill called caveman for this, on every session behind this site, the same one the
 video reaches for. It has the model answer like a smart caveman: it strips articles and filler
 words, allows sentence fragments, swaps causal narration for arrows, and never shortens the
-things that matter (code, error strings, facts, caveats). The plate below shows the top of our
+things that matter (code, error strings, facts, caveats). The box below shows the top of our
 version; the button copies every line of it.
 
 <SkillCopy skill={CAVEMAN_SKILL} name="/caveman" savePath=".claude/skills/caveman/SKILL.md" />
@@ -133,7 +133,7 @@ Past the habits and the routing sit heavier fixes, each with a real trade-off at
 Input compression tools such as RTK sit between your commands and the model, deterministically
 stripping boilerplate and repetition from tool output before Claude reads it; the project claims
 60 to 90 percent savings on the text it filters, and the trade is another moving part in your
-pipeline. Stranger, there is pxpipe, which renders bulky context as PNG images because dense
+pipeline. Stranger still, there is pxpipe, which renders bulky context as PNG images because dense
 text packs about three characters per image token against one per text token. It is genuinely
 clever and genuinely lossy: exact strings can come back garbled, and the pricing quirk it
 exploits may not survive.
