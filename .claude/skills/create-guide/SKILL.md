@@ -143,7 +143,13 @@ reader with no private context; if it only makes sense to someone who has seen
 the artifact it references, show the artifact or cut the passage; (10) word-tic
 sweep: count repeats of abstract nouns and adjectives across the draft ("true",
 "real", "powerful"); a word leaned on repeatedly marks sentences to rewrite as
-concrete statements.
+concrete statements; (11) one name per concept: pick one word for each thing and
+repeat it, never renaming the same idea (the model-recheck guide called one plot
+"frontier", "edge", "map", and "curve", and one variant both "size" and "tier"),
+and check comparison labels too ("high effort" versus "top effort" for the same
+setting); (12) referent check: read every "it", "they", "that", and bare "do not"
+and confirm each points to one nameable thing, or name the thing instead of
+pointing at it.
 
 ## Step 5: Verify and open the PR
 
@@ -168,3 +174,6 @@ above once per guide in sequence; the contract is identical either way.
 - Don't put doc links in the `sources` frontmatter; it is video-shaped. Inline
   links in prose.
 - Don't reuse a catalogue number or overlap an existing guide's topic.
+- Don't rename one concept across the draft (frontier / edge / curve for one plot;
+  size / tier for one variant) or leave a dangling "it / they / do not". One name per
+  thing, every reference resolved.

@@ -150,7 +150,7 @@ origin of the about page, when the method was actually distilled after the fact.
   (`pre-wrap`); hard line breaks inside a paragraph render as ragged
   mid-sentence breaks at every viewport width.
 
-## Self-contained passages, no word tics (editor rulings, 2026-07-18)
+## Self-contained passages, no word tics, one name per concept (editor rulings, 2026-07-18, 2026-07-19)
 
 - **Every passage lands without private context.** If a paragraph only makes
   sense to someone who has already seen the artifact it references (the about
@@ -161,6 +161,22 @@ origin of the about page, when the method was actually distilled after the fact.
   abstraction instead of giving instructions. On the finished draft, count
   repeats of abstract nouns and adjectives and rewrite the sentences that lean
   on them into concrete statements.
+- **One name per concept** (editor ruling, 2026-07-19, from the model-recheck
+  guide audit). Pick one word for each thing and use it every time. That guide
+  called one idea, the score-versus-cost plot, four different names across the
+  draft ("frontier", "efficient edge", "map", "curve"), and called one model
+  variant both "size" and "tier". Every rename makes the reader re-learn what is
+  actually one thing, and hides that it is one thing. Choose the plainest name
+  once, then repeat it, including inside a comparison: "the middle size at high
+  effort" versus "the smallest size at its top effort" hides that "high" and
+  "top" name the same setting. This is the mirror of the word-tic sweep: a tic
+  repeats one vague word, this repeats one concept under changing words.
+- **Every reference resolves** (editor ruling, 2026-07-19, same audit). Each
+  "it", "they", "that", "this", "them", and bare "do not / does not" must point
+  to exactly one thing the reader can name. "Once price is in the picture, they
+  do not" left both "they" and "do not [what]" dangling. On the finished draft,
+  read every pronoun and pointing word and confirm its antecedent is the nearest
+  sensible noun; if it is not, name the thing instead of pointing at it.
 
 ## Quotes and titles are copied by hand (2026-07-18)
 

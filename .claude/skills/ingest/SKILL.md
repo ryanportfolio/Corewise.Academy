@@ -164,7 +164,18 @@ Go through the draft in this order:
    (cut, retired, cancelled, gone).
 9. **Word-tic sweep.** Count repeats of abstract nouns and adjectives ("real", "true",
    "trend") and rewrite the sentences that lean on them into concrete statements.
-10. **Headings.** No trailing periods, plain and specific, within the length caps.
+10. **One name per concept.** Pick one word for each thing and repeat it; never rename
+    the same idea across the draft. The model-recheck guide called one plot "frontier",
+    "efficient edge", "map", and "curve", and called one model variant both "size" and
+    "tier", so the reader kept re-learning what was one thing. Covers comparison labels:
+    "high effort" against "top effort" for the same setting hides that they match. This
+    is the mirror of the word-tic sweep.
+11. **Referent check.** Read every "it", "they", "that", "this", and bare "do not" and
+    confirm each points to one nameable thing. "Once price is in the picture, they do
+    not" shipped with "they" and "do not what" both dangling; name the thing instead.
+12. **Headings.** No trailing periods, plain and specific, within the length caps. No
+    heading defined by negation ("Bigger is not better per dollar"); state the positive
+    claim ("Smaller can win per dollar").
 
 If a passage cannot be made clear for a first-time reader, cut it. Clarity beats coverage.
 
@@ -195,5 +206,8 @@ review and that merging is publishing.
   outsider must get every sentence on first read; if not, rewrite or cut it.
 - Don't use negation pivots ("not just X, it's Y") or AI-tell words (delve, robust,
   seamless, crucial, leverage). The Step 6 writing pass exists to catch them.
+- Don't rename one concept across the draft (frontier / edge / curve for one plot;
+  size / tier for one variant) or leave a dangling "it / they / do not". One name per
+  thing, every reference resolved.
 - Don't reshape the guide anatomy or invent new section types — consistency across
   guides is the point.
