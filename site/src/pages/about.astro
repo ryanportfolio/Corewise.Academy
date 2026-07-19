@@ -401,10 +401,7 @@ const faq = [
           <div class="rail-rule"></div>
           <div class="fig portrait-fig" id="fig-portrait">
             <img src="/portrait-ryan-d-allen.jpg" alt="Photograph of Ryan D. Allen" width="250" height="250" />
-            <span class="portrait-stamp" aria-hidden="true">APPROVED · R. ALLEN</span>
           </div>
-          <p class="fig-cap"><span class="fig-no">PLATE I</span>Ryan D. Allen. The red stamp keeps the
-            same meaning it has everywhere in this set: a human made the call.</p>
           <dl>
             <dt>NAME</dt><dd>RYAN D. ALLEN</dd>
             <dt>ROLE</dt><dd>THE HUMAN GATE ON EVERY MERGE</dd>
@@ -618,14 +615,6 @@ const faq = [
     :global([data-theme='night']) .portrait-fig img {
       mix-blend-mode: normal; opacity: 0.92;
       filter: grayscale(1) contrast(1.08) brightness(0.88);
-    }
-    .portrait-stamp {
-      position: absolute; right: 0; bottom: 3%;
-      transform: rotate(-4deg);
-      font-family: var(--font-mono); font-weight: 500; font-size: var(--text-2xs);
-      letter-spacing: 0.12em; color: var(--aw-verm);
-      border: 1.5px solid var(--aw-verm); padding: 5px 9px;
-      background: color-mix(in srgb, var(--paper) 80%, transparent);
     }
 
     /* ---- revisions table ---- */
