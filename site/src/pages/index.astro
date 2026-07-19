@@ -92,8 +92,13 @@ const minis: Record<string, string> = {
         <span class="hl"><span class="lit">Start anywhere</span></span>
       </h1>
       <p class="dek">
-        CoreWise Academy is a free library of original guides on working with AI, distilled from
-        lectures, official docs, and field notes on the open web and connected into five layers.
+        Free library of guides<svg
+          class="dek-star"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          ><path d="M12 0 L14.88 9.12 L24 12 L14.88 14.88 L12 24 L9.12 14.88 L0 12 L9.12 9.12 Z"
+          ></path></svg
+        >get the most out of AI
       </p>
       <div class="hero-ctas">
         <a class="btn solid" href="#tracks">Browse the layers</a>
@@ -382,6 +387,21 @@ const minis: Record<string, string> = {
     .hero-ctas { animation-delay: 0.5s; }
     @keyframes fadein { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
     .hero .dek { font-size: var(--text-md); font-style: italic; color: var(--ink-soft); max-width: 44ch; margin-top: var(--s-2); }
+    .dek-star {
+      display: inline-block;
+      width: 0.7em;
+      height: 0.7em;
+      margin: 0 0.4em;
+      vertical-align: -0.04em;
+      fill: var(--star);
+      filter: drop-shadow(0 0 4px var(--glow));
+      transform-origin: 50% 50%;
+      animation: twinkle 3.2s var(--ease) infinite alternate, dek-star-spin 14s linear infinite;
+    }
+    @keyframes dek-star-spin { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) {
+      .dek-star { animation: none; opacity: 0.9; }
+    }
     .hero-ctas { display: flex; gap: var(--s-3); margin-top: var(--s-4); }
     .corner {
       position: absolute;
