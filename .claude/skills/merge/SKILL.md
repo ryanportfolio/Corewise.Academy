@@ -71,10 +71,20 @@ Confirm the merge landed, give the PR URL, note the branch was kept, and state t
 
 ## Deploy budget: batch the merges
 
-Every merge to `main` triggers a production deploy, and this repo deploys on
-Vercel's free tier: **100 deployments per rolling 24 hours, previews included**
-(hit on 2026-07-18; the error is "Deployment rate limited — retry in 24 hours"
-and the live site silently goes stale while `main` is correct).
+This repo deploys on Vercel's free tier: **100 deployments per rolling 24
+hours, previews included** (hit on 2026-07-18; the error is "Deployment rate
+limited — retry in 24 hours" and the live site silently goes stale while
+`main` is correct).
+
+Two things spend that budget:
+
+- **Pushes to non-main branches** used to burn a preview deploy each.
+  `site/vercel.json` now sets `git.deploymentEnabled` to `{"**": false,
+  "main": true}`, so only `main` deploys — pushes and PRs are free. Do not
+  remove that block; it is the rate-limit fix. (Branches cut before the block
+  landed still carry the old config and still preview-deploy on push; merge
+  `origin/main` into them to pick it up.)
+- **Every merge to `main`** still triggers one production deploy.
 
 So inside Auto-Merge Mode, commit and push continuously but run the
 merge-to-main step on a batch cadence:
