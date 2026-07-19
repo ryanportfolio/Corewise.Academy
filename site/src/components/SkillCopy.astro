@@ -5,31 +5,39 @@ interface Props {
   skill: string;
   name: string;
   savePath: string;
+  kind?: 'skill' | 'guide';
 }
-const { skill, name, savePath } = Astro.props;
+const { skill, name, savePath, kind = 'skill' } = Astro.props;
 
 const SKILL = skill.replace(/\r\n/g, '\n');
 const PREVIEW_LINES = 16;
 const lines = SKILL.replace(/\n$/, '').split('\n');
 const preview = lines.slice(0, PREVIEW_LINES);
 const remaining = lines.length - PREVIEW_LINES;
+
+const isGuide = kind === 'guide';
+const fileLabel = isGuide ? 'file · guide.md' : 'file · SKILL.md';
+const ctaLabel = isGuide ? 'Copy the agent guide' : 'Copy the full skill';
+const previewAria = isGuide
+  ? `First ${PREVIEW_LINES} lines of the agent guide`
+  : `First ${PREVIEW_LINES} lines of the skill file`;
 ---
 
 <figure class="skill-plate" data-lines={lines.length}>
   <figcaption class="plate-head">
-    <span class="mono-label accent">file · SKILL.md</span>
+    <span class="mono-label accent">{fileLabel}</span>
     <span class="mono-label">{name}</span>
     <span class="mono-label tail">{lines.length} lines · markdown</span>
   </figcaption>
 
-  <pre class="specimen" aria-label={`First ${PREVIEW_LINES} lines of the skill file`}>{preview.map((l) => <span class="row"><span class="no"></span><span class="tx">{l === '' ? ' ' : l}</span></span>)}</pre>
+  <pre class="specimen" aria-label={previewAria}>{preview.map((l) => <span class="row"><span class="no"></span><span class="tx">{l === '' ? ' ' : l}</span></span>)}</pre>
 
   <p class="more mono-label">+ {remaining} more lines · the copy includes all of them</p>
 
   <div class="plate-foot">
     <button class="copy-cta" type="button" aria-live="polite">
       <span class="star" aria-hidden="true">✦</span>
-      <span class="cta-label">Copy the full skill</span>
+      <span class="cta-label">{ctaLabel}</span>
     </button>
     <span class="hint">then save as <code>{savePath}</code></span>
   </div>

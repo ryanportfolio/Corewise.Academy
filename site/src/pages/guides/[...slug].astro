@@ -5,7 +5,7 @@ import Faq from '../../components/Faq.astro';
 import AudioPlayer from '../../components/AudioPlayer.astro';
 import SkillCopy from '../../components/SkillCopy.astro';
 import { trackBySlug, LEVELS } from '../../data/tracks';
-import { guideToAgentSkill } from '../../lib/agentSkill';
+import { agentArtifactFor } from '../../data/agentArtifacts';
 import audioManifest from '../../data/audioManifest.json';
 
 export async function getStaticPaths() {
@@ -28,7 +28,7 @@ const prereqs = d.prerequisites.map((p) => {
 const no = String(d.number).padStart(3, '0');
 const isoDate = d.lastUpdated.toISOString().slice(0, 10);
 const audio = (audioManifest as Record<string, { hash: string }>)[guide.id];
-const agentSkill = guideToAgentSkill(guide);
+const artifact = agentArtifactFor(guide.id);
 ---
 
 <Base
@@ -111,15 +111,18 @@ const agentSkill = guideToAgentSkill(guide);
 
     <Faq heading="FAQ" items={d.selfCheck} />
 
-    <section class="agent-copy">
-      <span class="panel-label">For your agent</span>
-      <p>
-        The whole guide, packed into one skill file your coding agent can read. Copy it below, or
-        point the agent at
-        <a href={`/guides/${guide.id}.md`}><code>corewise.academy/guides/{guide.id}.md</code></a>.
-      </p>
-      <SkillCopy skill={agentSkill} name={guide.id} savePath={`.claude/skills/${guide.id}/SKILL.md`} />
-    </section>
+    {artifact && !artifact.inBody && (
+      <section class="agent-copy">
+        <span class="panel-label">For your agent</span>
+        <p>
+          {artifact.kind === 'skill'
+            ? 'A skill file your coding agent can install. Copy it below, or point the agent at'
+            : 'A distilled, agent-ready version of this guide, not a skill. Copy it below, or point the agent at'}{' '}
+          <a href={`/guides/${guide.id}.md`}><code>corewise.academy/guides/{guide.id}.md</code></a>.
+        </p>
+        <SkillCopy skill={artifact.content} name={artifact.name} savePath={artifact.savePath} kind={artifact.kind} />
+      </section>
+    )}
 
     <section class="sources">
       <span class="panel-label">Sources</span>
