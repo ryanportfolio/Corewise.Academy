@@ -392,20 +392,14 @@ const faq = [
         </div>
         <p class="sheet-sub">QUESTIONS THE SET GETS ASKED</p>
       </header>
-      <div class="cols cols-portrait">
+      <div class="cols">
         <div class="main">
           <Faq heading="FAQ · about Ryan D. Allen" items={faq} open={true} />
         </div>
-        <aside class="rail rail-portrait">
-          <p class="rail-head">THE APPROVING AUTHORITY</p>
-          <div class="rail-rule"></div>
-          <div class="fig portrait-fig" id="fig-portrait">
-            <img src="/portrait-ryan-d-allen.jpg" alt="Photograph of Ryan D. Allen" width="250" height="250" />
-          </div>
-          <dl>
-            <dt>NAME</dt><dd>RYAN D. ALLEN</dd>
-            <dt>ROLE</dt><dd>THE HUMAN GATE ON EVERY MERGE</dd>
-          </dl>
+        <aside class="rail">
+          <div class="fig" id="fig-mergegate" aria-label="An endless queue of pull requests pausing at a human gate: approved ones merge onto main, declined ones fall away dashed"></div>
+          <p class="fig-cap"><span class="fig-no">FIG 1</span>The review queue, running live. Every change
+            pauses at the red gate until a human decides. Solid continues onto main; dashed is declined.</p>
         </aside>
       </div>
     </section>
@@ -596,26 +590,6 @@ const faq = [
     :global(#sec-a300.refusing .refuse-txt) { fill: var(--aw-verm); }
     :global(#sec-a300.refusing .refuse-path) { stroke: var(--aw-verm); }
     :global(#aw .post-live) { stroke: var(--aw-viri); stroke-width: 1.8; }
-
-    /* ---- portrait plate ---- */
-    .cols-portrait { grid-template-columns: minmax(0, 1fr) 280px; }
-    .rail-portrait dl { margin-top: var(--s-2); }
-    .portrait-fig { position: relative; aspect-ratio: 1; }
-    /* the full photograph, printed into the page: grayscale, feathered to
-       transparent at the edges so it sits on the paper with no hard rectangle */
-    .portrait-fig img {
-      width: 100%; height: 100%; object-fit: cover; display: block;
-      filter: grayscale(1) contrast(1.05);
-      mix-blend-mode: multiply;
-      -webkit-mask-image: radial-gradient(ellipse 74% 80% at 50% 44%, #000 52%, transparent 76%);
-      mask-image: radial-gradient(ellipse 74% 80% at 50% 44%, #000 52%, transparent 76%);
-    }
-    /* night: multiply would sink the print into the slate; show it plainly,
-       slightly dimmed so it sits with the page instead of glowing */
-    :global([data-theme='night']) .portrait-fig img {
-      mix-blend-mode: normal; opacity: 0.92;
-      filter: grayscale(1) contrast(1.08) brightness(0.88);
-    }
 
     /* ---- revisions table ---- */
     .rev { border-collapse: collapse; font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.06em; }

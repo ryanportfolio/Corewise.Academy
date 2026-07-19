@@ -815,6 +815,138 @@ function initPixelswarm(host) {
   }
 }
 
+/* ------------------------------------------------------- merge gate ------ */
+/* The review queue as a perpetual machine. Changes descend the claude/*
+   branch, pause at the one red gate, and a decision happens: approved work
+   arcs onto main and rides it down; declined work falls away dashed. The
+   line law is the whole drawing: solid = shipped, dashed = killed,
+   vermilion = a human decided. Decisions come from a seeded sequence, so
+   the machine is deterministic like every other figure in the set. */
+function initMergeGate(host) {
+  const w = 240, h = 380, bx = 70, mx = 170, gy = 218;
+  const mergeY = gy + 52;
+  const svg = svgRoot(host, w, h, true);
+  // rails: branch is graphite construction; below the gate it is the
+  // discard path and goes dashed. main is carbon and runs the full sheet.
+  el('line', { x1: mx, y1: 14, x2: mx, y2: h - 24, class: 'st-carbon', 'data-conv': 'solid' }, svg);
+  el('line', { x1: bx, y1: 14, x2: bx, y2: gy - 10, class: 'st-graphite' }, svg);
+  el('line', { x1: bx, y1: gy + 10, x2: bx, y2: h - 52, class: 'st-graphite', 'stroke-dasharray': DASHED, 'data-conv': 'dashed' }, svg);
+  el('path', { d: `M${bx} ${fmt(gy + 4)} C ${bx} ${fmt(gy + 40)}, ${mx} ${fmt(gy + 12)}, ${mx} ${fmt(mergeY)}`, class: 'st-faint', fill: 'none' }, svg);
+  el('text', { x: bx, y: 8, class: 'annf', 'text-anchor': 'middle' }, svg).textContent = 'claude/*';
+  el('text', { x: mx, y: 8, class: 'annf', 'text-anchor': 'middle' }, svg).textContent = 'main';
+  // the gate: two posts astride the branch, a beam that closes to decide
+  el('line', { x1: bx - 14, y1: gy - 8, x2: bx - 14, y2: gy + 8, class: 'st-human', 'stroke-width': 1.3 }, svg);
+  el('line', { x1: bx + 14, y1: gy - 8, x2: bx + 14, y2: gy + 8, class: 'st-human', 'stroke-width': 1.3 }, svg);
+  const beam = el('line', { x1: bx - 14, y1: gy, x2: bx + 14, y2: gy, class: 'st-human', 'stroke-width': 1.4 }, svg);
+  el('text', { x: bx - 22, y: gy + 3.5, class: 'annf ann-human', 'text-anchor': 'end' }, svg).textContent = 'HUMAN GATE';
+  const pulse = el('circle', { cx: mx, cy: mergeY, r: 3, class: 'st-key', fill: 'none' }, svg);
+  pulse.style.opacity = '0';
+  const mergedTxt = el('text', { x: mx, y: h - 8, class: 'annf', 'text-anchor': 'middle' }, svg);
+  const declinedTxt = el('text', { x: bx, y: h - 36, class: 'annf dim', 'text-anchor': 'middle' }, svg);
+
+  if (reduced) {
+    beam.style.opacity = '1';
+    el('rect', { x: bx - 8, y: gy - 16, width: 16, height: 10, class: 'nd' }, svg);
+    el('rect', { x: mx - 8, y: mergeY + 18, width: 16, height: 10, class: 'nd' }, svg);
+    const dashed = el('rect', { x: bx - 8, y: gy + 44, width: 16, height: 10, class: 'nd', 'stroke-dasharray': '3,2' }, svg);
+    dashed.style.opacity = '0.5';
+    mergedTxt.textContent = 'MERGED · SOLID';
+    declinedTxt.textContent = 'DECLINED · DASHED';
+    return;
+  }
+
+  // seeded decision sequence: deterministic, roughly one decline in four
+  const rand = rng(20260718);
+  const verdicts = [...Array(64)].map(() => rand() < 0.26);
+  let spawned = 0, merged = 0, declined = 0, pulseAge = 1;
+  mergedTxt.textContent = 'MERGED 00';
+  declinedTxt.textContent = 'DECLINED 00';
+  const pad = (n) => String(Math.min(n, 99)).padStart(2, '0');
+  const ease = (k) => k * k * (3 - 2 * k);
+  // one lifecycle: descend 0..1.35s, held at the gate to 2.05s, exit to 3.0s
+  const DESCEND = 1.35, HOLD = 2.05, DONE = 3.0, SPAWN_EVERY = 2.2;
+  const pool = [...Array(3)].map(() => {
+    const r = el('rect', { width: 16, height: 10, rx: 1, class: 'nd' }, svg);
+    r.style.opacity = '0';
+    return { r, age: -1, declinedRun: false };
+  });
+  let sinceSpawn = SPAWN_EVERY; // spawn immediately on first visible frame
+  const place = (p) => {
+    const { r, age } = p;
+    if (age < 0) { r.style.opacity = '0'; return; }
+    let x = bx, y, op = 1;
+    if (age <= DESCEND) {
+      y = -6 + ease(age / DESCEND) * (gy - 16 - -6);
+    } else if (age <= HOLD) {
+      y = gy - 16;
+    } else {
+      const k = ease(Math.min((age - HOLD) / (DONE - HOLD), 1));
+      if (p.declinedRun) {
+        y = gy - 16 + k * 120;
+        op = 1 - Math.max(0, (k - 0.55) / 0.45);
+      } else if (k < 0.55) {
+        const t = k / 0.55; // along the merge curve, bezier in x and y
+        const u = 1 - t;
+        x = u * u * u * bx + 3 * u * u * t * bx + 3 * u * t * t * mx + t * t * t * mx;
+        y = u * u * u * (gy + 4) + 3 * u * u * t * (gy + 40) + 3 * u * t * t * (gy + 12) + t * t * t * mergeY - 5;
+      } else {
+        x = mx;
+        const t = (k - 0.55) / 0.45;
+        y = mergeY - 5 + t * 92;
+        op = 1 - Math.max(0, (t - 0.6) / 0.4);
+      }
+    }
+    r.setAttribute('x', fmt(x - 8));
+    r.setAttribute('y', fmt(y));
+    r.style.opacity = fmt(op);
+  };
+  let raf = null, last = null, visible = false;
+  const tick = (t) => {
+    raf = null;
+    if (!visible) { last = null; return; }
+    const dt = last == null ? 0 : Math.min((t - last) / 1000, 0.05);
+    last = t;
+    sinceSpawn += dt;
+    if (sinceSpawn >= SPAWN_EVERY) {
+      const free = pool.find((p) => p.age < 0);
+      if (free) {
+        sinceSpawn = 0;
+        free.age = 0;
+        free.declinedRun = verdicts[spawned % verdicts.length];
+        free.r.setAttribute('stroke-dasharray', '');
+        spawned++;
+      }
+    }
+    let holding = false;
+    for (const p of pool) {
+      if (p.age < 0) continue;
+      p.age += dt;
+      if (p.age > DESCEND && p.age <= HOLD) holding = true;
+      // the verdict lands the moment the beam lifts: killed work goes dashed
+      if (p.declinedRun && p.age > HOLD && !p.r.getAttribute('stroke-dasharray')) p.r.setAttribute('stroke-dasharray', '3,2');
+      if (p.age >= DONE) {
+        if (p.declinedRun) { declined++; declinedTxt.textContent = `DECLINED ${pad(declined)}`; }
+        else { merged++; mergedTxt.textContent = `MERGED ${pad(merged)}`; pulseAge = 0; }
+        p.age = -1;
+      }
+      place(p);
+    }
+    beam.style.opacity = fmt(Math.max(0, Math.min(1, holding ? beam._o = (beam._o ?? 0) + dt * 6 : beam._o = (beam._o ?? 0) - dt * 6)));
+    if (pulseAge < 1) {
+      pulseAge = Math.min(pulseAge + dt * 1.6, 1);
+      pulse.setAttribute('r', fmt(3 + pulseAge * 9));
+      pulse.style.opacity = fmt(0.7 * (1 - pulseAge));
+    }
+    raf = requestAnimationFrame(tick);
+  };
+  new IntersectionObserver((es) => {
+    es.forEach((e) => {
+      visible = e.isIntersecting;
+      if (visible && !raf) raf = requestAnimationFrame(tick);
+    });
+  }, { threshold: 0.25 }).observe(host);
+}
+
 /* ------------------------------------------------------- shared helpers -- */
 function onEnter(host, fn, threshold = 0.35) {
   new IntersectionObserver((es, io) => {
@@ -900,6 +1032,7 @@ export function boot() {
   gate('ptt', () => initPtt($('fig-ptt')));
   gate('githelp', () => initGithelp($('fig-githelp')));
   gate('pixel', () => initPixelswarm($('fig-pixelswarm')));
+  gate('mergegate', () => initMergeGate($('fig-mergegate')));
   gate('counters', () => initCounters());
   gate('furniture', () => initFurniture());
   gate('legend', () => initLegend());
