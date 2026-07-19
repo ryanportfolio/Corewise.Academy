@@ -1,0 +1,165 @@
+---
+title: Judge whether AI has original ideas
+description: 'Whether AI can have original ideas is a debate that keeps moving the goalposts. A way to judge it honestly: read the trend line, and see why learning to predict text can build real understanding.'
+track: foundations
+level: broad
+number: 21
+minutes: 7
+objectives:
+  - 'Diagnose the moving-goalpost trap in a claim that AI cannot "really" do something.'
+  - Explain why learning to predict text can encode a working model of the world, citing the interpretability evidence.
+  - Distinguish pre-training from post-training reinforcement learning and what each adds to a model's problem-solving.
+  - Evaluate a claim about AI capability by its trend line rather than an absolute standard.
+prerequisites: []
+sources:
+  - url: https://www.youtube.com/watch?v=Z7dH_Cxx75g
+    creator: Rational Animations
+    video: Can AI Come Up With Original Ideas?
+    timestamps: ['1:18', '1:44', '2:11', '3:33', '4:16', '4:25', '4:53', '5:22', '6:04', '6:24', '8:24', '9:36', '11:03', '11:46', '12:05']
+    watched: July 2026
+selfCheck:
+  - q: Why is "can AI have original ideas" so hard to settle?
+    a: Because "original" has no bright line. Every new idea is built on earlier ones, so originality is a matter of degree. That vagueness lets people move the goalposts. Each time a computer does the thing, the definition shifts so it no longer counts.
+  - q: The stochastic-parrots view says a language model only tracks which words follow which. What evidence complicates that, and what is the catch?
+    a: An Othello-trained network was found tracking the true board state, not just move statistics. Anthropic traced Claude chaining Dallas to Texas to Austin rather than recalling the fact whole, and grokking shows networks shifting from memorization to a general rule. The principle underneath is that predicting well rewards a real model of the world. The catch is that it is not automatic. A tiny transformer trained on planet paths failed to recover Newtonian gravity, though it may have been too small to grok it.
+  - q: What does "judge the trend line, not the goalpost" change in practice?
+    a: It stops you testing AI against an absolute standard that keeps sliding out of reach. Instead you compare what systems do now to what they did a few years ago and read the direction. A fast prime search, then Deep Blue's chess, then Aletheia's publishable mathematics is a rising line, whatever you decide to call the top of it.
+status: draft
+lastUpdated: 2026-07-19
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+
+<Chalk>the goalposts for "real thinking" have moved since 1843</Chalk>
+
+<p class="lede">
+In 1843, Ada Lovelace wrote the first published computer program, and in the same notes she asked
+whether a machine could ever originate an idea of its own. Her answer was no. A computer, she said,
+can only do what we already know how to order it to perform. The question never closed. What
+happened instead, at every step since, is that computers keep clearing the bar we set, and we
+quietly move the bar. This guide is a way to judge the question without moving the goalposts on
+yourself.
+</p>
+
+## <span class="sec-no">01</span>The line that keeps moving
+
+The trouble starts with the words. There is no bright line between an unoriginal thought and an
+original one. Every idea we call new is built on what came before, so originality is a matter of
+degree, not a switch that flips.
+
+The history of computing is a run of abilities that looked original until they arrived, then got
+reclassified as mere mechanism. In 1951 a Cambridge computer found the first known 79-digit prime.
+A new fact, but nobody called it a new idea. It was arithmetic run fast.
+
+In 1997 Deep Blue beat the world chess champion, playing moves no one had faced before. Original,
+except the method that found them, the pruning of bad lines, was hand-coded by people, so the credit
+went to the programmers. Genetic algorithms tell the same story. They have designed spacecraft
+antennae and computer hardware that exploit messy physical side effects a human engineer would never
+touch, yet the output gets waved off as instructions plus a little randomness.
+
+Notice the move. Each time the machine does the thing, the definition of the thing shifts so the
+machine no longer qualifies.
+
+<PullQuote
+  quote="It's natural for people to want to move the goalposts."
+  creator="Rational Animations"
+  video="Can AI Come Up With Original Ideas?"
+  href="https://www.youtube.com/watch?v=Z7dH_Cxx75g"
+  timestamp="11:46"
+/>
+
+## <span class="sec-no">02</span>When prediction understands
+
+When neural networks arrived, the critique got a name. In a 2021 paper, Emily Bender and three
+colleagues called large language models stochastic parrots: systems that stitch words into fluent
+sentences without grasping what any of it means.
+
+The evidence has not been kind to the strong form of that claim. In early 2023, researchers trained
+a network only on records of legal moves in the board game Othello, then probed its internals and
+found it tracking the actual state of the board, not just which moves tend to follow which. It had
+built a model of the game nobody handed it.
+
+In May 2025, Anthropic's interpretability team traced Claude 3.5 Haiku answering "the capital of the
+state containing Dallas is". It did not recall the fact whole. It chained two steps, that Dallas is
+in Texas and that Texas's capital is Austin, and combined them. A related effect called grokking
+shows networks that have already memorized their training data keep training until they switch over
+to a simpler, more general rule that actually captures the pattern.
+
+There is a reason to expect this. To predict well, it often helps to understand. Forecasting where a
+satellite goes is easier if you know the physics, and Einstein's general relativity let him predict
+Mercury's orbit better than anyone before. A system trained only to predict the next piece of data
+can, in principle, be pushed toward a real model of the world, because that model is what makes the
+predictions good.
+
+<PullQuote
+  quote="it could still learn facts about the world and how to reason with them."
+  creator="Rational Animations"
+  video="Can AI Come Up With Original Ideas?"
+  href="https://www.youtube.com/watch?v=Z7dH_Cxx75g"
+  timestamp="5:22"
+/>
+
+This is not guaranteed. A 2025 study trained a small transformer to predict planet trajectories,
+then found it stumbled when asked to compute the gravitational forces underneath, a sign it had
+memorized motions rather than learned Newton. But that model was at least a thousand times smaller
+than a frontier system, so it may simply have been too small to grok the physics. Understanding is a
+possible outcome of prediction training, not an automatic one.
+
+## <span class="sec-no">03</span>What post-training adds
+
+Today's models are not trained only to predict text. Training runs in two phases, and the models
+this plays out on are the current <a href="/guides/new-claude-lineup/">Claude lineup and its
+neighbors</a>. Pre-training is the predict-the-next-token phase, where the network reads enormous
+amounts of text and, in the process, absorbs the structure of the world that text describes.
+
+Then comes post-training, which includes reinforcement learning. Here the model is no longer
+rewarded for echoing human text. It is rewarded for reaching goals: being a helpful and honest
+assistant, writing code that runs, solving a hard math problem. The feedback can come from people
+(RLHF), from another model (verifying an answer is usually easier than producing one), or from a
+plain automated test, such as running the code and checking whether it works.
+
+That shift matters for our question. Once the reward is for solving the problem rather than parroting
+the corpus, original ideas start to pay off, because a genuinely new approach is often what solving
+the problem takes.
+
+## <span class="sec-no">04</span>Judge the trend line
+
+This is no longer only theory. A February 2026 system called Aletheia, built from three cooperating
+parts (one proposes solutions, one hunts for errors, one fixes them), worked through open
+mathematics problems and produced a result worth publishing, by carrying a tool from one subfield
+into a problem in another. Google's AlphaEvolve, which pairs a search program with models that
+suggest improvements to it, has also turned up publishable results. Physicists used GPT-5.2 to find
+a general formula for a case in particle physics, then had another model prove it.
+
+You can still hold the line that none of this matches the best human ideas, and today, you would be
+right. But that is the wrong comparison. The useful question is not whether AI has caught the top of
+human originality. It is which direction the line is moving. Aletheia's new mathematics sits a step
+above Deep Blue's chess, which sits a step above a fast search for primes.
+
+So watch the trajectory. Epoch AI's FrontierMath benchmark tests models on advanced problems, and in
+January 2026 they released FrontierMath: Open Problems, fourteen genuinely unsolved research
+questions. Most people can no longer tell the best models from a human in a five-minute chat. Turing
+saw this argument coming. He answered Lovelace in the same 1950 paper that introduced his imitation
+game. Compare what these systems do now to what they did three years ago, and the goalpost stops
+being the interesting object in the picture.
+
+<Exercise>
+1. Find a recent claim, yours or someone else's, of the shape "AI cannot really do X". Write down
+   the exact test it implies. Then check whether that same test would have disqualified something AI
+   could not do three years ago but can now.
+2. Probe the reasoning yourself. Ask an assistant a two-hop question whose two facts are each obscure
+   on their own (for example, the currency of the country whose capital hosted a particular event).
+   See whether it chains the steps or only answers when the whole fact is common.
+3. Pick one capability you care about. Write one sentence on where it was three years ago and where
+   it is now. Judge it by that trend line, not by the absolute standard you started with.
+</Exercise>
+
+## Further reading
+
+- [Rational Animations · Can AI Come Up With Original Ideas?](https://www.youtube.com/watch?v=Z7dH_Cxx75g), the source this guide synthesizes
+- [Anthropic · Tracing the thoughts of a large language model](https://www.anthropic.com/research/tracing-thoughts-language-model), the interpretability work behind the Dallas-to-Austin example
+- [Epoch AI · FrontierMath](https://epoch.ai/frontiermath), the benchmark tracking where the trend line is
+- [ACM · On the Dangers of Stochastic Parrots](https://dl.acm.org/doi/10.1145/3442188.3445922), the 2021 paper this guide argues with
+- [Wikipedia · Turing test](https://en.wikipedia.org/wiki/Turing_test), the imitation game and its history from Lovelace onward
