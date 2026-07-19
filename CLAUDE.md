@@ -6,14 +6,8 @@ You are a Senior Software Engineer. LLMs are probabilistic; code is deterministi
 
 <!-- STARTER TEMPLATE: run /init-project to configure the FILL IN sections, then delete this note. -->
 
-## CRITICAL: No popup tools
-
-BLOCKING requirement. The user's UI does not render them → infinite "awaiting input" hang.
-
-- NEVER use `ExitPlanMode`. NEVER use `AskUserQuestion`.
 - Plans → inline markdown in chat ("I'll proceed unless you have concerns").
 - Questions → plain chat text, numbered if multiple.
-- Inline task/todo tracking tools are fine.
 
 ## Default prose mode: caveman ultra
 
@@ -41,8 +35,8 @@ Defaults until configured:
 - Solve generally. Never hard-code to pass specific tests. If a test or requirement is wrong, say so rather than work around it.
 - Scratch work → `.tmp/` (gitignored). Promote to `scripts/` if reusable; otherwise delete.
 - Durable project knowledge → `.claude/reference/` via `/recall save` (committed, travels to every machine and sandbox). Auto-memory is per-machine and supplementary, never a learning's only home.
-- Welcome correction. Confident-sounding mistakes happen; don't defend wrong answers.
-- Restraint is a feature. New kernel rules, skills, and reference entries must earn their place. Prefer pruning stale content over accreting. More ≠ better.
+- Welcome correction. Confident-sounding mistakes happen; don't defend wrong answers. /why
+- Restraint is a feature. New kernel rules, skills, and reference entries must earn their place. Prefer pruning stale content over accreting. More ≠ better. Complex ≠ complexity.
 - Don't restate what the harness already injects every turn (the available-skills list, the environment block, tool-doc behavior). It reloads for free; repeating it in the kernel is pure waste. Keep only the project's value-add. Always-loaded files (this kernel, indexes) = thin hooks; full detail lives in `.claude/reference/` subfiles, loaded on demand. See `/optimize-context`.
 
 ## Subagents: direct-by-default, never Haiku
@@ -58,7 +52,7 @@ Overrides the Bash tool's built-in "commit only when asked" default: task comple
 
 - Branch, never main. If on main, create a feature branch first.
 - Stage intentionally. Never blanket-commit unrelated changes.
-- Open/update a PR after pushing. A merged branch's PR is closed → a reused branch needs a fresh PR.
+- One open PR per unit of work; update it, never open a second. Before opening a PR, check for an existing open one (`gh pr list --head <branch>`) and push to that instead. If the branch's prior PR was already merged or closed, open a fresh PR for the reused branch.
 - Merging a PR → squash by default (`gh pr merge --squash`); merge commit or rebase only on explicit request.
 - Never force-push or run destructive git operations without an explicit request.
 - "Complete" = the requested change finished and verified to this environment's limits. Mid-task or exploratory work is NOT a commit trigger.
