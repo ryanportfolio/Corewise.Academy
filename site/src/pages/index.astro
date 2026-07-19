@@ -429,8 +429,21 @@ const minis: Record<string, string> = {
       transition: background var(--dur) var(--ease);
       text-decoration: none;
       color: inherit;
+      position: relative;
     }
-    .track:hover { background: var(--accent-wash); }
+    /* Hover wash feathers out at the left and right edges instead of ending in a hard rectangle. */
+    .track::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent 0%, var(--accent-wash) 14%, var(--accent-wash) 86%, transparent 100%);
+      opacity: 0;
+      transition: opacity var(--dur) var(--ease);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .track > * { position: relative; z-index: 1; }
+    .track:hover::before { opacity: 1; }
     .track .num { font-family: var(--font-display); font-size: var(--text-xl); color: var(--accent-deep); }
     .track h3 { font-family: var(--font-display); font-size: var(--text-lg); font-weight: 400; }
     .track :global(.mini) { color: var(--accent-deep); opacity: 0.85; display: block; margin-top: 10px; }
