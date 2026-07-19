@@ -73,7 +73,7 @@ const artifact = agentArtifactFor(guide.id);
     <aside class="objectives">
       <span class="panel-label">After this guide, you can</span>
       <ul>
-        {d.objectives.map((o) => <li set:html={o.replace(/^(\w+)/, '<b>$1</b>')} />)}
+        {d.objectives.map((o) => <li set:html={o.replace(/^([\w-]+)/, '<b>$1</b>')} />)}
       </ul>
     </aside>
 
