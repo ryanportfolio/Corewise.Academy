@@ -83,6 +83,13 @@ Clear, to the point, plain words. Fewer words beat more words everywhere on the 
 - **No ten-dollar words.** If the editor has to look it up ("andragogy"), it does
   not ship. Everyday phrase first; a term of art only when it is the reader's own
   vocabulary, glossed at first use.
+- **Fancy words lose to plain ones** (editor ruling, 2026-07-18, from the
+  "Ancillary works" → "Works in progress" rename and the sitewide sweep that
+  followed). Latinate dress-ups (prohibition, corroborated, subsequent,
+  verbatim), insider terms (exfiltration, happy case, load-bearing as a
+  metaphor), and literary flourishes (disarmingly) get replaced with the plain
+  everyday phrase. The /plain-words skill holds the full trap list and the
+  sweep procedure.
 - **No jargon, no invented coinages** (editor ruling, 2026-07-18). A made-up
   label ("deliberation dial") or insider word ("colophon") is a defect even when
   the author finds it charming: the reader has to ask what it means, so it fails.
