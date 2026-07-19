@@ -1,0 +1,123 @@
+---
+title: Recheck your model choices each release
+description: 'When a new model family ships, treat your routing as expired. Re-measure which size and effort give the most score per dollar, spot the tier you can skip, and drop the speed modes that do not pay.'
+track: practice
+level: practitioner
+number: 22
+minutes: 6
+objectives:
+  - Re-measure the score-versus-cost frontier for a new model family before you trust your old routing.
+  - Detect a dominated tier, one a smaller size at higher effort beats on both score and price.
+  - Decide whether a fast mode is worth paying for from its cost-to-speed ratio.
+  - Audit standing config rules for the model and effort choices a release has made stale.
+prerequisites:
+  - slug: rent-the-model-own-the-method
+    note: Assumes you already keep a routing table of model, effort, and cost. This guide is how you maintain it across releases.
+sources:
+  - url: https://www.youtube.com/watch?v=etduwo9Lu3M
+    creator: Matthew Berman
+    video: You aren't using Codex like me...
+    timestamps: ['1:04', '2:05', '2:31', '5:05', '5:31']
+    watched: July 2026
+selfCheck:
+  - q: Why treat your routing as expired when a new model family ships?
+    a: Because the release moves the score-versus-cost curve and often changes the effort levels on offer. The model-and-effort pairing you tuned against the old curve may no longer sit on the efficient edge, so last month's choice is a guess until you re-measure.
+  - q: What is a dominated tier, and what do you do with it?
+    a: A size that another size beats on both score and price, for example a middle tier at high effort scoring below the smallest tier at its top effort while costing more. It never lands on the upper-left edge of the score-versus-cost plot, so you route nothing to it and skip it.
+  - q: A fast mode costs 2.5 times as much for 1.5 times the speed. When is it worth paying?
+    a: Only when a deadline is the binding constraint. The premium buys speed, not score, so with time to spare the slower run gives the same quality for less. Judge every speed mode by that cost-to-speed ratio, not by the label on it.
+status: published
+lastUpdated: 2026-07-19
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+
+<Chalk>a new model family turns last month's routing into a guess</Chalk>
+
+<p class="lede">
+When a new model family ships, treat your routing as expired. Which model you reach for, and how
+hard you let it think, were tuned against a score-versus-cost curve that just moved, and the rules
+you wrote against the old one are now guesses. This guide is a short habit for re-measuring at each
+release, and it extends the routing table in <a href="/guides/rent-the-model-own-the-method/">Rent
+the model, own the method</a>. The specifics come from Matthew Berman's notes after a thousand hours
+in one coding agent, with the product walkthrough left out.
+</p>
+
+## <span class="sec-no">01</span>Every release resets the map
+
+A model release is not only new weights. It is a new frontier: different scores at different prices,
+and often a different count of effort levels to choose from. The pairing you settled on last month,
+a given size at a given effort, may no longer sit on the efficient edge.
+
+So make re-measuring part of adopting any new family. Before you trust it with real work, run a
+handful of your own representative tasks across the sizes and effort levels, and note where score per
+dollar actually peaks. Vendor benchmarks tell you the shape of the curve. Your own tasks tell you the
+point on it.
+
+## <span class="sec-no">02</span>Bigger is not better per dollar
+
+The trap is assuming the sizes form a clean ladder, where more parameters always buy more capability.
+Once price is in the picture, they do not. In Berman's numbers for one recent family, the middle size
+at high effort scored below the smallest size at its top effort, and cost more doing it. A whole tier
+was dominated, so nothing routed to it.
+
+<PullQuote
+  quote="For your hardest problems, go with Soul. For everything else, go with Luna."
+  creator="Matthew Berman"
+  video="You aren't using Codex like me..."
+  href="https://www.youtube.com/watch?v=etduwo9Lu3M"
+  timestamp="2:05"
+/>
+
+That is the shape to look for. Plot score against cost, then pick the point that is highest and
+furthest left. A size that never lands on that upper-left edge is a size you can skip. <a
+href="/guides/rent-the-model-own-the-method/">Rent the model, own the method</a> makes the matching
+case for effort: a top model on low effort can land near the tier below on high, so the
+model-and-effort pairing, not the model name, is the unit you choose. When the pressure is a
+subscription cap rather than an invoice, <a href="/guides/stop-hitting-your-token-limit/">Stop
+hitting your token limit</a> turns the same choice into budget relief.
+
+## <span class="sec-no">03</span>Price the speed premium
+
+Speed modes deserve the same arithmetic. A fast variant that costs 2.5 times as much for 1.5 times
+the speed, the ratio Berman reports, is worth paying only when a deadline is the binding constraint.
+The premium buys speed, not score. When you have time to spare, the slower run is the cheaper way to
+the same answer.
+
+## <span class="sec-no">04</span>Sweep the stale rules
+
+Standing instructions pile up. The config files and skills that pin a model or an effort level, a
+rule that spins up a certain size on deploy, a skill that hard-codes the top model, were written
+against an older frontier and quietly outlive it. A rule that made sense two releases ago can route
+work to a size you would now skip.
+
+So when you re-measure, re-read. Have the agent list every place your setup pins a model or an
+effort, and check each line against the curve you just measured. This is the same reason <a
+href="/guides/firmware-not-folklore/">Every new repo starts with your lessons</a> treats standing
+rules as a layer you maintain, not one you set once.
+
+<PullQuote
+  quote="those get loaded very frequently into the context window of every agent."
+  creator="Matthew Berman"
+  video="You aren't using Codex like me..."
+  href="https://www.youtube.com/watch?v=etduwo9Lu3M"
+  timestamp="5:31"
+/>
+
+<Exercise>
+1. Take the model family you use most. Pick three representative tasks of different difficulty, and
+   run each across at least two sizes and two effort levels, recording score and cost for every run.
+2. From that grid, name any size that never sits on the upper-left edge of score against cost. That
+   is a tier you can drop from your routing.
+3. If the family has a fast mode, work out its cost-to-speed ratio from your runs. Write down the one
+   condition under which you would pay it, and put that line in your routing notes.
+</Exercise>
+
+## Further reading
+
+- [Matthew Berman · You aren't using Codex like me...](https://www.youtube.com/watch?v=etduwo9Lu3M), the field notes this habit is drawn from
+- [OpenAI · Codex documentation](https://developers.openai.com/codex/), the agent the source works in
+- [Anthropic · Claude models overview](https://docs.claude.com/en/docs/about-claude/models/overview), the tiers and effort levels a routing table scores
+- [Epoch AI · benchmarking hub](https://epoch.ai/benchmarks), independent score-versus-cost data to sanity-check a vendor's own curve
