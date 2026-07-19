@@ -20,7 +20,7 @@ selfCheck:
   - q: Where do the two vendors genuinely diverge, beyond a difference in wording?
     a: 'Coordinating tools. OpenAI Programmatic Tool Calling has the model write server-side code that calls tools, processes several results, and returns one small structured result, good for bounded filter/aggregate/validate work. Claude keeps the coordinating in the app''s own request loop or its code-execution tool. That is a real architectural split. Reasoning reuse diverges too: OpenAI carries encrypted reasoning across turns via previous_response_id plus reasoning.context, where Claude re-sends thinking blocks in the conversation history.'
   - q: OpenAI reports leaner prompts scoring 10-15% higher while cutting cost 33-67%. How much weight should that carry?
-    a: 'Read it as a rough direction worth checking. The numbers are self-reported internal tests with no methodology, task mix, or baseline disclosed, so you cannot check whether they transfer to your workload. Treat them as a reason to run the experiment yourself, not as a measured result to quote. The direction is corroborated by the other vendor moving the same way; the magnitude is not something you should bank on.'
+    a: 'Read it as a rough direction worth checking. The numbers are self-reported internal tests with no methodology, task mix, or baseline disclosed, so you cannot check whether they transfer to your workload. Treat them as a reason to run the experiment yourself, not as a measured result to quote. The direction is backed up by the other vendor moving the same way; the magnitude is not something you should bank on.'
 status: published
 lastUpdated: 2026-07-17
 ---

@@ -15,10 +15,10 @@ prerequisites:
     note: Covers how long the model thinks (choosing the model and effort level). This guide covers how many words it writes.
 sources: []
 selfCheck:
-  - q: Why is "compress wording, not meaning" the load-bearing rule, rather than a general instruction to be concise?
+  - q: Why is "compress wording, not meaning" the most important rule, rather than a general instruction to be concise?
     a: '"Be concise" hands the model one dial and lets it choose what to drop. Under pressure it drops qualifiers, caveats, and edge-case facts, which is meaning. A compression contract protects meaning and lets only the wording flex: articles, filler, hedging, restatements. The savings come out of redundancy, never out of substance.'
   - q: Which three situations force a compression mode back to plain prose, and what does each escape hatch prevent?
-    a: 'Security warnings, where a skimmed fragment under-communicates risk; irreversible-action confirmations, where the user must fully understand before something un-undoable runs; and multi-step sequences where dropped conjunctions make order ambiguous: "migrate table drop column backup first" reads two ways. Each escape hatch marks a place where the failure cost of compression exceeds its token savings.'
+    a: 'Security warnings, where a skimmed fragment under-communicates risk; irreversible-action confirmations, where the user must fully understand before something that cannot be undone runs; and multi-step sequences where dropped conjunctions make order ambiguous: "migrate table drop column backup first" reads two ways. Each escape hatch marks a place where the failure cost of compression exceeds its token savings.'
   - q: When does a saved token become a wasted one?
     a: When the reader has to ask again. Savings are measured at the conversation level, not the message level. A terse reply that triggers a clarification round-trip costs the original message plus the question plus the re-explanation, plus the context re-read on every turn of it. The tell is a user repeating a question or asking you to re-explain; the fix is routing that topic back to plain prose.
 status: published
@@ -78,7 +78,7 @@ A compression mode without escape hatches is a liability, so the contract names 
 must drop back to plain prose automatically. Security warnings: a skimmed fragment
 under-communicates risk. Confirmations before irreversible actions: the user must fully
 understand what is about to happen, at whatever token cost. Multi-step sequences where dropped
-connectives make order ambiguous: "migrate table drop column backup first" reads two ways, and
+connecting words make order ambiguous: "migrate table drop column backup first" reads two ways, and
 one of them loses data. And the moment a user asks for clarification, that topic has earned
 plain language.
 
@@ -86,7 +86,7 @@ Each escape hatch marks a spot where the failure cost of compression exceeds its
 is also how you audit the whole scheme. Token savings are real only at the conversation level:
 a terse reply that forces a clarification round-trip costs the original message plus the
 question plus the re-explanation, with the whole exchange re-read as context on every
-subsequent turn. That is more than plain wording would have cost once.
+turn after. That is more than plain wording would have cost once.
 
 You can tell you have over-compressed from the reply you get. A repeated question. A "what do you
 mean by". A request to re-explain. Treat those as meter readings, and route the topics that

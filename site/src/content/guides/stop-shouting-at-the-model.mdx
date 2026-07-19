@@ -59,8 +59,8 @@ lower the effort parameter as a fallback. That same effort parameter also contro
 which <a href="/guides/guardrails-for-long-runs/">Guardrails for hours-long agent runs</a>
 leans on to keep long runs sharp. These models also follow instructions literally. "Can
 you suggest some changes" gets you suggestions, not edits. If you want action by default, say so
-imperatively or install a `<default_to_action>` block. One clear autonomy statement beats
-repeating "ask first," a convergence <a href="/guides/one-prompting-playbook/">Claude and OpenAI, one prompting playbook</a> works through.
+as a command or install a `<default_to_action>` block. One clear autonomy statement beats
+repeating "ask first," a shared conclusion <a href="/guides/one-prompting-playbook/">Claude and OpenAI, one prompting playbook</a> works through.
 
 ## <span class="sec-no">02</span>The thinking settings changed
 
@@ -76,7 +76,7 @@ adaptive thinking reliably outperforms the old budgeted extended thinking, so th
 you were going to want anyway. The current lineup, and every 400 error it throws on migration,
 is catalogued in <a href="/guides/new-claude-lineup/">The new Claude lineup and what it breaks</a>.
 
-Assistant prefill is the other casualty. Starting with 4.6 models, a prefilled assistant response
+Assistant prefill is going away too. Starting with 4.6 models, a prefilled assistant response
 on the last turn returns a 400 error. Prefill did real work: constraining format, stripping
 preamble, resuming an interrupted response. Each job has a new home. For format constraints, use
 Structured Outputs. To stop preamble, put a "no preamble" instruction in the system prompt. To

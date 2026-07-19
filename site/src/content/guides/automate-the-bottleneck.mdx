@@ -73,7 +73,7 @@ covers where reliable ones come from.
 ## <span class="sec-no">02</span>The machine that reports to you
 
 If the interrogation reveals that *you* are the bottleneck (you dispatch every task, you chase
-every status), the fix is structural. A synchronous, top-down loop (you ask, it answers) caps the
+every status), the fix is structural. A back-and-forth, top-down loop (you ask, it answers) caps the
 system at the speed of your attention. The working alternative is bottom-up: Claude initiates,
 and you review what arrives. Every proactive system, human or machine, has the same four parts,
 and naming them for your own workflow is most of the design work:
@@ -96,7 +96,7 @@ wherever you already look every day.
 
 A receipt is the total at the bottom of a dinner bill. The trace is the line items: the full
 transcript of what the system actually did, step by step. Unwatched automations drift. Asked for the secret at an
-engineering workshop, Anthropic's applied-AI answer was disarmingly manual:
+engineering workshop, Anthropic's applied-AI answer was surprisingly manual:
 
 <PullQuote
   quote="By far and away the best approach … is just reading the traces by hand."
@@ -113,7 +113,7 @@ usually keep their conversation history, and anything you run elsewhere should w
 to a known location, ideally through one shared logging skill so the format can be changed in
 one place. Second, actually look at them, in whatever viewer makes that effortless. Third, the
 step that compounds, act on what you find: bring the trace back to Claude, point at the exact
-wrong turn, and have it amend the skill itself. That converts a one-time failure into a
+wrong turn, and have it fix the skill itself. That converts a one-time failure into a
 permanent repair, because the fix lands in the system rather than in the conversation. <a href="/guides/firmware-not-folklore/">Every new repo starts with your lessons</a> covers that habit.
 
 ## <span class="sec-no">04</span>Objectives, not tasks
@@ -149,7 +149,7 @@ paragraph asserting success.
 2. Design (on paper, before building anything) the four parts of a proactive system for it:
    trigger, worker, access, receipt. Make the receipt an explicit, countable claim.
 3. Build the smallest worker that could possibly run once, run it, and read the entire trace
-   line by line. Bring one wrong turn back to Claude and have it amend the skill so that class
+   line by line. Bring one wrong turn back to Claude and have it update the skill so that class
    of failure cannot recur.
 </Exercise>
 

@@ -80,7 +80,7 @@ loads its tool definitions into every conversation. Archive skills you never inv
 the descriptions of the ones you keep, because names and descriptions load at every session
 start. Cut CLAUDE.md hardest of all: it is re-read on every message, so a 4,000-token file taxes
 every exchange. Keep it to how Claude should work with your project, a couple hundred lines at
-most, with detail split into files loaded on demand. That thin-kernel discipline is the subject
+most, with detail split into files loaded on demand. That keep-it-thin habit is the subject
 of <a href="/guides/firmware-not-folklore/">Every new repo starts with your lessons</a>.
 
 Output is the same bill from the other side: every word the model says back to you is billed and
@@ -129,7 +129,7 @@ that need judgment.
 
 ## <span class="sec-no">04</span>Riskier fixes, priced honestly
 
-Past the habits and the routing sit heavier interventions, each with a real trade-off attached.
+Past the habits and the routing sit heavier fixes, each with a real trade-off attached.
 Input compression tools such as RTK sit between your commands and the model, deterministically
 stripping boilerplate and repetition from tool output before Claude reads it; the project claims
 60 to 90 percent savings on the text it filters, and the trade is another moving part in your
@@ -141,7 +141,7 @@ exploits may not survive.
 Further out: routing execution-heavy work to a second harness with its own budget, swapping
 Claude Code's backing model for a cheaper provider via environment variables, or running an open
 model on your own hardware. Each buys capacity and sells something you may care about, whether
-model quality, data governance, or your evenings spent maintaining a server. The honest reading
+model quality, who controls your data, or your evenings spent maintaining a server. The honest reading
 of these options is an ordering: exhaust the free fixes in Sections 02 and 03 first, because
 they attack the same two variables without adding a single new failure mode.
 
