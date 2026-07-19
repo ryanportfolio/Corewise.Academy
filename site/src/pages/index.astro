@@ -58,7 +58,6 @@ const minis: Record<string, string> = {
       Stars <span class="v" data-star-count>·</span> · Links <span class="v" data-link-count>·</span><br />Sky · drifting
     </p>
     <p class="corner bl">Vol. I · MMXXVI<br /><span class="v">Open to all</span></p>
-    <p class="corner br">The sky is interactive<br /><span class="v">Move your cursor through it</span></p>
     <div class="hero-copy">
       <h1 class="display">
         <span class="hl"><span>Working with</span></span>
@@ -415,7 +414,6 @@ const minis: Record<string, string> = {
     .corner.tl { top: 1.75rem; left: var(--s-4); }
     .corner.tr { top: 1.75rem; right: var(--s-4); text-align: right; }
     .corner.bl { bottom: var(--s-3); left: var(--s-4); }
-    .corner.br { bottom: var(--s-3); right: var(--s-4); text-align: right; }
     .corner .v { color: var(--accent-deep); }
     .hero-scroll {
       position: absolute;
@@ -543,7 +541,7 @@ const minis: Record<string, string> = {
       .charted { grid-template-columns: 1fr; }
       .ledger-grid { grid-template-columns: 1fr; }
       .enrol-inner { grid-template-columns: 1fr; }
-      .corner.tr, .corner.br { display: none; }
+      .corner.tr { display: none; }
       .shelf { font-size: 10px; letter-spacing: 0.03em; }
       .hero-ctas { flex-wrap: wrap; }
     }
