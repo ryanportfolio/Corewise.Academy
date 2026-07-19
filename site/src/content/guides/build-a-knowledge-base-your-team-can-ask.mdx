@@ -1,0 +1,135 @@
+---
+title: Build a knowledge base your team can ask
+description: 'Retrieval augmented generation in plain terms: put the relevant facts in front of the question. How to feed the chat, docs, and code your team already uses into a knowledge base anyone can ask, and why weighting beats volume.'
+track: building
+level: broad
+number: 23
+minutes: 6
+objectives:
+  - 'Restate what retrieval adds in one plain sentence: the relevant facts, placed in front of the question.'
+  - Identify which of your team's tools to feed a knowledge base first.
+  - Explain why weighting recent and trusted sources beats raw document count.
+  - Build a working pipeline for one source with a coding agent.
+prerequisites: []
+sources:
+  - url: https://www.youtube.com/watch?v=eCx3SSCcISo
+    creator: Nick Saraev
+    video: Cerebras Just Killed Second Brains
+    timestamps: ['2:07', '4:37', '7:55', '9:55', '12:00', '14:51', '20:03', '22:05']
+    watched: July 2026
+selfCheck:
+  - q: In one sentence, what does retrieval add to a model's answer?
+    a: It places the relevant facts directly in front of the question, so the model answers from those facts instead of guessing across everything it half remembers.
+  - q: Why weight recent, trusted items above the rest?
+    a: A knowledge base that skips this treats every document the same, so a three year old note can outrank a founder's message from a minute ago. Weighting by recency and source pushes the answer toward what is current and trustworthy.
+  - q: What matters more than the number of documents you store?
+    a: How well the knowledge base retrieves the few most relevant ones. Nick kept about 640 documents and a large company keeps hundreds of thousands, yet the better system is the one that pulls the highest quality match, not the biggest pile.
+status: draft
+lastUpdated: 2026-07-19
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+
+<Chalk>the whole company's answers, one question away</Chalk>
+
+<p class="lede">
+The hype version of a company knowledge base is a glowing 3D brain floating on
+screen. The useful version has no picture at all. It is a system that reads
+everywhere your team already writes, the chat threads, the wiki, the code, and lets
+anyone ask a plain question and get an answer drawn from all of it. Nick Saraev
+walked through one that a chip company, Cerebras, runs internally, fielding about
+15,000 questions a day. The method under it is worth stealing.
+</p>
+
+## <span class="sec-no">01</span>Put the answer up front
+
+Start with how retrieval works, because everything else serves it. Ask a model "how
+tall is Nick" and it has to guess which Nick across everything it has ever read. Put
+one line first, "Nick is 6 foot 2", then ask the same question, and the guess
+collapses to the fact.
+
+That prepended line is all retrieval augmented generation (RAG) is: fetch the facts
+that bear on the question and place them in front of it. The model cannot tell a
+fetched fact from its own training, so it just answers from what is in front of it.
+The whole game is finding the right facts to put there, and a knowledge base is the
+machine that finds them. This is the automatic version of what you do by hand when
+you <a href="/guides/brief-the-model/">Brief the model like a brilliant new hire</a>.
+
+## <span class="sec-no">02</span>Gather what your team knows
+
+A knowledge base is only as good as what you feed it, so feed it where the knowledge
+already lives. Every team has a few such places: the chat where people talk (Slack,
+Discord, email), the wiki of checklists and onboarding pages, the code and its
+history, and any database of numbers you track.
+
+Point the knowledge base at each one and let it read continuously, so a question
+asked this afternoon can reach a message sent this morning. You do not need every
+source on day one. One is enough to start.
+
+## <span class="sec-no">03</span>Store more than the raw text
+
+Dumping the raw text in is where most knowledge bases stay mediocre. The good ones
+label each item as they store it. A chat thread does not go in as a wall of text: a
+model reads it first and attaches who spoke, when, what they were asking, and how it
+resolved, the way a photo carries the time and place it was taken.
+
+Those labels let the knowledge base weight what it finds. A founder's message from a
+minute ago should count for more than a junior's note from three years back, and a
+question about last week's seminar should surface last week's, not all of them
+equally. Weighting by recency and source is the difference the hype visualizations
+hide.
+
+It is also why document count is a weak measure of quality. Nick's knowledge base
+held about 640 items and Cerebras holds hundreds of thousands, yet the one that
+answers well is the one that pulls the few most relevant items.
+
+<PullQuote
+  quote="how effectively can you retrieve the highest quality ones, the most relevant ones"
+  creator="Nick Saraev"
+  video="Cerebras Just Killed Second Brains"
+  href="https://www.youtube.com/watch?v=eCx3SSCcISo"
+  timestamp="22:05"
+/>
+
+## <span class="sec-no">04</span>Build it with a coding agent
+
+You do not need a specialist to wire this up. Nick built his by pasting the
+company's write-up into a coding agent and asking it to build the ingestion
+pipelines, the plumbing that pulls data in, for his Slack, email, and GitHub. The
+agent logs into each account and stands up the connection. When it needs a
+credential, it tells you the steps: open the API, do the one-time login. Budget five
+to ten minutes per source.
+
+You supply the understanding of how the data should flow; the agent supplies the
+wiring. His finished knowledge base, asked the same twenty questions with and
+without it, answered seventeen with evidence and zero without. A knowledge base is
+the team-sized version of what one agent gets when you <a
+href="/guides/give-your-agent-a-memory/">Give your agent a memory</a>: recall that
+outlives the session.
+
+<PullQuote
+  quote="a system that allows us to store information before the question"
+  creator="Nick Saraev"
+  video="Cerebras Just Killed Second Brains"
+  href="https://www.youtube.com/watch?v=eCx3SSCcISo"
+  timestamp="4:37"
+/>
+
+<Exercise>
+1. Pick one source your team already uses: a Slack or Discord channel, an email
+   inbox, or a single GitHub repo.
+2. Open a coding agent and describe the source and what you want: pull each item,
+   label it with who, when, and why, and store it so you can search by meaning.
+3. Ask the agent how to connect that source (the API and the one-time login), then
+   let it build the pipeline. Give it five to ten minutes.
+4. Run the same handful of real questions with and without the knowledge base, and
+   count how many it answers with evidence.
+</Exercise>
+
+## Further reading
+
+- [Nick Saraev · Cerebras Just Killed Second Brains](https://www.youtube.com/watch?v=eCx3SSCcISo), the walkthrough this guide is drawn from
+- [Brief the model like a brilliant new hire](/guides/brief-the-model/), the by-hand version of putting the right context in front of the question
+- [Give your agent a memory](/guides/give-your-agent-a-memory/), the single-agent cousin of a team knowledge base
