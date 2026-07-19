@@ -60,7 +60,6 @@ const minis: Record<string, string> = {
     <p class="corner bl">Vol. I · MMXXVI<br /><span class="v">Open to all</span></p>
     <p class="corner br">The sky is interactive<br /><span class="v">Move your cursor through it</span></p>
     <div class="hero-copy">
-      <p class="mono-label hero-kicker">free guides</p>
       <h1 class="display">
         <span class="hl"><span>Working with</span></span>
         <span class="hl"
@@ -302,7 +301,6 @@ const minis: Record<string, string> = {
       pointer-events: none;
     }
     .hero-copy > :global(*) { pointer-events: auto; width: fit-content; }
-    .hero-kicker { color: var(--accent-deep); margin-bottom: var(--s-2); }
     .hero h1 {
       font-family: var(--font-display);
       font-size: clamp(2.6rem, 7vw, 4.1rem);
@@ -379,7 +377,7 @@ const minis: Record<string, string> = {
       .hero h1 .ai { animation: rise 0.9s var(--ease) forwards; }
       .hero h1 .ai .cst { animation: none; opacity: 0.85; }
     }
-    .hero .dek, .hero-ctas, .hero-kicker { animation: fadein 1s var(--ease) both; }
+    .hero .dek, .hero-ctas { animation: fadein 1s var(--ease) both; }
     .hero .dek { animation-delay: 0.35s; }
     .hero-ctas { animation-delay: 0.5s; }
     @keyframes fadein { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
