@@ -28,7 +28,7 @@ which video to ingest.
   separators use " · ". `npm run build` fails on any em dash in `site/src`
   (`scripts/no-em-dash.mjs`), so a violation cannot ship, but write clean from the
   start instead of leaning on the gate. Sweep the finished draft for the character
-  before Step 6.
+  during the Step 6 writing pass.
 - **Titles are plain and specific, never cryptic.** The title says what the reader
   gets, in plain words, before any wordplay. Test: a reader who has not opened the
   guide can say what it is about from the title alone; if decoding requires the
@@ -36,10 +36,15 @@ which video to ingest.
   works; "The firmament moved" fails). No terms of art carrying a title. The
   description is a concrete promise, not atmosphere. Slug matches the title. Full
   ruling in `.claude/reference/copy-rules.md`.
-- **Plain language, fewer words.** Say what it is, not what it is not (no
-  "Synthesis, not summary" headings). Lead with the point; cut wind-ups. No
-  ten-dollar words ("andragogy"), no talking down to the reader, theme never
-  over clarity. Full ruling in `.claude/reference/copy-rules.md`.
+- **Plain language, fewer words.** Every sentence must land for a smart reader who
+  has never worked with AI (the stranger test). Compressed insider shorthand is the
+  usual failure: "board state", "move statistics", "attribution graph", "frontier
+  model", "token". Describe the observable thing first, then name the concept. Say
+  what it is, not what it is not (no "Synthesis, not summary" headings, no negation
+  pivots). Lead with the point; cut wind-ups. No ten-dollar words, no invented
+  coinages, no talking down, theme never over clarity. Step 6 runs the full pass;
+  canonical ruling in `.claude/reference/copy-rules.md`, deeper procedures in the
+  plain-words, stranger-test, humanizer, and purposeful-writing skills.
 - **Cross-link every real overlap.** When the draft touches a topic another guide
   covers, link that guide inline at the mention, title as link text. Run a
   cross-link check against the catalogue before Step 6.
@@ -121,12 +126,54 @@ section the guide by source. The reader should see one lesson, not a playlist.
 Add a row to `content/sources.md` for each ingested video: date watched, creator /
 channel, video title + link, and a one-line note on why it qualified.
 
-## Step 6: Verify the build
+## Step 6: Writing review pass
+
+Run a full editorial pass on the finished draft before the build. The build gate only
+catches em dashes and heading length; every other writing defect is caught here or
+ships. This is the step that stops jargon reaching the live site. Apply the canonical
+rules in `.claude/reference/copy-rules.md`, and for anything you are unsure of, run the
+matching repo skill: plain-words, stranger-test, humanizer, purposeful-writing.
+
+Go through the draft in this order:
+
+1. **Stranger test (the one that bites most).** Read each sentence as a smart reader
+   who has never worked with AI. Any word carrying an insider meaning ("board state",
+   "move statistics", "attribution graph", "frontier model", "token", "grokking") gets
+   rewritten to describe the observable thing first, then name the concept. A real
+   example that shipped and was rejected: "An Othello-trained network was found tracking
+   the true board state, not just move statistics" reads as noise to an outsider. It
+   became: the model was fed only lists of game moves, never shown a board, yet built
+   its own picture of where every piece sat.
+2. **Plain words.** Latinate dress-ups and ten-dollar words lose to the everyday phrase
+   (utilize becomes use, subsequent becomes later, prohibition becomes ban). No invented
+   coinages; gloss a genuine term of art at first use or replace it.
+3. **Negation pivots.** Delete any sentence that denies something nobody claimed before
+   pivoting to the point ("not just X, it's Y", "the real question isn't X"), including
+   the split-across-two-sentences form. Lead with the positive claim.
+4. **AI tells.** Cut delve, robust, seamless, crucial, pivotal, testament, showcase,
+   leverage, "serves as", rule-of-three lists, "from X to Y" fake ranges, Title Case
+   Headings, sycophantic openers, trailing summaries.
+5. **Lead with the point.** If a paragraph's payoff could open it, move it up and cut
+   the wind-up.
+6. **No walls of text.** Paragraphs run 1 to 4 sentences; break at each new idea.
+7. **Flourish and mechanism.** Cut aphorism capstones, dramatic justifications of
+   self-evident rules, and self-praise. When a thing has stages, say what the end state
+   buys instead of touring every stop. One example per claim, only when the claim is
+   unclear without it.
+8. **Death metaphors.** No "die", "dies", "killed" for removal; say the specific verb
+   (cut, retired, cancelled, gone).
+9. **Word-tic sweep.** Count repeats of abstract nouns and adjectives ("real", "true",
+   "trend") and rewrite the sentences that lean on them into concrete statements.
+10. **Headings.** No trailing periods, plain and specific, within the length caps.
+
+If a passage cannot be made clear for a first-time reader, cut it. Clarity beats coverage.
+
+## Step 7: Verify the build
 
 Run `npm run build` in `site/`. It must pass — the content schema will reject a guide
 with missing or malformed frontmatter. Fix any error before opening the PR.
 
-## Step 7: Open the pull request
+## Step 8: Open the pull request
 
 Branch (never commit to `main`), commit the new/updated MDX plus the registry change,
 push, and open a PR describing: which video(s), the placement decision and why, and
@@ -143,6 +190,10 @@ review and that merging is publishing.
 - Don't ship a cryptic title. Plain and specific first; wordplay only on top.
 - Don't use em dashes anywhere, and don't substitute lookalikes (en dash, double
   hyphen). Plain punctuation only; the build gate will reject the PR otherwise.
-- Don't skip the registry row or the build check.
+- Don't skip the registry row, the writing pass, or the build check.
+- Don't ship compressed insider shorthand ("board state", "move statistics"). An
+  outsider must get every sentence on first read; if not, rewrite or cut it.
+- Don't use negation pivots ("not just X, it's Y") or AI-tell words (delve, robust,
+  seamless, crucial, leverage). The Step 6 writing pass exists to catch them.
 - Don't reshape the guide anatomy or invent new section types — consistency across
   guides is the point.
