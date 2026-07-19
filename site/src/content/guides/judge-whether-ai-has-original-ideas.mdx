@@ -7,7 +7,7 @@ number: 21
 minutes: 7
 objectives:
   - 'Diagnose the moving-goalpost trap in a claim that AI cannot "really" do something.'
-  - Explain why learning to predict text can encode a working model of the world, citing the interpretability evidence.
+  - Explain why learning to predict text can encode a working model of the world, citing the evidence that models build one internally.
   - Distinguish pre-training from post-training reinforcement learning and what each adds to a model's problem-solving.
   - Evaluate a claim about AI capability by its trend line rather than an absolute standard.
 prerequisites: []
@@ -21,7 +21,7 @@ selfCheck:
   - q: Why is "can AI have original ideas" so hard to settle?
     a: Because "original" has no bright line. Every new idea is built on earlier ones, so originality is a matter of degree. That vagueness lets people move the goalposts. Each time a computer does the thing, the definition shifts so it no longer counts.
   - q: The stochastic-parrots view says a language model only tracks which words follow which. What evidence complicates that, and what is the catch?
-    a: An Othello-trained network was found tracking the true board state, not just move statistics. Anthropic traced Claude chaining Dallas to Texas to Austin rather than recalling the fact whole, and grokking shows networks shifting from memorization to a general rule. The principle underneath is that predicting well rewards a real model of the world. The catch is that it is not automatic. A tiny transformer trained on planet paths failed to recover Newtonian gravity, though it may have been too small to grok it.
+    a: An Othello-trained network was found tracking the true board state, not just move statistics. Anthropic traced Claude chaining Dallas to Texas to Austin rather than recalling the fact whole, and grokking shows networks shifting from memorization to a general rule. The principle underneath is that predicting well rewards a model of the world. The catch is that it is not automatic. A tiny transformer trained on planet paths failed to recover Newtonian gravity, though it may have been too small to grok it.
   - q: What does "judge the trend line, not the goalpost" change in practice?
     a: It stops you testing AI against an absolute standard that keeps sliding out of reach. Instead you compare what systems do now to what they did a few years ago and read the direction. A fast prime search, then Deep Blue's chess, then Aletheia's publishable mathematics is a rising line, whatever you decide to call the top of it.
 status: draft
@@ -54,10 +54,12 @@ reclassified as mere mechanism. In 1951 a Cambridge computer found the first kno
 A new fact, but nobody called it a new idea. It was arithmetic run fast.
 
 In 1997 Deep Blue beat the world chess champion, playing moves no one had faced before. Original,
-except the method that found them, the pruning of bad lines, was hand-coded by people, so the credit
-went to the programmers. Genetic algorithms tell the same story. They have designed spacecraft
-antennae and computer hardware that exploit messy physical side effects a human engineer would never
-touch, yet the output gets waved off as instructions plus a little randomness.
+except the method that found them, the hand-tuned rules for ignoring bad moves, came from people, so
+the credit went to the programmers.
+
+Genetic algorithms tell the same story. They have designed spacecraft antennae and computer hardware
+that exploit messy physical side effects a human engineer would never touch, yet the output gets
+waved off as instructions plus a little randomness.
 
 Notice the move. Each time the machine does the thing, the definition of the thing shifts so the
 machine no longer qualifies.
@@ -82,15 +84,15 @@ found it tracking the actual state of the board, not just which moves tend to fo
 built a model of the game nobody handed it.
 
 In May 2025, Anthropic's interpretability team traced Claude 3.5 Haiku answering "the capital of the
-state containing Dallas is". It did not recall the fact whole. It chained two steps, that Dallas is
-in Texas and that Texas's capital is Austin, and combined them. A related effect called grokking
+state containing Dallas is". It chained two steps and combined them, that Dallas is in Texas and that
+Texas's capital is Austin, rather than recalling the whole fact from memory. A related effect called grokking
 shows networks that have already memorized their training data keep training until they switch over
 to a simpler, more general rule that actually captures the pattern.
 
 There is a reason to expect this. To predict well, it often helps to understand. Forecasting where a
 satellite goes is easier if you know the physics, and Einstein's general relativity let him predict
 Mercury's orbit better than anyone before. A system trained only to predict the next piece of data
-can, in principle, be pushed toward a real model of the world, because that model is what makes the
+can, in principle, be pushed toward a model of the world, because a good model is what makes the
 predictions good.
 
 <PullQuote
@@ -109,20 +111,20 @@ possible outcome of prediction training, not an automatic one.
 
 ## <span class="sec-no">03</span>What post-training adds
 
-Today's models are not trained only to predict text. Training runs in two phases, and the models
-this plays out on are the current <a href="/guides/new-claude-lineup/">Claude lineup and its
-neighbors</a>. Pre-training is the predict-the-next-token phase, where the network reads enormous
-amounts of text and, in the process, absorbs the structure of the world that text describes.
+Today's models learn in two phases, not only by predicting text. The same two phases sit behind the
+<a href="/guides/new-claude-lineup/">current Claude lineup</a> and other models like it. Pre-training
+comes first: the network reads enormous amounts of text and, in the process, absorbs the structure of
+the world that text describes.
 
-Then comes post-training, which includes reinforcement learning. Here the model is no longer
-rewarded for echoing human text. It is rewarded for reaching goals: being a helpful and honest
-assistant, writing code that runs, solving a hard math problem. The feedback can come from people
-(RLHF), from another model (verifying an answer is usually easier than producing one), or from a
-plain automated test, such as running the code and checking whether it works.
+Then comes post-training, which includes reinforcement learning. Here the model is rewarded for
+reaching goals rather than for echoing human text: being a helpful and honest assistant, writing code
+that runs, solving a hard math problem. The feedback can come from people (RLHF), from another model
+(verifying an answer is usually easier than producing one), or from a plain automated test, such as
+running the code and checking whether it works.
 
-That shift matters for our question. Once the reward is for solving the problem rather than parroting
-the corpus, original ideas start to pay off, because a genuinely new approach is often what solving
-the problem takes.
+That shift matters for our question. Once the reward is for solving the problem rather than repeating
+its training text, original ideas start to pay off, because a genuinely new approach is often what
+solving the problem takes.
 
 ## <span class="sec-no">04</span>Judge the trend line
 
@@ -134,16 +136,16 @@ suggest improvements to it, has also turned up publishable results. Physicists u
 a general formula for a case in particle physics, then had another model prove it.
 
 You can still hold the line that none of this matches the best human ideas, and today, you would be
-right. But that is the wrong comparison. The useful question is not whether AI has caught the top of
-human originality. It is which direction the line is moving. Aletheia's new mathematics sits a step
+right. But that is the wrong comparison. The useful question is which direction the line is moving,
+not whether AI has already caught the top of human originality. Aletheia's new mathematics sits a step
 above Deep Blue's chess, which sits a step above a fast search for primes.
 
 So watch the trajectory. Epoch AI's FrontierMath benchmark tests models on advanced problems, and in
 January 2026 they released FrontierMath: Open Problems, fourteen genuinely unsolved research
-questions. Most people can no longer tell the best models from a human in a five-minute chat. Turing
-saw this argument coming. He answered Lovelace in the same 1950 paper that introduced his imitation
-game. Compare what these systems do now to what they did three years ago, and the goalpost stops
-being the interesting object in the picture.
+questions. Most people can no longer tell the best models from a human in a five-minute chat.
+
+The debate is old: Turing answered Lovelace in the same 1950 paper that introduced his imitation
+game. Compare what these systems do now to what they did three years ago. The direction is the answer.
 
 <Exercise>
 1. Find a recent claim, yours or someone else's, of the shape "AI cannot really do X". Write down
