@@ -19,6 +19,8 @@ export const GET: APIRoute = async () => {
     `- [About the editor](${SITE_URL}/about/)`,
     `- [How guides get made](${SITE_URL}/how-its-built/)`,
     '',
+    `Every guide is also published as a plain-markdown skill file for agents: swap the guide URL's trailing slash for ".md" (for example ${SITE_URL}/guides/brief-the-model.md).`,
+    '',
     ...TRACKS.flatMap((t) => {
       const list = byTrack(t.slug);
       return list ? [`## ${t.name}`, '', `- [Layer page](${SITE_URL}/tracks/${t.slug}/): ${t.description}`, list, ''] : [];
