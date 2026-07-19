@@ -25,7 +25,9 @@ const faq = [
   },
 ];
 
-const latest = [...guides].sort((a, b) => +b.data.lastUpdated - +a.data.lastUpdated).slice(0, 3);
+const latest = [...guides]
+  .sort((a, b) => +b.data.lastUpdated - +a.data.lastUpdated || b.data.number - a.data.number)
+  .slice(0, 3);
 const count = (track: string, level: string) =>
   guides.filter((g) => g.data.track === track && g.data.level === level).length;
 const monthYear = (d: Date) =>
