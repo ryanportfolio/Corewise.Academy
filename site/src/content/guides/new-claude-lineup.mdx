@@ -63,8 +63,6 @@ thinking is always on and adaptive. On Fable 5 and Mythos 5 there is no other mo
 extended thinking (`thinking` type `enabled` with `budget_tokens`) returns a 400 error, and so
 does `thinking` type `disabled`. If your code sets a thinking
 budget, it stops working. Use the `effort` parameter or `max_tokens` instead.
-<a href="/guides/stop-shouting-at-the-model/">Stop shouting at the model</a> walks the full
-migration off budgets and prefill.
 
 Second, non-default sampling is gone. Passing a non-default `temperature`, `top_p`, or `top_k`
 returns a 400 error on Sonnet 5 and Opus 4.8. Any prompt that pinned
