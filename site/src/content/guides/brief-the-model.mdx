@@ -14,7 +14,7 @@ prerequisites: []
 sources: []
 selfCheck:
   - q: Why does "your output will be read aloud by a text-to-speech engine" beat "NEVER use ellipses" as an instruction?
-    a: 'The bare ban covers exactly one symbol. The motivation tells Claude the underlying goal, text that sounds right when spoken, so it also drops the emoji, the stray asterisks, and the table that would read as noise. State the why and the model generalizes the rule to cases you never enumerated.'
+    a: 'The bare ban covers exactly one symbol. The motivation tells Claude the underlying goal, text that sounds right when spoken, so it also drops the emoji, the stray asterisks, and the table that would read as noise. State the why and the model generalizes the rule to cases you never listed.'
   - q: In a 40k-token prompt with six documents and a question, where does the question go, and why?
     a: 'At the very end, after all six documents. Anthropic''s tests on complex multidocument inputs showed end-placed queries improved response quality by up to 30 percent. Put the longform material at the top, wrap each document with its own source tag, and close with the instruction.'
   - q: You typed "Can you suggest some changes to this function?" and Claude described edits instead of making them. What went wrong?
