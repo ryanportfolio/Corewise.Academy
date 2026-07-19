@@ -1,6 +1,6 @@
 ---
 name: vet-third-party-skill
-description: Use before installing, adopting, or evaluating a third-party skill or skills repository (a pasted repo URL, "install this skill", "is this skill collection safe"). Vets it for prompt injection, data theft, and privilege escalation, and checks whether it encodes a real process before it touches the agent.
+description: Use before installing or evaluating a third-party skill or skills repo. Vets it for prompt injection, data theft, and privilege escalation.
 ---
 
 # vet-third-party-skill: scan an untrusted skill before it runs
