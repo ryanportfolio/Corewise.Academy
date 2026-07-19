@@ -9,7 +9,7 @@ objectives:
   - 'Audit a Claude setup with /usage and /context, and attribute each cost to one of the two variables: tokens consumed or model used.'
   - 'Trim the preloaded context tax: unused MCP servers, bloated skill descriptions, and an oversized CLAUDE.md.'
   - Route repeatable grunt work to the cheapest model that could have done it a year ago, and to zero-token scripts inside skills.
-  - 'Compare the riskier options (compressed inputs, image-encoded context, harness swaps, local models) by trade-off rather than headline savings.'
+  - 'Compare the riskier options (compressed inputs, image-encoded context, tool swaps, local models) by trade-off rather than headline savings.'
 prerequisites:
   - slug: thinking-on-a-budget
     note: The output half of this bill. That guide compresses what the model says; this one shrinks everything else.
@@ -138,7 +138,7 @@ text packs about three characters per image token against one per text token. It
 clever and genuinely lossy: exact strings can come back garbled, and the pricing quirk it
 exploits may not survive.
 
-Further out: routing execution-heavy work to a second harness with its own budget, swapping
+Further out: routing execution-heavy work to a second agent with its own budget, swapping
 Claude Code's backing model for a cheaper provider via environment variables, or running an open
 model on your own hardware. Each buys capacity and sells something you may care about, whether
 model quality, who controls your data, or your evenings spent maintaining a server. The honest reading
