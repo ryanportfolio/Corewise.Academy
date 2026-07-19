@@ -76,15 +76,9 @@ export function guideToAgentSkill(guide: Guide): string {
 
   const description = `${d.description} A ${SITE_NAME} guide (${track.name} layer, ${level.label} depth). Read when the topic applies to the task at hand.`;
 
-  const prereqs = d.prerequisites.length
-    ? [
-        '',
-        `Read first: ${d.prerequisites
-          .map((p) => `${SITE_URL}/guides/${p.slug}/`)
-          .join(' and ')}`,
-      ]
-    : [];
-
+  // No "read first" pointers: a skill must stand alone. Sending the agent
+  // off to fetch a prerequisite guide just delays the task; related guides
+  // are already linked in context inside the body.
   const sources = d.sources.length
     ? d.sources.map((s) => `- ${s.creator}, "${s.video}" (${s.url}), watched ${s.watched}`)
     : ['- Original work by the editor, no video source.'];
@@ -99,7 +93,6 @@ export function guideToAgentSkill(guide: Guide): string {
     `# ${d.title}`,
     '',
     `From ${SITE_NAME}, edited by ${EDITOR_NAME}. Web version: ${url}`,
-    ...prereqs,
     '',
     body,
     '',
