@@ -458,12 +458,15 @@ const minis: Record<string, string> = {
       min-height: 14rem;
       display: flex;
       flex-direction: column;
+      cursor: pointer;
     }
     .entry:hover { background: var(--accent-wash); }
     .entry .mono-label { margin-bottom: var(--s-2); }
     .entry h3 { font-family: var(--font-display); font-size: var(--text-md); font-weight: 400; line-height: 1.15; margin-bottom: var(--s-2); }
     .entry h3 a { color: var(--ink); text-decoration: none; }
-    .entry h3 a:hover { color: var(--accent-deep); }
+    /* Stretch the title link to cover the whole card so a click anywhere opens the guide. */
+    .entry h3 a::after { content: ''; position: absolute; inset: 0; }
+    .entry:hover h3 a { color: var(--accent-deep); }
     .entry p { font-size: var(--text-sm); color: var(--ink-soft); flex: 1; }
     .entry .foot { font-family: var(--font-mono); font-size: var(--text-2xs); color: var(--ink-mute); margin-top: var(--s-3); display: flex; justify-content: space-between; }
     .ledger-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: var(--s-6); margin-top: var(--s-4); }
