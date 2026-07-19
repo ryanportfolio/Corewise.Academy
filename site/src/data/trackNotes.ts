@@ -136,7 +136,7 @@ export const TRACK_NOTES: Record<string, TrackNotes> = {
   practice: {
     tagline: 'daily habits and judgment',
     notes: [
-      'Practice is the layer for what you do every day: the habits, verification rituals, and taste that decide whether working with AI compounds or corrodes. Knowing when not to use the model is part of the same practice as knowing how.',
+      'Practice is the layer for what you do every day: the habits, verification rituals, and taste that decide whether working with AI makes you steadily better or slowly worse. Knowing when not to use the model is part of the same practice as knowing how.',
       'The practice shelf is being written now, so its levels sit empty while drafts clear review. The standard it will hold to is already set: guides of 5 to 11 minutes, objectives you can check, and 100% of claims sourced or marked as the editor’s own field notes.',
     ],
     quotes: [

@@ -95,8 +95,8 @@ sessions, plus a `read_write` store scoped to whoever is actually writing.
 ## <span class="sec-no">04</span>Keeping it healthy over time
 
 Stores rot the way any pile of notes rots. Three tools keep them clean. Prune stale entries with
-`memories.delete`, cheap and direct, every 2 weeks or so: 10 minutes of pruning beats a store at
-90% of its cap quietly confusing the agent. When a store fragments, a
+`memories.delete`, cheap and direct, every 2 weeks or so: 10 minutes of pruning is better than letting a store sit at
+90% of its cap, where it quietly confuses the agent. When a store fragments, a
 <a href="https://platform.claude.com/docs/en/managed-agents/dreams">dreaming session</a>
 consolidates its content into a separate new output store without touching the original; you then
 switch sessions to the output store and archive the old one. And when a store outgrows its scope,
