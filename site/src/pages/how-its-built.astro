@@ -53,11 +53,11 @@ const faq = [
   title="How CoreWise Academy guides get made · CoreWise Academy"
   description="How CoreWise Academy guides get made: real sources, one original guide per topic, a human editor reviewing every draft, and learning science applied on purpose."
   faq={faq}
-  crumbs={[{ name: 'How guides get made', path: '/how-its-built/' }]}
+  crumbs={[{ name: 'The Process', path: '/how-its-built/' }]}
 >
   <main>
     <p class="mono-label accent">How it’s built</p>
-    <h1 class="display">How guides get made</h1>
+    <h1 class="display">The Process</h1>
 
     <div class="prose">
       <h2><span class="no">01</span>Guides start from real sources</h2>
@@ -67,7 +67,7 @@ const faq = [
         timestamps. Every guide credits its sources on the page.
       </p>
 
-      <h2><span class="no">02</span><a href="/about/">I</a> review every guide</h2>
+      <h2><span class="no">02</span><a href="/about/">Human in the loop</a></h2>
       <p>
         Nothing publishes directly. Every draft arrives as a pull request; the editor reviews,
         corrects, and merges. Merging is publishing: the site rebuilds and the guide goes live.
@@ -129,7 +129,7 @@ const faq = [
           rel="noopener">active recall</a> to a guide format.
       </p>
 
-      <h2><span class="no">05</span>Figures are atlas plates</h2>
+      <h2><span class="no">05</span>Pictures built from numbers</h2>
       <p>
         Guide pictures are built from the guide's own numbers, not drawn by hand, so the picture
         always matches what the text says.
@@ -152,12 +152,12 @@ const faq = [
       <SkillShelf groups={TOOL_SHELF} />
     </div>
 
-    <Faq heading="FAQ · how guides get made" items={faq} />
+    <Faq heading="FAQ · The Process" items={faq} />
   </main>
 
   <style>
     main { max-width: calc(var(--measure) + 2 * var(--s-4)); margin: 0 auto; padding: var(--s-8) var(--s-4) var(--s-12); }
-    h1 { font-family: var(--font-display); font-size: clamp(2.4rem, 6vw, var(--text-3xl)); margin: var(--s-2) 0 var(--s-3); }
+    h1 { font-family: var(--font-display); font-size: clamp(3rem, 12vw, 145px); margin: var(--s-2) 0 var(--s-3); }
     .dek { font-size: var(--text-md); font-style: italic; color: var(--ink-soft); margin-bottom: var(--s-2); }
     .prose p { margin-bottom: var(--s-3); }
     .prose h2 { font-family: var(--font-body); font-size: var(--text-xl); font-weight: 600; margin: var(--s-6) 0 var(--s-2); }
