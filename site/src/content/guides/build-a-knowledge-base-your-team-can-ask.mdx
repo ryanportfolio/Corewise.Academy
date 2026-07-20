@@ -47,17 +47,10 @@ detail</a>, fielding about 15,000 questions a day.
 
 ## <span class="sec-no">01</span>Put the answer up front
 
-Start with how retrieval works, because everything else serves it. Ask a model "how
-tall is Nick" and it has to guess which Nick across everything it has ever read. Put
-one line first, "Nick is 6 foot 2", then ask the same question, and the guess
-collapses to the fact.
-
-That prepended line is all retrieval augmented generation (RAG) is: fetch the facts
-that bear on the question and place them in front of it. The model cannot tell a
-fetched fact from its own training, so it just answers from what is in front of it.
-The whole game is finding the right facts to put there, and a knowledge base is the
-machine that finds them. This is the automatic version of what you do by hand when
-you <a href="/guides/brief-the-model/">Brief the model like a brilliant new hire</a>.
+Retrieval augmented generation is just fetching the facts, and the whole game is
+finding the right facts to put there, and a knowledge base is the machine that finds
+them. This is the automatic version of what you do by hand when you <a
+href="/guides/brief-the-model/">Brief the model like a brilliant new hire</a>.
 
 ## <span class="sec-no">02</span>Gather what your team knows
 
