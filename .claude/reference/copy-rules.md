@@ -115,6 +115,18 @@ Clear, to the point, plain words. Fewer words beat more words everywhere on the 
   reader through each stop only when they must choose between stops. An
   illustrative example earns its place only if the claim is unclear without it;
   one example is the ceiling.
+- **Cut the scaffolding** (editor ruling, 2026-07-20, from the editor's
+  session-long trim of the knowledge-base guide). Guide prose is reference mode,
+  not teaching mode: state the claim, give at most one illustration, move on.
+  Cut, every time: the ramp-up example that warms up to a simple idea ("how tall
+  is Nick" before naming what RAG is), any second illustration of a point already
+  made, mechanism explanations of why a thing works under the hood, reassurance
+  and hand-holding ("you do not need a specialist", "one is enough to start",
+  time budgets like "five to ten minutes"), and story color or proof-stats that
+  are not load-bearing. Prefer "etc." to an exhaustive list. Sections routinely
+  lose half their words with the meaning intact. This is the structural mirror of
+  "State the rule, skip the flourish": that one cuts ornamental lines, this one
+  cuts the ramps, spare examples, and reassurance around the point.
 - **"Die" and "kill" are banned in site copy** (editor ruling, 2026-07-18).
   Death-metaphor verbs ("die", "dies", "killed") hide what actually happens.
   Say the specific thing: filler words are cut, a model is retired, a project
