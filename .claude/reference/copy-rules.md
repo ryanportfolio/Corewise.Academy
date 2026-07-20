@@ -100,7 +100,9 @@ Clear, to the point, plain words. Fewer words beat more words everywhere on the 
   and forgotten, so it fails no matter how good the sentences are. Paragraphs
   run 1-4 sentences; a paragraph past ~60 words needs a reason to exist at that
   length. Break at each new idea. Let lists, short paragraphs, and white space
-  carry the structure a long block hides.
+  carry the structure a long block hides. The positive side of this rule, when
+  to reach for a table, a list, or a visual, is its own section below
+  ("Break information into the form that fits").
 - **State the rule, skip the flourish** (editor ruling, 2026-07-18, from the
   editor's own rewrite of the compression-contract passage). Cut, every time:
   aphorism capstones ("The cheapest token is the one never written"), dramatic
@@ -128,6 +130,41 @@ Clear, to the point, plain words. Fewer words beat more words everywhere on the 
 - **Theme never beats clarity.** Decorative labels are welcome only next to plain
   function words, never instead of them. "Upon leaving this room, you can" loses
   to "After this guide, you can".
+
+## Break information into the form that fits (editor ruling, 2026-07-19)
+
+A wall of text is a presentation failure, not only a length one. Readers skim a
+dense block and keep almost none of it, so information that has a shape gets shown
+in that shape instead of buried in sentences. This is the rule people actually learn
+from: scannable, and pleasant to look at.
+
+Match the form to the content:
+
+| The content is | Present it as |
+|---|---|
+| Two or more things compared on the same dimensions | A table |
+| Steps in order, or parallel items of equal weight | A list |
+| A term and what it means | A short line, bold term first |
+| Copy-ready code, a prompt, or config | A fenced block, or a `SkillCopy` plate for long ones |
+| A set of short question-and-answer pairs | The `Faq` component |
+| A quotable line from a source | `PullQuote` |
+| A hands-on task | `Exercise` |
+
+Reach for a diagram or an image when it explains something a paragraph cannot: a
+flow, a before-and-after, a spatial layout. No diagram component exists yet, so if a
+guide needs a recurring visual, propose a reusable component rather than one-off
+markup, and give every image real alt text (which the em-dash and copy rules still
+govern).
+
+Two limits keep this from sliding into decoration. Structure only genuine structure:
+a one-row table, or a single idea chopped into list fragments, reads worse than a
+plain sentence. And the house voice stays the plain declarative essay, so prose
+carries the argument while a table, a list, or a visual carries the part that truly
+is a table, a list, or a picture. When a guide is mostly unbroken paragraphs, that is
+the signal to restructure, not to add ornaments.
+
+No build gate for this one; the /ingest and /create-guide skills restate it at
+writing time, and the PR review is the backstop.
 
 ## Provenance and artifacts (editor rulings, 2026-07-18)
 
