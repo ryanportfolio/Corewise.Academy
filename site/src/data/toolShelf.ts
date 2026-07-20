@@ -41,13 +41,13 @@ export const TOOL_SHELF: ShelfGroup[] = [
       {
         name: '/humanizer',
         savePath: '.claude/skills/humanizer/SKILL.md',
-        blurb: 'Edit a draft to cut AI tells and read more human.',
+        blurb: 'Edit a draft to cut AI tells and sound more human.',
         content: humanizer,
       },
       {
         name: '/purposeful-writing',
         savePath: '.claude/skills/purposeful-writing/SKILL.md',
-        blurb: 'Draft or edit prose to be clearer for the reader.',
+        blurb: 'Draft or edit prose so it reads clearly.',
         content: purposefulWriting,
       },
       {
