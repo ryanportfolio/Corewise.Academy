@@ -74,7 +74,11 @@ contain a colon plus space). Doc-grounded deltas:
   `minutes` from final length (4-7 typical).
 - **No walls of text.** Paragraphs run 1-4 sentences; break at each new idea.
   A dense block gets skimmed and forgotten, so a paragraph past ~60 words needs
-  a reason to exist at that length.
+  a reason to exist at that length. Then ask whether any stretch is really a
+  table (a comparison), a list (steps or parallel items), or a visual (a flow
+  or layout), and convert it. Structure only genuine structure; prose still
+  carries the argument. Full rule in `copy-rules.md` ("Break information into
+  the form that fits").
 - **State the rule, skip the flourish.** No aphorism capstones, no dramatic
   justifications on self-evident rules, no praise of the guide's own advice,
   no coined names. Rules read as flat plain declaratives. When a mechanism has
