@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Faq from '../components/Faq.astro';
+import SamplingFigure from '../components/SamplingFigure.astro';
 import SkillShelf from '../components/SkillShelf.astro';
 import { TOOL_SHELF } from '../data/toolShelf';
 
@@ -156,7 +157,21 @@ const faq = [
           rel="noopener">Claude</a>; the judgment stays with the editor.
       </p>
 
-      <h2><span class="no">07</span>Take the tools</h2>
+      <h2><span class="no">07</span>Figures are atlas plates</h2>
+      <p>
+        When a guide needs a picture, it is drawn as a plate from the same star atlas, computed
+        from the guide's own numbers rather than sketched by hand. The example below plots five
+        tries of a model that only works now and then: five stars, one kept at full brightness, the
+        rest left dim. Because the figure is generated from the count, it can never disagree with
+        the sentence beside it.
+      </p>
+      <SamplingFigure
+        plate="Plate · Specimen"
+        fig="Fig. A"
+        caption="A worked example: five tries of an unreliable model, one kept. Generated from the count, not drawn by hand."
+      />
+
+      <h2><span class="no">08</span>Take the tools</h2>
       <p>
         The skills below are the real files the repo behind this site keeps on hand: the
         writing pass it runs on its own copy, and the building method underneath. Copy any one,
