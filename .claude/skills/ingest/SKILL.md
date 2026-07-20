@@ -155,7 +155,11 @@ Go through the draft in this order:
    Headings, sycophantic openers, trailing summaries.
 5. **Lead with the point.** If a paragraph's payoff could open it, move it up and cut
    the wind-up.
-6. **No walls of text.** Paragraphs run 1 to 4 sentences; break at each new idea.
+6. **No walls of text.** Paragraphs run 1 to 4 sentences; break at each new idea. Then
+   ask whether any stretch is really a table (a comparison), a list (steps or parallel
+   items), or a visual (a flow or layout), and convert it. Structure only genuine
+   structure; prose still carries the argument. Full rule in `copy-rules.md`
+   ("Break information into the form that fits").
 7. **Flourish and mechanism.** Cut aphorism capstones, dramatic justifications of
    self-evident rules, and self-praise. When a thing has stages, say what the end state
    buys instead of touring every stop. One example per claim, only when the claim is
