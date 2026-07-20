@@ -102,21 +102,26 @@ const faq = [
 
       <h2><span class="no">04</span>The style book is strict</h2>
       <p>
-        The Academy keeps a written style book, and its rulings are enforced at build time where a
-        machine can check them. Three of the most important rules, quoted as written:
+        The Academy keeps one written style book. A machine checks some of its rules on every
+        build and blocks the deploy on any hit; the editor holds the rest in review.
       </p>
-      <blockquote>
-        <p>“No em dash anywhere on the site, ever.”</p>
-        <cite>the Academy style book · copy rules</cite>
-      </blockquote>
-      <blockquote>
-        <p>“Fewer words beat more words everywhere on the site.”</p>
-        <cite>the Academy style book · plain language</cite>
-      </blockquote>
-      <blockquote>
-        <p>“A reader who has not opened the piece can say what it is about from the title alone.”</p>
-        <cite>the Academy style book · titles</cite>
-      </blockquote>
+      <table class="pipeline">
+        <thead>
+          <tr><th>Rule</th><th>Held by</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>No em dash anywhere on the site</td><td class="mono">Build gate</td></tr>
+          <tr><td>Titles and headings stay under a length cap</td><td class="mono">Build gate</td></tr>
+          <tr><td>Plain words, and fewer of them</td><td class="mono">Review</td></tr>
+          <tr><td>Say plainly what a thing is</td><td class="mono">Review</td></tr>
+          <tr><td>No jargon and no invented words</td><td class="mono">Review</td></tr>
+          <tr><td>No walls of text; the content in the shape that fits it</td><td class="mono">Review</td></tr>
+        </tbody>
+      </table>
+      <p>
+        These are a sample. The full book lives in one file the drafting agents read before
+        they write, and the pull request is the backstop.
+      </p>
 
       <h2><span class="no">05</span>Learning science, applied</h2>
       <ul class="principles">
@@ -198,9 +203,6 @@ const faq = [
     .pipeline td { border-bottom: 1px dashed var(--line); padding: var(--s-2) var(--s-3) var(--s-2) 0; vertical-align: top; }
     .pipeline .stage { font-weight: 600; white-space: nowrap; }
     .pipeline .mono { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--ink-soft); }
-    blockquote { margin: 0 0 var(--s-3); padding-left: var(--s-3); border-left: 3px solid var(--accent-deep); }
-    blockquote p { font-style: italic; margin-bottom: var(--s-1); }
-    blockquote cite { font-family: var(--font-mono); font-size: var(--text-2xs); font-style: normal; color: var(--ink-mute); }
     .principles { list-style: none; margin: 0 0 var(--s-3); padding: 0; }
     .principles li { border-left: 3px solid var(--accent-deep); padding-left: var(--s-3); margin-bottom: var(--s-3); }
   </style>
