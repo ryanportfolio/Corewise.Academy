@@ -1,0 +1,175 @@
+---
+// RoutineFlow: the opening figure for the routines guide. It performs the lesson's
+// thesis instead of illustrating it. An event fires (a schedule, a webhook, or an
+// API call), the light travels through the natural-language middle (the ROUTINE
+// panel, three plain instruction lines that replace hand-wired nodes), and lands as
+// an OUTPUT with a receipt. Trigger it and you watch the same shape the guide describes.
+//
+// Contract: warm paper, hairline rules, mono caps labels, ultramarine spent only on
+// the live pulse and the lit output. Deterministic resting frame paints without
+// script and screenshots without going blank. Motion is quiet (opacity/color only)
+// and stands down entirely under prefers-reduced-motion, layout intact.
+const triggers = ['Schedule', 'Webhook', 'API call'];
+const steps = ['pull the unread mail', 'draft each reply', 'send me a Slack update'];
+---
+
+<figure class="rf" aria-label="An event fires a routine, whose plain-language steps run and produce an output.">
+  <div class="rf-frame">
+    <span class="rf-plate">Fig. 1 · The routine shape</span>
+    <span class="rf-fig">Event → Routine → Output</span>
+  </div>
+
+  <div class="rf-stage">
+    <!-- EVENT -->
+    <div class="rf-col rf-event" data-node="event">
+      <span class="rf-cap">Event</span>
+      <div class="rf-triggers" role="group" aria-label="Fire the routine with a trigger">
+        {triggers.map((t, i) => (
+          <button class="rf-trig" data-i={i} type="button">{t}</button>
+        ))}
+      </div>
+    </div>
+
+    <span class="rf-arrow" data-seg="0" aria-hidden="true">→</span>
+
+    <!-- ROUTINE (the natural-language middle) -->
+    <div class="rf-col rf-routine" data-node="routine">
+      <span class="rf-cap">Routine</span>
+      <ol class="rf-steps">
+        {steps.map((s) => <li>{s}</li>)}
+      </ol>
+      <span class="rf-sub">plain language, not wired nodes</span>
+    </div>
+
+    <span class="rf-arrow" data-seg="1" aria-hidden="true">→</span>
+
+    <!-- OUTPUT -->
+    <div class="rf-col rf-output" data-node="output">
+      <span class="rf-cap">Output</span>
+      <div class="rf-receipt"><span class="rf-check">✦</span> Slack update sent</div>
+    </div>
+  </div>
+
+  <figcaption class="rf-caption">
+    Fire an event and the light runs the same path the lesson describes: a trigger, plain-language
+    steps, an output. The middle is words you write, not boxes you wire.
+  </figcaption>
+</figure>
+
+<style>
+  .rf { margin: var(--s-4) 0 var(--s-6); border: 1px solid var(--line); background: var(--panel); }
+  .rf-frame {
+    display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-2);
+    font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: var(--tracking-caps);
+    text-transform: uppercase; color: var(--ink-mute);
+    padding: var(--s-1) var(--s-2); border-bottom: 1px solid var(--line);
+  }
+  .rf-frame .rf-plate { color: var(--accent-deep); }
+
+  .rf-stage {
+    display: grid; grid-template-columns: 1fr auto 1.3fr auto 1fr; align-items: center;
+    gap: var(--s-2); padding: var(--s-4) var(--s-3);
+  }
+  .rf-col { position: relative; }
+  .rf-cap {
+    display: block; font-family: var(--font-mono); font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-caps); text-transform: uppercase; color: var(--ink-mute);
+    margin-bottom: var(--s-1);
+  }
+
+  /* node marks glow when the pulse reaches them */
+  [data-node] { transition: color var(--dur) var(--ease); }
+  [data-node].on .rf-cap { color: var(--accent-deep); }
+
+  .rf-triggers { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
+  .rf-trig {
+    font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.06em;
+    color: var(--ink-soft); background: none; border: 1px solid var(--line);
+    padding: 3px 8px; cursor: pointer; width: 100%; text-align: left;
+    transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease), color var(--dur) var(--ease);
+  }
+  .rf-trig:hover, .rf-trig.armed { background: var(--accent-wash); border-color: var(--accent); color: var(--accent-deep); }
+
+  .rf-arrow {
+    font-family: var(--font-mono); font-size: var(--text-md); text-align: center;
+    color: var(--line); transition: color var(--dur) var(--ease);
+  }
+  .rf-arrow.on { color: var(--accent); }
+
+  .rf-routine {
+    border: 1px solid var(--line); border-left: 3px solid var(--line);
+    padding: var(--s-2); background: var(--paper);
+    transition: border-color var(--dur) var(--ease);
+  }
+  .rf-routine.on { border-left-color: var(--accent-deep); }
+  .rf-steps {
+    list-style: none; margin: 0 0 var(--s-1); padding: 0;
+    font-family: var(--font-mono); font-size: var(--text-2xs); color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  .rf-steps li { counter-increment: rf; }
+  .rf-steps li::before { content: counter(rf, decimal-leading-zero) '  '; color: var(--ink-mute); }
+  .rf-steps { counter-reset: rf; }
+  .rf-sub { font-family: var(--font-mono); font-size: var(--text-2xs); color: var(--ink-mute); font-style: normal; }
+
+  .rf-receipt {
+    font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.04em;
+    color: var(--ink-mute); border: 1px dashed var(--line); padding: 4px 8px;
+    opacity: 0.45; transition: opacity var(--dur) var(--ease), color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+  }
+  .rf-output.on .rf-receipt { opacity: 1; color: var(--accent-deep); border-color: var(--accent); border-style: solid; }
+  .rf-check { color: var(--accent-deep); }
+
+  .rf-caption {
+    font-size: var(--text-sm); font-style: italic; color: var(--ink-soft);
+    padding: var(--s-2) var(--s-3); border-top: 1px solid var(--line); max-width: 60ch;
+  }
+
+  @media (max-width: 560px) {
+    .rf-stage { grid-template-columns: 1fr; gap: var(--s-3); }
+    .rf-arrow { transform: rotate(90deg); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .rf *, .rf [data-node] { transition: none !important; }
+  }
+</style>
+
+<script>
+  // Progressive enhancement. Without this, the resting frame is fully legible:
+  // every station present, the output receipt dim. With it, firing a trigger walks
+  // the light through event -> routine -> output, then resets.
+  document.querySelectorAll<HTMLElement>('.rf').forEach((rf) => {
+    const seq = [
+      rf.querySelector('[data-node="event"]'),
+      rf.querySelector('[data-seg="0"]'),
+      rf.querySelector('[data-node="routine"]'),
+      rf.querySelector('[data-seg="1"]'),
+      rf.querySelector('[data-node="output"]'),
+    ].filter(Boolean) as Element[];
+    const trigs = rf.querySelectorAll<HTMLButtonElement>('.rf-trig');
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let timers: number[] = [];
+
+    function reset() {
+      timers.forEach(clearTimeout);
+      timers = [];
+      seq.forEach((el) => el.classList.remove('on'));
+    }
+
+    function fire(i: number) {
+      reset();
+      trigs.forEach((t, j) => t.classList.toggle('armed', j === i));
+      if (reduce) {
+        seq.forEach((el) => el.classList.add('on'));
+        return;
+      }
+      seq.forEach((el, k) => {
+        timers.push(window.setTimeout(() => el.classList.add('on'), 120 + k * 260));
+      });
+      // let the completed state rest, then stand down
+      timers.push(window.setTimeout(reset, 120 + seq.length * 260 + 2600));
+    }
+
+    trigs.forEach((t, i) => t.addEventListener('click', () => fire(i)));
+  });
+</script>
