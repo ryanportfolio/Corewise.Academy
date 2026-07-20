@@ -6,7 +6,11 @@
      solid = shipped · dashed = killed · phantom = unreleased. */
 
 const NS = 'http://www.w3.org/2000/svg';
-const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+// Print mode (?print=1) freezes every figure to its final static pose: the
+// reduced-motion branches already draw synchronously at boot, so a print render
+// needs no scrolling to trigger the IntersectionObservers.
+const PRINT = new URLSearchParams(location.search).has('print');
+const reduced = PRINT || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ---------------------------------------------------------------- math -- */
 const v3 = (x, y, z) => ({ x, y, z });
@@ -1013,6 +1017,9 @@ export function boot() {
   const only = q.get('only')?.split(',');
   const skip = q.get('skip')?.split(',') ?? [];
   const gate = (name, fn) => { if ((only && !only.includes(name)) || skip.includes(name)) return; fn(); };
+  // Print render always uses the light (paper) theme regardless of any stored
+  // preference, so the drawing set reads as ink on white.
+  if (PRINT) document.documentElement.dataset.theme = 'day';
   gate('hero', () => initChandelier($('fig-hero'), { hero: true }));
   gate('chand', () => initChandelier($('fig-chandelier'), { hero: false }));
   gate('disc', () => initDisc($('fig-disc')));

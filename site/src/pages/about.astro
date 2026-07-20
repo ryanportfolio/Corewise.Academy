@@ -628,5 +628,58 @@ const faq = [
       .idx-live, .idx-tag { display: none; }
       .gatekey { grid-template-columns: 1fr; }
     }
+
+    /* ---- print: the drawing set on paper, one sheet per page ----
+       Reached via /about/?print=1 (headless Chrome print-to-pdf). The client
+       engine forces the light theme and freezes every figure in that mode. */
+    @media print {
+      @page { size: letter portrait; margin: 12mm 12mm 16mm; }
+      :global(html), :global(body) { background: var(--paper); }
+      :global(.masthead), :global(.site-footer) { display: none !important; }
+      /* print every ink and background fill, not just text */
+      #aw, #aw * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+      #aw { padding-bottom: 0; }
+      .sheet {
+        max-width: none; margin: 0; padding: 0 0 var(--s-3);
+        border-bottom: 0;
+        break-before: page; break-inside: auto;
+      }
+      /* tighten vertical rhythm so multi-figure sheets pack onto fewer pages */
+      .sheet-head { margin-bottom: var(--s-2); }
+      .lede, .body-block { margin-bottom: var(--s-2); }
+      .fig { margin-top: var(--s-1); }
+      .fig-cap { margin: 2px 0 var(--s-2); }
+      .sec-head { margin: var(--s-2) 0 var(--s-1); }
+      .hero { break-before: avoid; }            /* cover is the first page */
+      .hero-grid { break-inside: avoid; }
+
+      /* keep the drawing + spec-rail side by side (single-column stacking makes
+         each sheet twice as tall and spills orphan lines onto extra pages); the
+         rail just stops being sticky. */
+      .cols { grid-template-columns: minmax(0, 1fr) 190px; gap: var(--s-4); }
+      .rail { position: static; align-self: start; }
+
+      /* cap drawing width so a figure fits page height, but stay large enough
+         that the ~9px annotations remain legible (viewBox keeps the ratio). */
+      .hero-fig { min-height: 0; }
+      #aw .plate-svg { width: 100%; max-width: 320px; height: auto; margin: 0 auto; display: block; }
+      .hero { break-before: avoid; }
+      .hero-grid { grid-template-columns: 1fr; gap: var(--s-3); }
+      .hero-fig { width: 100%; max-width: 360px; margin: var(--s-2) 0 0; }
+
+      /* keep drawings, captions, and data blocks whole across a page edge */
+      .fig, .fig-row, .fig-cap, .hold, .gatekey, .rev, .rail, .idx li { break-inside: avoid; }
+      .sheet-head { break-after: avoid; }
+
+      /* the title block prints once at the foot of every sheet */
+      .tb { position: fixed; }
+      .tb-zonecell { display: none; }
+      /* the live pointer sheet-readout can't track pages in a static print and
+         would stamp a stale "A-000" on every page; each sheet header already
+         carries its number, so drop the cell. */
+      .tb-cell:has(#tb-sheet) { display: none; }
+      :global(.site-footer) { margin-bottom: 0; }
+    }
   </style>
 </Base>
