@@ -1,0 +1,141 @@
+---
+title: When the model works one time in five
+description: 'A generative model that lands a good result once every few tries is still worth using. Four moves that turn unreliable output into something you can ship: edit instead of generate, spec the exact change, sample in parallel, and hide the seam.'
+track: practice
+level: practitioner
+number: 25
+minutes: 8
+objectives:
+  - Choose between editing existing material and generating from scratch by which one leaves the model less room to fail.
+  - Write a trigger-and-change instruction that names the exact moment and the exact edit, in place of a vague request.
+  - Budget for a model's per-try miss rate by generating several outputs at once and selecting one, instead of retrying serially.
+  - Locate where AI output reveals itself as a quality seam, and place a transition so the seam has nothing beside it to compare against.
+prerequisites: []
+sources:
+  - url: https://www.youtube.com/watch?v=7Su6W_FlUbk
+    creator: Nick Saraev
+    video: The BEST AI Video Strategy No One Is Using
+    timestamps: ['2:12', '3:02', '4:02', '8:17']
+    watched: July 2026
+selfCheck:
+  - q: Why does handing the model a clip you already recorded beat asking it to build the same clip from a text description?
+    a: A full generation forces the model to invent every frame at once, and the small errors compound until the result looks wrong. Give it real footage and ask for one change, and the lighting, motion, and faces are already correct. The model only has to insert the edit, which is a far smaller problem, so it comes out coherent far more often.
+  - q: The video says a given attempt works about one time in five. What does that number change about how you run the model?
+    a: It changes the loop from serial to parallel. Retrying one at a time means you wait out a full generation, judge it, dislike it, and start over, four or five times. Instead you fire several attempts at once and pick the best of the batch. You budget the cost and the wait for the miss rate up front rather than paying it one slow round at a time.
+  - q: Why does AI footage look wrong the instant it cuts to your own footage, and what removes the effect?
+    a: 'The AI output carries a quality signature: lower resolution and slightly different compression. Placed right next to native-quality footage of the same kind, the eye catches the jump. Cutting instead to a different kind of shot, a screen share or other b-roll, removes the matching thing beside it, so there is nothing to compare the seam against.'
+status: draft
+lastUpdated: 2026-07-19
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+
+<Chalk>a model that misses four times in five is still worth running</Chalk>
+
+<p class="lede">
+Some AI tools produce a good result only now and then. Ask one for a finished video from a
+sentence of text and most attempts come back broken. That miss rate reads as a reason to give up.
+The people getting usable output every day are running the same unreliable model, in a way that
+turns the misses into a cost they planned for. Four moves do most of
+the work, and while the example here is AI video, each move applies to any generator whose quality
+swings from one run to the next.
+</p>
+
+## <span class="sec-no">01</span>Edit, don't generate
+
+Asking a model to build a whole clip from a text prompt is the hard version of the job. It has to
+invent every frame, keep them consistent across time, and get the lighting and motion right all at
+once, and the small errors pile up until the result looks off. That is why so much AI video
+disappoints.
+
+The easier version hands the model something real to start from. Give it footage you already shot
+and ask for a single change, and the pixels, the lighting, and the faces are already correct. The
+model only has to insert the edit into a world that is already coherent.
+
+<PullQuote
+  quote="Rather than generate from total scratch … we're working in a medium that we've already recorded."
+  creator="Nick Saraev"
+  video="The BEST AI Video Strategy No One Is Using"
+  href="https://www.youtube.com/watch?v=7Su6W_FlUbk"
+  timestamp="3:02"
+/>
+
+The same choice shows up far beyond video. Handing the model a draft to revise, a file to
+refactor, or a design to adjust gives it a smaller, better-defined problem than a blank page. When
+you can start from real material, start there.
+
+## <span class="sec-no">02</span>Say the trigger and the change
+
+A vague instruction gives the model room to wander, and it will. "Make it cooler" can mean a
+hundred things, so you get one of the hundred at random. The output improves the moment you pin
+down two things: the exact point where the edit should happen, and the exact edit.
+
+Name the trigger, then name the change. "At 2.9 seconds, when he snaps his fingers, swap his shirt
+for a black hoodie" tells the model the one moment to watch and the one thing to do. The trigger
+can be a timestamp, an action, or a spoken word; the change is a single, concrete edit. That
+specificity is what makes an unreliable model land the shot, and it is the same discipline behind
+<a href="/guides/stop-shouting-at-the-model/">Stop shouting at the model</a>: precise beats loud.
+
+## <span class="sec-no">03</span>Sample in parallel, then pick
+
+Even with a sharp instruction, a single attempt lands maybe one time in five. The instinct is to
+run it once, watch the result, dislike it, and run it again, and that loop makes you wait out a
+full generation on every round.
+
+<PullQuote
+  quote="This is going to work like 20% of the time."
+  creator="Nick Saraev"
+  video="The BEST AI Video Strategy No One Is Using"
+  href="https://www.youtube.com/watch?v=7Su6W_FlUbk"
+  timestamp="8:17"
+/>
+
+The faster loop generates several attempts at once and picks the best of the batch. You pay for
+the miss rate once, up front, in cost and in a single wait, instead of paying it round by round.
+Fire five, keep one. This is a general habit for any generator whose quality varies run to run: a
+worker produces candidates, and a separate step selects. That split (a producer and an independent
+picker) is the same shape as the evaluator in
+<a href="/guides/automate-the-bottleneck/">Automate the step that slows you down</a>, and you can
+hand the whole retry-and-collect loop to an agent so it runs the batch and gathers the candidates
+for you.
+
+## <span class="sec-no">04</span>Hide the seam
+
+AI output carries a signature you can see. At the time of the source video the edited footage came
+back at 720p, a lower resolution than the native shots around it, with slightly different
+compression. Cut straight from that footage to your own high-quality footage of the same kind, a
+talking head against a talking head, and the eye catches the jump.
+
+<PullQuote
+  quote="You need to hide the 720p seam with an intelligent cut to a different scene."
+  creator="Nick Saraev"
+  video="The BEST AI Video Strategy No One Is Using"
+  href="https://www.youtube.com/watch?v=7Su6W_FlUbk"
+  timestamp="4:02"
+/>
+
+The fix is to cut to a different kind of shot instead. Move from the AI clip to a screen share or
+other cutaway footage, and there is no matching thing beside it to measure the seam against, so the drop in
+quality never registers. The principle holds for text too: an AI-written passage set right next to
+your own voice reads as a seam, and a change of tone or format between them does the same job
+as the cut.
+
+<Exercise>
+1. Take a task you would normally ask a model to produce from scratch and rewrite it as an edit.
+   Find or make a rough starting artifact (a draft, a clip, a layout) and ask for one specific
+   change to it instead. Compare the two results.
+2. Rewrite one vague instruction as a trigger-and-change pair: the exact moment or condition, then
+   the exact edit. Run both versions a few times and count how often each lands.
+3. Pick a generator whose output varies run to run. Generate five outputs in one batch rather than
+   one at a time, and choose the best. Note the total cost and time against what five serial
+   retries would have taken.
+</Exercise>
+
+## Further reading
+
+- [Nick Saraev · The BEST AI Video Strategy No One Is Using](https://www.youtube.com/watch?v=7Su6W_FlUbk), the source this guide distills its craft moves from
+- [Wikipedia · image-to-image translation](https://en.wikipedia.org/wiki/Image-to-image_translation), the editing-over-generating idea in its original form
+- [Kling AI](https://www.klingai.com/), one of the video-to-video models the source uses to make the edits
+- [Anthropic · Claude Code documentation](https://docs.claude.com/en/docs/claude-code/overview), the agent you can hand the sample-and-pick loop to
