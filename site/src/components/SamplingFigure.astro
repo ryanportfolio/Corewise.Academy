@@ -1,0 +1,128 @@
+---
+// SamplingFigure: a guide figure that performs its own thesis. N generation
+// attempts plotted as stars on an atlas field; one is kept at full magnitude in
+// ultramarine, the rest are dim. Countable honesty: exactly `total` stars are
+// drawn and exactly one is lit, both computed here from the guide's real claim
+// (a 1-in-`total` hit rate), never hand-placed decoration.
+//
+// Deterministic: positions come from the index, so the figure paints the same
+// resting frame every build and screenshots without script.
+import Plate from './Plate.astro';
+
+interface Props {
+  /** How many attempts in the batch (the "1 in N" hit rate). */
+  total?: number;
+  /** Zero-based index of the kept star. */
+  keptIndex?: number;
+  plate?: string;
+  fig?: string;
+  caption?: string;
+  scale?: string;
+}
+const {
+  total = 5,
+  keptIndex = 2,
+  plate = 'Plate II · Sampling',
+  fig = 'Fig. 1',
+  caption = 'Several generations, one kept. The model lands a usable take about one time in five, so you sample the batch and choose the brightest.',
+  scale = '1 <b>✦</b> = 1 generation · bright = kept · dim = discarded',
+} = Astro.props;
+
+// Build-time contract check: the count must be honest and the kept star real.
+if (!Number.isInteger(total) || total < 2 || total > 9) {
+  throw new Error(`SamplingFigure: total must be 2..9, got ${total}`);
+}
+if (!Number.isInteger(keptIndex) || keptIndex < 0 || keptIndex >= total) {
+  throw new Error(`SamplingFigure: keptIndex ${keptIndex} out of range for total ${total}`);
+}
+
+const W = 640;
+const H = 300;
+// Four-point atlas star, same path family as the site's progress star.
+function starPath(cx: number, cy: number, r: number): string {
+  const a = r;
+  const b = +(r * 0.38).toFixed(2);
+  return `M${cx} ${cy - a} L${cx + b} ${cy - b} L${cx + a} ${cy} L${cx + b} ${cy + b} L${cx} ${cy + a} L${cx - b} ${cy + b} L${cx - a} ${cy} L${cx - b} ${cy - b} Z`;
+}
+// Deterministic placement: evenly spaced across the field, gently scattered in y.
+const marks = Array.from({ length: total }, (_, i) => {
+  const x = Math.round(90 + (i * (W - 180)) / (total - 1));
+  const y = Math.round(150 + 58 * Math.sin(i * 1.9 + 1.1));
+  const kept = i === keptIndex;
+  return {
+    x,
+    y,
+    kept,
+    r: kept ? 15 : 7,
+    label: `GEN ${String(i + 1).padStart(2, '0')}${kept ? ' · KEPT' : ''}`,
+    labelY: y > 150 ? y + (kept ? 34 : 30) : y - (kept ? 26 : 22),
+  };
+});
+const sel = marks[keptIndex];
+const graticuleX = [W / 4, W / 2, (3 * W) / 4];
+const graticuleY = [H / 4, H / 2, (3 * H) / 4];
+---
+
+<Plate plate={plate} fig={fig} caption={caption} scale={scale}>
+  <svg
+    viewBox={`0 0 ${W} ${H}`}
+    role="img"
+    aria-label={`${total} generation attempts plotted as stars; one is kept at full brightness, the rest are dim.`}
+  >
+    <defs>
+      <filter id="plate-glow" x="-80%" y="-80%" width="260%" height="260%">
+        <feGaussianBlur stdDeviation="4" result="b"></feGaussianBlur>
+        <feMerge><feMergeNode in="b"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+      </filter>
+    </defs>
+
+    <g stroke="var(--line-soft)" stroke-width="1">
+      {graticuleY.map((y) => <line x1="0" y1={y} x2={W} y2={y}></line>)}
+      {graticuleX.map((x) => <line x1={x} y1="0" x2={x} y2={H}></line>)}
+    </g>
+
+    <g>
+      <path
+        d={`M14 150 L${sel.x} ${sel.y}`}
+        fill="none"
+        stroke="var(--accent)"
+        stroke-width="1"
+        stroke-dasharray="2 4"
+        opacity="0.7"></path>
+      <text x="14" y="140" font-family="IBM Plex Mono" font-size="8" letter-spacing="1" fill="var(--accent-deep)">KEPT</text>
+    </g>
+
+    {
+      marks.map((m) => (
+        <g>
+          <path
+            d={starPath(m.x, m.y, m.r)}
+            fill={m.kept ? 'var(--star)' : 'var(--star-dim)'}
+            filter={m.kept ? 'url(#plate-glow)' : undefined}
+          />
+          {m.kept && (
+            <circle cx={m.x} cy={m.y} r={m.r + 9} fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.5" />
+          )}
+          <text
+            class:list={['gen-label', { sel: m.kept }]}
+            x={m.x}
+            y={m.labelY}
+            text-anchor="middle"
+          >
+            {m.label}
+          </text>
+        </g>
+      ))
+    }
+  </svg>
+</Plate>
+
+<style>
+  svg :global(.gen-label) {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 1px;
+    fill: var(--ink-mute);
+  }
+  svg :global(.gen-label.sel) { fill: var(--accent-deep); }
+</style>
