@@ -1,0 +1,150 @@
+---
+// FirmwareCta: the page's single dark-inverted band (see design-learnings
+// synthesis: one high-emphasis inverted moment per page), promoting the
+// AI Firmware template as a boot log. The conceit is literal: the template
+// is a boot layer, its hooks really do run at session start, so the CTA
+// renders as the readout of that boot. Contract: night-slate band in both
+// themes (deepens at night), mono caps apparatus, dotted ledger leaders,
+// accent spent only on the READY row and the CTA, one blinking caret,
+// every number auditable against github.com/ryanportfolio/AI-Firmware
+// (34 skills = .claude/skills minus PROVENANCE.md; v1.1.2 = plugin.json).
+---
+
+<aside class="fw-cta" aria-label="AI Firmware template">
+  <div class="head">
+    <span class="brand">AI Firmware · boot log</span>
+    <span class="ver">template · v1.1.2</span>
+  </div>
+  <ol class="log">
+    <li><span class="t">kernel</span><span class="lead"></span><span class="d">standing rules, loaded every turn</span><span class="ok">ok</span></li>
+    <li><span class="t">skills</span><span class="lead"></span><span class="d">34 playbooks, mounted on demand</span><span class="ok">ok</span></li>
+    <li><span class="t">memory</span><span class="lead"></span><span class="d">committed lessons, travel with every clone</span><span class="ok">ok</span></li>
+    <li><span class="t">hooks</span><span class="lead"></span><span class="d">session defaults re-asserted at boot</span><span class="ok">ok</span></li>
+    <li><span class="t">sync</span><span class="lead"></span><span class="d">fixes flow both ways, project and template</span><span class="ok">ok</span></li>
+    <li class="ready"><span class="t">ready</span><span class="lead"></span><span class="d">awaiting first prompt</span><span class="caret" aria-hidden="true"></span></li>
+  </ol>
+  <p class="pitch">
+    A blank repo learns your lessons one mistake at a time. A spawned repo boots with them
+    installed: the rules the agent loads every turn, the checks that run at startup, and the
+    memory it consults are all in place before your first prompt.
+  </p>
+  <div class="foot">
+    <a class="cta" href="https://github.com/ryanportfolio/AI-Firmware">Spawn a project from the template ↗</a>
+    <span class="boot-time">boot time · about 5 min</span>
+  </div>
+</aside>
+
+<style>
+  .fw-cta {
+    /* night-slate band: the site's own night session, fixed as this block's
+       palette so the band reads as the page's one inverted moment by day
+       and a deeper pane of the same sky by night */
+    --b-bg: #121420;
+    --b-ink: #e8e4d8;
+    --b-soft: #a9a496;
+    --b-mute: #84806f;
+    --b-line: rgba(232, 228, 216, 0.16);
+    --b-accent: #96a8ff;
+    margin: var(--s-6) 0;
+    border: 1px solid var(--line);
+    background: var(--b-bg);
+    color: var(--b-ink);
+    padding: 0;
+  }
+  :global([data-theme='night']) .fw-cta {
+    --b-bg: #0d0f18;
+    border-color: var(--b-line);
+  }
+
+  .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--s-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    padding: var(--s-1) var(--s-2);
+    border-bottom: 1px solid var(--b-line);
+  }
+  .brand { color: var(--b-ink); }
+  .ver { color: var(--b-mute); }
+
+  .log {
+    list-style: none;
+    margin: 0;
+    padding: var(--s-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .log li {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-1);
+    padding: 0.18rem 0;
+  }
+  .t { color: var(--b-soft); flex: 0 0 3.4rem; }
+  .lead { flex: 1 1 1rem; min-width: 1rem; border-bottom: 1px dotted var(--b-line); align-self: center; height: 1px; }
+  .d { color: var(--b-mute); text-align: right; }
+  .ok { color: var(--b-soft); flex: 0 0 1.4rem; text-align: right; }
+  .ready .t, .ready .d { color: var(--b-accent); }
+  .caret {
+    flex: 0 0 1.4rem;
+    align-self: center;
+  }
+  .caret::after {
+    content: '';
+    display: block;
+    margin-left: auto;
+    width: 0.55em;
+    height: 1em;
+    background: var(--b-accent);
+    animation: fw-blink 1.1s step-end infinite;
+  }
+  @keyframes fw-blink { 50% { opacity: 0; } }
+
+  .pitch {
+    font-size: var(--text-base);
+    line-height: 1.55;
+    color: var(--b-ink);
+    padding: var(--s-2) var(--s-2) 0;
+    border-top: 1px solid var(--b-line);
+    max-width: 52ch;
+  }
+
+  .foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--s-2);
+    flex-wrap: wrap;
+    padding: var(--s-2);
+  }
+  .cta {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--b-accent);
+    text-decoration: none;
+    border: 1px solid var(--b-accent);
+    padding: 0.45rem 0.9rem;
+    transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+  }
+  .cta:hover { background: var(--b-accent); color: var(--b-bg); }
+  .boot-time {
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--b-mute);
+  }
+
+  @media (max-width: 560px) {
+    .lead { display: none; }
+    .d { flex: 1 1 auto; }
+  }
+</style>
