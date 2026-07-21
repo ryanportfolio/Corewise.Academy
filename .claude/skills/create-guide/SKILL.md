@@ -68,7 +68,8 @@ Anatomy and frontmatter schema are identical to `/ingest` Step 4 and
 numbered sections, exercise, exactly 3 self-check items, quoted YAML scalars that
 contain a colon plus space). Doc-grounded deltas:
 
-- Apply `/purposeful-writing`. Every guide has one job: change what the reader
+- Apply the global `writing` skill (it loads the house voice from
+  `.claude/reference/voice.md`). Every guide has one job: change what the reader
   does next. Answer early, be specific, cut any sentence that can go without loss.
 - **Ultra concise**: 550-850 words of body prose. Shorter and denser wins. Set
   `minutes` from final length (4-7 typical).
