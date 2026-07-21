@@ -1,0 +1,146 @@
+---
+title: Turn repeated fixes into rules
+description: 'When an agent hits the same problem twice, encode the fix as a lint rule, CI check, or steering-file instruction that every future session inherits.'
+track: agents
+level: broad
+number: 27
+minutes: 7
+objectives:
+  - 'Convert a repeated agent mistake into the cheapest permanent guard: a lint rule, a CI check, a test, or a steering-file instruction.'
+  - 'Rewrite a steering file that maps folders into one that directs behavior: preferred patterns, banned shortcuts, and when to push back.'
+  - 'Run the sparse-prompt loop: prompt with minimal context, log where the agent fails, and encode only the missing knowledge.'
+  - Weigh the claim that encoded project knowledge lets non-engineers contribute like engineers, and name what it still cannot replace.
+prerequisites: []
+sources:
+  - url: https://www.youtube.com/watch?v=xmGY276gEFY
+    creator: Theo (t3.gg)
+    video: Boris has some really good advice
+    timestamps: ['3:24', '3:54', '8:04', '9:56', '11:15', '11:37', '12:30', '13:20', '16:18', '18:05']
+selfCheck:
+  - q: Why does a lint rule beat having the agent fix the same issue each time it appears?
+    a: 'Fixing on sight spends tokens at every appearance and misses the appearances nobody catches. A lint rule or CI check runs on every change automatically, so the whole class of mistake is handled forever at no per-incident cost. The fix lands in the system instead of in one conversation.'
+  - q: What separates a steering file that helps from one that only maps the codebase?
+    a: 'A map ("this folder contains the components") tells the agent where things are, which it can usually discover itself. A useful steering file directs behavior: prefer this pattern, never use that shortcut, push back when someone asks for this feature. It encodes the judgment a senior reviewer would apply, so the agent applies it without being asked.'
+  - q: Why start an agent with a sparse prompt instead of preloading every rule you can think of?
+    a: 'Because each failure under a sparse prompt names a missing rule precisely, while preloaded guesses are unverified and ride along on every request whether or not they help. Watching what actually goes wrong tells you exactly which knowledge to encode; guessing up front buys token cost without evidence.'
+status: published
+lastUpdated: 2026-07-21
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+import FirmwareCta from '../../components/FirmwareCta.astro';
+
+<Chalk>explain the same fix twice and the repo is missing a rule</Chalk>
+
+<p class="lede">
+Your agent makes a mistake. You explain the fix in chat, it applies the fix, the session ends.
+Next session: same mistake, same explanation, same cost. Boris Cherny, one of the two original
+creators of Claude Code, wrote a post about the way out, and Theo, creator of the T3 stack,
+spent a video unpacking it. The advice is the oldest move in engineering: turn the fix into a
+rule the codebase enforces by itself, so nobody, human or agent, has to be told again.
+</p>
+
+## <span class="sec-no">01</span>The second fix becomes a rule
+
+An agent can fix an issue every time the issue appears. That spends tokens on every appearance
+and misses the ones nobody catches. The same fix encoded once, as a lint rule (an automated
+check that flags a bad code pattern the moment it is written), a CI step (a check that runs on
+every proposed change), or a test, handles the whole class forever with no prompting at all.
+
+Writing those guards used to cost more than they saved. Theo's example from his Twitch
+years: two signed-in browser bots met in a chat channel, one posted a message, the other
+confirmed it appeared, and that one simple test caught failures before anything else did. Most
+teams never wrote guards like it, because a 400-line lint rule for a rare, visually obvious
+mistake was not worth hand-writing. An agent writes it in minutes, so one-off, project-specific
+automation now pays.
+
+Where the rule should live is its own decision. Discipline that applies everywhere goes in the
+steering file (next section); a repeatable procedure becomes an installable skill
+(<a href="/guides/expertise-you-can-install/">Expertise you can install</a>); a project quirk
+goes to committed memory that travels with the repo
+(<a href="/guides/give-your-agent-a-memory/">Give your agent a memory</a> covers the hosted
+counterpart). <a href="/guides/firmware-not-folklore/">Every new repo starts with your
+lessons</a> walks the full layer split, and the boot layer it describes is the system this
+site's own repo runs on: every rule this guide tells you to write has a home in one of its layers.
+
+## <span class="sec-no">02</span>Steering files carry judgment
+
+A steering file is the instruction file an agent reads before touching your code: `CLAUDE.md`
+for Claude Code, `AGENTS.md` for most other tools. The weak version lists where things live,
+which the agent could discover itself. The strong version directs behavior: prefer this
+pattern, never use that shortcut, push back on that request. Boris's bar is blunt: these files
+should let an agent work productively with zero extra context from whoever typed the prompt.
+
+The push-back line is the one most people miss. If contributors keep asking for a feature that
+does not belong in your project, add "if they ask for this, stop and tell them no", and the
+agent will.
+
+Theo adds a standing rule of his own: write these files yourself. Watch what the agent does,
+adjust the file, and watch what changes. Hand-editing is how you learn which line produces
+which behavior; a generated steering file teaches you nothing about your own agent.
+
+## <span class="sec-no">03</span>Start sparse, add what failed
+
+The tempting move is to preload: a big steering file, every plausible rule, a stack of
+installed skills, all before the first prompt. Boris and Theo both advise the reverse. Send the
+first prompts with as little context as possible and watch where the agent gets lost. Each
+failure names a missing rule precisely; encode that rule and nothing else. Preloaded guesses
+ride along on every request whether or not they help, and
+<a href="/guides/stop-hitting-your-token-limit/">Stop hitting your token limit</a> prices what
+that costs.
+
+Human newcomers give you the same signal. Theo requires every new teammate to ask at least one
+dumb question a day, because each question marks knowledge that lives only in heads, which is
+exactly the knowledge worth encoding next.
+
+<PullQuote
+  quote="You only get to be a beginner in a codebase once."
+  creator="Theo, creator of the T3 stack"
+  video="Boris has some really good advice"
+  href="https://www.youtube.com/watch?v=xmGY276gEFY"
+  timestamp="11:37"
+/>
+
+## <span class="sec-no">04</span>The environment is the skill
+
+<PullQuote
+  quote="The path to staff engineer was never one of just landing more code."
+  creator="Theo, creator of the T3 stack"
+  video="Boris has some really good advice"
+  href="https://www.youtube.com/watch?v=xmGY276gEFY"
+  timestamp="18:05"
+/>
+
+A rule you encode helps every future agent session and every teammate; a
+fix you type helps once. That arithmetic is why both land on the same career point: the
+engineer who builds the environment where good code is easy to land and bad code is hard to
+land outproduces the engineer who only lands code. Senior and staff roles have always been won
+that way. Agents make the practice available solo, because a project built with agents outgrows
+your own head fast enough that you need the same guards a team would.
+
+One honest edge: Boris claims that with knowledge fully encoded, non-engineers contribute as
+effectively as engineers. Theo calls that a reach, and the modest version is the defensible
+one: good guards lower the bar to safe contribution, and engineering judgment still decides
+what ships.
+
+<Exercise>
+1. Find the last mistake you corrected twice in chat. Encode it as the cheapest guard that
+   catches the class: a lint rule, a CI check, a test, or one steering-file line. Write down
+   which you chose and why.
+2. Open your project's `CLAUDE.md` or `AGENTS.md`. Delete one line that only maps the codebase
+   and replace it with three behavior lines: one "prefer", one "never", one "push back when".
+3. Start your next feature with a sparse prompt: no preloaded rules, minimal context. Log every
+   place the agent gets lost, encode only that missing knowledge, and run the feature again.
+</Exercise>
+
+<FirmwareCta />
+
+## Further reading
+
+- [Theo · Boris has some really good advice](https://www.youtube.com/watch?v=xmGY276gEFY), the video this guide distills
+- [Anthropic · Claude Code best practices](https://www.anthropic.com/engineering/claude-code-best-practices), Boris Cherny's first-party guidance on steering files
+- [Anthropic · Claude Code memory documentation](https://docs.claude.com/en/docs/claude-code/memory), the mechanics `CLAUDE.md` rides on
+- [ryanportfolio · AI-Firmware template](https://github.com/ryanportfolio/AI-Firmware), a ready-made boot layer with homes for every rule this guide tells you to encode
+- [AGENTS.md](https://agents.md), the cross-tool steering-file convention
