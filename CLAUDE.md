@@ -80,6 +80,7 @@ Topical reference lives in `.claude/reference/`. Consult BEFORE non-trivial work
 | `commands.md` | Build / dev / test commands |
 | `tech-stack.md` | Non-default picks + why |
 | `deployment.md` | Deploy target, artifacts |
+| `voice.md` | House voice for site/guide prose; loaded by the `writing` skill |
 
 New quirk bites → `/recall save <text>`.
 

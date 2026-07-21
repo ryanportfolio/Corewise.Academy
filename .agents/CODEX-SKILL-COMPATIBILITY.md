@@ -10,7 +10,7 @@
 
 | Status | Skills |
 |---|---|
-| Native | `applying-best-practices`, `brainstorming`, `caveman`, `conflict`, `enhance-prompt`, `executing-plans`, `forge-repo-ui-skill`, `handoff-audit`, `humanizer`, `learning`, `plain-words`, `purposeful-writing`, `recall`, `stranger-test`, `systematic-debugging`, `test-driven-development`, `verification-before-completion`, `writing-plans` |
+| Native | `applying-best-practices`, `brainstorming`, `caveman`, `conflict`, `enhance-prompt`, `executing-plans`, `forge-repo-ui-skill`, `handoff-audit`, `humanizer`, `learning`, `plain-words`, `recall`, `stranger-test`, `systematic-debugging`, `test-driven-development`, `verification-before-completion`, `writing-plans` |
 | Adapted | `addskill`, `fable-mode`, `finishing-a-development-branch`, `init-project`, `lab`, `optimize-context`, `sync-starter`, `using-git-worktrees`, `using-superpowers`, `writing-skills` |
 | Capability-gated | `advocate`, `design-study`, `dispatching-parallel-agents`, `impartial-review`, `subagent-driven-development`, `vet-third-party-skill`, `why` |
 | Dangerous | `create-guide`, `crosslink`, `ingest`, `merge`, `pr`, `safe-ship` |
