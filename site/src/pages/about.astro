@@ -53,16 +53,37 @@ const faq = [
         <li><a href="#sec-a999"><span class="idx-no">A-999</span><span class="idx-name">How this page was drawn</span><span class="idx-tag">END OF SET</span></a></li>
       </ol>
 
-      <div class="hold">
-        <div class="hold-cell"><p class="hold-big" data-count="6">6</p><p class="hold-k">MODELS IN PARALLEL · 1,800+ REGISTERED USERS · COREWISE.VIDEO</p></div>
-        <div class="hold-cell"><p class="hold-big" data-count="1227">1,227</p><p class="hold-k">COMMITS · 519 MERGED PRS · PAPER TRADING ONLY</p></div>
-        <div class="hold-cell"><p class="hold-big funnel">40+40→8→1</p><p class="hold-k">RETRIEVAL FUNNEL · CITED ANSWER OR EXPLICIT REFUSAL</p></div>
-        <div class="hold-cell"><p class="hold-big" data-count="8">8</p><p class="hold-k">AUDIT DIMENSIONS · 0 LLM CALLS · SPEC TO LIVE IN A DAY</p></div>
+      <div class="hold" aria-label="Schedule of works: one key figure per live system">
+        <p class="hold-head"><span>SCHEDULE OF WORKS</span></p>
+        <div class="hold-grid">
+          <a class="hold-cell ink-vermilion" href="#sec-a100">
+            <span class="hold-top"><span class="hold-no">A-100</span><span class="hold-name">COREWISE</span></span>
+            <span class="hold-big"><span data-count="583">583</span>M+</span>
+            <span class="hold-k">TOKENS PROCESSED · 6 AI MODELS IN PARALLEL · 1,800+ REGISTERED USERS</span>
+            <span class="hold-url">corewise.video&nbsp;↗</span>
+          </a>
+          <a class="hold-cell ink-prussian" href="#sec-a200">
+            <span class="hold-top"><span class="hold-no">A-200</span><span class="hold-name">KINEFRACTAL</span></span>
+            <span class="hold-big" data-count="1227">1,227</span>
+            <span class="hold-k">COMMITS IN ONE MONTH · 519 MERGED PRS · PAPER TRADING ONLY</span>
+            <span class="hold-url">kinefractal.com&nbsp;↗</span>
+          </a>
+          <a class="hold-cell ink-viridian" href="#sec-a300">
+            <span class="hold-top"><span class="hold-no">A-300</span><span class="hold-name">TRUENOTE</span></span>
+            <span class="hold-big funnel">40+40→8→1</span>
+            <span class="hold-k">80 SOURCES NARROWED TO ONE CITED ANSWER, OR A REFUSAL</span>
+            <span class="hold-url">truenote.org&nbsp;↗</span>
+          </a>
+          <a class="hold-cell ink-ochre" href="#sec-a400">
+            <span class="hold-top"><span class="hold-no">A-400</span><span class="hold-name">WILLAICITE</span></span>
+            <span class="hold-big" data-count="620">620</span>
+            <span class="hold-k">AUTOMATED TESTS · ANSWER ENGINE OPTIMIZATION AUDIT · ZERO AI CALLS</span>
+            <span class="hold-url">willaicite.com&nbsp;↗</span>
+          </a>
+        </div>
       </div>
 
-      <p class="body-block">Live systems: specified, gated, checked, and approved. The agents drafted.
-        An independent agent that had not seen the work checked. After feedback I approved. Human always in
-        the loop for the final step.</p>
+      <p class="credo">Agents draft. A fresh agent checks. I approve.</p>
     </section>
 
     <!-- A-100 · CoreWise -->
@@ -520,13 +541,39 @@ const faq = [
     :global(#aw[data-hl='dashed'] .plate-svg [data-conv='dashed']) { opacity: 1; }
     :global(#aw[data-hl='phantom'] .plate-svg [data-conv='phantom']) { opacity: 1; }
 
-    /* ---- holdings ---- */
-    .hold { display: grid; grid-template-columns: repeat(4, 1fr); border: 1.5px solid var(--awc); margin-bottom: var(--s-3); }
-    .hold-cell { padding: var(--s-2); border-right: 1px solid var(--awc); }
+    /* ---- holdings: schedule of works ---- */
+    .hold { border: 1.5px solid var(--awc); margin-bottom: var(--s-3); }
+    .hold-head {
+      padding: 7px 12px; border-bottom: 1.5px solid var(--awc);
+      font-family: var(--font-mono); font-weight: 500; font-size: 0.58rem; letter-spacing: 0.2em;
+    }
+    .hold-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .hold-cell {
+      position: relative; display: flex; flex-direction: column; gap: 7px;
+      padding: calc(var(--s-2) + 3px) var(--s-2) var(--s-2); border-right: 1px solid var(--awc);
+      text-decoration: none; color: var(--ink);
+      transition: background var(--dur) var(--ease);
+    }
     .hold-cell:last-child { border-right: 0; }
-    .hold-big { font-family: var(--font-mono); font-weight: 500; font-size: var(--text-lg); }
-    .hold-big.funnel { font-size: var(--text-md); padding-top: 6px; }
-    .hold-k { font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.08em; color: var(--awg); margin-top: 6px; line-height: 1.5; }
+    /* each cell carries its sheet's ink as a drawn top tab, thicker on hover */
+    .hold-cell::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: var(--sheet-ink); transition: height var(--dur) var(--ease);
+    }
+    .hold-cell:hover, .hold-cell:focus-visible { background: color-mix(in srgb, var(--sheet-ink) 7%, transparent); }
+    .hold-cell:hover::before, .hold-cell:focus-visible::before { height: 6px; }
+    .hold-top { display: flex; justify-content: space-between; align-items: baseline; gap: 6px; flex-wrap: wrap; font-family: var(--font-mono); font-weight: 500; }
+    .hold-no { font-size: var(--text-2xs); letter-spacing: 0.1em; color: var(--awg); white-space: nowrap; }
+    .hold-name { font-size: var(--text-2xs); letter-spacing: 0.16em; color: var(--sheet-ink); white-space: nowrap; }
+    .hold-big { font-family: var(--font-mono); font-weight: 500; font-size: var(--text-lg); line-height: 1; color: var(--sheet-ink); }
+    .hold-big.funnel { font-size: var(--text-md); padding-top: 5px; }
+    .hold-k { font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.08em; color: var(--awg); line-height: 1.5; flex: 1; }
+    .hold-url {
+      font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.08em;
+      color: var(--sheet-ink); border-top: 1px solid var(--line-soft); padding-top: 7px;
+    }
+    .hold-cell:hover .hold-url, .hold-cell:focus-visible .hold-url { text-decoration: underline; text-underline-offset: 3px; }
+    .credo { font-family: var(--font-display); font-size: clamp(1.5rem, 4.8vw - 0.27rem, 3rem); line-height: 1.18; margin: var(--s-4) 0 var(--s-2); }
 
     /* ---- rail ---- */
     .rail { border-left: 1px solid var(--line); padding-left: var(--s-3); align-self: start; position: sticky; top: 92px; }
@@ -616,8 +663,9 @@ const faq = [
       .hero-grid { grid-template-columns: 1fr; }
       .cols { grid-template-columns: 1fr; }
       .rail { position: static; border-left: 0; border-top: 1px solid var(--line); padding: var(--s-3) 0 0; }
-      .hold { grid-template-columns: repeat(2, 1fr); }
+      .hold-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .hold-cell:nth-child(2) { border-right: 0; }
+      .hold-cell:nth-child(-n + 2) { border-bottom: 1px solid var(--awc); }
       .tb-cell.wide, .tb-zonecell { display: none; }
     }
     @media (max-width: 560px) {
