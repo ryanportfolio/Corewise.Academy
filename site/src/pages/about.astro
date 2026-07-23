@@ -541,7 +541,7 @@ const faq = [
     .idx a { display: grid; grid-template-columns: 90px 1fr auto; gap: var(--s-2); align-items: baseline; padding: 10px 0; text-decoration: none; color: var(--ink); }
     .idx a:hover .idx-name { color: var(--accent-deep); }
     .idx-no { font-family: var(--font-mono); font-weight: 500; font-size: var(--text-xs); }
-    .idx-name { font-family: var(--font-body); font-size: var(--text-base); transition: color var(--dur) var(--ease); }
+    .idx-name { font-family: var(--font-body); font-size: var(--text-md); transition: color var(--dur) var(--ease); }
     .idx-live, .idx-tag { font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.1em; color: var(--awg); }
     .idx-live .ext { border-bottom: 1px solid var(--line); }
 
@@ -723,6 +723,7 @@ const faq = [
     }
     @media (max-width: 560px) {
       .idx a { grid-template-columns: 64px 1fr; }
+      .idx-name { font-size: var(--text-base); }
       .idx-live, .idx-tag { display: none; }
       .gatekey { grid-template-columns: 1fr; }
     }
