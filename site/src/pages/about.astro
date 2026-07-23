@@ -109,7 +109,7 @@ const faq = [
             <path class="cl-head" d="M0 -3.2 L5 0 L0 3.2" transform="translate(5.07 8) rotate(-60)" />
           </g>
         </svg>
-        <span>shipped</span>
+        <span class="credo-shipped">shipped</span>
       </p>
     </section>
 
@@ -606,6 +606,7 @@ const faq = [
       display: flex; align-items: center; justify-content: space-between; gap: 0.35em; flex-wrap: wrap;
     }
     .credo span { white-space: nowrap; }
+    .credo-shipped { flex: 1 0 100%; text-align: center; font-size: 2em; line-height: 1.05; }
     /* shooting-star connector: static shaft + head, plus a comet dash that streaks along it */
     .credo-star { width: 1.7em; height: 0.52em; flex: 1 0 auto; max-width: 3.2em; overflow: visible; }
     .cs-line { stroke: var(--awg); stroke-width: 1.4; fill: none; }
