@@ -594,10 +594,11 @@ function sealPath(r) {
   // Center-relative on purpose: the hash must describe the seal's geometry,
   // not where it happens to be printed, so run N and run 1 can be compared.
   const parts = [];
+  const step = (Math.PI * 2) / 9;
   for (const rr of [r, r * 0.84, r * 0.56]) {
     let d = '';
-    for (let i = 0; i < 8; i++) {
-      const a = (Math.PI / 4) * i - Math.PI / 2 - Math.PI / 8;
+    for (let i = 0; i < 9; i++) {
+      const a = step * i - Math.PI / 2 - step / 2;
       d += `${i ? 'L' : 'M'}${fmt(rr * Math.cos(a))} ${fmt(rr * Math.sin(a))}`;
     }
     parts.push({ d: d + 'Z', main: rr === r });
@@ -607,21 +608,22 @@ function sealPath(r) {
 function drawSeal(g, cx, cy, r, run) {
   g.innerHTML = '';
   g.setAttribute('transform', `translate(${fmt(cx)} ${fmt(cy)})`);
-  const roman = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'];
+  const roman = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX'];
+  const step = (Math.PI * 2) / 9;
   let hashSrc = '';
   for (const p of sealPath(r)) {
     hashSrc += p.d;
     el('path', { d: p.d, class: p.main ? 'st-key' : 'st-carbon-thin', fill: 'none', 'stroke-width': p.main ? 1.2 : 0.6 }, g);
   }
-  for (let i = 0; i < 8; i++) {
-    const a = (Math.PI / 4) * i - Math.PI / 2 - Math.PI / 8;
+  for (let i = 0; i < 9; i++) {
+    const a = step * i - Math.PI / 2 - step / 2;
     const d = `M${fmt(r * 0.84 * Math.cos(a))} ${fmt(r * 0.84 * Math.sin(a))}L${fmt(r * Math.cos(a))} ${fmt(r * Math.sin(a))}`;
     hashSrc += d;
     el('path', { d, class: 'st-key-thin' }, g);
     el('text', { x: fmt((r + 14) * Math.cos(a)), y: fmt((r + 14) * Math.sin(a) + 3), class: 'annf ann-key', 'text-anchor': 'middle' }, g).textContent = roman[i];
   }
   el('text', { x: 0, y: -4, class: 'ann', 'text-anchor': 'middle' }, g).textContent = 'GEO AUDIT';
-  el('text', { x: 0, y: 9, class: 'annf', 'text-anchor': 'middle' }, g).textContent = '8 DIM · 0 LLM';
+  el('text', { x: 0, y: 9, class: 'annf', 'text-anchor': 'middle' }, g).textContent = '9 DIM · 0 LLM';
   el('text', { x: 0, y: r + 32, class: 'ann', 'text-anchor': 'middle' }, g).textContent = `RUN ${run}`;
   return fnv(hashSrc);
 }
