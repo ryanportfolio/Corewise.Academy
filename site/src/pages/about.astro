@@ -54,12 +54,12 @@ const faq = [
       </ol>
 
       <div class="hold" aria-label="Schedule of works: one key figure per live system">
-        <p class="hold-head"><span>SCHEDULE OF WORKS</span><span class="hold-head-sub">FOUR LIVE SYSTEMS · ONE KEY FIGURE EACH · EACH CELL OPENS ITS SHEET</span></p>
+        <p class="hold-head"><span>SCHEDULE OF WORKS</span></p>
         <div class="hold-grid">
           <a class="hold-cell ink-vermilion" href="#sec-a100">
             <span class="hold-top"><span class="hold-no">A-100</span><span class="hold-name">COREWISE</span></span>
-            <span class="hold-big" data-count="6">6</span>
-            <span class="hold-k">AI MODELS ANSWERING IN PARALLEL · 1,800+ REGISTERED USERS</span>
+            <span class="hold-big"><span data-count="583">583</span>M+</span>
+            <span class="hold-k">TOKENS PROCESSED · 6 AI MODELS IN PARALLEL · 1,800+ REGISTERED USERS</span>
             <span class="hold-url">corewise.video&nbsp;↗</span>
           </a>
           <a class="hold-cell ink-prussian" href="#sec-a200">
@@ -76,8 +76,8 @@ const faq = [
           </a>
           <a class="hold-cell ink-ochre" href="#sec-a400">
             <span class="hold-top"><span class="hold-no">A-400</span><span class="hold-name">WILLAICITE</span></span>
-            <span class="hold-big" data-count="8">8</span>
-            <span class="hold-k">AUDIT CHECKS, ZERO AI CALLS · SPEC TO LIVE SITE IN A DAY</span>
+            <span class="hold-big" data-count="620">620</span>
+            <span class="hold-k">AUTOMATED TESTS · ZERO AI CALLS IN THE AUDIT · SAME INPUT, SAME SCORE</span>
             <span class="hold-url">willaicite.com&nbsp;↗</span>
           </a>
         </div>
@@ -546,11 +546,9 @@ const faq = [
     /* ---- holdings: schedule of works ---- */
     .hold { border: 1.5px solid var(--awc); margin-bottom: var(--s-3); }
     .hold-head {
-      display: flex; justify-content: space-between; gap: var(--s-2); flex-wrap: wrap;
       padding: 7px 12px; border-bottom: 1.5px solid var(--awc);
       font-family: var(--font-mono); font-weight: 500; font-size: 0.58rem; letter-spacing: 0.2em;
     }
-    .hold-head-sub { color: var(--awg); letter-spacing: 0.14em; text-align: right; }
     .hold-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
     .hold-cell {
       position: relative; display: flex; flex-direction: column; gap: 7px;
@@ -669,7 +667,6 @@ const faq = [
       .hold-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .hold-cell:nth-child(2) { border-right: 0; }
       .hold-cell:nth-child(-n + 2) { border-bottom: 1px solid var(--awc); }
-      .hold-head-sub { display: none; }
       .tb-cell.wide, .tb-zonecell { display: none; }
     }
     @media (max-width: 560px) {
