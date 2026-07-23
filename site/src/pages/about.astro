@@ -83,7 +83,27 @@ const faq = [
         </div>
       </div>
 
-      <p class="credo">Agents draft. A fresh agent checks. I approve.</p>
+      <p class="credo">
+        <span>Agents draft</span>
+        <svg class="credo-star" viewBox="0 0 52 16" aria-hidden="true">
+          <path class="cs-line" d="M2 8 H43" />
+          <path class="cs-head" d="M38 3.5 L45 8 L38 12.5" />
+          <path class="cs-comet" d="M2 8 H43" />
+        </svg>
+        <span>fresh agents check</span>
+        <svg class="credo-loop" viewBox="0 0 24 24" aria-hidden="true">
+          <g class="cl-spin">
+            <path class="cl-arc" d="M12 4 A8 8 0 1 1 5.07 8" />
+            <path class="cl-head" d="M0 -3.2 L5 0 L0 3.2" transform="translate(5.07 8) rotate(-60)" />
+          </g>
+        </svg>
+        <svg class="credo-star" viewBox="0 0 52 16" aria-hidden="true">
+          <path class="cs-line" d="M2 8 H43" />
+          <path class="cs-head" d="M38 3.5 L45 8 L38 12.5" />
+          <path class="cs-comet" d="M2 8 H43" />
+        </svg>
+        <span>I approve</span>
+      </p>
     </section>
 
     <!-- A-100 · CoreWise -->
@@ -573,7 +593,40 @@ const faq = [
       color: var(--sheet-ink); border-top: 1px solid var(--line-soft); padding-top: 7px;
     }
     .hold-cell:hover .hold-url, .hold-cell:focus-visible .hold-url { text-decoration: underline; text-underline-offset: 3px; }
-    .credo { font-family: var(--font-display); font-size: clamp(1.5rem, 4.8vw - 0.27rem, 3rem); line-height: 1.18; margin: var(--s-4) 0 var(--s-2); }
+    .credo {
+      font-family: var(--font-display); font-size: clamp(1.35rem, 3.15vw, 2.5rem); line-height: 1.18;
+      margin: var(--s-4) 0 var(--s-2);
+      display: flex; align-items: center; justify-content: space-between; gap: 0.35em; flex-wrap: wrap;
+    }
+    .credo span { white-space: nowrap; }
+    /* shooting-star connector: static shaft + head, plus a comet dash that streaks along it */
+    .credo-star { width: 1.7em; height: 0.52em; flex: 1 0 auto; max-width: 3.2em; overflow: visible; }
+    .cs-line { stroke: var(--awg); stroke-width: 1.4; fill: none; }
+    .cs-head { stroke: var(--awc); stroke-width: 1.6; fill: none; stroke-linejoin: round; stroke-linecap: round; }
+    .cs-comet {
+      stroke: var(--accent-deep, var(--awc)); stroke-width: 2.2; fill: none; stroke-linecap: round;
+      stroke-dasharray: 12 60; stroke-dashoffset: 12;
+      animation: cs-streak 2.6s cubic-bezier(0.55, 0, 0.3, 1) infinite;
+    }
+    @keyframes cs-streak {
+      0% { stroke-dashoffset: 12; opacity: 0; }
+      12% { opacity: 1; }
+      55% { stroke-dashoffset: -46; opacity: 1; }
+      70%, 100% { stroke-dashoffset: -46; opacity: 0; }
+    }
+    /* review loop: an arrowed circle that turns, one revolution per cycle */
+    .credo-loop { width: 0.72em; height: 0.72em; flex: 0 0 auto; overflow: visible; }
+    .cl-arc { stroke: var(--awc); stroke-width: 1.8; fill: none; stroke-linecap: round; }
+    .cl-head { stroke: var(--awc); stroke-width: 1.8; fill: none; stroke-linejoin: round; stroke-linecap: round; }
+    .cl-spin { transform-origin: 12px 12px; animation: cl-turn 2.6s cubic-bezier(0.6, 0.05, 0.35, 1) infinite; }
+    @keyframes cl-turn {
+      0%, 18% { transform: rotate(0deg); }
+      75%, 100% { transform: rotate(360deg); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .cs-comet { animation: none; opacity: 0; }
+      .cl-spin { animation: none; }
+    }
 
     /* ---- rail ---- */
     .rail { border-left: 1px solid var(--line); padding-left: var(--s-3); align-self: start; position: sticky; top: 92px; }
