@@ -1,0 +1,113 @@
+---
+title: Have the model rewrite your prompt first
+description: 'An enhance-prompt skill turns a rough request into the full prompt the model will actually run, and shows it to you first. Reading that rewrite catches misunderstandings before any work starts.'
+track: prompting
+level: practitioner
+number: 25
+minutes: 6
+objectives:
+  - 'Run a prompt-enhancement pass on a rough request and read the rewrite back as an alignment check before any work starts.'
+  - 'Identify the additions that make a prompt work for a cold reader: exact file paths, current versus desired state, explicit action verbs, and scope guards.'
+  - 'Use TODO placeholders to keep a rewrite honest, resolving each one instead of letting the model fill the gap with a guess.'
+prerequisites:
+  - slug: sharpen-the-prompt-or-brainstorm-first
+    note: 'Assumes you know when a task needs a sharper prompt at all, versus a brainstorm to settle the goal first.'
+sources: []
+selfCheck:
+  - q: 'Why read the enhanced prompt before running it, instead of running it straight away?'
+    a: 'The rewrite is the model''s understanding of your request, laid out where you can check it. If it aimed at the wrong goal, you find out in thirty seconds of reading rather than after a session of edits you did not want. Confirming "yes, that is what I meant" costs almost nothing; unwinding work built on a misread costs the afternoon.'
+  - q: 'What does a TODO placeholder in the rewrite tell you?'
+    a: 'It marks a fact the model needed but could not verify, so it refused to invent one. Each placeholder is a question that would otherwise have been answered by a silent guess mid-run. Resolve every one before sending; the ones you cannot answer are the ambiguities that were headed for a wrong guess.'
+  - q: 'The rewrite added file paths, an action verb, and a scope guard you never typed. Why do those matter to a fresh session?'
+    a: 'A fresh session has no conversation memory, so everything you hold in your head has to be in the prompt. Exact paths keep the work out of lookalike files, an explicit verb decides whether you get edits or advice, and a scope guard stops a rewrite of code you never mentioned. The skill gathers these because the receiver cannot.'
+status: review
+lastUpdated: 2026-07-22
+---
+
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+import SkillCopy from '../../components/SkillCopy.astro';
+import { ENHANCE_PROMPT_SKILL } from '../../data/enhancePromptSkill';
+
+<Chalk>read the rewrite before you run it</Chalk>
+
+<p class="lede">
+You type "fix the login redirect" and the model starts working on its best guess of what you
+meant. If the guess is wrong, you find out the slow way: minutes later, in edits you did not
+want. An enhance-prompt skill adds one step between the rough request and the work. The model
+rewrites your request into the full prompt it thinks you meant, and shows it to you before
+anything runs. That pause buys two things: a misunderstanding surfaces while it is still cheap,
+and the model hands itself better instructions than the ones you typed.
+</p>
+
+## <span class="sec-no">01</span>Read the rewrite back
+
+The rewrite is the model's understanding of your request, laid out where you can check it.
+"Review the auth module" might come back as "Audit client/src/auth/ and list findings by
+severity; do not edit files." If you wanted edits, you have caught the misread in thirty
+seconds of reading instead of a discarded session.
+
+The skill refuses to invent what it cannot verify. A fact you never gave and it cannot check
+(which environments the bug appears in, whether a copy change needs sign-off) comes back as a
+placeholder: `<TODO: confirm>`. Each placeholder is a question that would otherwise have been
+answered by a silent guess. Answer them all before you send.
+
+The habit is one question, asked of yourself after reading: is this what I had in mind? When
+the answer is no, you correct a paragraph of text, and the correction costs nothing. This
+assumes the goal itself is settled; when it is not, prompt polish is the wrong move, and
+<a href="/guides/sharpen-the-prompt-or-brainstorm-first/">Sharpen the prompt or brainstorm
+first</a> covers that fork.
+
+## <span class="sec-no">02</span>The model briefs itself
+
+The second payoff is that the rewrite carries context you would not have typed. A fresh
+session has no conversation memory, so everything you hold in your head has to be in the
+prompt, and the skill goes and gets it:
+
+| The rewrite adds | The guess it replaces |
+| --- | --- |
+| Exact file paths and line numbers | Work landing in a lookalike file |
+| Current versus desired behavior, both spelled out | A fix aimed at the one symptom you mentioned |
+| An explicit action verb: "change", or "propose, do not edit" | Edits when you wanted advice, or advice when you wanted edits |
+| Scope guards like "do not refactor unrelated files" | A drive-by rewrite of code you never mentioned |
+| A phase split for risky work: audit first, edits after your approval | A change that is expensive to undo, made in one pass |
+| An escape hatch: stop and ask on a blocker | A guessed answer to a question you never saw |
+
+The craft rules behind those additions are the ones <a href="/guides/brief-the-model/">Brief
+the model like a brilliant new hire</a> teaches you to apply by hand: explicit verbs, a stated
+output shape, the reason behind any non-obvious constraint. The skill also writes in a calm
+imperative voice with no capital-letter emphasis, for the reasons
+<a href="/guides/stop-shouting-at-the-model/">Stop shouting at the model</a> covers. The
+difference is that here the model applies the checklist to itself, every time, without you
+holding it.
+
+## <span class="sec-no">03</span>Install the skill
+
+The file below is the skill we run behind this site. Our working copy is compressed to save
+tokens; this version is expanded to plain prose for reading, with em dashes swapped for house
+punctuation and the substance unchanged. Save it as a skill and invoke it with
+`/enhance-prompt`, or paste the whole file above a rough request in any chat model as a
+one-off. Either way the deliverable is the prompt, never the work: the skill's own rules
+forbid executing what it wrote, so the read-back gate stays in place. Installing it is
+adopting our judgment about what a prompt needs, the trade
+<a href="/guides/expertise-you-can-install/">Expertise you can install</a> examines.
+
+<SkillCopy skill={ENHANCE_PROMPT_SKILL} name="/enhance-prompt" savePath=".claude/skills/enhance-prompt/SKILL.md" />
+
+It earns the most on the first message of a session, where a wrong direction is compounded by
+every turn that follows.
+
+<Exercise>
+1. Run your next real request through the skill, installed or pasted as a one-off. Before
+   sending the result anywhere, answer in writing: is the goal it states the goal you had?
+2. Count the additions you never typed: paths, verbs, guards, phases. Each one is a guess the
+   model would otherwise have made mid-run.
+3. Resolve every `<TODO>` placeholder before sending. Note the ones you could not answer;
+   those were the ambiguities headed for a wrong guess.
+</Exercise>
+
+## Further reading
+
+- [Anthropic · Claude prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices), the craft rules the skill encodes
+- [Anthropic · agent skills documentation](https://docs.claude.com/en/docs/claude-code/skills), how skill files load and run
+- [OpenAI · latest-model prompting guide](https://developers.openai.com/api/docs/guides/latest-model), the other vendor arriving at the same lean advice
