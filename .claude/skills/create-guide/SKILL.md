@@ -73,13 +73,17 @@ contain a colon plus space). Doc-grounded deltas:
   does next. Answer early, be specific, cut any sentence that can go without loss.
 - **Ultra concise**: 550-850 words of body prose. Shorter and denser wins. Set
   `minutes` from final length (4-7 typical).
-- **No walls of text.** Paragraphs run 1-4 sentences; break at each new idea.
-  A dense block gets skimmed and forgotten, so a paragraph past ~60 words needs
-  a reason to exist at that length. Then ask whether any stretch is really a
-  table (a comparison), a list (steps or parallel items), or a visual (a flow
-  or layout), and convert it. Structure only genuine structure; prose still
-  carries the argument. Full rule in `copy-rules.md` ("Break information into
-  the form that fits").
+- **No walls of text, and run the layout pass.** Paragraphs run 1-4 sentences;
+  break at each new idea. The defect that gets a draft rejected is a paragraph
+  that names a set and then swallows the items: "The audit checks three things:
+  routing integrity (...), index truth (...), and freshness (...)". Announce,
+  then hand the items to a structure: "The audit runs three checks:" plus a
+  list. Convert a named set to a table (shared dimensions) or a list, a term
+  and its meaning to a **bold-led** block, ordered steps to a numbered list.
+  Structure only genuine structure; over-structuring is its own defect, and
+  prose still carries the argument. `npm run lint:copy` prints candidates
+  (advisory, never blocks). Full rule in `copy-rules.md` ("The layout pass is
+  required, not optional").
 - **State the rule, skip the flourish.** No aphorism capstones, no dramatic
   justifications on self-evident rules, no praise of the guide's own advice,
   no coined names. Rules read as flat plain declaratives. When a mechanism has

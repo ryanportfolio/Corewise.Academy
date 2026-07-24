@@ -175,8 +175,50 @@ carries the argument while a table, a list, or a visual carries the part that tr
 is a table, a list, or a picture. When a guide is mostly unbroken paragraphs, that is
 the signal to restructure, not to add ornaments.
 
-No build gate for this one; the /ingest and /create-guide skills restate it at
-writing time, and the PR review is the backstop.
+### The layout pass is required, not optional (editor ruling, 2026-07-24)
+
+From the AI OS ingest: the first draft was rejected as "too much like a wall of
+text", and the rewrite that replaced it was accepted as "much better". Writing a
+guide is not done until this pass has run. Do it on the finished draft, before
+the build.
+
+Walk the draft and ask of each stretch of prose: **is this carrying a shape?**
+
+| The prose contains | Convert it to |
+|---|---|
+| A named set the paragraph then describes ("four failure modes", "three checks") | A table if the items share dimensions, a list if they do not |
+| A term followed by what it means | A bold-led block: **Term.** Then the explanation |
+| Two settings, options, or piles the reader must choose between | One bold-led block each |
+| Steps that happen in order | A numbered list |
+| A stretch over ~120 words on one idea | Split at each new idea |
+
+What the rewrite actually changed, as the pattern to copy:
+
+- The four failure modes became a table (failure · what it looks like · the fix).
+- "Expertise context is X, situational context is Y" became two **bold-led**
+  blocks.
+- "The audit checks three things: routing integrity (...), index truth (...),
+  and freshness (...)" became "The audit runs three checks:" followed by a
+  three-item list.
+- The backtrack advice became a numbered list of 3 steps.
+
+**The measured finding** (calibrated across the whole catalogue, 2026-07-24):
+paragraph count is NOT the signal. The rejected draft had *fewer* consecutive
+prose paragraphs than the approved rewrite, and several published guides carry
+longer paragraphs than the rejected draft did. The signal that separated them was
+a paragraph that **names a set and then swallows the items itself** instead of
+handing them to a structure. Compare:
+
+- Rejected: "The audit checks three things: routing integrity (...), index truth
+  (...), and freshness (...)" — 49 words, no structure.
+- Approved: "The audit runs three checks:" — 5 words, then a list.
+
+Enforcement is advisory, because this is a judgment call and a regex cannot make
+it: `site/scripts/layout-check.mjs` runs in `npm run build` and `npm run lint:copy`,
+reports the paragraphs worth a second look, and **always exits 0**. It never blocks
+a build. Treat its output as a list of candidates for this pass, not a list of
+errors: a short contrast in prose is often right, and over-structuring is its own
+defect (see the two limits at the end of the previous section).
 
 ## Provenance and artifacts (editor rulings, 2026-07-18)
 
