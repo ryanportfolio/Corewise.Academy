@@ -1,0 +1,175 @@
+---
+title: Keep a growing knowledge base accurate
+description: 'Wrong agent answers usually trace to the files the agent reads. The four ways a growing knowledge base drifts from reality, and the habits (a router file, read-only audits, scheduled pulls, backtracking) that catch the drift.'
+track: agents
+level: practitioner
+number: 28
+minutes: 7
+objectives:
+  - 'Diagnose a wrong agent answer as poisoning, bloat, confusion, or clash, and pick the matching fix.'
+  - 'Sort any fact into always-loaded context or fetched-on-demand context by how often a run needs it.'
+  - 'Restructure a root instructions file into a routing table, and test the layout by finding a file yourself without search.'
+  - 'Run a read-only audit that reports drift and waits for approval, backed by scheduled pulls that keep each data source current.'
+prerequisites:
+  - slug: firmware-not-folklore
+    note: 'Introduces the committed CLAUDE.md layer this guide turns into a routing table.'
+sources:
+  - url: https://www.youtube.com/watch?v=Ek1NBfnnTH0
+    creator: Nate Herk (AI Automation)
+    video: 5 Hacks to Instantly Level Up Your AI OS
+    timestamps: ['0:14', '1:56', '4:35', '8:12', '10:06', '12:07', '16:53', '18:38', '19:10', '20:15', '22:51']
+selfCheck:
+  - q: Your agent confidently repeats a fact you later find is false. Which failure mode is that, and what is the cheapest fix?
+    a: 'Poisoning: a wrong fact sits in the files the agent reads, and the agent relays it as data because it has no reason to doubt its own sources. The fix is verification: cross-check claims against a live system or a web search, and route anything the agent is not confident about to a human instead of letting it ship.'
+  - q: Why should the audit report what it finds and wait, instead of fixing problems as it goes?
+    a: 'Because the audit''s findings are themselves guesses until you confirm them. An audit that renames, moves, or deletes on its own judgment can do more damage in one pass than the drift it was hunting. Reporting first costs you one approval; an unwanted bulk rename costs an afternoon. The written report also leaves a record you can compare against the next run.'
+  - q: The agent says it has no access to data you know it has. What do you do before correcting it?
+    a: 'Have it backtrack: retrace where it actually searched and explain why it missed the file. The trace points at the exact routing rule that is missing or wrong, and the agent has now proven its own mistake. Fixing the routing from that evidence works far better than telling it to never make the mistake again.'
+status: draft
+lastUpdated: 2026-07-23
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+import FirmwareCta from '../../components/FirmwareCta.astro';
+
+<Chalk>an agent is only as right as the files it reads</Chalk>
+
+<p class="lede">
+When an agent gives you a wrong answer, the cause is usually in its files, not in the model.
+Nate Herk runs his business from one big folder of files that Claude reads and writes, adds new
+data to it every week, and spends real effort keeping it truthful, because a knowledge base that
+drifts from reality turns a good model into a confident liar. This guide distills the four ways
+that drift happens and the habits he uses to catch it.
+</p>
+
+## <span class="sec-no">01</span>Four ways the files go wrong
+
+Context is whatever material sits in front of the model when it answers. When the answer comes
+out wrong, one of four things went wrong with that material.
+
+| Failure | What it looks like | The fix |
+| --- | --- | --- |
+| Poisoning | A false fact sits among the true ones, and the agent relays it as data | Verify: cross-check a live source or a web search, send low-confidence answers to a human |
+| Bloat | So much is loaded that the relevant detail drowns | Load less by default; fetch detail on demand (next section) |
+| Confusion | A fact is missing or off-topic, so the model fills the gap itself | Close the gap, or have the agent say the data is absent |
+| Clash | Two sources disagree, and the agent cannot tell which to trust | Keep one source of truth; date-stamp or retire the old version |
+
+Clash is the sneakiest. In March your policy was always refund; in June it became never refund.
+Both files still exist, so a refund question now gets the March answer, the June answer, or an
+invention, depending on which file the agent reads first. Bloat compounds every other failure:
+the more you load, the harder the model works to find what matters, a cost
+<a href="/guides/stop-hitting-your-token-limit/">Stop hitting your token limit</a> measures in
+tokens and this guide measures in wrong answers.
+
+## <span class="sec-no">02</span>Two kinds of context
+
+Herk splits everything the agent might need into two piles. Expertise context is what every run
+needs: who you are, what the business does, the standing policies. It earns a permanent seat in
+the instructions. Situational context is what one run needs: yesterday's support ticket, one
+client's contract. The agent fetches it at the moment the question comes up, uses it, and lets
+it go.
+
+His analogy is a principal and a teacher making a seating chart. The principal knows how
+classrooms should run; the teacher knows which student needs to sit near the board. The first
+kind of knowledge belongs in the rulebook, the second gets looked up per class.
+
+Filing a fact in the wrong pile is how the failures above start. Situational data loaded
+permanently becomes bloat now and clash later, when the ticket is stale but still in front of
+the model.
+
+## <span class="sec-no">03</span>Turn the root file into a router
+
+`CLAUDE.md` is the instructions file Claude Code reads at the start of every session, and most
+people write it as a system prompt: background, duties, tone. Herk's root file is a routing
+table. It opens with two lines of identity, then spends the rest saying where things live:
+meeting notes here, client work here, API keys here, templates here. Folders deeper in the tree
+carry their own `CLAUDE.md` with project-specific instructions, the behavior-steering kind that
+<a href="/guides/turn-repeated-fixes-into-rules/">Turn repeated fixes into rules</a> argues for.
+The root stays a map, because in a knowledge base of thousands of files, an agent without a
+map can spend five minutes failing to find one.
+
+The layout itself matters less than the routing. Flat folders at the root or one deep tree both
+work, and Herk's test for whether yours works is plain: pick something you made, open your file
+explorer, and find it by clicking folders, with no search box. If you can walk the path
+yourself, an agent with routing rules can too. If you get lost in your own folders, so will it.
+
+## <span class="sec-no">04</span>Audit the claims, then approve
+
+A knowledge base makes claims: this index lists the folders, this summary reflects the meetings,
+this feed is current. Herk's habit is a recurring audit, packaged as a skill, that checks every
+claim against reality and is forbidden to fix anything. It reads the whole knowledge base, then
+writes a report to an `audits/` folder: here is what I found, here are the fixes, approve or
+decline.
+
+<PullQuote
+  quote="Indexes and wikis are claims about what exists and what's current."
+  creator="Nate Herk"
+  video="5 Hacks to Instantly Level Up Your AI OS"
+  href="https://www.youtube.com/watch?v=Ek1NBfnnTH0"
+  timestamp="10:06"
+/>
+
+His own run is a fair picture of what drift looks like. The index claimed 55 folders; the disk
+had 79. The knowledge was current through June 29, so any July question would get a confident
+June answer. One data source had quietly stopped updating. None of it was visible in daily use,
+which is the point: drift accumulates silently until an audit dates it. The same rot hits
+managed memory stores, and <a href="/guides/give-your-agent-a-memory/">Give your agent a
+memory</a> covers the pruning side.
+
+The audit checks three things: routing integrity (does everything the router points to exist,
+and is anything filed where no route reaches it), index truth (do the lists match the disk), and
+freshness (when did each data source last update, and is that on schedule or a silent stall).
+
+## <span class="sec-no">05</span>Schedule pulls, split what grows
+
+Freshness problems repeat on a calendar, so the fix belongs on a calendar. Herk's Monday Q&A and
+Tuesday leadership meeting feed his knowledge base every week, so scheduled runs pull the
+transcripts in automatically instead of relying on him to remember.
+<a href="/guides/automate-a-workflow-as-a-claude-routine/">Automate a workflow as a Claude
+routine</a> covers how to set one up in plain language.
+
+Growth problems get the opposite treatment: split them. Herk kept one master wiki until Claude
+itself suggested splitting it, because two distinct kinds of data (YouTube transcripts, meeting
+transcripts) were both growing on their own schedules. Two focused wikis mean the agent searches
+a fifth of the files, spends fewer tokens, and grabs the wrong document less often. The rule
+generalizes: when a distinct pile of knowledge keeps growing, give it its own home and a route
+in the router. The same instinct, applied for a whole team, is
+<a href="/guides/build-a-knowledge-base-your-team-can-ask/">Build a knowledge base your team can
+ask</a>.
+
+## <span class="sec-no">06</span>Backtrack the wrong answer
+
+The last habit runs at the moment of failure. The agent searched five minutes for a file it
+should have found instantly, or claimed it has no access to data you know it has. The reflex
+correction ("you do have access, never say that again") teaches it nothing durable. Herk instead
+has it backtrack: go look at what you did, where you searched, and explain why you missed the
+file.
+
+The agent retraces its steps, finds the wrong turn, and names the missing route or the misfiled
+folder. Now the fix is grounded in evidence rather than in a scolding, and you have it apply
+that fix: update the routing, move the file, reorganize the folder it stumbled in. Each
+backtrack converts one bad search into one permanent repair, the same loop
+<a href="/guides/turn-repeated-fixes-into-rules/">Turn repeated fixes into rules</a> builds for
+code.
+
+<Exercise>
+1. Pick something you made last month and find it in your file explorer by clicking folders
+   only, no search. Every dead end marks a routing rule your root file is missing; write the
+   rule.
+2. Ask your agent for a read-only audit: check that every path the root file points to exists,
+   compare any index against the actual folders, and date the newest entry in each data source.
+   Have it write the findings to an `audits/` folder and wait for your approval before fixing.
+3. Next time the agent claims it lacks data you know it has, have it retrace its search and
+   explain the miss, then apply the routing fix it proposes.
+</Exercise>
+
+<FirmwareCta />
+
+## Further reading
+
+- [Nate Herk · 5 Hacks to Instantly Level Up Your AI OS](https://www.youtube.com/watch?v=Ek1NBfnnTH0), the video this guide distills
+- [Anthropic · Claude Code memory documentation](https://docs.claude.com/en/docs/claude-code/memory), the CLAUDE.md mechanics the router rides on
+- [Chroma · Context Rot research](https://research.trychroma.com/context-rot), measured evidence that bloat degrades answers even inside large context windows
+- [ryanportfolio · AI-Firmware template](https://github.com/ryanportfolio/AI-Firmware), a ready-made boot layer with a routing kernel and homes for the rules this guide has you write
