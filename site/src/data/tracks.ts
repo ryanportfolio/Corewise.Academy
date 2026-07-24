@@ -26,7 +26,7 @@ export const TRACKS: Track[] = [
     name: 'Foundations',
     constellation: 'THE LENS',
     description:
-      'The Foundations layer is a set of guides on how AI models actually work: what they can do, where they fail, and how to tell the difference.',
+      'How AI models actually work: what they can do, where they fail, and how to tell the difference.',
     sky: { cx: -3.4, cy: 0.9, spread: 1.0 },
   },
   {
