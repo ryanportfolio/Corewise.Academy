@@ -4,7 +4,7 @@ description: 'Wrong agent answers usually trace to the files the agent reads. Th
 track: agents
 level: practitioner
 number: 28
-minutes: 7
+minutes: 6
 objectives:
   - 'Diagnose a wrong agent answer as poisoning, bloat, confusion, or clash, and pick the matching fix.'
   - 'Sort any fact into always-loaded context or fetched-on-demand context by how often a run needs it.'
@@ -15,7 +15,7 @@ prerequisites:
     note: 'Introduces the committed CLAUDE.md layer this guide turns into a routing table.'
 sources:
   - url: https://www.youtube.com/watch?v=Ek1NBfnnTH0
-    creator: Nate Herk (AI Automation)
+    creator: Nate (AI Automation)
     video: 5 Hacks to Instantly Level Up Your AI OS
     timestamps: ['0:14', '1:56', '4:35', '8:12', '10:06', '12:07', '16:53', '18:38', '19:10', '20:15', '22:51']
 selfCheck:
@@ -38,10 +38,9 @@ import FirmwareCta from '../../components/FirmwareCta.astro';
 
 <p class="lede">
 When an agent gives you a wrong answer, the cause is usually in its files, not in the model.
-Nate Herk runs his business from one big folder of files that Claude reads and writes, adds new
-data to it every week, and spends real effort keeping it truthful, because a knowledge base that
-drifts from reality turns a good model into a confident liar. This guide distills the four ways
-that drift happens and the habits he uses to catch it.
+Nate, of the AI Automation channel, runs his business from one big folder of files that Claude reads and writes, and adds
+new data to it every week. This guide distills the four ways such a knowledge base drifts from
+reality, and the habits he uses to catch the drift.
 </p>
 
 ## <span class="sec-no">01</span>Four ways the files go wrong
@@ -57,23 +56,26 @@ out wrong, one of four things went wrong with that material.
 | Clash | Two sources disagree, and the agent cannot tell which to trust | Keep one source of truth; date-stamp or retire the old version |
 
 Clash is the sneakiest. In March your policy was always refund; in June it became never refund.
-Both files still exist, so a refund question now gets the March answer, the June answer, or an
-invention, depending on which file the agent reads first. Bloat compounds every other failure:
-the more you load, the harder the model works to find what matters, a cost
-<a href="/guides/stop-hitting-your-token-limit/">Stop hitting your token limit</a> measures in
-tokens and this guide measures in wrong answers.
+Both files still exist, so a refund question gets the March answer, the June answer, or an
+invention, depending on which file the agent reads first.
+
+Bloat compounds the other three: the more you load, the harder the model works to find what
+matters. <a href="/guides/stop-hitting-your-token-limit/">Stop hitting your token limit</a>
+measures that cost in tokens; this guide measures it in wrong answers.
 
 ## <span class="sec-no">02</span>Two kinds of context
 
-Herk splits everything the agent might need into two piles. Expertise context is what every run
-needs: who you are, what the business does, the standing policies. It earns a permanent seat in
-the instructions. Situational context is what one run needs: yesterday's support ticket, one
-client's contract. The agent fetches it at the moment the question comes up, uses it, and lets
-it go.
+Everything the agent might need goes in one of two piles.
 
-His analogy is a principal and a teacher making a seating chart. The principal knows how
-classrooms should run; the teacher knows which student needs to sit near the board. The first
-kind of knowledge belongs in the rulebook, the second gets looked up per class.
+**Expertise context**: what every run needs. Who you are, what the business does, the standing
+policies. It earns a permanent seat in the instructions.
+
+**Situational context**: what one run needs. Yesterday's support ticket, one client's contract.
+The agent fetches it at the moment the question comes up, uses it, and lets it go.
+
+Nate's analogy is a principal and a teacher making a seating chart. The principal knows how
+classrooms should run; the teacher knows which student needs to sit near the board. Rulebook
+knowledge stays loaded, per-class knowledge gets looked up.
 
 Filing a fact in the wrong pile is how the failures above start. Situational data loaded
 permanently becomes bloat now and clash later, when the ticket is stale but still in front of
@@ -82,75 +84,81 @@ the model.
 ## <span class="sec-no">03</span>Turn the root file into a router
 
 `CLAUDE.md` is the instructions file Claude Code reads at the start of every session, and most
-people write it as a system prompt: background, duties, tone. Herk's root file is a routing
-table. It opens with two lines of identity, then spends the rest saying where things live:
+people write it as a system prompt: background, duties, tone.
+
+Nate's root file is a routing table instead. Two lines of identity, then where things live:
 meeting notes here, client work here, API keys here, templates here. Folders deeper in the tree
 carry their own `CLAUDE.md` with project-specific instructions, the behavior-steering kind that
 <a href="/guides/turn-repeated-fixes-into-rules/">Turn repeated fixes into rules</a> argues for.
-The root stays a map, because in a knowledge base of thousands of files, an agent without a
-map can spend five minutes failing to find one.
+The root stays a map, because in a knowledge base of thousands of files, an agent without a map
+can spend five minutes failing to find one.
 
-The layout itself matters less than the routing. Flat folders at the root or one deep tree both
-work, and Herk's test for whether yours works is plain: pick something you made, open your file
-explorer, and find it by clicking folders, with no search box. If you can walk the path
-yourself, an agent with routing rules can too. If you get lost in your own folders, so will it.
+The layout itself matters less than the routing. Nate's test for whether yours works: pick
+something you made, open your file explorer, and find it by clicking folders, with no search
+box. If you can walk the path yourself, an agent with routing rules can too. If you get lost in
+your own folders, so will it.
 
 ## <span class="sec-no">04</span>Audit the claims, then approve
 
-A knowledge base makes claims: this index lists the folders, this summary reflects the meetings,
-this feed is current. Herk's habit is a recurring audit, packaged as a skill, that checks every
-claim against reality and is forbidden to fix anything. It reads the whole knowledge base, then
-writes a report to an `audits/` folder: here is what I found, here are the fixes, approve or
-decline.
+A knowledge base makes claims: this index lists the folders, this summary reflects the
+meetings, this feed is current. Nate's habit is a recurring audit, packaged as a skill, that
+checks every claim against reality and is forbidden to fix anything. It reads the whole
+knowledge base, then writes a report to an `audits/` folder and waits for approval.
 
 <PullQuote
   quote="Indexes and wikis are claims about what exists and what's current."
-  creator="Nate Herk"
+  creator="Nate, AI Automation"
   video="5 Hacks to Instantly Level Up Your AI OS"
   href="https://www.youtube.com/watch?v=Ek1NBfnnTH0"
   timestamp="10:06"
 />
 
-His own run is a fair picture of what drift looks like. The index claimed 55 folders; the disk
-had 79. The knowledge was current through June 29, so any July question would get a confident
-June answer. One data source had quietly stopped updating. None of it was visible in daily use,
-which is the point: drift accumulates silently until an audit dates it. The same rot hits
-managed memory stores, and <a href="/guides/give-your-agent-a-memory/">Give your agent a
-memory</a> covers the pruning side.
+The audit runs three checks:
 
-The audit checks three things: routing integrity (does everything the router points to exist,
-and is anything filed where no route reaches it), index truth (do the lists match the disk), and
-freshness (when did each data source last update, and is that on schedule or a silent stall).
+- **Routing integrity**: does everything the router points to exist, and is anything filed
+  where no route reaches it
+- **Index truth**: do the lists match the disk
+- **Freshness**: when did each data source last update, and is that on schedule or a silent
+  stall
+
+His own run shows what drift looks like. The index claimed 55 folders; the disk had 79. The
+knowledge was current through June 29, so any July question would get a confident June answer.
+None of it was visible in daily use, which is the point: drift accumulates silently until an
+audit dates it. The same rot hits managed memory stores, and
+<a href="/guides/give-your-agent-a-memory/">Give your agent a memory</a> covers the pruning
+side.
 
 ## <span class="sec-no">05</span>Schedule pulls, split what grows
 
-Freshness problems repeat on a calendar, so the fix belongs on a calendar. Herk's Monday Q&A and
-Tuesday leadership meeting feed his knowledge base every week, so scheduled runs pull the
-transcripts in automatically instead of relying on him to remember.
+**Schedule the pulls.** Freshness problems repeat on a calendar, so the fix belongs on a
+calendar. Nate's Monday Q&A and Tuesday leadership meeting feed his knowledge base every week,
+so scheduled runs pull the transcripts in automatically instead of relying on him to remember.
 <a href="/guides/automate-a-workflow-as-a-claude-routine/">Automate a workflow as a Claude
 routine</a> covers how to set one up in plain language.
 
-Growth problems get the opposite treatment: split them. Herk kept one master wiki until Claude
-itself suggested splitting it, because two distinct kinds of data (YouTube transcripts, meeting
-transcripts) were both growing on their own schedules. Two focused wikis mean the agent searches
-a fifth of the files, spends fewer tokens, and grabs the wrong document less often. The rule
-generalizes: when a distinct pile of knowledge keeps growing, give it its own home and a route
-in the router. The same instinct, applied for a whole team, is
-<a href="/guides/build-a-knowledge-base-your-team-can-ask/">Build a knowledge base your team can
-ask</a>.
+**Split what grows.** Nate kept one master wiki until Claude itself suggested splitting it,
+because two distinct kinds of data (YouTube transcripts, meeting transcripts) were both growing
+on their own schedules. Two focused wikis mean the agent searches a fifth of the files, spends
+fewer tokens, and grabs the wrong document less often.
+
+The rule generalizes: when a distinct pile of knowledge keeps growing, give it its own home and
+a route in the router. The same instinct, applied for a whole team, is
+<a href="/guides/build-a-knowledge-base-your-team-can-ask/">Build a knowledge base your team
+can ask</a>.
 
 ## <span class="sec-no">06</span>Backtrack the wrong answer
 
-The last habit runs at the moment of failure. The agent searched five minutes for a file it
+The last habit runs at the moment of failure: the agent searched five minutes for a file it
 should have found instantly, or claimed it has no access to data you know it has. The reflex
-correction ("you do have access, never say that again") teaches it nothing durable. Herk instead
-has it backtrack: go look at what you did, where you searched, and explain why you missed the
-file.
+correction ("you do have access, never say that again") teaches it nothing durable.
 
-The agent retraces its steps, finds the wrong turn, and names the missing route or the misfiled
-folder. Now the fix is grounded in evidence rather than in a scolding, and you have it apply
-that fix: update the routing, move the file, reorganize the folder it stumbled in. Each
-backtrack converts one bad search into one permanent repair, the same loop
+Nate instead has it backtrack:
+
+1. Retrace: go look at what you did and where you searched.
+2. Explain: name the wrong turn, the missing route, or the misfiled folder.
+3. Repair: apply the fix it just proposed, grounded in that evidence.
+
+Each backtrack converts one bad search into one permanent repair, the same loop
 <a href="/guides/turn-repeated-fixes-into-rules/">Turn repeated fixes into rules</a> builds for
 code.
 
@@ -169,7 +177,7 @@ code.
 
 ## Further reading
 
-- [Nate Herk · 5 Hacks to Instantly Level Up Your AI OS](https://www.youtube.com/watch?v=Ek1NBfnnTH0), the video this guide distills
+- [Nate (AI Automation) · 5 Hacks to Instantly Level Up Your AI OS](https://www.youtube.com/watch?v=Ek1NBfnnTH0), the video this guide distills
 - [Anthropic · Claude Code memory documentation](https://docs.claude.com/en/docs/claude-code/memory), the CLAUDE.md mechanics the router rides on
 - [Chroma · Context Rot research](https://research.trychroma.com/context-rot), measured evidence that bloat degrades answers even inside large context windows
 - [ryanportfolio · AI-Firmware template](https://github.com/ryanportfolio/AI-Firmware), a ready-made boot layer with a routing kernel and homes for the rules this guide has you write
