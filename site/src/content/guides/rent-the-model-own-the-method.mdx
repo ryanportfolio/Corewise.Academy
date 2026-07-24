@@ -4,7 +4,7 @@ description: 'Renting the model means owning the method: extracting how the most
 track: agents
 level: practitioner
 number: 9
-minutes: 10
+minutes: 8
 objectives:
   - Route a task to the cheapest model-and-effort pairing that clears its quality bar, using a toolkit table you maintain yourself.
   - Extract an advanced model's working discipline from a session you admired into an installable skill file any model can run.
@@ -15,7 +15,7 @@ prerequisites:
     note: Know what a skill is and how a proactive system is shaped before deciding which model runs inside one.
 sources:
   - url: https://www.youtube.com/watch?v=XTBWVVcF3Pk
-    creator: Nate Herk
+    creator: Nate (AI Automation)
     video: How I Make Opus Think Like Fable (5 easy steps)
     timestamps: ['1:13', '2:45', '3:53', '5:49', '6:19', '8:47']
 selfCheck:
@@ -37,17 +37,16 @@ import Chalk from '../../components/Chalk.astro';
 
 <p class="lede">
 Put the strongest model available in the hands of a beginner, and give a seasoned engineer a
-model 2 years older: the engineer still ships the better result. That thought experiment
-opens Nate Herk's field notes on working with the most advanced models, and it carries an uncomfortable
-consequence: if the practitioner beats the model upgrade, then the model was never the real advantage. The
-instructions, the systems, and the loops around the model are. This guide is about making that
-lesson pay: extracting how the best model you can rent actually works, so the method survives
-when the model is priced up, capped, or taken away.
+model 2 years older: the engineer still ships the better result. Nate's field notes open with
+that thought experiment. If the practitioner beats the model upgrade, the advantage was never
+the model; it is the instructions, systems, and loops around it. This guide is about extracting
+how the best model you can rent works, so the method survives when the model is priced up,
+capped, or taken away.
 </p>
 
 <PullQuote
   quote="You can't keep the model's intelligence, but you can keep its process."
-  creator="Nate Herk"
+  creator="Nate (AI Automation)"
   video="How I Make Opus Think Like Fable (5 easy steps)"
   href="https://www.youtube.com/watch?v=XTBWVVcF3Pk"
   timestamp="1:13"
@@ -55,30 +54,24 @@ when the model is priced up, capped, or taken away.
 
 ## <span class="sec-no">01</span>The judgment lives in the plan
 
-The evidence for that claim is an experiment worth internalizing. Herk ran the same multi-agent
-workflows three ways: a top model directing equally strong workers, the same
-planner over mid-tier workers, and (in a separate test) a strong planner over the
-cheapest tier available. Results were roughly interchangeable; costs were not, with the cheap-
-worker runs landing around 3 times cheaper (roughly 67% less) for the same output. The pattern generalizes:
-when the expensive model does the scoping, anticipates what could go wrong, and reviews what
-comes back (redesigning the next step from each report), the workers are executing a
-well-specified plan, and executing a well-specified plan is exactly what cheaper models are
-good at.
+Nate ran the same multi-agent workflows three ways: a top model directing equally strong
+workers, the same planner over mid-tier workers, and a strong planner over the cheapest tier
+available. Results were roughly interchangeable; costs were not. The cheap-worker runs landed
+around 3 times cheaper for the same output. When the expensive model scopes, anticipates what
+could go wrong, and reviews what comes back, the workers only execute a well-specified plan,
+and that is exactly what cheap models are good at.
 
-Which reframes the top model's job. It is the senior engineer about
-to rotate off the team, and your task is to have it package up everything it knows for the
-cohort that replaces it. Treat it as a teacher: have it review your setups, improve your
-skills, and, most importantly, explain its own reasoning while you still have it.
+So treat the top model as a senior engineer about to rotate off the team: have it review your
+setups, improve your skills, and explain its own reasoning while you still have it.
 
 ## <span class="sec-no">02</span>Turn the discipline into a skill
 
-The concrete move: when a top model hands you a deliverable you love but cannot quite
-explain, do not just save the deliverable. Reopen the session and interrogate it: what did you
-consider to get here, how did you verify it, why does this output work. Then have the model
-condense those answers into an installable skill file that any model can run, the same
-portable format of packaged expertise covered in <a href="/guides/expertise-you-can-install/">Expertise you can install</a>. The
-interrogation costs about 15 minutes at the end of a session; the discipline it captures outlives
-the model. Herk's version gates work through five stages:
+When a top model hands you a deliverable you love but cannot quite explain, reopen the session
+and interrogate it: what did you consider, how did you verify it, why does this output work.
+Then have the model condense the answers into an installable skill file any model can run, the
+format covered in <a href="/guides/expertise-you-can-install/">Expertise you can install</a>.
+The interrogation costs about 15 minutes; the discipline it captures outlives the model.
+Nate's version gates work through five stages:
 
 | Gate | What it forces |
 | --- | --- |
@@ -88,33 +81,37 @@ the model. Herk's version gates work through five stages:
 | Verify | Evidence in hand before declaring done |
 | Report | An honest read on how sure it is, not optimism |
 
-The gate that earns its place is the first one. Scoping is not planning. A plan says "here are
-the steps"; scoping plays devil's advocate first: every assumption that might be false, every
-unknown the plan silently walks past. The difference is invisible when things go right and decisive everywhere else, and the habit is worth stealing. The same discipline shows up in the system prompt of the strongest current model, which was reportedly leaked, so treat its origin accordingly. Recognizing something from training does not mean it is current knowledge. A file implied to exist is not a file verified to exist. At every step, check that what you have done is what you think you have done. That habit of auditing every claim against what the tools actually
-returned is the backbone of <a href="/guides/guardrails-for-long-runs/">Guardrails for hours-long agent runs</a>. Encoded as a skill, that discipline clearly improves a
-mid-tier model, and it runs on anything, including models you host yourself.
+Scoping does the most work. A plan lists steps; scoping plays devil's advocate first: which
+assumptions might be false, which unknowns the plan silently walks past.
+
+The verify gate runs on two rules. Recognizing something from training does not mean it is
+current knowledge, and a file implied to exist is not a file verified to exist: audit every
+claim against what the tools actually returned. That habit is the backbone of
+<a href="/guides/guardrails-for-long-runs/">Guardrails for hours-long agent runs</a>. Encoded
+as a skill, the discipline improves a mid-tier model and runs on anything, including models
+you host yourself.
 
 ## <span class="sec-no">03</span>Route by table, spend by effort
 
-Owning the method also means deciding, per task, how much intelligence to rent. Two settings
-matter. The first is the model: keep an explicit routing table for your toolkit, one row per
-model, scored for cost, intelligence, and taste. Intelligence is reasoning strength: how well it
-follows you, reviews code, holds a long chain of reasoning. Taste is the other axis people forget to score:
-creativity, interface judgment, framing. They do not move together, and a table that collapses
-them routes design work to a strong-but-tasteless model and hard debugging to a tasteful-but-weak one.
-Hand the table to your orchestrator and let it delegate against it. When the pressure is a
-subscription limit rather than an invoice, <a href="/guides/stop-hitting-your-token-limit/">Stop hitting your token limit</a>
-turns the same routing into budget relief.
+Decide per task how much intelligence to rent. Two settings matter.
 
-The second setting is effort. Published score-versus-cost curves show effort levels overlapping
-across model tiers (a top model on low effort landing near the previous tier on high), so the
-pairing, not the model name, is the real unit of choice. Effort has a ceiling. Past a point, maximum effort buys longer runs, second-guessing, and worse output than the tier
-below on high. The tell is a response that argues against its own correct first answer. When you
-see it, route down.
+**The model.** Keep a routing table for your toolkit, one row per model, scored for cost,
+intelligence (reasoning strength), and taste (creativity, interface judgment, framing). The two
+scores do not move together, and a table that collapses them routes design work to a
+strong-but-tasteless model and hard debugging to a tasteful-but-weak one. Hand the table to
+your orchestrator and let it delegate against it. When the pressure is a subscription limit
+rather than an invoice, <a href="/guides/stop-hitting-your-token-limit/">Stop hitting your
+token limit</a> turns the same routing into budget relief.
+
+**The effort.** Score-versus-cost curves show effort levels overlapping across tiers (a top
+model on low effort lands near the previous tier on high), so the model-and-effort pairing is
+the real unit of choice. Past a point, maximum effort buys longer runs, second-guessing, and
+worse output than the tier below on high. The tell is a response that argues against its own
+correct first answer. When you see it, route down.
 
 <PullQuote
   quote="We don't own these models. So, what we can own is our processes, our systems."
-  creator="Nate Herk"
+  creator="Nate (AI Automation)"
   video="How I Make Opus Think Like Fable (5 easy steps)"
   href="https://www.youtube.com/watch?v=XTBWVVcF3Pk"
   timestamp="9:36"
@@ -134,7 +131,7 @@ see it, route down.
 
 ## Further reading
 
-- [Nate Herk · How I Make Opus Think Like Fable (5 easy steps)](https://www.youtube.com/watch?v=XTBWVVcF3Pk), the field notes this guide distills
+- [Nate (AI Automation) · How I Make Opus Think Like Fable (5 easy steps)](https://www.youtube.com/watch?v=XTBWVVcF3Pk), the field notes this guide distills
 - [Anthropic · building effective agents](https://www.anthropic.com/engineering/building-effective-agents), the orchestrator-worker pattern from the vendor side
 - [Anthropic · Claude models overview](https://docs.claude.com/en/docs/about-claude/models/overview), the tiers a routing table scores
 - [Wikipedia · mixture of experts](https://en.wikipedia.org/wiki/Mixture_of_experts), the same routing intuition inside the models themselves
