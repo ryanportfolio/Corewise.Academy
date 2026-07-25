@@ -38,5 +38,6 @@ const { heading = 'FAQ · quick answers', items, open = false } = Astro.props;
   .faq summary h3 { font-family: var(--font-body); font-size: var(--text-base, 1rem); font-weight: 600; margin: 0; }
   .faq summary::after { content: '✦'; color: var(--accent-deep); transition: transform var(--dur) var(--ease); }
   .faq details[open] summary::after { transform: rotate(135deg); }
-  .faq details p { margin-top: var(--s-1); color: var(--ink-soft); font-size: var(--text-sm); }
+  /* pre-line so an answer can break its own lines with a newline in the string */
+  .faq details p { margin-top: var(--s-1); color: var(--ink-soft); font-size: var(--text-sm); white-space: pre-line; }
 </style>
