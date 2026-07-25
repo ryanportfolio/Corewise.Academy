@@ -45,7 +45,7 @@ const faq = [
     <!-- A-001 · index + line law -->
     <section class="sheet" data-sheet="A-001" id="sec-a001">
       <ol class="idx">
-        <li><a href="#sec-a002"><span class="idx-no">A-002</span><span class="idx-name">General note</span><span class="idx-tag">NOTE</span></a></li>
+        <li><a href="#sec-a002"><span class="idx-no">A-002</span><span class="idx-name">General notes</span><span class="idx-tag">NOTES</span></a></li>
         <li><a href="#sec-a100"><span class="idx-no">A-100</span><span class="idx-name">CoreWise · six-model synthesis</span><span class="idx-live"><span class="ext">corewise.video ↗</span> LIVE</span></a></li>
         <li><a href="#sec-a200"><span class="idx-no">A-200</span><span class="idx-name">KineFractal · rule-based signal engine</span><span class="idx-live"><span class="ext">kinefractal.com ↗</span> LIVE</span></a></li>
         <li><a href="#sec-a300"><span class="idx-no">A-300</span><span class="idx-name">Truenote · cited answers or refusal</span><span class="idx-live"><span class="ext">truenote.org ↗</span> LIVE</span></a></li>
@@ -130,7 +130,8 @@ const faq = [
       <figure class="note">
         <p class="note-no">NOTE 1</p>
         <blockquote class="note-quote">
-          <p>A quiet and modest life brings more joy than a pursuit of success, bound by constant unrest.</p>
+          <p>&#8220;A quiet and modest life brings more joy than a pursuit of success, bound by constant
+            unrest.&#8221;</p>
         </blockquote>
         <figcaption class="note-src">
           <p class="note-by">A. EINSTEIN</p>
@@ -779,8 +780,8 @@ const faq = [
     /* ---- A-002 general note: a sheet quoted the way the set quotes itself ---- */
     #sec-a002 .sheet-no { white-space: nowrap; }
     .note { margin: 0; border: 1px solid var(--awc); background: color-mix(in srgb, var(--paper) 96%, var(--ink) 4%); }
-    .note-quote { margin: 0; padding: var(--s-5) var(--s-4) var(--s-3); }
-    .note-quote p { font-family: var(--font-display); font-weight: 400; font-size: clamp(1.5rem, 3.4vw, var(--text-2xl)); line-height: 1.22; max-width: 24ch; text-wrap: balance; }
+    .note-quote { margin: 0; padding: var(--s-4) var(--s-4) var(--s-3); }
+    .note-quote p { font-family: var(--font-body); font-weight: 400; font-size: clamp(1.3rem, 2.6vw, 2rem); line-height: 1.36; max-width: 34ch; text-indent: -0.42em; text-wrap: pretty; }
     .note-src { padding: 0 var(--s-4) var(--s-4); }
     .note-by { font-family: var(--font-mono); font-weight: 500; font-size: var(--text-xs); letter-spacing: 0.2em; color: var(--awc); }
     .note-orig { font-family: var(--font-body); font-style: italic; font-size: var(--text-sm); color: var(--aw-sepia); max-width: 52ch; margin-top: var(--s-2); }
@@ -792,10 +793,10 @@ const faq = [
     .note-red { color: var(--aw-verm); }
     .note-why { margin: var(--s-4) 0 var(--s-6); }
     .note-no { font-family: var(--font-mono); font-weight: 500; font-size: 0.5rem; letter-spacing: 0.22em; color: var(--awg); padding: 8px var(--s-4) 0; }
-    .note-big { font-family: var(--font-display); font-weight: 400; font-size: clamp(2rem, 6.4vw, 4.6rem); line-height: 1.04; letter-spacing: -0.01em; padding: var(--s-3) var(--s-4) var(--s-5); text-wrap: balance; }
+    .note-big { font-family: var(--font-display); font-weight: 400; font-size: clamp(2rem, 6.4vw, 4.6rem); line-height: 1.04; letter-spacing: -0.01em; padding: var(--s-3) var(--s-4) var(--s-4); text-wrap: balance; }
     .note-neq { font-family: var(--font-mono); font-weight: 500; font-size: 0.86em; padding: 0 0.06em; }
     .note-lead { font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.18em; color: var(--awg); padding: var(--s-3) var(--s-4) 0; }
-    .note-formula { display: grid; justify-content: center; justify-items: stretch; gap: 6px; font-family: var(--font-display); font-size: clamp(1.05rem, 2.7vw, var(--text-xl)); line-height: 1.2; padding: var(--s-3) var(--s-4) var(--s-5); text-align: center; }
+    .note-formula { display: grid; justify-content: center; justify-items: stretch; gap: 8px; font-family: var(--font-body); font-size: clamp(1.05rem, 2.7vw, var(--text-xl)); line-height: 1.2; padding: var(--s-3) var(--s-4) var(--s-4); text-align: center; }
     .nf-op { font-family: var(--font-mono); font-size: 0.82em; }
     .nf-rule { width: 100%; height: 1.5px; background: var(--awc); }
     .nf-den { font-style: italic; }
