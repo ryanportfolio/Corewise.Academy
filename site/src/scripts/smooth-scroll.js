@@ -1,7 +1,9 @@
 /* Damped wheel scrolling for the About page.
    The real scroll position still moves (window.scrollTo), so sticky headers,
    the native scrollbar, anchor links and IntersectionObserver reveals all keep
-   working; only the wheel's step-per-notch is smoothed into a glide. */
+   working; only the wheel's step-per-notch is smoothed into a glide.
+   Every write is behavior:'instant' — the site sets html { scroll-behavior: smooth },
+   and letting that apply would start a fresh CSS animation on every frame. */
 
 const LERP = 0.11;       // fraction of the remaining distance travelled per frame
 const SETTLE = 0.3;      // px: close enough, snap and stop the loop
@@ -24,12 +26,12 @@ export function boot() {
     const delta = target - current;
     if (Math.abs(delta) < SETTLE) {
       current = target;
-      window.scrollTo(0, current);
+      window.scrollTo({ top: current, behavior: 'instant' });
       raf = 0;
       return;
     }
     current += delta * LERP;
-    window.scrollTo(0, current);
+    window.scrollTo({ top: current, behavior: 'instant' });
     raf = requestAnimationFrame(tick);
   };
 
