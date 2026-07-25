@@ -16,7 +16,6 @@ export function boot() {
   let target = window.scrollY;
   let current = target;
   let raf = 0;
-  let driving = false;
 
   const maxScroll = () =>
     Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
@@ -25,16 +24,12 @@ export function boot() {
     const delta = target - current;
     if (Math.abs(delta) < SETTLE) {
       current = target;
-      driving = true;
       window.scrollTo(0, current);
-      driving = false;
       raf = 0;
       return;
     }
     current += delta * LERP;
-    driving = true;
     window.scrollTo(0, current);
-    driving = false;
     raf = requestAnimationFrame(tick);
   };
 
@@ -58,12 +53,15 @@ export function boot() {
     { passive: false },
   );
 
-  // keyboard, scrollbar drag, anchor jumps: adopt whatever the browser did
+  // keyboard, scrollbar drag, anchor jumps: adopt whatever the browser did.
+  // Scroll events fire asynchronously, so a flag around scrollTo cannot tell
+  // our own writes apart; compare against the position we last wrote instead.
   window.addEventListener(
     'scroll',
     () => {
-      if (driving) return;
-      target = current = window.scrollY;
+      const y = window.scrollY;
+      if (Math.abs(y - current) < 2) return; // our own write, echoing back
+      target = current = y;
       if (raf) {
         cancelAnimationFrame(raf);
         raf = 0;
