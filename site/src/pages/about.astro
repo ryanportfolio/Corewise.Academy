@@ -45,6 +45,7 @@ const faq = [
     <!-- A-001 · index + line law -->
     <section class="sheet" data-sheet="A-001" id="sec-a001">
       <ol class="idx">
+        <li><a href="#sec-a002"><span class="idx-no">A-002</span><span class="idx-name">General note</span><span class="idx-tag">NOTE</span></a></li>
         <li><a href="#sec-a100"><span class="idx-no">A-100</span><span class="idx-name">CoreWise · six-model synthesis</span><span class="idx-live"><span class="ext">corewise.video ↗</span> LIVE</span></a></li>
         <li><a href="#sec-a200"><span class="idx-no">A-200</span><span class="idx-name">KineFractal · rule-based signal engine</span><span class="idx-live"><span class="ext">kinefractal.com ↗</span> LIVE</span></a></li>
         <li><a href="#sec-a300"><span class="idx-no">A-300</span><span class="idx-name">Truenote · cited answers or refusal</span><span class="idx-live"><span class="ext">truenote.org ↗</span> LIVE</span></a></li>
@@ -112,6 +113,76 @@ const faq = [
         </svg>
         <span class="credo-shipped">shipped</span>
       </p>
+    </section>
+
+    <!-- A-002 · general notes -->
+    <section class="sheet" data-sheet="A-002" id="sec-a002">
+      <header class="sheet-head">
+        <div>
+          <p class="sheet-no">A-002</p>
+          <h2 class="sheet-title">GENERAL NOTES</h2>
+        </div>
+        <p class="sheet-sub">APPLY TO EVERY SHEET</p>
+      </header>
+
+      <p class="lede">Three notes govern this set. One borrowed, two learned the hard way.</p>
+
+      <figure class="note">
+        <p class="note-no">NOTE 1</p>
+        <blockquote class="note-quote">
+          <p>A quiet and modest life brings more joy than a pursuit of success, bound by constant unrest.</p>
+        </blockquote>
+        <figcaption class="note-src">
+          <p class="note-by">A. EINSTEIN</p>
+          <p class="note-orig">
+            <span class="note-k">ORIGINAL, GERMAN</span>
+            Stilles bescheidenes Leben gibt mehr Glück als erfolgreiches Streben, verbunden mit beständiger Unruhe.
+          </p>
+        </figcaption>
+        <div class="note-tb">
+          <span class="note-cell"><span class="note-k">WRITTEN BY</span>A. EINSTEIN</span>
+          <span class="note-cell wide"><span class="note-k">SHEET</span>IMPERIAL HOTEL NOTEPAPER, TOKYO</span>
+          <span class="note-cell"><span class="note-k">DATED</span>NOVEMBER 1922</span>
+          <span class="note-cell"><span class="note-k">ISSUED AS</span>A TIP, NO CASH ON HAND</span>
+          <span class="note-cell wide"><span class="note-k">VALUED BY A BUYER</span><span class="note-red">$1.56M · JERUSALEM · 25 OCT 2017</span></span>
+        </div>
+      </figure>
+
+      <p class="body-block note-why">Einstein had no coins in his pocket, so he handed a hotel messenger the
+        thought instead. Ninety-five years later a room full of people decided what it was worth.</p>
+
+      <figure class="note note-wide">
+        <p class="note-no">NOTE 2</p>
+        <p class="note-big">More agents &amp; tokens <span class="note-neq">&#8800;</span> better results</p>
+        <div class="note-tb">
+          <span class="note-cell"><span class="note-k">WRITTEN BY</span>R. ALLEN</span>
+          <span class="note-cell wide"><span class="note-k">LEARNED ON</span>SET A: 1,227 COMMITS, 519 MERGED PRS, ONE HUMAN GATE</span>
+          <span class="note-cell"><span class="note-k">STATUS</span>HOUSE RULE</span>
+        </div>
+      </figure>
+
+      <p class="body-block note-why">Ten agents on a vague brief produce ten confident wrong answers and a
+        bill. The gains came from a sharper brief, a smaller run, and a check that fails loudly. Spend goes up
+        only when the work genuinely splits into parts that do not need each other.</p>
+
+      <figure class="note">
+        <p class="note-no">NOTE 3</p>
+        <p class="note-lead">I MEASURE SUCCESS BY</p>
+        <div class="note-formula" role="math" aria-label="Solutions Identified times Solutions Delivered, divided by Time">
+          <span class="nf-num">(Solutions Identified <span class="nf-op">&#215;</span> Solutions Delivered)</span>
+          <span class="nf-rule" aria-hidden="true"></span>
+          <span class="nf-den">Time</span>
+        </div>
+        <div class="note-tb">
+          <span class="note-cell"><span class="note-k">WRITTEN BY</span>R. ALLEN</span>
+          <span class="note-cell wide"><span class="note-k">READS</span>SPOTTING THE PROBLEM COUNTS ONLY IF THE FIX SHIPS</span>
+          <span class="note-cell"><span class="note-k">STATUS</span>HOUSE RULE</span>
+        </div>
+      </figure>
+
+      <p class="body-block note-why">Both halves have to be non-zero. Naming a problem nobody fixes scores
+        nothing, and shipping something nobody needed scores nothing either. Time sits underneath because a
+        fix that lands a year late is a fix somebody else already made.</p>
     </section>
 
     <!-- A-100 · CoreWise -->
@@ -704,6 +775,34 @@ const faq = [
     .rev th { font-size: 0.58rem; letter-spacing: 0.16em; color: var(--awg); text-align: left; padding: 6px 18px 6px 0; border-bottom: 1px solid var(--awc); }
     .rev td { padding: 8px 18px 8px 0; border-bottom: 1px solid var(--line-soft); }
     .works { font-family: var(--font-mono); font-size: var(--text-2xs); line-height: 2.1; }
+
+    /* ---- A-002 general note: a sheet quoted the way the set quotes itself ---- */
+    #sec-a002 .sheet-no { white-space: nowrap; }
+    .note { margin: 0; border: 1px solid var(--awc); background: color-mix(in srgb, var(--paper) 96%, var(--ink) 4%); }
+    .note-quote { margin: 0; padding: var(--s-5) var(--s-4) var(--s-3); }
+    .note-quote p { font-family: var(--font-display); font-weight: 400; font-size: clamp(1.5rem, 3.4vw, var(--text-2xl)); line-height: 1.22; max-width: 24ch; text-wrap: balance; }
+    .note-src { padding: 0 var(--s-4) var(--s-4); }
+    .note-by { font-family: var(--font-mono); font-weight: 500; font-size: var(--text-xs); letter-spacing: 0.2em; color: var(--awc); }
+    .note-orig { font-family: var(--font-body); font-style: italic; font-size: var(--text-sm); color: var(--aw-sepia); max-width: 52ch; margin-top: var(--s-2); }
+    .note-k { display: block; font-family: var(--font-mono); font-style: normal; font-size: 0.5rem; letter-spacing: 0.18em; color: var(--awg); margin-bottom: 3px; }
+    .note-tb { display: flex; flex-wrap: wrap; border-top: 1px solid var(--line); font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.06em; }
+    .note-cell { display: flex; flex-direction: column; gap: 1px; padding: 8px 14px; border-right: 1px solid var(--line); min-width: 0; }
+    .note-cell.wide { flex: 1; }
+    .note-cell:last-child { border-right: 0; }
+    .note-red { color: var(--aw-verm); }
+    .note-why { margin: var(--s-4) 0 var(--s-6); }
+    .note-no { font-family: var(--font-mono); font-weight: 500; font-size: 0.5rem; letter-spacing: 0.22em; color: var(--awg); padding: 8px var(--s-4) 0; }
+    .note-big { font-family: var(--font-display); font-weight: 400; font-size: clamp(2rem, 6.4vw, 4.6rem); line-height: 1.04; letter-spacing: -0.01em; padding: var(--s-3) var(--s-4) var(--s-5); text-wrap: balance; }
+    .note-neq { font-family: var(--font-mono); font-weight: 500; font-size: 0.86em; padding: 0 0.06em; }
+    .note-lead { font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.18em; color: var(--awg); padding: var(--s-3) var(--s-4) 0; }
+    .note-formula { display: grid; justify-content: center; justify-items: stretch; gap: 6px; font-family: var(--font-display); font-size: clamp(1.05rem, 2.7vw, var(--text-xl)); line-height: 1.2; padding: var(--s-3) var(--s-4) var(--s-5); text-align: center; }
+    .nf-op { font-family: var(--font-mono); font-size: 0.82em; }
+    .nf-rule { width: 100%; height: 1.5px; background: var(--awc); }
+    .nf-den { font-style: italic; }
+    @media (max-width: 640px) {
+      .note-cell, .note-cell.wide { flex: 1 1 100%; border-right: 0; border-bottom: 1px solid var(--line-soft); }
+      .note-cell:last-child { border-bottom: 0; }
+    }
 
     /* ---- pinned title block ---- */
     .tb {
