@@ -162,9 +162,15 @@ const faq = [
         </div>
       </figure>
 
-      <p class="body-block note-why">Ten agents on a vague brief produce ten confident wrong answers and a
-        bill. The gains came from a sharper brief, a smaller run, and a check that fails loudly. Spend goes up
-        only when the work genuinely splits into parts that do not need each other.</p>
+      <p class="body-block note-after">Ten agents on a vague brief produce ten confident wrong answers and a
+        bill.</p>
+      <p class="note-refer">
+        <span class="note-k">REFER TO</span>
+        <a href="/guides/thinking-on-a-budget/">Thinking on a budget</a> ·
+        <a href="/guides/brief-the-model/">Brief the model like a brilliant new hire</a> ·
+        <a href="/guides/stop-hitting-your-token-limit/">Stop hitting your token limit</a>
+      </p>
+      <p class="note-cta"><a class="btn" href="/guides/">Read the guides</a></p>
 
       <figure class="note">
         <p class="note-no">NOTE 3</p>
@@ -792,6 +798,12 @@ const faq = [
     .note-cell:last-child { border-right: 0; }
     .note-red { color: var(--aw-verm); }
     .note-why { margin: var(--s-4) 0 var(--s-6); }
+    .note-after { margin: var(--s-4) 0 var(--s-2); }
+    .note-refer { font-family: var(--font-mono); font-size: var(--text-2xs); line-height: 2; }
+    .note-refer .note-k { display: inline; margin-right: 10px; }
+    .note-refer a { color: var(--ink-soft); text-decoration-color: var(--line); }
+    .note-refer a:hover { color: var(--accent-deep); }
+    .note-cta { margin: var(--s-3) 0 var(--s-6); }
     .note-no { font-family: var(--font-mono); font-weight: 500; font-size: 0.5rem; letter-spacing: 0.22em; color: var(--awg); padding: 8px var(--s-4) 0; }
     .note-big { font-family: var(--font-display); font-weight: 400; font-size: clamp(2rem, 6.4vw, 4.6rem); line-height: 1.04; letter-spacing: -0.01em; padding: var(--s-3) var(--s-4) var(--s-4); text-wrap: balance; }
     .note-neq { font-family: var(--font-mono); font-weight: 500; font-size: 0.86em; padding: 0 0.06em; }
