@@ -160,15 +160,23 @@ const faq = [
         </div>
       </figure>
 
-      <p class="body-block note-after">Fast generation without value &#8594; longer review &#8594; added burden
-        rather than saved time</p>
+      <p class="body-block note-after">Fast generation without value &#8594; longer review &#8594;<br />added
+        burden rather than saved time</p>
       <p class="note-refer">
         <span class="note-k">REFER TO</span>
         <a href="/guides/thinking-on-a-budget/">Thinking on a budget</a> ·
         <a href="/guides/brief-the-model/">Brief the model like a brilliant new hire</a> ·
         <a href="/guides/stop-hitting-your-token-limit/">Stop hitting your token limit</a>
       </p>
-      <p class="note-cta"><a class="btn" href="/guides/">Read the guides</a></p>
+      <p class="note-cta">
+        <a class="btn btn-xl" href="/guides/">
+          <svg class="cta-star" viewBox="0 0 24 24" aria-hidden="true">
+            <path class="cs-core" d="M12 1.5 L14.4 9.6 L22.5 12 L14.4 14.4 L12 22.5 L9.6 14.4 L1.5 12 L9.6 9.6 Z" />
+            <path class="cs-spark" d="M17.6 6.4 L14.1 12 L17.6 17.6 L12 14.1 L6.4 17.6 L9.9 12 L6.4 6.4 L12 9.9 Z" />
+          </svg>
+          <span>Read the guides</span>
+        </a>
+      </p>
 
       <figure class="note">
         <p class="note-no">NOTE 3</p>
@@ -800,6 +808,18 @@ const faq = [
     .note-refer a { color: var(--ink-soft); text-decoration-color: var(--line); }
     .note-refer a:hover { color: var(--accent-deep); }
     .note-cta { margin: var(--s-3) 0 var(--s-6); }
+    /* the guides CTA: twice the standard button, with the atlas star turning inside it */
+    .btn-xl { display: inline-flex; align-items: center; gap: 16px; font-size: var(--text-md); padding: 24px 44px; }
+    .cta-star { width: 1.6em; height: 1.6em; flex: none; fill: currentColor; }
+    .cs-core { transform-origin: 12px 12px; animation: cta-turn 18s linear infinite; }
+    .cs-spark { transform-origin: 12px 12px; opacity: 0.55; animation: cta-turn 9s linear infinite reverse, cta-pulse 3.4s var(--ease) infinite; }
+    .btn-xl:hover .cs-core { animation-duration: 5s; }
+    .btn-xl:hover .cs-spark { animation-duration: 2.5s, 1.6s; }
+    @keyframes cta-turn { to { transform: rotate(360deg); } }
+    @keyframes cta-pulse { 0%, 100% { opacity: 0.25; } 50% { opacity: 0.9; } }
+    @media (prefers-reduced-motion: reduce) {
+      .cs-core, .cs-spark { animation: none; }
+    }
     .note-no { font-family: var(--font-mono); font-weight: 500; font-size: 0.5rem; letter-spacing: 0.22em; color: var(--awg); padding: 8px var(--s-4) 0; }
     .note-big { font-family: var(--font-display); font-weight: 400; font-size: clamp(2rem, 6.4vw, 4.6rem); line-height: 1.04; letter-spacing: -0.01em; padding: var(--s-3) var(--s-4) var(--s-4); text-wrap: balance; }
     .note-neq { font-family: var(--font-mono); font-weight: 500; font-size: 0.86em; padding: 0 0.06em; }
