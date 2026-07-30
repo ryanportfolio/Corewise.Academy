@@ -10,10 +10,10 @@
 
 | Status | Skills |
 |---|---|
-| Native | `applying-best-practices`, `brainstorming`, `caveman`, `conflict`, `enhance-prompt`, `executing-plans`, `forge-repo-ui-skill`, `handoff-audit`, `humanizer`, `learning`, `plain-words`, `recall`, `stranger-test`, `systematic-debugging`, `test-driven-development`, `verification-before-completion`, `writing-plans` |
-| Adapted | `addskill`, `fable-mode`, `finishing-a-development-branch`, `init-project`, `lab`, `optimize-context`, `sync-starter`, `using-git-worktrees`, `using-superpowers`, `writing-skills` |
-| Capability-gated | `advocate`, `design-study`, `dispatching-parallel-agents`, `impartial-review`, `subagent-driven-development`, `vet-third-party-skill`, `why` |
-| Dangerous | `create-guide`, `crosslink`, `ingest`, `merge`, `pr`, `safe-ship` |
+| Native | `brainstorming`, `caveman`, `enhance-prompt`, `forge-repo-ui-skill`, `handoff-audit`, `humanizer`, `plain-words`, `recall`, `writing-plans` |
+| Adapted | `addskill`, `fable-mode`, `init-project`, `lab`, `optimize-context`, `sync-starter`, `writing-skills` |
+| Capability-gated | `advocate`, `design-study`, `impartial-review`, `why` |
+| Dangerous | `create-guide`, `crosslink`, `ingest`, `merge` |
 | Claude-only | None in the starter source set. |
 
 `advocate`, `impartial-review`, and `why` require fresh independent context; do not replace them with self-review and call it equivalent. `merge` becomes session-wide only after explicit `$merge` or an unambiguous auto-merge request. Current system, developer, sandbox, approval, and user instructions win. Resolve canonical resources from `.claude/skills/<name>/` and never claim a gated workflow ran unless its tools were used.
