@@ -5,8 +5,9 @@ name: validate-template
 # and the user debugging a script they didn't write.
 
 on:
-  push:
   pull_request:
+  push:
+    branches: [main]
 
 jobs:
   validate:
