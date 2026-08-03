@@ -585,7 +585,7 @@ function initTally(host) {
   };
   for (let g = 0; g < 14; g++) { group(x, 4, true); x += 34; }
   group(x, 3, false);
-  el('text', { x: 4, y: h - 2, class: 'annf' }, svg).textContent = '73 COMMITTED TEST FILES · EVAL EXITS NON-ZERO ON FAILURE · A CI GATE';
+  el('text', { x: 4, y: h - 2, class: 'annf' }, svg).textContent = '73+ COMMITTED TEST FILES · EVAL EXITS NON-ZERO ON FAILURE · A CI GATE';
   onEnter(host, prepDraw(svg, { stagger: 18, dur: 240 }));
 }
 
