@@ -102,7 +102,7 @@ A `<use_parallel_tool_calls>` prompt pushes independent tool calls (speculative 
 multi-file reads, parallel bash) toward roughly 100 percent parallel execution. A subagent-scope
 instruction restricts proactive subagents to parallel, independent tasks that each run in their own context,
 because Opus 4.6 has a strong tendency to spawn them where a direct grep would suffice.
-When a subagent genuinely earns its place, the orchestrator-worker split in <a href="/guides/rent-the-model-own-the-method/">Rent the model, own the method</a> shows how to structure it. A
+When a subagent genuinely earns its place, the orchestrator-worker split in <a href="/guides/rent-the-model-own-the-method/">Capture the model's discipline</a> shows how to structure it. A
 minimalism prompt covering scope, documentation, defensive coding, and abstractions curbs the
 overengineering these models drift into (extra files, unrequested abstractions). A reversibility
 prompt lists the destructive, hard-to-reverse, and externally-visible operations (deleting files,

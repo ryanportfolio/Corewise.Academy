@@ -1,4 +1,4 @@
-# Rent the model, own the method
+# Capture the model's discipline
 
 Consult when deciding which model runs a task, when you want to keep an expensive model's working discipline after it is priced up or capped, or when structuring a planner-and-worker split. The method survives; the model does not. For live model ids, pricing, and tiers, use the `claude-api` skill rather than restating version-pinned facts.
 
