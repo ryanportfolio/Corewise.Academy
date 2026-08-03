@@ -132,10 +132,14 @@ const artifact = agentArtifactFor(guide.id);
             {d.sources.map((s) => (
               <li>
                 <span class="creator">{s.creator}</span> · <a href={s.url}>“{s.video}”</a>
-                <br />
-                <span class="stamps">
-                  cited at {s.timestamps.join(' · ')}
-                </span>
+                {s.timestamps.length > 0 && (
+                  <>
+                    <br />
+                    <span class="stamps">
+                      cited at {s.timestamps.join(' · ')}
+                    </span>
+                  </>
+                )}
               </li>
             ))}
           </ol>

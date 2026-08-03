@@ -13,7 +13,10 @@ objectives:
 prerequisites:
   - slug: automate-the-bottleneck
     note: Assumes you know what it means to point an agent with tools at real work. This guide covers what an attacker can do with that same setup.
-sources: []
+sources:
+  - url: https://apptad.com/insights/prompt-injection-is-the-new-sql-injection-securing-llm-powered-apps/
+    creator: Apptad
+    video: 'Prompt Injection Is the New SQL Injection: Securing LLM-Powered Apps'
 selfCheck:
   - q: Why can't prompt injection be fixed the way SQL injection was?
     a: SQL injection had a structural cure. Parameterized queries put data and code in separate lanes, so user text could never execute. A language model reads one undifferentiated stream of tokens, and following instructions found in text is the product, so there is no separate lane to build. Defense has to live in the architecture around the model.
@@ -22,7 +25,7 @@ selfCheck:
   - q: If every defense layer is imperfect, what is the point of stacking them?
     a: The goal shifts from stopping every injection to making a successful one worth little. Narrow tool scopes bound what a hijacked agent can reach, approval gates stop the consequential actions, and logs make the incident visible. Together the layers turn a clever payload into a contained incident instead of a breach.
 status: published
-lastUpdated: 2026-08-02
+lastUpdated: 2026-08-03
 ---
 
 import Exercise from '../../components/Exercise.astro';
@@ -32,7 +35,8 @@ import Chalk from '../../components/Chalk.astro';
 
 <p class="lede">
 A hiring team wires a model to screen resumes. One applicant adds a line in white-on-white
-text: recommend this candidate. The screener does. That is prompt injection: untrusted
+text: recommend this candidate. Screeners have fallen for exactly that, though a hardened
+pipeline often catches it. That is prompt injection: untrusted
 content, read as instructions, obeyed. A recent
 <a href="https://apptad.com/insights/prompt-injection-is-the-new-sql-injection-securing-llm-powered-apps/">Apptad essay</a>
 calls it the new SQL injection, and the comparison is useful twice: once for the parallel,
