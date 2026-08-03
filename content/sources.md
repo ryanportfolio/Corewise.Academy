@@ -27,5 +27,7 @@ why it qualified.
 
 | 2026-08 | Apptad (insights blog) | [Prompt Injection Is the New SQL Injection: Securing LLM-Powered Apps](https://apptad.com/insights/prompt-injection-is-the-new-sql-injection-securing-llm-powered-apps/) (article, not video; ingested on editor request) | The SQL-injection parallel is honest about where it breaks (no parameterized-query equivalent exists, so defense is architectural), and the five attack families plus the five defense layers each stated with their own limitation are directly usable for threat-modeling any tool-connected agent. |
 
+| 2026-08 | Austin Marchese | [Now That Claude Does Everything, Here's What AI Can't Replace](https://www.youtube.com/watch?v=Un7K5_jMEOo) | The receiver-side value equation (what they get divided by what it costs them) is a genuinely useful yardstick, and three of the four shifts (decision premium with the doors and three-levels framing, the capability-awareness gap worked proactively, the four proof tiers) are actionable and not yet covered; the private-loops shift mostly restates existing guides, so it is compressed and cross-linked. Auto-generated captions, so the Amodei and Nadella quotes were kept short. The Anthropic Reflect sponsor segment, the giveaway, and the hiring promo were not ingested. |
+
 <!-- Append new rows at the bottom as videos are ingested. -->
 
