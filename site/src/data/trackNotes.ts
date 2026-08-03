@@ -28,7 +28,7 @@ export const TRACK_NOTES: Record<string, TrackNotes> = {
       },
       {
         text: 'Discipline makes the astronomer; the telescope only helps.',
-        guideTitle: 'Rent the model, own the method',
+        guideTitle: "Capture the model's discipline",
         href: '/guides/rent-the-model-own-the-method/',
       },
     ],
@@ -152,7 +152,7 @@ export const TRACK_NOTES: Record<string, TrackNotes> = {
       },
       {
         text: 'Discipline makes the astronomer; the telescope only helps.',
-        guideTitle: 'Rent the model, own the method',
+        guideTitle: "Capture the model's discipline",
         href: '/guides/rent-the-model-own-the-method/',
       },
     ],
