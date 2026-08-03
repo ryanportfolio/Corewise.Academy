@@ -151,7 +151,11 @@ Go through the draft in this order:
    the true board state, not just move statistics" reads as noise to an outsider. It
    became: the model was fed only lists of game moves, never shown a board, yet built
    its own picture of where every piece sat.
-2. **Plain words.** Latinate dress-ups and ten-dollar words lose to the everyday phrase
+2. **Plain words, literal claims.** Metaphors never carry the point: a title, heading, or
+   claim whose only statement is a metaphor ("Rent the model, own the method", "The pay
+   moves to deciding") gets rewritten as the literal version ("Deciding is now the hard
+   part"); decoration is welcome only on top of a literal statement, and two-part aphorism
+   shapes ("X the A, Y the B") are out. Latinate dress-ups and ten-dollar words lose to the everyday phrase
    (utilize becomes use, subsequent becomes later, prohibition becomes ban). No invented
    coinages; gloss a genuine term of art at first use or replace it.
 3. **Negation pivots.** Delete any sentence that denies something nobody claimed before
