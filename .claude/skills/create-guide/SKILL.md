@@ -104,7 +104,10 @@ contain a colon plus space). Doc-grounded deltas:
   (context window, token, MCP), gloss it in plain words on first use, then use
   it freely. If a jargon word can be swapped for plain words with no loss of
   precision, swap it. No insider shorthand (ctx, evals, "the harness") without
-  explanation.
+  explanation. Metaphors never carry the point: a title, heading, or claim
+  whose only statement is a metaphor ("Rent the model, own the method", "The
+  pay moves to deciding") gets rewritten as the literal version ("Deciding is
+  now the hard part"); two-part aphorism shapes ("X the A, Y the B") are out.
 - **Titles are simple and specific.** The title says what the reader gets, in
   plain words, before any wordplay. "Give your agent a memory" and "Stop
   shouting at the model" work; "The firmament moved" fails because nobody can
