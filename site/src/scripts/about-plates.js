@@ -330,8 +330,8 @@ function initDisc(host) {
   el('circle', { cx, cy, r: r1 + 5, class: 'st-carbon', fill: 'none' }, svg);
   el('circle', { cx, cy, r: r0 - 15, class: 'st-faint', fill: 'none' }, svg);
   const spokes = [];
-  for (let i = 0; i < 108; i++) {
-    const a = (2 * Math.PI * i) / 108 - Math.PI / 2;
+  for (let i = 0; i < 109; i++) {
+    const a = (2 * Math.PI * i) / 109 - Math.PI / 2;
     const major = i % 9 === 0;
     const ra = major ? r0 - 10 : r0;
     const ln = el('line', {
@@ -342,8 +342,8 @@ function initDisc(host) {
     spokes.push(ln);
   }
   const t1 = el('text', { x: cx, y: cy + 4, class: 'ann', 'text-anchor': 'middle' }, svg);
-  el('text', { x: cx, y: cy + 16, class: 'annf', 'text-anchor': 'middle' }, svg).textContent = 'COMMITS · ~7 MO';
-  if (reduced) { t1.textContent = '~10.8K'; return; }
+  el('text', { x: cx, y: cy + 16, class: 'annf', 'text-anchor': 'middle' }, svg).textContent = 'COMMITS · ~8 MO';
+  if (reduced) { t1.textContent = '~10.9K'; return; }
   spokes.forEach((s) => { s.style.opacity = '0'; });
   new IntersectionObserver((es, io) => {
     es.forEach((e) => {
@@ -576,16 +576,16 @@ function initConfluence(host, figure) {
 
 /* ------------------------------------------------------------- tally ----- */
 function initTally(host) {
-  const w = 300, h = 52;
+  const w = 504, h = 52;
   const svg = svgRoot(host, w, h, true);
   let x = 4;
   const group = (gx, n, crossed) => {
     for (let i = 0; i < n; i++) el('line', { x1: gx + i * 6, y1: 10, x2: gx + i * 6, y2: 36, class: 'st-key', 'data-conv': 'solid' }, svg);
     if (crossed) el('line', { x1: gx - 4, y1: 32, x2: gx + 22, y2: 13, class: 'st-key', 'data-conv': 'solid' }, svg);
   };
-  for (let g = 0; g < 8; g++) { group(x, 4, true); x += 34; }
+  for (let g = 0; g < 14; g++) { group(x, 4, true); x += 34; }
   group(x, 3, false);
-  el('text', { x: 4, y: h - 2, class: 'annf' }, svg).textContent = '43 COMMITTED TEST FILES · EVAL EXITS NON-ZERO ON FAILURE · A CI GATE';
+  el('text', { x: 4, y: h - 2, class: 'annf' }, svg).textContent = '73 COMMITTED TEST FILES · EVAL EXITS NON-ZERO ON FAILURE · A CI GATE';
   onEnter(host, prepDraw(svg, { stagger: 18, dur: 240 }));
 }
 
@@ -649,14 +649,14 @@ function initDayBar(host) {
   el('line', { x1: x0, y1: y, x2: x1, y2: y, class: 'st-carbon' }, svg);
   el('circle', { cx: x0, cy: y, r: 2.8, class: 'nd-solid key', 'data-conv': 'solid' }, svg);
   el('rect', { x: x1 - 3.5, y: y - 3.5, width: 7, height: 7, class: 'st-key', fill: 'none', 'data-conv': 'solid' }, svg);
-  for (let i = 0; i < 22; i++) {
-    const x = x0 + 20 + ((x1 - x0 - 52) * i) / 21;
+  for (let i = 0; i < 15; i++) {
+    const x = x0 + 20 + ((x1 - x0 - 52) * i) / 14;
     el('line', { x1: fmt(x), y1: y - 7, x2: fmt(x), y2: y + 7, class: 'st-key', 'data-conv': 'solid' }, svg);
   }
   el('text', { x: x1 - 24, y: y + 4.5, class: 'ann ann-key' }, svg).textContent = '+';
   el('text', { x: x0, y: y - 15, class: 'ann' }, svg).textContent = 'SPEC · MORNING';
   el('text', { x: x1, y: y - 15, class: 'ann', 'text-anchor': 'end' }, svg).textContent = 'LIVE · SAME DAY';
-  el('text', { x: (x0 + x1) / 2, y: y + 24, class: 'annf', 'text-anchor': 'middle' }, svg).textContent = '22+ PRS MERGED DAY ONE · claude/* BRANCHES · HUMAN MERGE GATE';
+  el('text', { x: (x0 + x1) / 2, y: y + 24, class: 'annf', 'text-anchor': 'middle' }, svg).textContent = '15 PRS MERGED DAY ONE · HUMAN MERGE GATE';
   onEnter(host, prepDraw(svg, { stagger: 40, dur: 260 }));
 }
 
@@ -721,10 +721,10 @@ function initStemma(host) {
 /* ------------------------------------------------------------ skill grid - */
 function initSkillGrid(host, counter) {
   const cols = 8, size = 20, gap = 8;
-  const w = cols * (size + gap), rows = Math.ceil(34 / cols);
+  const w = cols * (size + gap), rows = Math.ceil(20 / cols);
   const svg = svgRoot(host, w, rows * (size + gap) + 6, true);
   const cells = [];
-  for (let i = 0; i < 34; i++) {
+  for (let i = 0; i < 20; i++) {
     const c = i % cols, r0 = Math.floor(i / cols);
     const x = 2 + c * (size + gap), y = 4 + r0 * (size + gap);
     const g = el('g', {}, svg);
@@ -732,7 +732,7 @@ function initSkillGrid(host, counter) {
     el('line', { x1: x + 4, y1: y + size - 4.5, x2: x + size - 4, y2: y + size - 4.5, class: 'st-graphite' }, g);
     cells.push(g);
   }
-  if (reduced) { counter.textContent = '34'; return; }
+  if (reduced) { counter.textContent = '20'; return; }
   cells.forEach((c) => { c.style.opacity = '0'; });
   new IntersectionObserver((es, io) => {
     es.forEach((e) => {
