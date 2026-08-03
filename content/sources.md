@@ -25,5 +25,7 @@ why it qualified.
 
 | 2026-07 | Thais Castello Branco / AI Engineer | [Ending AI Slop](https://www.youtube.com/watch?v=lCBf9slCanI) | The two-part diagnosis (capability follows measurability; slop is collapse to the most likely answer) is the cleanest explanation I have seen for why models lag on design and writing, and the brand-as-ground-truth decomposition plus the disagreement rule (splits on objective things mean bad process, splits on style mean real preference) are immediately usable for judging agent output. Auto-generated captions, so quotes were kept short and the speaker's name verified against the video metadata. |
 
+| 2026-08 | Apptad (insights blog) | [Prompt Injection Is the New SQL Injection: Securing LLM-Powered Apps](https://apptad.com/insights/prompt-injection-is-the-new-sql-injection-securing-llm-powered-apps/) (article, not video; ingested on editor request) | The SQL-injection parallel is honest about where it breaks (no parameterized-query equivalent exists, so defense is architectural), and the five attack families plus the five defense layers each stated with their own limitation are directly usable for threat-modeling any tool-connected agent. |
+
 <!-- Append new rows at the bottom as videos are ingested. -->
 

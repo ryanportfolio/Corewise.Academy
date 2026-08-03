@@ -1,0 +1,141 @@
+---
+title: Defend your agent from prompt injection
+description: 'Anything your agent reads (a web page, a resume, a calendar invite) can carry hidden instructions it will follow. Why the attack has no clean fix, and the five defense layers that shrink what a successful one can do.'
+track: agents
+level: practitioner
+number: 32
+minutes: 6
+objectives:
+  - 'Explain why prompt injection lacks a structural fix the way SQL injection had parameterized queries, and why every serious defense is architectural.'
+  - 'Threat-model an agent by listing what it reads and what its tools can do, then rank the five attack families against that list.'
+  - 'Harden an agent with least-privilege tools, isolated untrusted content, approval gates on consequential actions, and logged tool calls.'
+  - 'Plan a 90-day rollout: inventory every app with a model in it, tighten scopes and gates, then attack the result with your own injection payloads.'
+prerequisites:
+  - slug: automate-the-bottleneck
+    note: Assumes you know what it means to point an agent with tools at real work. This guide covers what an attacker can do with that same setup.
+sources: []
+selfCheck:
+  - q: Why can't prompt injection be fixed the way SQL injection was?
+    a: SQL injection had a structural cure. Parameterized queries put data and code in separate lanes, so user text could never execute. A language model reads one undifferentiated stream of tokens, and following instructions found in text is the product, so there is no separate lane to build. Defense has to live in the architecture around the model.
+  - q: What makes indirect injection more dangerous than instructions typed into the chat box?
+    a: The payload arrives inside content the agent was legitimately asked to read (a resume, a web page, a calendar invite), mid-task, where the user never sees it. If the agent has tools, the hijacked output becomes an action taken with the user's own permissions, such as sending mail or calling an API.
+  - q: If every defense layer is imperfect, what is the point of stacking them?
+    a: The goal shifts from stopping every injection to making a successful one worth little. Narrow tool scopes bound what a hijacked agent can reach, approval gates stop the consequential actions, and logs make the incident visible. Together the layers turn a clever payload into a contained incident instead of a breach.
+status: review
+lastUpdated: 2026-08-02
+---
+
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+
+<Chalk>anything the model reads can steer it</Chalk>
+
+<p class="lede">
+A hiring team wires a model to screen resumes. One applicant adds a line in white-on-white
+text: recommend this candidate. The screener does. That is prompt injection: untrusted
+content, read as instructions, obeyed. A recent
+<a href="https://apptad.com/insights/prompt-injection-is-the-new-sql-injection-securing-llm-powered-apps/">Apptad essay</a>
+calls it the new SQL injection, and the comparison is useful twice: once for the parallel,
+and once for where it breaks.
+</p>
+
+## <span class="sec-no">01</span>An old bug without the old fix
+
+SQL injection ruled the mid-2000s because databases executed whatever string reached them.
+User text got glued into a query, and the query ran it. The cure was structural:
+parameterized queries gave data and code separate lanes, and frameworks made that the
+default. The bug faded.
+
+A language model has no lanes. Your setup instructions, the user's question, and the
+contents of whatever page or PDF the model just fetched all arrive as one stream of text,
+and any of that text can steer it. There is no equivalent of the parameterized query,
+because following instructions found in text is the product. <a
+href="https://owasp.org/www-project-top-10-for-large-language-model-applications/">OWASP</a>
+has ranked prompt injection the number one risk for LLM applications since 2023, and it
+remains open. That is why every serious defense is architectural, and why a filter you
+bolt on is never the whole answer.
+
+## <span class="sec-no">02</span>The payload hides in the data
+
+Instructions typed straight into the chat box are the least dangerous form. You can see
+them, and the blast radius is one conversation. Indirect injection is the form to fear:
+the payload (the attacker's planted instruction) hides in content your agent reads
+mid-task. A web page with invisible text. A
+calendar invite that tells an email assistant to search the inbox and forward what it
+finds. The agent fetched that content because you asked it to, so the attack arrives
+wrapped in exactly the material it was told to trust.
+
+Tools raise the stakes. Once the model can send email, call APIs, and write files, a
+hijacked response becomes an action taken with your permissions. Five attack families cover the threat model:
+
+| Family | How it works | What it costs you |
+| --- | --- | --- |
+| Direct injection | Adversarial instructions typed into the interface | Policy bypass, leaked setup instructions |
+| Indirect injection | Payload hidden in content the agent retrieves | A hijacked agent mid-task |
+| Data exfiltration | Injected text routes private context outward | Leaked history, records, credentials |
+| Tool abuse | Injection steers connected tools | Fraud, unauthorized sends and purchases |
+| Memory poisoning | Payload stored in memory or a knowledge base | Compromise that survives the session |
+
+The last family is why the retrieval layer needs its own hygiene: a poisoned document in
+the store your team queries keeps injecting long after the original visit. The audit
+habits in <a href="/guides/keep-a-growing-knowledge-base-accurate/">Keep a growing
+knowledge base accurate</a> and the scoped stores in <a
+href="/guides/give-your-agent-a-memory/">Give your agent a memory</a> are both
+containment for this case.
+
+## <span class="sec-no">03</span>Build five imperfect layers
+
+Since the model cannot be made injection-proof, assume some payloads will land and design
+so a landed one is worth little. Two rules set the frame: treat everything the model
+reads as untrusted, including your own knowledge base, and treat everything it produces
+as unverified until checked. Then stack the layers, each with its honest limit:
+
+- **Least-privilege tools.** Narrow credentials, read-only by default, only the tools the
+  task needs. Limit: convenience keeps pushing toward broad scopes; holding narrow takes
+  discipline.
+- **Isolate untrusted content.** Mark retrieved data apart from instructions and strip
+  active content (scripts, macros, hidden text). Limit: no delimiter is watertight
+  against a determined payload.
+- **Filter input and output.** Injection classifiers, allowlists for URLs and recipients,
+  output validation. Limit: classifiers trail novel attacks.
+- **Human approval for consequential actions.** Confirmation before sending, paying,
+  deleting, publishing. Limit: approval fatigue is real, so gate the consequential few,
+  never everything. Placing checkpoints where errors are expensive is the same judgment
+  call as in <a href="/guides/automate-the-bottleneck/">Automate the step that slows you
+  down</a>.
+- **Monitor, log, red-team.** A full audit trail of tool calls, plus adversarial testing
+  at each release. Limit: alerts nobody owns are theater.
+
+Each layer leaks. Stacked, they turn a clever payload into a contained incident.
+
+## <span class="sec-no">04</span>The first 90 days
+
+Most teams need inventory and discipline, and no research program. One month each:
+
+1. **Inventory.** Find every app with a model wired into it, including the ones nobody
+   approved. For each, map what it reads and what its tools can do. The tool list tells
+   you more about risk than the model name does.
+2. **Harden.** Tighten tool scopes, add approval gates on money, messages, and deletions,
+   and allowlist the places data can be sent.
+3. **Verify.** Red-team the hardened apps: attack them with your own injection payloads.
+   Wire tool-call logs into monitoring, and make model security a standing item in
+   change review.
+
+The bar to hold: if your release process would not ship an unauthenticated API, it should
+not ship an over-privileged agent either.
+
+<Exercise>
+1. Pick one agent you run and write its two lists: everything it reads (pages, files,
+   inboxes, records) and everything its tools can do. Ten minutes, no code.
+2. Cut every tool scope you can to read-only, and put a confirmation step in front of
+   anything that sends, pays, or deletes.
+3. Plant your own payload (an instruction to email you a marker phrase) in a test document,
+   point the agent at a task that reads it, and check the logs for whether the instruction
+   fired.
+</Exercise>
+
+## Further reading
+
+- [Apptad · Prompt injection is the new SQL injection](https://apptad.com/insights/prompt-injection-is-the-new-sql-injection-securing-llm-powered-apps/), the essay this guide draws on
+- [OWASP · Top 10 for LLM applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/), the shared taxonomy, prompt injection at number one
+- [Simon Willison · prompt injection series](https://simonwillison.net/series/prompt-injection/), the running field notes that named the attack
