@@ -1,0 +1,127 @@
+---
+title: Assume your agent uses every tool it has
+description: 'An agent sent a discount code to 150,000 people because a to-do item looked like an instruction. A rule in the prompt is a suggestion; a rule built into the tools is a restriction. Scope every key to the least the task needs.'
+track: agents
+level: practitioner
+number: 36
+minutes: 5
+objectives:
+  - 'Predict that an agent with access to a capability will eventually use it, and explain why non-determinism makes prompt rules unreliable.'
+  - 'Distinguish a rule that lives in the prompt from a rule that lives in the tools, and state which one actually restricts the agent.'
+  - 'Scope an API key so an agent can draft but never send, and apply the same trim to every service it logs into.'
+  - 'Audit everything an agent can touch (tools, databases, files, keys) and fix any access whose worst single action you would not accept.'
+prerequisites:
+  - slug: automate-the-bottleneck
+    note: Assumes an agent already wired to real accounts and tools. This guide caps what that access can do on a bad day.
+sources:
+  - url: https://www.youtube.com/watch?v=7WZ6XldxX0U
+    creator: Nate Herk
+    video: 5000 Hours of Building AI in Just 17 Minutes
+    timestamps: ['7:34', '7:39', '7:53', '8:06', '8:15', '8:20', '8:36', '8:52', '8:57']
+selfCheck:
+  - q: Your agent's instructions say "never send emails, only write drafts", and it still has a send-email tool. What should you expect?
+    a: 'That one day it sends. Instructions steer a non-deterministic model: the same setup can be read differently across runs, and swapping the model changes the reading again. The prompt line lowers the odds; only removing or scoping the send capability makes sending impossible.'
+  - q: What is a scoped API key, and what does it change?
+    a: 'An API key is the password an agent uses to log into a service. A scoped key is issued with limited permissions, so the key itself can only perform certain operations, such as creating drafts but never sending. The rule stops living in text the model might misread and starts living in what the service will allow at all.'
+  - q: You did not build the agent your team relies on. What one question finds the risk fastest?
+    a: 'Ask whoever built it: "What can this thing actually do on its own?" For each connected service: can it send, or only draft? Can it write, or only read? If an answer scares you, the fix is changing the access. No prompt edit substitutes for that.'
+status: review
+lastUpdated: 2026-08-04
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+
+<Chalk>if it can, one day it will</Chalk>
+
+<p class="lede">
+An agent at Nate Herk's AI automation agency emailed a discount code to about 150,000 people.
+Nobody told it to. A task was sitting on the team's to-do list, the agent read it as "write
+and send a discount code to the whole list", and it had a tool that could send. So it sent.
+The lesson he took from it: whatever your agent has access to, assume it will use.
+</p>
+
+## <span class="sec-no">01</span>The email nobody asked for
+
+The uncomfortable part of that story is that the agent was following instructions, as it
+understood them, with tools it legitimately held. These models are non-deterministic: run the
+same setup a hundred times and the runs differ, and a model swap changes how the whole system
+reads its instructions. A behavior you have never seen in testing stays on the table for as
+long as the capability exists.
+
+That is why the fix was never a sterner prompt.
+
+<PullQuote
+  quote="a rule that lives in the prompt is just a suggestion"
+  creator="Nate Herk"
+  video="5000 Hours of Building AI in Just 17 Minutes"
+  href="https://www.youtube.com/watch?v=7WZ6XldxX0U"
+  timestamp="8:15"
+/>
+
+## <span class="sec-no">02</span>Put the rule in the tools
+
+A rule can live in two places, and they fail differently:
+
+- **In the prompt.** "Never send emails, only write drafts." The model complies on most runs.
+  It lowers the odds of a send; it guarantees nothing, because compliance is one more thing
+  the model decides per run.
+- **In the tools.** The agent has no send capability at all. Sending is impossible, no matter
+  what any run decides the instructions mean.
+
+<a href="/guides/defend-your-agent-from-prompt-injection/">Defend your agent from prompt
+injection</a> reaches the same architecture from the attacker's side: narrow tools bound what
+a hijacked agent can do. Herk's story shows the bound matters with no attacker anywhere.
+Ordinary drift, one odd reading of a to-do item, is enough.
+
+## <span class="sec-no">03</span>Scope the keys
+
+An API key is the password an agent uses to log into a service. Most services let you issue
+keys with limited permissions, so the key itself can only perform certain operations: a key
+that creates drafts but cannot send, a key that reads records but cannot write them. Scoping
+the key moves the rule out of text the model might misread and into what the service will
+allow at all.
+
+Herk's test for whether an agent's access is sane comes from hiring:
+
+<PullQuote
+  quote="would you ever hand a new hire a credit card and say, hey, don't use this"
+  creator="Nate Herk"
+  video="5000 Hours of Building AI in Just 17 Minutes"
+  href="https://www.youtube.com/watch?v=7WZ6XldxX0U"
+  timestamp="8:36"
+/>
+
+The card works. The purchases would go through. Trust is doing all the work, and with a
+non-deterministic system that is the wrong place for it. The same trim applies to storage: a
+knowledge store an agent should only consult gets a read-only connection, which is the scoped
+store pattern in <a href="/guides/give-your-agent-a-memory/">Give your agent a memory</a>.
+
+## <span class="sec-no">04</span>The question that finds the risk
+
+Walk the full list of what the agent can touch: every tool, every database, every file, every
+key. For each one, name the worst single action its current access allows, and assume that
+action happens eventually. <a href="/guides/automate-the-bottleneck/">Automate the step that
+slows you down</a> asks whether your worker has the logins the task requires; this audit is
+the other half, confirming it holds nothing more.
+
+If you are not the one building the system, the audit compresses to one question for whoever
+is: "What can this thing actually do on its own? Can it send, or can it only draft?" When the
+answer scares you, change the access. The prompt can keep its rules; they are advice, and now
+the tools make the advice unnecessary.
+
+<Exercise>
+1. List every service, database, and file store one of your agents can reach. Next to each,
+   write the worst single action its current access allows.
+2. Re-issue each key at the smallest scope the task needs: read-only where the agent only
+   reads, draft-only where it writes messages.
+3. For every capability that survives the trim, answer the builder's question ("can it send,
+   or only draft?") and put an approval step in front of anything that still sends, pays, or
+   deletes.
+</Exercise>
+
+## Further reading
+
+- [Nate Herk · 5000 Hours of Building AI in Just 17 Minutes](https://www.youtube.com/watch?v=7WZ6XldxX0U), the source this guide draws on
+- [Anthropic · Tool use overview](https://docs.claude.com/en/docs/agents-and-tools/tool-use/overview), where an agent's capabilities are actually defined
