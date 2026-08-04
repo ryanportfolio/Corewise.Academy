@@ -59,7 +59,10 @@
       "Bash(git push *)",
       "Bash(git merge *)",
       "Bash(gh pr create *)",
-      "Bash(gh pr merge *)"
+      "Bash(gh pr merge *)",
+      "Bash(git checkout *)",
+      "Bash(git switch *)",
+      "Bash(cd *)"
     ],
     "deny": [
       "Bash(git push --force*)",
