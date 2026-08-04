@@ -33,6 +33,35 @@ const count = (track: string, level: string) =>
 const monthYear = (d: Date) =>
   `${d.toLocaleString('en', { month: 'long' })} MMXXVI`.replace('2026', 'MMXXVI');
 
+// The margin panel rotates three of the guides' chalk lines on every page load.
+// The pool is read from the guide sources, so a new guide joins it for free.
+const guideSources = import.meta.glob<string>('../content/guides/**/*.mdx', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+});
+// Chalk lines are written lowercase and unpunctuated; the panel sets them as
+// sentences, and any quoted phrase nests inside the blockquote's own quotes.
+const typeset = (line: string) =>
+  (line.charAt(0).toUpperCase() + line.slice(1))
+    .replace(/"([^"]+)"/g, '‘$1’')
+    .replace(/'/g, '’')
+    .replace(/([^.!?])$/, '$1.');
+const quotePool = guides.flatMap((g) => {
+  const [, source] = Object.entries(guideSources).find(([path]) => path.endsWith(`/${g.id}.mdx`)) ?? [];
+  const chalk = source?.match(/<Chalk>([\s\S]*?)<\/Chalk>/)?.[1].trim();
+  return chalk ? [{ quote: typeset(chalk), title: g.data.title, href: `/guides/${g.id}/` }] : [];
+});
+const shuffle = <T,>(items: T[]) =>
+  items
+    .map((item) => ({ item, k: Math.random() }))
+    .sort((a, b) => a.k - b.k)
+    .map(({ item }) => item);
+// Rendered three: what crawlers and no-JS readers get. The script below swaps in
+// a fresh three before first paint.
+const seedQuotes = shuffle(quotePool).slice(0, 3);
+const quotePoolJson = JSON.stringify(quotePool).replace(/</g, '\\u003c');
+
 const minis: Record<string, string> = {
   foundations:
     '<svg class="mini" width="64" height="26" viewBox="0 0 64 26"><g fill="currentColor" stroke="currentColor"><circle cx="8" cy="18" r="2.2"/><circle cx="22" cy="8" r="1.7"/><circle cx="36" cy="14" r="2.6"/><circle cx="50" cy="6" r="1.7"/><circle cx="58" cy="16" r="2"/><path d="M8 18 L22 8 L36 14 L50 6 L58 16" fill="none" stroke-width="0.9" stroke-dasharray="1 2.5"/></g></svg>',
@@ -216,22 +245,40 @@ const minis: Record<string, string> = {
           catalogue is free to read; a typical guide takes 8 minutes, the longest about 10 minutes.
         </p>
       </div>
-      <div class="margin-notes">
+      <div class="margin-notes" data-quotes>
         <span class="panel-label">Quotes from the guides</span>
-        <blockquote>
-          <p>“Reasoning tokens are billed twice.”</p>
-          <cite><a href="/guides/thinking-on-a-budget/">Thinking on a budget</a></cite>
-        </blockquote>
-        <blockquote>
-          <p>“Discipline makes the astronomer; the telescope only helps.”</p>
-          <cite><a href="/guides/rent-the-model-own-the-method/">Capture the model's discipline</a></cite>
-        </blockquote>
-        <blockquote>
-          <p>“A model that runs for hours needs a support structure.”</p>
-          <cite><a href="/guides/guardrails-for-long-runs/">Guardrails for hours-long agent runs</a></cite>
-        </blockquote>
+        {
+          seedQuotes.map((q) => (
+            <blockquote>
+              <p>“{q.quote}”</p>
+              <cite>
+                <a href={q.href}>{q.title}</a>
+              </cite>
+            </blockquote>
+          ))
+        }
       </div>
     </div>
+    <script id="quote-pool" type="application/json" is:inline set:html={quotePoolJson} />
+    <script is:inline>
+      // Runs where it sits, before the panel paints: no flash of the rendered three.
+      (() => {
+        const panel = document.querySelector('[data-quotes]');
+        const pool = JSON.parse(document.getElementById('quote-pool').textContent);
+        const slots = panel ? panel.querySelectorAll('blockquote') : [];
+        if (pool.length < slots.length) return;
+        for (let i = pool.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [pool[i], pool[j]] = [pool[j], pool[i]];
+        }
+        slots.forEach((slot, i) => {
+          const link = slot.querySelector('cite a');
+          slot.querySelector('p').textContent = '“' + pool[i].quote + '”';
+          link.textContent = pool[i].title;
+          link.href = pool[i].href;
+        });
+      })();
+    </script>
     <div class="reveal">
       <span class="panel-label">Primary sources the guides teach from</span>
       <ul class="source-roll">
