@@ -94,9 +94,10 @@ Herk's test for whether an agent's access is sane comes from hiring:
 />
 
 The card works. The purchases would go through. Trust is doing all the work, and with a
-non-deterministic system that is the wrong place for it. The same trim applies to storage: a
-knowledge store an agent should only consult gets a read-only connection, which is the scoped
-store pattern in <a href="/guides/give-your-agent-a-memory/">Give your agent a memory</a>.
+non-deterministic system that is the wrong place for it. Storage follows the same rule: an
+agent that only reads a knowledge store gets a read-only connection, so no run can change
+what is in it. <a href="/guides/give-your-agent-a-memory/">Give your agent a memory</a>
+scopes its stores this way.
 
 ## <span class="sec-no">04</span>Ask what it can do on its own
 
