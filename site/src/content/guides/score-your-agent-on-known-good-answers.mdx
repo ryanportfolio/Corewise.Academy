@@ -46,8 +46,8 @@ right. This guide is the cheap way to get that number.
 ## <span class="sec-no">01</span>One run tells you almost nothing
 
 The models inside an agent are non-deterministic: ask the same model the same thing twice and
-the answers differ. Usually only the wording moves. Sometimes the decision moves. And when you
-swap the model for a newer one, the whole system reads its instructions differently.
+the answers differ. Usually only the wording changes. Sometimes the answer itself changes. And
+when you swap the model for a newer one, the whole system reads its instructions differently.
 
 <PullQuote
   quote="you really have no idea what your success rate is going to be across 100 real runs"
@@ -72,9 +72,8 @@ written and approved, and that became the standard the agent was measured agains
 this a golden data set; the name matters less than where the answers come from.
 
 The answers come from work already done. Past tickets and the replies that closed them. Past
-reports and the version that shipped. The set is a collection of judgments your team has
-already made. Twenty examples are enough to start, and the set
-gets more trustworthy as it grows.
+reports and the version that shipped. Twenty examples are enough to start, and the set gets
+more trustworthy as it grows.
 
 ## <span class="sec-no">03</span>Grade by script or by judge
 
@@ -87,8 +86,8 @@ comparing depends on the check:
 | Judgment (does this reply resolve the ticket the way the approved one did) | A judging model |
 
 A judging model is a second model handed the agent's output, the known good answer, and the
-question "does this meet the bar". The judge scores against a reference a person approved,
-which keeps it clear of the self-grading trap. The design rule for both graders is the
+question "does this meet the bar". The judge compares against an answer a person approved,
+so the standard comes from a person and the agent never grades its own work. The design rule for both graders is the
 same one Herk uses: write down how a human reviewer would check this work, then automate that
 exact review. If your reviewer would test the number, script it. If your reviewer would read
 both replies and compare, that is the judge's job.
@@ -109,12 +108,13 @@ each becomes a yes or no instead of a feeling.
 
 The reason to insist on the rerun: changes you are sure will help sometimes drop the score,
 and you would rather learn that from your own testing than from customers. The score is also
-the honest gate between development and production, and it makes other decisions cheap. <a
+what tells you the agent is ready to move from testing into real work, and it makes other
+decisions cheap. <a
 href="/guides/recheck-your-model-choices-each-release/">Recheck your model choices each
 release</a> asks you to re-test models as new ones ship; with a scoring set, that recheck is
 one rerun. The evaluator-separate-from-worker rule in <a
-href="/guides/automate-the-bottleneck/">Automate the step that slows you down</a> is this same
-idea applied to a single delegation; the scoring set makes that evaluator repeatable.
+href="/guides/automate-the-bottleneck/">Automate the step that slows you down</a> is the same
+idea for a single piece of handed-over work; the scoring set makes that evaluator repeatable.
 
 <Exercise>
 1. Pick one agent you run and collect 20 real examples of its task, each with an output a

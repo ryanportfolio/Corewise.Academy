@@ -6,7 +6,7 @@ level: practitioner
 number: 36
 minutes: 5
 objectives:
-  - 'Predict that an agent with access to a capability will eventually use it, and explain why non-determinism makes prompt rules unreliable.'
+  - 'Predict that an agent with a tool will eventually use it, and explain why a model that can act differently on every run makes prompt rules unreliable.'
   - 'Distinguish a rule that lives in the prompt from a rule that lives in the tools, and state which one actually restricts the agent.'
   - 'Scope an API key so an agent can draft but never send, and apply the same trim to every service it logs into.'
   - 'Audit everything an agent can touch (tools, databases, files, keys) and fix any access whose worst single action you would not accept.'
@@ -22,7 +22,7 @@ selfCheck:
   - q: Your agent's instructions say "never send emails, only write drafts", and it still has a send-email tool. What should you expect?
     a: 'That one day it sends. Instructions steer a non-deterministic model: the same setup can be read differently across runs, and swapping the model changes the reading again. The prompt line lowers the odds; only removing or scoping the send capability makes sending impossible.'
   - q: What is a scoped API key, and what does it change?
-    a: 'An API key is the password an agent uses to log into a service. A scoped key is issued with limited permissions, so the key itself can only perform certain operations, such as creating drafts but never sending. The rule stops living in text the model might misread and starts living in what the service will allow at all.'
+    a: 'An API key is the password an agent uses to log into a service. A scoped key is issued with limited permissions, so the key itself can only perform certain operations, such as creating drafts but never sending. The rule stops living in text the model might misread and starts living in what the service itself allows.'
   - q: You did not build the agent your team relies on. What one question finds the risk fastest?
     a: 'Ask whoever built it: "What can this thing actually do on its own?" For each connected service: can it send, or only draft? Can it write, or only read? If an answer scares you, the fix is changing the access. No prompt edit substitutes for that.'
 status: review
@@ -45,10 +45,10 @@ The lesson he took from it: whatever your agent has access to, assume it will us
 ## <span class="sec-no">01</span>The email nobody asked for
 
 The uncomfortable part of that story is that the agent was following instructions, as it
-understood them, with tools it legitimately held. These models are non-deterministic: run the
+understood them, with tools it was given. These models are non-deterministic: run the
 same setup a hundred times and the runs differ, and a model swap changes how the whole system
-reads its instructions. A behavior you have never seen in testing stays on the table for as
-long as the capability exists.
+reads its instructions. So any action the tools allow can still happen one day, even if you
+have never seen it in testing.
 
 That is why the fix was never a sterner prompt.
 
@@ -71,19 +71,19 @@ A rule can live in two places, and they fail differently:
   what any run decides the instructions mean.
 
 <a href="/guides/defend-your-agent-from-prompt-injection/">Defend your agent from prompt
-injection</a> reaches the same architecture from the attacker's side: narrow tools bound what
-a hijacked agent can do. Herk's story shows the bound matters with no attacker anywhere.
-Ordinary drift, one odd reading of a to-do item, is enough.
+injection</a> gives the same advice for a different reason: if an attacker hijacks your
+agent, narrow tools limit the damage. Herk's story shows you need the limit even with no
+attacker anywhere. One odd reading of a to-do item is enough.
 
 ## <span class="sec-no">03</span>Scope the keys
 
 An API key is the password an agent uses to log into a service. Most services let you issue
 keys with limited permissions, so the key itself can only perform certain operations: a key
 that creates drafts but cannot send, a key that reads records but cannot write them. Scoping
-the key moves the rule out of text the model might misread and into what the service will
-allow at all.
+the key moves the rule out of text the model might misread and into what the service itself
+allows.
 
-Herk's test for whether an agent's access is sane comes from hiring:
+Herk's test for whether an agent's access is sane is a hiring question:
 
 <PullQuote
   quote="would you ever hand a new hire a credit card and say, hey, don't use this"
@@ -93,8 +93,8 @@ Herk's test for whether an agent's access is sane comes from hiring:
   timestamp="8:36"
 />
 
-The card works. The purchases would go through. Trust is doing all the work, and with a
-non-deterministic system that is the wrong place for it. Storage follows the same rule: an
+The card works. The purchases would go through. Only trust stops them, and a system that can
+act differently on every run has not earned that trust. Storage follows the same rule: an
 agent that only looks things up in a database or knowledge base gets a read-only connection,
 so no run can change what is stored there. <a href="/guides/give-your-agent-a-memory/">Give
 your agent a memory</a> scopes its stores this way.
@@ -105,12 +105,12 @@ Walk the full list of what the agent can touch: every tool, every database, ever
 key. For each one, name the worst single action its current access allows, and assume that
 action happens eventually. <a href="/guides/automate-the-bottleneck/">Automate the step that
 slows you down</a> asks whether your worker has the logins the task requires; this audit is
-the other half, confirming it holds nothing more.
+the other half: check that it has no access beyond that.
 
 If you are not the one building the system, the audit compresses to one question for whoever
 is: "What can this thing actually do on its own? Can it send, or can it only draft?" When the
-answer scares you, change the access. The prompt can keep its rules; they are advice, and now
-the tools make the advice unnecessary.
+answer scares you, change the access. The prompt can keep its rules as guidance; the tools
+are what make the guarantee.
 
 <Exercise>
 1. List every service, database, and file store one of your agents can reach. Next to each,
