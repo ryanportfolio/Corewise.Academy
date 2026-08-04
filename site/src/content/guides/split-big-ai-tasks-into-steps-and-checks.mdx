@@ -1,0 +1,186 @@
+---
+title: Split big AI tasks into steps and checks
+description: 'One big question in one chat makes the model decide, research, write, and grade itself in a single pass. Map the work instead: parallel research jobs, a checker that did not write the answer, a merge, and your approval before anything expensive.'
+track: agents
+level: broad
+number: 34
+minutes: 8
+objectives:
+  - Diagnose a one-chat answer as one model deciding, researching, writing, and grading itself in a single pass.
+  - Map a recurring AI task into jobs and arrows, marking which jobs can run at the same time.
+  - Separate the checking job from the writing job, and place a human approval where a mistake is expensive.
+  - Choose between a plain chat and a mapped workflow based on steps, parallel work, and the cost of a wrong answer.
+prerequisites: []
+sources:
+  - url: https://www.youtube.com/watch?v=JWhICz1QR8M
+    creator: Greg Isenberg
+    video: Why Graph Engineering will 10x your Claude/Codex
+    timestamps: ['1:29', '2:22', '3:53', '6:45', '8:57', '9:49', '12:02', '13:11', '14:28', '15:17', '15:56', '20:43', '21:16', '21:46', '22:29']
+selfCheck:
+  - q: You ask a model one big question ("Should I build this?") and get a confident, complete answer. What actually happened in that single pass, and why is it risky?
+    a: One model decided what mattered, researched it, interpreted the evidence, wrote the recommendation, and graded its own confidence, all in one pass with nothing checking any stage. The answer sounds like research, but the same system that wrote it also judged it, and a big decision can rest on it.
+  - q: In a mapped workflow, which jobs can run at the same time, and what does the checker need before it can start?
+    a: Jobs that do not depend on each other's output can run at the same time; researching customers, competitors, and distribution are independent, so they run in parallel. The checker needs the research finished before it can attack it, and the final recommendation needs the checker's pass before the surviving evidence is merged. Arrows only exist where one job truly needs another's output.
+  - q: When does a task deserve a mapped workflow, and when is a plain chat fine?
+    a: 'Map the work when it has multiple steps, some of those steps could run at the same time, and the output needs checking before it matters (deep research, a go-to-market plan, support triage, code review). A plain chat is fine for small tasks with cheap mistakes: brainstorming ten names or summarizing a short email needs no workflow.'
+status: published
+lastUpdated: 2026-08-03
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+
+<Chalk>checking is its own job</Chalk>
+
+<p class="lede">
+Ask a model one big question, "Should I build this idea?", and you get one confident answer:
+market size, a few competitors, maybe a launch plan. It feels like research. Greg Isenberg, host
+of the Startup Ideas podcast, walks through what actually happened in that pass and a better
+shape for the work: break the task into jobs, run the independent ones at the same time, give
+the checking to something that did not write the answer, and approve the result yourself before
+acting on it. He files this under the term "graph engineering"; the practice is simpler than the
+name.
+</p>
+
+## <span class="sec-no">01</span>One chat does five jobs at once
+
+Slow down the confident one-chat answer and it gets uncomfortable. In that single pass, one
+model:
+
+- decided which angles mattered,
+- researched the market,
+- interpreted the evidence,
+- wrote the recommendation,
+- and graded its own confidence.
+
+Nothing checked any stage, and you might commit years to the conclusion. The last item is the
+sharpest problem: much AI research fails because the writer and the grader are the same model.
+
+<PullQuote
+  quote="the same model that writes the answer also grades the answer"
+  creator="Greg Isenberg"
+  video="Why Graph Engineering will 10x your Claude/Codex"
+  href="https://www.youtube.com/watch?v=JWhICz1QR8M"
+  timestamp="12:02"
+/>
+
+Isenberg's comparison: that is an employee writing their own performance review. In a
+well-designed workflow, checking is a separate job, done by something that has no stake in the
+answer. Why a model grading its own taste fails, and what to route to a person instead, is the
+subject of <a href="/guides/why-ai-makes-slop-and-how-to-catch-it/">Why AI makes slop and how to
+catch it</a>.
+
+## <span class="sec-no">02</span>Jobs, arrows, and shared notes
+
+The mapped version of a piece of work has three parts:
+
+- **Jobs.** Each step in the workflow: research customers, check the evidence, draft the reply.
+- **Arrows.** Which job feeds which. An arrow exists only where one job needs another's output.
+- **Shared notes.** What the system knows so far, passed along the arrows from job to job.
+
+For the "should I build this?" question, the mapped workflow runs like a small team. A planner
+breaks the question into angles. Three researchers work at the same time, one each on customers,
+competitors, and distribution, because none of them needs the others' output. A checker then
+attacks the findings: which claims have evidence, which data is stale, which competitor got
+ignored, where pain got confused with willingness to pay. A merge step turns what survives into
+a one-page recommendation. You read it and decide. The answer is still a written report; the
+work behind it is what changed.
+
+The same shape fits daily work. A support workflow classifies the ticket, pulls the customer's
+history, searches the policy docs, drafts a reply, has a checker review tone and accuracy, and
+routes refunds and angry customers to a person. A coding workflow plans, edits, reviews the
+diff, runs the tests, and holds the pull request for your approval; <a
+href="/guides/loop-the-agent-until-the-work-passes/">Loop the agent until the work passes</a>
+builds exactly that checker-and-rerun structure, and <a
+href="/guides/capture-the-models-discipline/">Capture the model's discipline</a> covers the
+planner-and-worker split behind it.
+
+Not every task earns this. Brainstorming ten names or summarizing a short email is fine in a
+plain chat. Map the work when three things hold: it has multiple steps, some steps could run at
+the same time, and the output needs checking before it matters.
+
+One vocabulary trap: "graph" names two different things in AI.
+
+- **A knowledge graph** is a map of how facts connect (this customer works at this company,
+  this issue relates to this feature), used so a system can answer questions that similarity
+  search misses. <a href="/guides/build-a-knowledge-base-your-team-can-ask/">Build a knowledge
+  base your team can ask</a> covers that side.
+- **A map of work**, this guide's kind, shows how jobs feed each other.
+
+## <span class="sec-no">03</span>Run it by hand first
+
+Isenberg's advice for a first attempt runs against the tool-first instinct: no framework, no
+automation.
+
+<PullQuote
+  quote="draw the graph before you automate the graph"
+  creator="Greg Isenberg"
+  video="Why Graph Engineering will 10x your Claude/Codex"
+  href="https://www.youtube.com/watch?v=JWhICz1QR8M"
+  timestamp="14:28"
+/>
+
+On a blank whiteboard app, write the final outcome at the top, then the jobs (planner,
+researchers, checker, merge, your approval), then the arrows. Run it by hand: a separate chat
+per job, you carrying the notes between them. Slower than automation, and far easier to
+understand. If the hand-run version does not produce clearly better work than one chat,
+automating it would only produce the same mediocre work faster.
+
+Once the map works a few times by hand, upgrade in two stages:
+
+- **Have each job write a file.** In a coding agent, the planner writes `plan.md`, the
+  researchers write `customer.md`, `competitors.md`, and `distribution.md`, the checker writes
+  `review.md`, the merge writes `recommendation.md`. The run leaves a paper trail you can
+  reread, compare across runs, and reuse next week.
+- **Then reach for orchestration tools.** Purpose-built workflow tools add saved progress,
+  branching, loops, and built-in approval stops, and automation platforms connect the workflow
+  to Slack, email, and your customer records. The tool comes after the workflow: automating a
+  workflow you do not understand yet produces a mess.
+
+## <span class="sec-no">04</span>Keep the map small
+
+More jobs do not mean better output. Five workers can confidently repeat the same wrong idea,
+and a big enough workflow spends more time coordinating than thinking. The goal is the smallest
+map that improves the work.
+
+<PullQuote
+  quote="the smallest graph that improves the quality of work"
+  creator="Greg Isenberg"
+  video="Why Graph Engineering will 10x your Claude/Codex"
+  href="https://www.youtube.com/watch?v=JWhICz1QR8M"
+  timestamp="21:16"
+/>
+
+A good small map does five things:
+
+- runs independent jobs at the same time instead of one after another,
+- keeps the workers and the checker separate,
+- puts your approval where a mistake is expensive,
+- stops when the answer is good enough,
+- and leaves its notes behind.
+
+Scale the approval stop to the stakes: a private memo needs a light look, while a customer
+email, a public post, deployed code, or a refund needs a strict one.
+
+The last item compounds. Every research run leaves better customer notes; every support run
+leaves better product feedback; the notes from this run make the next run smarter. Where to
+keep them so an agent can actually use them next time is the subject of <a
+href="/guides/give-your-agent-a-memory/">Give your agent a memory</a>.
+
+<Exercise>
+1. Pick one task you already run with AI every week (idea research, customer-feedback analysis,
+   landing-page reviews) and write its final output in one sentence.
+2. List the jobs a great human team would do to produce that output, then draw arrows only
+   where one job needs another job's output. Jobs with no arrow between them can run at the
+   same time.
+3. Add a checker job that did not write the work, and put your own approval before the
+   expensive step.
+4. Run the map once by hand, one chat per job, carrying the notes between them. If the result
+   beats your usual one-chat answer, run it twice more before automating anything.
+</Exercise>
+
+## Further reading
+
+- [Greg Isenberg · Why Graph Engineering will 10x your Claude/Codex](https://www.youtube.com/watch?v=JWhICz1QR8M), the episode this guide synthesizes
+- [Anthropic · Building effective agents](https://www.anthropic.com/engineering/building-effective-agents), the same workflow shapes from the vendor side
