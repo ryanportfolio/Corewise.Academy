@@ -96,6 +96,17 @@ Clear, to the point, plain words. Fewer words beat more words everywhere on the 
   Specific and simple beats unnecessary complexity, every time. The test for any
   phrase: would a smart reader outside AI tooling have to ask? Then replace it
   with the plain phrase ("deliberation dial" → "how hard the model thinks").
+- **Metaphors never carry the point** (editor ruling, 2026-08-03, from the
+  guide No. 9 retitle and the same-day fixes to the what-still-pays guide). A
+  claim, heading, or title whose only statement is a metaphor forces the reader
+  to decode it, and the editor reads it as obtuse: "Rent the model, own the
+  method" (rent of what?), "The pay moves to deciding" (pay does not move),
+  "the question tells you where to move" (move what, where?). The test: say the
+  literal version; if the sentence needed the metaphor to mean anything, ship
+  the literal version instead ("Deciding is now the hard part"). Decoration on
+  top of a literal statement is welcome; a metaphor instead of one is the
+  defect. Applies doubly to titles and headings, which have no surrounding
+  sentence to rescue them, and to two-part aphorism shapes ("X the A, Y the B").
 - **No walls of text** (editor ruling, 2026-07-18). A dense block gets skimmed
   and forgotten, so it fails no matter how good the sentences are. Paragraphs
   run 1-4 sentences; a paragraph past ~60 words needs a reason to exist at that
