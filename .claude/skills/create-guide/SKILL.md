@@ -163,6 +163,10 @@ setting); (12) referent check: read every "it", "they", "that", and bare "do not
 and confirm each points to one nameable thing, or name the thing instead of
 pointing at it.
 
+Then run the clarity-pass skill on the finished draft: a cold fresh-reader re-read that
+catches the abstractions, idioms, and two-read sentences this checklist misses. It is a
+required step, not optional polish, and it reports its rewrites in the reply.
+
 ## Step 5: Verify and open the PR
 
 Run `npm run build` in `site/` and fix any error. Branch (never main), commit the
