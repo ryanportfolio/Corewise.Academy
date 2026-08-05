@@ -1,0 +1,154 @@
+---
+title: Delegate to your agent in stages
+description: 'A new agent should not run your inbox on day one. Give it one job with read-and-draft access only, check its work until your corrections stop, then add the next tool, and let it run unattended only after it has earned that.'
+track: agents
+level: broad
+number: 38
+minutes: 5
+objectives:
+  - 'Write a one-sentence job prompt for an agent that contains all five parts: the job, the tool, the categories, the output, and the boundary.'
+  - 'Sequence a new agent''s responsibilities in the order that keeps mistakes cheap: visible first, then efficient, then automatic, then delegated.'
+  - 'Connect an email or calendar account with read-and-draft access only, and state why sending stays with you at the start.'
+  - 'Decide when an agent has earned a scheduled, unattended run, and name the evidence behind that decision.'
+prerequisites: []
+sources:
+  - url: https://www.youtube.com/watch?v=TL8V41Ea6oM
+    creator: Sandeep Swadia
+    video: 4 AI Agents To Automate 99% Of Your Life
+    timestamps: ['1:05', '2:36', '2:51', '3:10', '3:24', '4:20', '5:15', '6:05', '6:08', '6:36', '9:50']
+selfCheck:
+  - q: What are the five parts of an agent's job prompt, and where do they appear in "Review my unread Gmail from the last 24 hours, sort it into urgent, informational, and ignore, draft replies for anything urgent, and don't send anything without my approval"?
+    a: 'The job (review unread email), the tool (Gmail), the categories (urgent, informational, ignore), the output (drafted replies), and the boundary (nothing sends without approval). One sentence can carry all five; what matters is that none of them is missing.'
+  - q: Why does the first version of the agent draft replies instead of sending them?
+    a: 'Because at that point you have no evidence it does the work the way you would. Draft-only keeps every mistake cheap: a bad draft costs you a deletion, a bad sent email costs you an apology. You review its output until your corrections stop, and only then consider giving it more reach.'
+  - q: When has an agent earned a scheduled run with nobody watching?
+    a: 'After you have run the same job by hand for days or weeks and stopped needing to correct it. The evidence is your own corrections trending to zero. Until then, an unattended run automates work you have not yet verified, and anything touching sensitive data or acting on your behalf deserves extra hesitation.'
+status: review
+lastUpdated: 2026-08-04
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+
+<Chalk>agents earn promotions one job at a time</Chalk>
+
+<p class="lede">
+Sandeep Swadia, who spent twenty years as a tech CEO, board member, and investor, builds
+four everyday agents in one walkthrough: one that sorts email, one that drafts documents,
+one that digests contracts, one that runs interview rehearsals. The tools are the easy
+part. The lesson worth keeping is the order in which he hands them power: a new agent
+starts with one job it cannot mess up, and every increase in reach has to be earned.
+</p>
+
+## <span class="sec-no">01</span>Start with a reading job
+
+The chore he starts with is email, and the numbers explain why. He cites a Microsoft
+study finding the average worker gets 117 emails a day and is interrupted roughly every
+two minutes, 275 times a day, by an email, a meeting, or a message.
+
+The first agent's job is to read that pile, not to answer it. Connecting your inbox is
+the step that turns a chatbot into an agent: instead of you pasting emails into a chat
+window, the agent reaches into the account itself. Every chat tool does this through
+connectors, the menu where you link an outside account to the chat, and when you link
+one, the account's provider shows you exactly what permissions you are granting. Read
+that screen instead of clicking through it.
+
+<PullQuote
+  quote="if you're a little uneasy about letting AI into your inbox, that's a good sign"
+  creator="Sandeep Swadia"
+  video="4 AI Agents To Automate 99% Of Your Life"
+  href="https://www.youtube.com/watch?v=TL8V41Ea6oM"
+  timestamp="2:51"
+/>
+
+His answer to that unease is the boundary: the agent may read and draft, never send.
+<a href="/guides/assume-your-agent-uses-every-tool-it-has/">Assume your agent uses every
+tool it has</a> explains why the strongest version of that rule lives in the account's
+permissions rather than in the prompt; here, at the start, the point is simpler. Keep
+the agent's worst possible action cheap while you find out how good it is.
+
+## <span class="sec-no">02</span>Five parts of a job prompt
+
+The prompt that assigns the job is plain English, the same words you would type in any
+chat. The difference is what it has to contain. Swadia's version: "Review my unread
+Gmail from the last 24 hours. Sort it into three buckets: urgent, informational, and
+ignore. For anything urgent, draft a reply that sounds like me. Don't send anything
+without my approval." Four short sentences carrying five parts:
+
+- **The job.** What the agent is to do: review unread email.
+- **The tool.** Where it does the work: the connected Gmail account.
+- **The categories.** The buckets the output sorts into: urgent, informational, ignore.
+- **The output.** What comes back to you: drafted replies in your voice.
+- **The boundary.** What it may not do: send anything without approval.
+
+When a run disappoints, check which of the five was missing. The job
+without categories returns mush; the output without a boundary returns surprises.
+<a href="/guides/brief-the-model/">Brief the model like a brilliant new hire</a> is the
+longer version of the same craft.
+
+## <span class="sec-no">03</span>Let the agent earn the next step
+
+After the email agent has run for a few days and its drafts stop needing corrections,
+Swadia adds the second tool, the calendar, with the same restraint: no moving meetings
+without approval. Now the two jobs combine. His prompt: look at today and tomorrow,
+compare the calendar against the urgent emails you found, and tell me what conflicts,
+what needs prep before a meeting, and what can wait.
+
+Only after he trusts both outputs does he schedule the combined run to happen every
+morning, unattended. <a href="/guides/automate-a-workflow-as-a-claude-routine/">Automate
+a workflow as a Claude routine</a> covers what a scheduled run needs, and his caution
+belongs next to it: be slow to schedule anything that touches sensitive data or acts
+on your behalf.
+
+Behind the whole sequence is a ladder he states outright. First make the work visible,
+then make it efficient, then make it automatic, and only then delegate the decision.
+
+<PullQuote
+  quote="we don't get promoted easily, neither should your agent"
+  creator="Sandeep Swadia"
+  video="4 AI Agents To Automate 99% Of Your Life"
+  href="https://www.youtube.com/watch?v=TL8V41Ea6oM"
+  timestamp="6:36"
+/>
+
+Each rung is a promotion, and the evidence for granting it is boring: you ran the job,
+you checked the output, your corrections trended to zero. Skipping rungs only makes
+the agent's first big mistake more expensive.
+
+## <span class="sec-no">04</span>One ladder, every agent
+
+The other agents in his walkthrough climb the same ladder from different starting
+points. A document agent drafts a pitch deck you edit before anyone sees it. A research
+agent compiles a briefing you verify before you act on it. In every case the agent's
+early work products are drafts, visible to you and nobody else, and the agent gets more
+reach only as your corrections get rarer.
+
+<PullQuote
+  quote="if you come in clear, AI will multiply your clarity"
+  creator="Sandeep Swadia"
+  video="4 AI Agents To Automate 99% Of Your Life"
+  href="https://www.youtube.com/watch?v=TL8V41Ea6oM"
+  timestamp="9:50"
+/>
+
+The multiplication cuts both ways: come in confused and the agent multiplies the
+confusion. The ladder is how you find out which one is happening while the stakes are
+still small. If you are choosing which chore to hand over first,
+<a href="/guides/automate-the-bottleneck/">Automate the step that slows you down</a>
+makes that pick for you.
+
+<Exercise>
+1. Pick one chore an agent could do from your accounts, and write its job prompt with
+   all five parts: the job, the tool, the categories, the output, and the boundary.
+   Set the boundary to draft-only.
+2. Connect the one account the job needs, reading the permission screen as you do.
+   Run the job by hand each day for a week, and note every correction you make.
+3. When a week passes with no corrections, grant one promotion: add the second tool,
+   or schedule the run. One rung, then back to watching.
+</Exercise>
+
+## Further reading
+
+- [Sandeep Swadia · 4 AI Agents To Automate 99% Of Your Life](https://www.youtube.com/watch?v=TL8V41Ea6oM), the walkthrough this guide draws on
+- [Microsoft WorkLab · Work Trend Index](https://www.microsoft.com/en-us/worklab/work-trend-index), the research behind the interruption numbers he cites
