@@ -9,6 +9,20 @@ const guides = (await getCollection('guides'))
   .sort((a, b) => +b.data.lastUpdated - +a.data.lastUpdated || b.data.number - a.data.number);
 const trackName = (slug: string) => TRACKS.find((t) => t.slug === slug)?.name ?? slug;
 const levelLabel = (level: string) => level.charAt(0).toUpperCase() + level.slice(1);
+// Dates read as the house does elsewhere on the site: "August MMXXVI".
+const NUMERALS: [number, string][] = [
+  [1000, 'M'], [900, 'CM'], [500, 'D'], [400, 'CD'], [100, 'C'],
+  [90, 'XC'], [50, 'L'], [40, 'XL'], [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I'],
+];
+const roman = (year: number) =>
+  NUMERALS.reduce((out, [value, numeral]) => {
+    while (year >= value) {
+      out += numeral;
+      year -= value;
+    }
+    return out;
+  }, '');
+const monthYear = (d: Date) => `${d.toLocaleString('en', { month: 'long' })} ${roman(d.getFullYear())}`;
 ---
 
 <Base
@@ -20,9 +34,6 @@ const levelLabel = (level: string) => level.charAt(0).toUpperCase() + level.slic
     <header class="cat-head">
       <p class="mono-label accent">The whole catalogue</p>
       <h1 class="display">All guides</h1>
-      <p class="dek">
-        {guides.length} guides, newest first. Click a topic tag to see every guide that covers it.
-      </p>
     </header>
 
     <div class="charted">
@@ -37,7 +48,7 @@ const levelLabel = (level: string) => level.charAt(0).toUpperCase() + level.slic
             </h3>
             <p>{g.data.description}</p>
             <span class="foot">
-              <span class="min">{g.data.minutes} min</span>
+              <span class="published">{monthYear(g.data.lastUpdated)}</span>
               <span class="chips">
                 {g.data.tags.flatMap((label) => tagByLabel(label) ?? []).map((tag) => (
                   <a class="tag-chip" href={`/tags/${tag.slug}/`}>{tag.display}</a>
@@ -90,7 +101,7 @@ const levelLabel = (level: string) => level.charAt(0).toUpperCase() + level.slic
       align-items: flex-start;
       gap: var(--s-2);
     }
-    .entry .min { padding-top: 2px; white-space: nowrap; }
+    .entry .published { padding-top: 2px; white-space: nowrap; }
     .chips { display: flex; flex-wrap: wrap; gap: 5px; justify-content: flex-end; }
     /* chips sit above the card's stretched link so they stay clickable */
     .tag-chip {
