@@ -1,0 +1,101 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { TRACKS } from '../../data/tracks';
+import { TAGS } from '../../data/tags';
+
+export function getStaticPaths() {
+  return TAGS.map((t) => ({ params: { tag: t.slug }, props: { tag: t } }));
+}
+
+const { tag } = Astro.props;
+const guides = (await getCollection('guides'))
+  .filter((g) => g.data.status === 'published' && g.data.tags.includes(tag.label))
+  .sort((a, b) => a.data.number - b.data.number);
+const trackName = (slug: string) => TRACKS.find((t) => t.slug === slug)?.name ?? slug;
+const levelLabel = (level: string) => level.charAt(0).toUpperCase() + level.slice(1);
+---
+
+<Base
+  title={`Guides about ${tag.display} · CoreWise Academy`}
+  description={`Every guide in the catalogue tagged ${tag.display}.`}
+  crumbs={[{ name: `Tag · ${tag.display}`, path: `/tags/${tag.slug}/` }]}
+>
+  <main>
+    <header class="tag-head">
+      <p class="mono-label accent">Topic tag</p>
+      <h1 class="display">{tag.display}</h1>
+      <p class="dek">
+        {guides.length} guide{guides.length === 1 ? '' : 's'} in the catalogue cover this topic.
+      </p>
+    </header>
+
+    <ol class="shelf-list reveal">
+      {
+        guides.map((g) => (
+          <li>
+            <a href={`/guides/${g.id}/`}>
+              <span class="no">Nº {String(g.data.number).padStart(3, '0')}</span>
+              <span class="t">{g.data.title}</span>
+              <span class="m">{trackName(g.data.track)} · {levelLabel(g.data.level)}</span>
+              <p>{g.data.description}</p>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+
+    <p class="all-tags reveal">
+      All topics:
+      {TAGS.map((t) => <a href={`/tags/${t.slug}/`} class:list={[{ here: t.slug === tag.slug }]}>{t.display}</a>)}
+    </p>
+  </main>
+
+  <style>
+    main { max-width: 70rem; margin: 0 auto; padding: var(--s-8) var(--s-4) var(--s-12); }
+    .tag-head { padding-bottom: var(--s-4); border-bottom: 1px solid var(--ink); }
+    h1 { font-family: var(--font-display); font-size: clamp(2.6rem, 7vw, var(--text-3xl)); margin: var(--s-2) 0; }
+    .dek { font-size: var(--text-md); font-style: italic; color: var(--ink-soft); max-width: 52ch; }
+
+    .shelf-list { list-style: none; margin: 0 0 var(--s-8); padding: 0; }
+    .shelf-list li { border-bottom: 1px dashed var(--line); }
+    .shelf-list a {
+      display: grid;
+      grid-template-columns: 6.5rem 1fr auto;
+      gap: 4px var(--s-3);
+      text-decoration: none;
+      color: var(--ink);
+      align-items: baseline;
+      padding: var(--s-2) 0;
+      transition: background var(--dur) var(--ease);
+    }
+    .shelf-list a:hover, .shelf-list a:focus-visible { background: var(--accent-wash); }
+    .shelf-list .no { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--accent-deep); }
+    .shelf-list .t { font-family: var(--font-display); font-size: var(--text-md); }
+    .shelf-list a:hover .t, .shelf-list a:focus-visible .t { color: var(--accent-deep); }
+    .shelf-list .m { font-family: var(--font-mono); font-size: var(--text-2xs); color: var(--ink-mute); }
+    .shelf-list p { grid-column: 2; margin: 0; padding-left: var(--s-3); font-size: var(--text-sm); color: var(--ink-soft); max-width: 52ch; }
+
+    .all-tags { font-size: var(--text-sm); color: var(--ink-mute); max-width: 60ch; line-height: 2; }
+    .all-tags a {
+      font-family: var(--font-mono);
+      font-size: var(--text-2xs);
+      color: var(--ink-soft);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 1px 9px;
+      margin: 0 4px 0 2px;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+    }
+    .all-tags a:hover { color: var(--accent-deep); border-color: var(--accent-deep); }
+    .all-tags a.here { color: var(--accent-deep); border-color: var(--accent-deep); }
+
+    @media (max-width: 720px) {
+      .shelf-list a { grid-template-columns: 1fr auto; }
+      .shelf-list .no { display: none; }
+      .shelf-list p { grid-column: 1 / -1; padding-left: 0; }
+    }
+  </style>
+</Base>

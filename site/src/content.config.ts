@@ -1,5 +1,6 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { tagLabels } from './data/tags';
 
 // Guide frontmatter contract: the ingest skill writes this shape; the
 // templates render it. A course is NOT a separate type: courseSlug +
@@ -13,6 +14,7 @@ const guides = defineCollection({
     level: z.enum(['broad', 'practitioner', 'deep']),
     number: z.number().int().positive(), // catalogue Nº
     minutes: z.number().int().positive(),
+    tags: z.array(z.enum(tagLabels)).min(1), // vocabulary lives in data/tags.ts
     objectives: z.array(z.string()).min(1), // measurable, Bloom's-taxonomy verbs
     prerequisites: z
       .array(z.object({ slug: z.string(), note: z.string().optional() }))
