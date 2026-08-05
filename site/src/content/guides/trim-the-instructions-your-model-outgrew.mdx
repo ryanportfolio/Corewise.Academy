@@ -1,0 +1,162 @@
+---
+title: Trim the instructions your model outgrew
+description: 'Anthropic removed over 80 percent of Claude Code''s system prompt for the Claude 5 models and measured no loss on its coding evaluations. How to give your own instruction files the same trim: goals instead of rule lists, context loaded on demand, and a /doctor audit.'
+track: prompting
+level: practitioner
+number: 30
+minutes: 6
+objectives:
+  - 'Diagnose conflicting or outdated instructions across your CLAUDE.md, skills, and system prompts, and delete the ones a current model no longer needs.'
+  - Restructure a heavyweight CLAUDE.md into a short index that points at detail files loaded only when a task needs them.
+  - 'Rewrite a list of do-this and never-that rules as a stated goal the model can apply with judgment.'
+  - Audit a Claude Code setup with /doctor and act on its report of unused skills and startup context weight.
+prerequisites:
+  - slug: stop-shouting-at-the-model
+    note: 'Assumes you know the newest models over-obey forceful instructions; this guide extends that finding from single prompts to the instruction files that load before you type.'
+sources:
+  - url: https://www.youtube.com/watch?v=UBFHTHUs1wA
+    creator: Duncan Rogoff
+    video: Anthropic Engineers Just Fixed Claude Code and Nobody's Talking About it!
+    timestamps: ['1:37', '3:44', '5:05', '6:52', '7:32', '8:19', '8:36']
+selfCheck:
+  - q: 'Anthropic cut over 80 percent of Claude Code''s system prompt and measured no loss on its coding evaluations. Why did the deleted rules stop paying their way?'
+    a: 'They were guardrails for weaker models: worst-case protections and detailed procedures a less capable model needed spelled out. Current models read the surrounding context and handle those cases with their own judgment, so the rules added cost without adding behavior. Worse, rules written at different times contradicted each other (one said to leave documentation in place, another said never to add comments), and the model burns effort reconciling a conflict on every pass.'
+  - q: What does loading context on demand look like in practice, and what does it buy over loading everything up front?
+    a: 'Three moves: keep CLAUDE.md as a short index that names where detail lives, put procedures in skills the model opens only when the task calls for them, and expose tools as short descriptions the model searches before fetching a full definition. Up-front loading makes every session pay for every instruction whether or not it is used; on-demand loading spends context only on what the task touches, so sessions run cheaper and the instructions that do load stand out.'
+  - q: Your CLAUDE.md documents the directory layout, the tech stack, and the build commands. What would a /doctor audit say about those lines?
+    a: 'Cut them. They restate what a session can discover by reading the repository, and CLAUDE.md loads at the start of every session, so you pay for the restatement every time. The audit reserves that always-loaded space for what the model cannot figure out alone: the gotchas, the house rules, and pointers to detail files.'
+status: published
+lastUpdated: 2026-07-28
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+
+<Chalk>the rules were written for a weaker model</Chalk>
+
+<p class="lede">
+Anthropic removed more than 80 percent of Claude Code's system prompt (the standing instructions
+the tool sends with every request) for the Claude 5 models, and measured no loss on its coding
+evaluations. The deleted rules were written for weaker models that needed every case spelled
+out, and the models quietly outgrew them. Your own instruction files grew the
+same way, rule by rule, and this guide is the trim: what to delete, how to restructure what
+stays, and the built-in audit that finds the bloat for you.
+</p>
+
+## <span class="sec-no">01</span>Delete the outgrown rules
+
+What the model reads is far more than your message. Claude Code assembles each request from the
+system prompt, your CLAUDE.md files (instructions loaded at the start of every session), any
+skills you have installed, and saved memory. Arranging that material is what this track calls
+context engineering, and the arrangement most people run today was tuned for models two
+generations back.
+
+Thariq Shihipar, on the Claude Code team at Anthropic, wrote up what the team found when they
+reread that accumulated material: they had been over-constraining the model. Rules written at
+different times contradicted each other. One instruction said to leave documentation in place;
+another said never to add comments. The model handles a conflict like that, but it spends
+reasoning on the reconciliation every time, and the rule pair adds nothing a current model would
+not do on its own. So the team deleted the guardrails, kept the goals, and got the same results
+faster and cheaper.
+
+<PullQuote
+  quote="All you have to do is give Claude judgment."
+  creator="Duncan Rogoff"
+  video="Anthropic Engineers Just Fixed Claude Code and Nobody's Talking About it!"
+  href="https://www.youtube.com/watch?v=UBFHTHUs1wA"
+  timestamp="6:52"
+/>
+
+The write-up pairs each old habit with what works on the current models:
+
+| Old habit | What works now |
+|---|---|
+| Long lists of do-this and never-that rules | State the goal and let the model judge each case |
+| An example for every wanted output | Tool and parameter names that show their intended use |
+| Everything loaded up front | Context loaded when the task calls for it |
+| The same instruction repeated across files | Said once, in the one place it belongs |
+| Hand-written memory notes in CLAUDE.md | Memory the model saves on its own |
+| A prose spec | A test suite, mockup, or scoring rubric the model can check work against |
+
+The first row is the same correction <a href="/guides/stop-shouting-at-the-model/">Stop shouting
+at the model</a> makes for single prompts: the newest models follow instructions hard, so
+over-specifying backfires. This guide applies it to everything that loads before you type.
+
+One caution: a rule that encodes a real, recurring failure in your
+project still earns its place; <a href="/guides/turn-repeated-fixes-into-rules/">Turn repeated
+fixes into rules</a> covers when to write one. The trim targets the other kind: guesses,
+worst-case guardrails, and instructions nobody can trace to an actual failure.
+
+## <span class="sec-no">02</span>Load context on demand
+
+CLAUDE.md loads at the start of every session, so every line in it is a line you pay for every
+time, used or not. The fix is to load detail on demand instead of up front, and the write-up
+names three ways Claude Code now does this.
+
+**An index, not an encyclopedia.** Keep CLAUDE.md short: what the repository is, the gotchas a
+fresh session cannot discover, and pointers to detail files for specific tasks. The model opens
+a detail file when a task needs it and skips it otherwise. Lines that restate what the model can
+read from the repository itself (directory layout, tech stack, build commands) get cut.
+
+**Procedures as skills.** Anthropic moved Claude Code's code-review and verification
+instructions out of the always-loaded system prompt into skills the model opens only when it is
+reviewing or verifying. Any multi-step procedure you run sometimes but not always belongs in one;
+<a href="/guides/expertise-you-can-install/">Expertise you can install</a> covers how skills
+work.
+
+**Tools found by search.** Instead of loading every tool's full definition into every session,
+Claude Code keeps short descriptions and has the model search for the right tool, fetching the
+full definition only when it is about to use it.
+
+Memory follows the same direction. Hand-written notes in CLAUDE.md were the old way to carry
+facts across sessions; the current models save memory on their own, and
+<a href="/guides/give-your-agent-a-memory/">Give your agent a memory</a> shows what that store
+looks like. And every line this restructuring removes is context budget returned to the session,
+the budget <a href="/guides/stop-hitting-your-token-limit/">Stop hitting your token limit</a>
+teaches you to spend deliberately.
+
+## <span class="sec-no">03</span>Run the built-in audit
+
+Claude Code ships a `/doctor` command that finds the bloat for you by auditing
+your whole setup. It is read-only first: it scans, reports what it found, and asks before
+changing anything. The report covers your install's health, your instruction files, and your
+startup context weight (what loads before you type anything), including:
+
+- Skills, plugins, and connected tool servers (MCP) you never use, found by reading your own
+  usage counters and recent session transcripts.
+- Instructions repeated across CLAUDE.md, skills, and settings, and CLAUDE.md lines a session
+  could figure out itself.
+- Always-loaded guidance that would do better as a detail file or a skill.
+- Automation scripts (hooks) set to run on every tool call and pause the session each time,
+  broken settings files, an outdated version, and permission settings that interrupt you more
+  than they protect you.
+
+The numbers can be large. Duncan Rogoff, whose walkthrough this guide draws on, ran the audit
+on his own machine: 113 personal skills costing about 10,000 tokens (the units context is
+measured and billed in) every session just to list, 25 of which had never been used once.
+
+<PullQuote
+  quote="This all boils down to just simplify everything."
+  creator="Duncan Rogoff"
+  video="Anthropic Engineers Just Fixed Claude Code and Nobody's Talking About it!"
+  href="https://www.youtube.com/watch?v=UBFHTHUs1wA"
+  timestamp="8:19"
+/>
+
+<Exercise>
+1. Run `/doctor` in Claude Code and read the report before approving any change. Note your
+   startup context weight and how many installed skills have never been used.
+2. Search your CLAUDE.md and skills for "MUST", "NEVER", and "ALWAYS", and for pairs of
+   instructions that pull in opposite directions. Delete every rule you cannot trace to a real
+   failure, and rewrite the survivors as goals.
+3. Restructure your largest CLAUDE.md into an index: keep the overview, the gotchas, and
+   pointers to detail files; move everything else into those files or into a skill. Rerun
+   `/doctor` and compare the startup context weight.
+</Exercise>
+
+## Further reading
+
+- [Anthropic · The new rules of context engineering for Claude 5 generation models](https://claude.com/blog/the-new-rules-of-context-engineering-for-claude-5-generation-models), the primary source this guide distills
+- [Anthropic · Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents), the earlier foundations these new rules revise
+- [Duncan Rogoff · Anthropic Engineers Just Fixed Claude Code and Nobody's Talking About it!](https://www.youtube.com/watch?v=UBFHTHUs1wA), the walkthrough and the /doctor demonstration

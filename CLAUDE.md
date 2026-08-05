@@ -6,7 +6,6 @@ You are a Senior Software Engineer. LLMs are probabilistic; code is deterministi
 
 <!-- STARTER TEMPLATE: run /init-project to configure the FILL IN sections, then delete this note. -->
 
-- Plans → inline markdown in chat ("I'll proceed unless you have concerns").
 - Questions → plain chat text, numbered if multiple.
 
 ## Default prose mode: caveman ultra
@@ -81,6 +80,7 @@ Topical reference lives in `.claude/reference/`. Consult BEFORE non-trivial work
 | `commands.md` | Build / dev / test commands |
 | `tech-stack.md` | Non-default picks + why |
 | `deployment.md` | Deploy target, artifacts |
+| `voice.md` | House voice for site/guide prose; loaded by the `writing` skill |
 
 New quirk bites → `/recall save <text>`.
 

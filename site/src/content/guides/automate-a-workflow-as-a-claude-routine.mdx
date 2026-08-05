@@ -1,0 +1,141 @@
+---
+title: Automate a workflow as a Claude routine
+description: 'A routine is a saved instruction Claude runs on its own, on a schedule or an incoming signal. What it replaces, and why an unattended run has to be written tighter than one you watch.'
+track: agents
+level: practitioner
+number: 26
+minutes: 10
+objectives:
+  - Describe a Claude routine as a saved instruction that runs unattended on a schedule, an incoming web request, or an API call, and say where it runs.
+  - Map an automation onto the event, logic, output shape and identify which part a routine replaces.
+  - Rewrite an interactive prompt into routine instructions that hold up unattended, with a stated done condition, fuller context, and a smaller room for error.
+  - Decide when to build a task as a routine instead of wiring it in a no-code tool, weighing running cost against build time.
+prerequisites:
+  - slug: automate-the-bottleneck
+    note: Covers the four parts of any proactive automation (trigger, worker, access, receipt). This guide is one concrete way to build one.
+sources:
+  - url: https://www.youtube.com/watch?v=j3aXJNu9804
+    creator: Nick Saraev
+    video: Claude Routines Just Dropped, And It's Perfect
+    timestamps: ['0:05', '6:14', '7:50', '10:29', '15:01']
+selfCheck:
+  - q: A routine runs the same kind of instruction you might type into a live Claude session. What is the main difference, and why does it change how you write the instruction?
+    a: It runs unattended, on Anthropic's servers, started by a schedule or a signal instead of by you sitting there. In a live session you watch the work and correct course partway through. A routine gets no correction, so the instruction has to carry everything up front, meaning the full context, the exact steps, and a clear sign of when the job is done. You write it to fail as rarely as you can, because no one is there to catch a wrong turn.
+  - q: 'In the event, logic, output shape, which part does a routine change, and to what?'
+    a: The middle part, the logic. Older no-code tools had you build that middle by hand as a chain of drag-and-drop steps, with logins and field-matching to set up for each one. A routine replaces the hand-built chain with plain-language instructions. The event that starts it (a schedule, a web request, an API call) and the result it produces (a Slack message, a customer-record entry) stay the same.
+  - q: The video warns against moving every existing no-code workflow into a routine. Why?
+    a: Running work through a model costs more per step than running it as plain computation in a tool built for that job, so moving a heavy flow that already works can raise the bill for no gain. The case for a routine is build time. A flow that would take hours to wire together by hand, you can stand up in a single pass by describing it. Reach for it on new work, not as a blanket move of everything you already run.
+status: published
+lastUpdated: 2026-07-19
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+import RoutineFlow from '../../components/RoutineFlow.astro';
+
+<Chalk>a routine runs your instructions without you in the room</Chalk>
+
+<RoutineFlow />
+
+<p class="lede">
+A routine is a saved instruction that Claude runs on its own. You write out a task once, pick what
+sets it off (a time of day, an incoming web request, a direct call from your own code), and from
+then on it runs without you. The work happens on Anthropic's servers rather than your machine, so
+it fires whether or not your laptop is open. The clearest way to picture one: the same prompt you
+would type into a live session, except it runs on a timer and reports back when it is finished.
+</p>
+
+## <span class="sec-no">01</span>A saved prompt that runs itself
+
+The example in the source video is a morning inbox routine. It reads the unread mail, checks each
+sender against earlier threads for context, drafts replies in the owner's voice, and sends a Slack
+message with the summary and the drafts. It runs at 5:10 a.m., before he wakes up. He never starts
+it by hand.
+
+Three things can set a routine off: a schedule, a web request that another service sends when
+something happens (a webhook), or a direct call from code you control. The last one matters more
+than it sounds, because it lets one routine hand work to the next: a finished sales call sends a
+transcript, which starts a routine that drafts the follow-up email. That is how small automations
+chain into a larger one.
+
+## <span class="sec-no">02</span>The same shape, minus the wiring
+
+Every automation has the same three parts: an event that starts it, some logic in the middle, and
+an output it hands to another service. A schedule fires at 5 a.m., a chain of steps runs, and the
+result lands in Slack or a customer-record system.
+
+The older no-code builders, tools like n8n and make.com where you assemble a workflow by dragging
+boxes onto a canvas, put all the work in that middle part. You wire the boxes together, set up a
+login for each service, and match every field by hand. That middle is where the hours went.
+
+<PullQuote
+  quote="Might make more sense just to one-shot it as a routine."
+  creator="Nick Saraev"
+  video="Claude Routines Just Dropped, And It's Perfect"
+  href="https://www.youtube.com/watch?v=j3aXJNu9804"
+  timestamp="15:01"
+/>
+
+A routine keeps the same event and the same output and replaces the hand-wired middle with
+plain-language instructions. You describe the steps instead of building them. The proposal
+generator that took the video's author two to three hours to wire together is now a paragraph of
+instructions he can stand up in a couple of minutes. This is the same trigger-worker-output shape
+from <a href="/guides/automate-the-bottleneck/">Automate the step that slows you down</a>, with the
+worker written rather than assembled.
+
+## <span class="sec-no">03</span>Write it to run unattended
+
+An unattended run is the whole point, and it is also the catch. In a live session you read along
+and steer when the model drifts. A routine gives you no such chance, so the instruction has to be
+right the first time and every time.
+
+<PullQuote
+  quote="The routine occurs entirely hands-off, meaning that it basically needs to work almost perfectly every time."
+  creator="Nick Saraev"
+  video="Claude Routines Just Dropped, And It's Perfect"
+  href="https://www.youtube.com/watch?v=j3aXJNu9804"
+  timestamp="10:29"
+/>
+
+So write a routine tighter than a prompt you plan to babysit. A few habits do most of the work:
+
+- Spell out more context, not less. The model cannot ask you a follow-up mid-run, so everything it
+  needs has to be on the page.
+- State a clear sign of when the job is done, such as "once finished, send me a Slack update." That
+  gives the run a definite end.
+- Name each step plainly to shrink the room for a wrong turn.
+
+This is the same care that <a href="/guides/brief-the-model/">Brief the model like a brilliant new
+hire</a> asks for, turned up because the work runs alone. Keeping a long unattended run honest is
+its own subject in <a href="/guides/guardrails-for-long-runs/">Guardrails for hours-long agent
+runs</a>.
+
+## <span class="sec-no">04</span>When a routine is the right tool
+
+Not every workflow belongs in a routine. Running a task through a model costs more per step than
+running it as plain computation in a purpose-built tool, so moving a heavy flow that already works
+can raise the bill and buy you nothing. A stable, high-volume pipeline is often better left where
+it is.
+
+The case for a routine is build time. When a task would take hours to wire together by hand, and
+you could instead describe it in a paragraph and have it running in minutes, the routine wins.
+Reach for it on new work you have not built yet, not as a blanket move of everything you already
+run. The gain is that changing it later is a sentence, not an afternoon of rewiring.
+
+<Exercise>
+1. Take one interactive task you already ask Claude to do (a search, a summary, a draft) and write
+   it out as routine instructions: the full context up front, each step named plainly, and one
+   clear sign of when it is done.
+2. Pick the event that should start it. If it belongs on a clock, choose the time. If it should
+   react to something, decide what service would send the signal.
+3. Before scheduling it, read your instructions as if you cannot intervene once it starts. Find the
+   one step most likely to go wrong unattended and rewrite it to remove the ambiguity.
+</Exercise>
+
+## Further reading
+
+- [Nick Saraev · Claude Routines Just Dropped, And It's Perfect](https://www.youtube.com/watch?v=j3aXJNu9804), the walkthrough this guide distills
+- [Anthropic · Claude Code documentation](https://docs.claude.com/en/docs/claude-code/overview), the tool a routine runs on
+- [Wikipedia · webhook](https://en.wikipedia.org/wiki/Webhook), the incoming-signal trigger explained in full
+- [Wikipedia · cron](https://en.wikipedia.org/wiki/Cron), the scheduled-trigger idea in its original form

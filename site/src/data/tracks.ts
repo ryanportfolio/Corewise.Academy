@@ -26,7 +26,7 @@ export const TRACKS: Track[] = [
     name: 'Foundations',
     constellation: 'THE LENS',
     description:
-      'The Foundations layer is a set of guides on how AI models actually work: capabilities, limits, and the mental models that keep you honest.',
+      'How AI models actually work: what they can do, where they fail, and how to tell the difference.',
     sky: { cx: -3.4, cy: 0.9, spread: 1.0 },
   },
   {
@@ -35,7 +35,7 @@ export const TRACKS: Track[] = [
     name: 'Prompting & Context',
     constellation: 'THE LOOM',
     description:
-      'The Prompting & Context layer is a set of guides on engineered context: instructions, examples, and retrieved material arranged so the model attends to what matters.',
+      'Getting the right material in front of the model: instructions, examples, and retrieved context, arranged so what matters stands out.',
     sky: { cx: -1.5, cy: -0.5, spread: 1.15 },
   },
   {
@@ -44,7 +44,7 @@ export const TRACKS: Track[] = [
     name: 'Agents & Automation',
     constellation: 'THE COURIER',
     description:
-      'The Agents & Automation layer is a set of guides on tools, MCP, and multi-step workflows: getting reliable results from a model that acts on its own.',
+      'Models that act on their own: tools, MCP, and multi-step workflows that hold up without you watching.',
     sky: { cx: 0.4, cy: 0.8, spread: 0.95 },
   },
   {
@@ -53,7 +53,7 @@ export const TRACKS: Track[] = [
     name: 'Building with AI',
     constellation: 'THE FORGE',
     description:
-      'The Building with AI layer is a set of guides on APIs, retrieval, evals, and shipping AI features other people can rely on.',
+      'Shipping AI features other people can rely on: APIs, retrieval, and evals that prove it works.',
     sky: { cx: 2.1, cy: -0.6, spread: 1.05 },
   },
   {
@@ -62,7 +62,7 @@ export const TRACKS: Track[] = [
     name: 'Practice',
     constellation: 'THE METRONOME',
     description:
-      'The Practice layer is a set of guides on daily habits, verification, taste, and knowing when not to use the model.',
+      'The daily habits: verification, taste, and knowing when not to use the model.',
     sky: { cx: 3.6, cy: 0.7, spread: 0.85 },
   },
 ];

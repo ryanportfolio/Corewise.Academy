@@ -18,7 +18,6 @@ sources:
     creator: Austin Marchese
     video: Paste This Into Claude, Never Hit a Token Limit Again
     timestamps: ['0:55', '1:14', '2:23', '3:20', '4:28', '4:59', '7:54', '9:11', '10:56', '13:01']
-    watched: July 2026
 selfCheck:
   - q: Your subscription limit is not a fixed number of tokens. What is it, and why does that change how you fix it?
     a: 'It is a compute budget: tokens consumed times the compute cost of the model that processes them. That gives you two independent levers. You can shrink the tokens (context hygiene, compression, shorter preloads) or downshift the model (cheaper models for grunt work), and the biggest wins usually come from moving both.'
@@ -119,7 +118,7 @@ definition can pin the model it runs on, so the minimum viable model becomes a o
 that every future run inherits**. It can also fork its context, starting the task on a fresh
 thread when it needs nothing from the conversation, which cuts the token side at the same time.
 The economics of this orchestrator-and-workers split, and how to route by taste as well as cost,
-are the subject of <a href="/guides/rent-the-model-own-the-method/">Rent the model, own the method</a>.
+are the subject of <a href="/guides/rent-the-model-own-the-method/">Capture the model's discipline</a>.
 
 The floor below the cheapest model is no model. A script runs the same way every time, costs
 zero tokens, and never hallucinates, so any step of a skill that is deterministic (renaming,

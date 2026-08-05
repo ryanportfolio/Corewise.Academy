@@ -68,13 +68,22 @@ Anatomy and frontmatter schema are identical to `/ingest` Step 4 and
 numbered sections, exercise, exactly 3 self-check items, quoted YAML scalars that
 contain a colon plus space). Doc-grounded deltas:
 
-- Apply `/purposeful-writing`. Every guide has one job: change what the reader
+- Apply the global `writing` skill (it loads the house voice from
+  `.claude/reference/voice.md`). Every guide has one job: change what the reader
   does next. Answer early, be specific, cut any sentence that can go without loss.
 - **Ultra concise**: 550-850 words of body prose. Shorter and denser wins. Set
   `minutes` from final length (4-7 typical).
-- **No walls of text.** Paragraphs run 1-4 sentences; break at each new idea.
-  A dense block gets skimmed and forgotten, so a paragraph past ~60 words needs
-  a reason to exist at that length.
+- **No walls of text, and run the layout pass.** Paragraphs run 1-4 sentences;
+  break at each new idea. The defect that gets a draft rejected is a paragraph
+  that names a set and then swallows the items: "The audit checks three things:
+  routing integrity (...), index truth (...), and freshness (...)". Announce,
+  then hand the items to a structure: "The audit runs three checks:" plus a
+  list. Convert a named set to a table (shared dimensions) or a list, a term
+  and its meaning to a **bold-led** block, ordered steps to a numbered list.
+  Structure only genuine structure; over-structuring is its own defect, and
+  prose still carries the argument. `npm run lint:copy` prints candidates
+  (advisory, never blocks). Full rule in `copy-rules.md` ("The layout pass is
+  required, not optional").
 - **State the rule, skip the flourish.** No aphorism capstones, no dramatic
   justifications on self-evident rules, no praise of the guide's own advice,
   no coined names. Rules read as flat plain declaratives. When a mechanism has
@@ -95,7 +104,10 @@ contain a colon plus space). Doc-grounded deltas:
   (context window, token, MCP), gloss it in plain words on first use, then use
   it freely. If a jargon word can be swapped for plain words with no loss of
   precision, swap it. No insider shorthand (ctx, evals, "the harness") without
-  explanation.
+  explanation. Metaphors never carry the point: a title, heading, or claim
+  whose only statement is a metaphor ("Rent the model, own the method", "The
+  pay moves to deciding") gets rewritten as the literal version ("Deciding is
+  now the hard part"); two-part aphorism shapes ("X the A, Y the B") are out.
 - **Titles are simple and specific.** The title says what the reader gets, in
   plain words, before any wordplay. "Give your agent a memory" and "Stop
   shouting at the model" work; "The firmament moved" fails because nobody can
@@ -150,6 +162,10 @@ and check comparison labels too ("high effort" versus "top effort" for the same
 setting); (12) referent check: read every "it", "they", "that", and bare "do not"
 and confirm each points to one nameable thing, or name the thing instead of
 pointing at it.
+
+Then run the clarity-pass skill on the finished draft: a cold fresh-reader re-read that
+catches the abstractions, idioms, and two-read sentences this checklist misses. It is a
+required step, not optional polish, and it reports its rewrites in the reply.
 
 ## Step 5: Verify and open the PR
 

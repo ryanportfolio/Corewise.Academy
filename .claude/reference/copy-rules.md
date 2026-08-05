@@ -96,11 +96,24 @@ Clear, to the point, plain words. Fewer words beat more words everywhere on the 
   Specific and simple beats unnecessary complexity, every time. The test for any
   phrase: would a smart reader outside AI tooling have to ask? Then replace it
   with the plain phrase ("deliberation dial" → "how hard the model thinks").
+- **Metaphors never carry the point** (editor ruling, 2026-08-03, from the
+  guide No. 9 retitle and the same-day fixes to the what-still-pays guide). A
+  claim, heading, or title whose only statement is a metaphor forces the reader
+  to decode it, and the editor reads it as obtuse: "Rent the model, own the
+  method" (rent of what?), "The pay moves to deciding" (pay does not move),
+  "the question tells you where to move" (move what, where?). The test: say the
+  literal version; if the sentence needed the metaphor to mean anything, ship
+  the literal version instead ("Deciding is now the hard part"). Decoration on
+  top of a literal statement is welcome; a metaphor instead of one is the
+  defect. Applies doubly to titles and headings, which have no surrounding
+  sentence to rescue them, and to two-part aphorism shapes ("X the A, Y the B").
 - **No walls of text** (editor ruling, 2026-07-18). A dense block gets skimmed
   and forgotten, so it fails no matter how good the sentences are. Paragraphs
   run 1-4 sentences; a paragraph past ~60 words needs a reason to exist at that
   length. Break at each new idea. Let lists, short paragraphs, and white space
-  carry the structure a long block hides.
+  carry the structure a long block hides. The positive side of this rule, when
+  to reach for a table, a list, or a visual, is its own section below
+  ("Break information into the form that fits").
 - **State the rule, skip the flourish** (editor ruling, 2026-07-18, from the
   editor's own rewrite of the compression-contract passage). Cut, every time:
   aphorism capstones ("The cheapest token is the one never written"), dramatic
@@ -113,6 +126,18 @@ Clear, to the point, plain words. Fewer words beat more words everywhere on the 
   reader through each stop only when they must choose between stops. An
   illustrative example earns its place only if the claim is unclear without it;
   one example is the ceiling.
+- **Cut the scaffolding** (editor ruling, 2026-07-20, from the editor's
+  session-long trim of the knowledge-base guide). Guide prose is reference mode,
+  not teaching mode: state the claim, give at most one illustration, move on.
+  Cut, every time: the ramp-up example that warms up to a simple idea ("how tall
+  is Nick" before naming what RAG is), any second illustration of a point already
+  made, mechanism explanations of why a thing works under the hood, reassurance
+  and hand-holding ("you do not need a specialist", "one is enough to start",
+  time budgets like "five to ten minutes"), and story color or proof-stats that
+  are not load-bearing. Prefer "etc." to an exhaustive list. Sections routinely
+  lose half their words with the meaning intact. This is the structural mirror of
+  "State the rule, skip the flourish": that one cuts ornamental lines, this one
+  cuts the ramps, spare examples, and reassurance around the point.
 - **"Die" and "kill" are banned in site copy** (editor ruling, 2026-07-18).
   Death-metaphor verbs ("die", "dies", "killed") hide what actually happens.
   Say the specific thing: filler words are cut, a model is retired, a project
@@ -128,6 +153,83 @@ Clear, to the point, plain words. Fewer words beat more words everywhere on the 
 - **Theme never beats clarity.** Decorative labels are welcome only next to plain
   function words, never instead of them. "Upon leaving this room, you can" loses
   to "After this guide, you can".
+
+## Break information into the form that fits (editor ruling, 2026-07-19)
+
+A wall of text is a presentation failure, not only a length one. Readers skim a
+dense block and keep almost none of it, so information that has a shape gets shown
+in that shape instead of buried in sentences. This is the rule people actually learn
+from: scannable, and pleasant to look at.
+
+Match the form to the content:
+
+| The content is | Present it as |
+|---|---|
+| Two or more things compared on the same dimensions | A table |
+| Steps in order, or parallel items of equal weight | A list |
+| A term and what it means | A short line, bold term first |
+| Copy-ready code, a prompt, or config | A fenced block, or a `SkillCopy` plate for long ones |
+| A set of short question-and-answer pairs | The `Faq` component |
+| A quotable line from a source | `PullQuote` |
+| A hands-on task | `Exercise` |
+
+Reach for a diagram or an image when it explains something a paragraph cannot: a
+flow, a before-and-after, a spatial layout. No diagram component exists yet, so if a
+guide needs a recurring visual, propose a reusable component rather than one-off
+markup, and give every image real alt text (which the em-dash and copy rules still
+govern).
+
+Two limits keep this from sliding into decoration. Structure only genuine structure:
+a one-row table, or a single idea chopped into list fragments, reads worse than a
+plain sentence. And the house voice stays the plain declarative essay, so prose
+carries the argument while a table, a list, or a visual carries the part that truly
+is a table, a list, or a picture. When a guide is mostly unbroken paragraphs, that is
+the signal to restructure, not to add ornaments.
+
+### The layout pass is required, not optional (editor ruling, 2026-07-24)
+
+From the AI OS ingest: the first draft was rejected as "too much like a wall of
+text", and the rewrite that replaced it was accepted as "much better". Writing a
+guide is not done until this pass has run. Do it on the finished draft, before
+the build.
+
+Walk the draft and ask of each stretch of prose: **is this carrying a shape?**
+
+| The prose contains | Convert it to |
+|---|---|
+| A named set the paragraph then describes ("four failure modes", "three checks") | A table if the items share dimensions, a list if they do not |
+| A term followed by what it means | A bold-led block: **Term.** Then the explanation |
+| Two settings, options, or piles the reader must choose between | One bold-led block each |
+| Steps that happen in order | A numbered list |
+| A stretch over ~120 words on one idea | Split at each new idea |
+
+What the rewrite actually changed, as the pattern to copy:
+
+- The four failure modes became a table (failure · what it looks like · the fix).
+- "Expertise context is X, situational context is Y" became two **bold-led**
+  blocks.
+- "The audit checks three things: routing integrity (...), index truth (...),
+  and freshness (...)" became "The audit runs three checks:" followed by a
+  three-item list.
+- The backtrack advice became a numbered list of 3 steps.
+
+**The measured finding** (calibrated across the whole catalogue, 2026-07-24):
+paragraph count is NOT the signal. The rejected draft had *fewer* consecutive
+prose paragraphs than the approved rewrite, and several published guides carry
+longer paragraphs than the rejected draft did. The signal that separated them was
+a paragraph that **names a set and then swallows the items itself** instead of
+handing them to a structure. Compare:
+
+- Rejected: "The audit checks three things: routing integrity (...), index truth
+  (...), and freshness (...)" — 49 words, no structure.
+- Approved: "The audit runs three checks:" — 5 words, then a list.
+
+Enforcement is advisory, because this is a judgment call and a regex cannot make
+it: `site/scripts/layout-check.mjs` runs in `npm run build` and `npm run lint:copy`,
+reports the paragraphs worth a second look, and **always exits 0**. It never blocks
+a build. Treat its output as a list of candidates for this pass, not a list of
+errors: a short contrast in prose is often right, and over-structuring is its own
+defect (see the two limits at the end of the previous section).
 
 ## Provenance and artifacts (editor rulings, 2026-07-18)
 

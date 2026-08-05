@@ -1,0 +1,151 @@
+---
+title: Why AI makes slop and how to catch it
+description: 'Models got good where the work grades itself, and they aim at the most likely answer, which in design and writing is the average one. The fix: break your quality standard into checkable rules and keep human judgment for taste.'
+track: practice
+level: broad
+number: 31
+minutes: 7
+objectives:
+  - Explain why models handle code and math well but design and writing badly.
+  - Diagnose samey AI output as the model aiming at the most likely answer instead of the best one.
+  - Break a fuzzy standard, such as a brand, into checkable rules and grade AI output against them.
+  - 'Route each piece of a quality problem to the right judge: a written check or a person.'
+prerequisites: []
+sources:
+  - url: https://www.youtube.com/watch?v=lCBf9slCanI
+    creator: Thais Castello Branco / AI Engineer
+    video: Ending AI Slop
+    timestamps: ['2:43', '3:04', '3:53', '4:05', '5:07', '6:14', '7:43', '8:11', '10:13', '11:17', '13:16', '14:44', '15:41']
+selfCheck:
+  - q: Why are models strong at code and math but weak at design and writing?
+    a: 'Code grades itself: it splits into small pieces, each piece runs, and running it tells you whether it worked, so trainers can score millions of attempts automatically. Design and writing have no built-in test. What counts as good depends on the audience and the situation, and it shifts over the years, so there is nothing stable to score against.'
+  - q: Why does AI-made design and writing feel so samey?
+    a: A model is trained to produce the most likely answer and to treat that as the ideal one. In math the most likely answer to a question is also the right one, so aiming at the average works. In design and writing the best work sits away from the average, in deliberate breaks from the usual pattern, so a model aimed at the middle produces the same safe result every time. That sameness is slop.
+  - q: Two skilled reviewers disagree while judging the same piece of work. When is that a problem and when is it useful?
+    a: It depends on what they disagree about. If they split on something checkable, like whether elements line up, the review process is broken, because that has a right answer. If they split on style or feel, the disagreement is real information. People genuinely want different things, and averaging two tastes gives an answer neither person wanted.
+status: published
+lastUpdated: 2026-07-31
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+
+<Chalk>slop is the most likely answer to a question with no single right one</Chalk>
+
+<p class="lede">
+The same model that writes working code and solves competition math will hand you a landing page
+that looks like every other generated landing page. Thais Castello Branco, whose company Taste Labs
+works with model trainers on exactly this problem, gave a talk at the AI Engineer conference on why
+that gap exists and what closes it. The short version: models got good where the work grades
+itself, and they aim at the most likely answer, which in matters of taste is the wrong target. The
+way out is to write down the parts of your standard you can check, and keep a person on the rest.
+</p>
+
+## <span class="sec-no">01</span>Models win where scoring is easy
+
+Code grades itself. It splits into small pieces, each piece runs, and running it tells you whether
+it worked. That lets trainers score millions of attempts with no person in the loop, which is why
+models climbed so fast at coding. We talk about coding skill as if it were a property of models. It
+is mostly a property of code.
+
+<PullQuote
+  quote="capability follows measurability"
+  creator="Thais Castello Branco"
+  video="Ending AI Slop"
+  href="https://www.youtube.com/watch?v=lCBf9slCanI"
+  timestamp="3:04"
+/>
+
+Design and writing have no built-in test, for two reasons:
+
+- **Good depends on who is asking.** The same slide can be exactly right for a startup and
+  embarrassing for a bank. There is no verdict without an audience and a situation.
+- **Good moves.** What looked sharp five years ago looks dated now. Correct code from five years
+  ago still runs. A standard that drifts is hard to score against.
+
+So the domains where scoring is hard are the domains where models lag. If you can make part of the
+scoring problem checkable, you get back part of the capability.
+
+## <span class="sec-no">02</span>Slop is the average answer
+
+The second half of the problem is what models aim at. A model is trained to produce the most
+likely answer and to treat that as the ideal one. (How that training works, and what it can still
+build, is the subject of <a href="/guides/judge-whether-ai-has-original-ideas/">Judge whether AI
+has original ideas</a>.)
+
+For math, aiming at the average is fine. The most likely answer to "what is 2 + 2" is also the
+right one. For design and writing it is not. The work people rate as great is rarely the typical
+work; it comes from someone breaking a pattern on purpose, in a way that fits.
+
+<PullQuote
+  quote="a lot of greatness and creativity happens actually at the ends of the distribution"
+  creator="Thais Castello Branco"
+  video="Ending AI Slop"
+  href="https://www.youtube.com/watch?v=lCBf9slCanI"
+  timestamp="8:11"
+/>
+
+A model aimed at the middle gives you the middle every time. That is why generated pages share the
+same layouts, the same gradients, the same phrasing, and why you can spot them at a glance. The
+sameness is what aiming at the most likely output produces, whichever model made the page.
+
+## <span class="sec-no">03</span>Your brand is an answer key
+
+"Make something great" is a question with no checkable answer. "Make it match our brand" is a
+different kind of question, because a brand is finished taste-work. Designers already decided the
+colors and when each is used, the one or two typefaces and what each is for, the spacing, the
+motion, the texture. Each of those decisions can be written down as a rule, and each rule can be
+checked.
+
+That turns judging an AI-made page from a taste dispute into an inspection. Go rule by rule: does
+it use the palette, does it set headings in the right face, does it space things on the grid. A
+failure is a bug with a correct fix, not an opinion. <a
+href="/guides/the-design-concept-does-the-work/">The design concept does the work</a> makes the
+same move from the building side: bind meaning to form in writing, then review against the
+writing.
+
+One caution from the talk: grade against the rules, not against the original. A new page can use
+the brand's components in combinations the original site never tried and still be exactly on
+brand. Comparing to the original punishes valid new work; comparing to the rules does not.
+
+The companies training the biggest models use this same shape internally: they turn a fuzzy skill
+into tasks with a written answer key so a model can be scored on them automatically. You do not
+need to train anything to benefit. The rule list alone is a checklist for the dashboard your
+coding agent shipped this morning.
+
+## <span class="sec-no">04</span>Route what is left to a person
+
+Not everything survives the trip to a checklist. Quality splits into two piles, and the practical
+skill is routing each piece to the judge that suits it:
+
+- **Checkable pieces.** Alignment, palette, typography rules, spacing, required elements. Write
+  them as pass-or-fail checks. These are the checks an agent can run and rerun on its own work, the
+  pattern <a href="/guides/loop-the-agent-until-the-work-passes/">Loop the agent until the work
+  passes</a> builds on.
+- **Taste pieces.** Style fit, whether it feels right, whether the break from pattern was worth
+  making. Asking a model "is this good" fails here. Automated graders get gamed, and a model will
+  judge confidently on qualities it cannot actually measure. Keep a person on these calls.
+
+Taste Labs runs expert reviews at scale, and one finding from that work is worth keeping even if
+you never buy training data. When two skilled reviewers disagree on a
+checkable thing, like whether elements line up, the process is broken, because that has a right
+answer. When they disagree on style, the disagreement is the finding: people genuinely want
+different things, and the average of two tastes is an answer nobody wanted. A few precise
+judgments from people whose taste you trust beat a pile of anonymous ratings.
+
+<Exercise>
+1. Take a page, deck, or dashboard an AI recently made for you. Write your standard as ten
+   pass-or-fail rules: the exact colors and what each is for, the typefaces and where each is
+   used, the spacing, the elements every page must carry.
+2. Grade the artifact against the rules, one by one. Fix every failure. These are bugs now, not
+   opinions, so the model that made the page can fix them too.
+3. Whatever still bothers you after every rule passes is the taste part. Judge that yourself, or
+   hand it to the one person whose taste you trust, and do not ask the model that made it.
+</Exercise>
+
+## Further reading
+
+- [AI Engineer · Ending AI Slop](https://www.youtube.com/watch?v=lCBf9slCanI), the talk this guide synthesizes
+- [Lilian Weng · Reward Hacking in Reinforcement Learning](https://lilianweng.github.io/posts/2024-11-28-reward-hacking/), why automated graders get gamed
+- [Wikipedia · AI slop](https://en.wikipedia.org/wiki/AI_slop), the term and its short history

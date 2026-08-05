@@ -1,10 +1,10 @@
-# Rent the model, own the method
+# Capture the model's discipline
 
 Consult when deciding which model runs a task, when you want to keep an expensive model's working discipline after it is priced up or capped, or when structuring a planner-and-worker split. The method survives; the model does not. For live model ids, pricing, and tiers, use the `claude-api` skill rather than restating version-pinned facts.
 
 ## Put the judgment in the plan, not the workers
 
-Quality lives at the plan-and-verify layer. A strong planner over cheap workers matched a strong planner over strong workers in Herk's runs, for roughly one third the cost, because executing a well-specified step needs far less intelligence than designing it.
+Quality lives at the plan-and-verify layer. A strong planner over cheap workers matched a strong planner over strong workers in Nate's runs, for roughly one third the cost, because executing a well-specified step needs far less intelligence than designing it.
 
 - The expensive model scopes, anticipates failure modes, and reviews each report, redesigning the next step from what came back.
 - Cheap models execute the well-specified steps and report.

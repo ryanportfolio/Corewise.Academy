@@ -1,0 +1,147 @@
+---
+title: Loop the agent until the work passes
+description: 'A rerun loop makes the agent redo its own work until a check passes. Script the repetitive half of a skill, end it with a pass or fail verdict, wrap both in a loop, and keep a human at the checkpoints where errors are expensive.'
+track: agents
+level: practitioner
+number: 29
+minutes: 6
+objectives:
+  - 'Split a skill''s steps into judgment work and repetitive work, and move the repetitive half into a script.'
+  - 'Restructure a skill to end with an explicit pass or fail verdict a loop can act on.'
+  - 'Assemble a rerun loop from its four blocks: trigger, execution, verification, and memory.'
+  - 'Identify the checkpoints in a workflow where a human must review before anything goes public.'
+prerequisites:
+  - slug: expertise-you-can-install
+    note: 'Introduces the skill files this guide turns into loop parts.'
+sources:
+  - url: https://www.youtube.com/watch?v=ZzHB2mPHb2g
+    creator: Austin Marchese
+    video: 17 Tricks To Build 10x Faster with Claude
+    timestamps: ['7:09', '11:06', '12:46', '14:09', '14:48', '15:47', '16:04', '16:46', '17:27', '17:48']
+selfCheck:
+  - q: A skill fetches the same data every run and does it a little differently each time. What is the restructure?
+    a: 'Split the skill''s work into judgment and repetition. The fetch is repetitive, so have the model write a script for it once and make the skill call that script; a script runs the same way every time and spends no tokens figuring out how. The model keeps only the part that needs judgment, like classifying what the script fetched.'
+  - q: Why does the verification step belong to a different agent than the one that did the work?
+    a: 'An agent grading its own output approves it too easily, the same way a person reviewing their own work does. A separate agent with none of the working context judges only what is in front of it, so a pass from it means more. The loop needs that honesty, because a soft verdict just reruns the same mistake.'
+  - q: Where does a human belong in an automated workflow?
+    a: 'At the checkpoints where the cost of an error is high: the start, where the problem gets framed, and any point where a wrong call ruins everything downstream, especially the last review before output goes public. Build the automation around those checkpoints and let the loop run everything between them.'
+status: published
+lastUpdated: 2026-07-23
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+
+<Chalk>a loop needs a verdict it can act on</Chalk>
+
+<p class="lede">
+Most people run an agent like a single-lane road: send a prompt, wait, review, send the next.
+Austin Marchese, who builds client systems on Claude all day, runs his the other way: the agent
+reruns its own work until a check says it passed, and he stands at the checkpoints. Getting
+there takes three small upgrades to a skill you already have, in order.
+</p>
+
+## <span class="sec-no">01</span>Script the repetitive half
+
+Every skill contains two kinds of work.
+
+**Judgment work**: deciding, classifying, writing. The model is the right tool, because the
+input is different every time.
+
+**Repetitive work**: fetching, converting, filing. The same steps in the same order every run.
+Left in the skill's instructions, the model re-derives them each time, which costs tokens and
+invites drift.
+
+The upgrade: have the model write a script for the repetitive half once, then make the skill
+call that script. Austin's giveaway skill shows the split: a script pulls all new YouTube
+comments (identical every run), then the model classifies which ones qualify (judgment). A
+script does the same thing every single time, which is exactly what the repetitive half needs.
+
+While the skill matures, keep a running list of the mistakes the agent makes with it, written
+into the skill file itself, and let the list grow with use. That habit, applied to a whole
+codebase, is <a href="/guides/turn-repeated-fixes-into-rules/">Turn repeated fixes into
+rules</a>.
+
+## <span class="sec-no">02</span>End the skill with a verdict
+
+A typical skill reads like a recipe: do this, then this, then adjust that. A recipe tells the
+model what to do and tells nobody whether the result is any good.
+
+Add a final verification step that ends in an explicit verdict: pass or fail, stated as such.
+A skill that reviews a draft against your writing voice should end with "pass, this reads as
+you" or "fail, and here is why," on top of whatever edits it suggests.
+
+The verdict looks cosmetic and is the load-bearing part. A human can read suggestions and
+decide; a loop can only act on pass or fail.
+
+## <span class="sec-no">03</span>Wrap both in a loop
+
+<PullQuote
+  quote="I don't prompt Claude anymore. My job is to write loops."
+  creator="Boris Cherny, creator of Claude Code, quoted by Austin Marchese"
+  video="17 Tricks To Build 10x Faster with Claude"
+  href="https://www.youtube.com/watch?v=ZzHB2mPHb2g"
+  timestamp="15:47"
+/>
+
+A rerun loop is a system that repeats a task until a goal is met. Every one has four blocks:
+
+| Block | What it is | Where you built it |
+| --- | --- | --- |
+| Trigger | What starts the loop: you typing a command, or a schedule | <a href="/guides/automate-a-workflow-as-a-claude-routine/">Automate a workflow as a Claude routine</a> |
+| Execution | The skill that does the task | Section 01, scripts and all |
+| Verification | The check that returns pass or fail | Section 02 |
+| Memory | A log of what happened each run | Section 05 |
+
+The loop runs execution, asks verification for a verdict, and on a fail reruns with the
+failure reasons in hand, until it passes.
+
+One rule makes the verdict trustworthy: run verification in a separate agent that shares no
+context with the one that did the work. An agent reviewing its own output approves it easier,
+the way a person reviewing their own work does.
+<a href="/guides/guardrails-for-long-runs/">Guardrails for hours-long agent runs</a> builds its
+verifiers on the same principle.
+
+## <span class="sec-no">04</span>Run it in training mode first
+
+A new loop gets a training mode: for the first few runs, it pauses at every step and asks
+approval before continuing. Once the runs match what you want, turn the pauses off.
+
+The caution is about money as much as safety. A loop with a bad verification step reruns
+forever, and every rerun spends tokens.
+<a href="/guides/stop-hitting-your-token-limit/">Stop hitting your token limit</a> covers what
+that burn looks like from the billing side.
+
+## <span class="sec-no">05</span>Keep humans at the checkpoints
+
+Push-a-button, walk-away automation fails wherever the cost of an error is high. What works:
+you frame the problem at the start, the agent runs the middle, and you review at the end
+before anything goes public.
+
+Ask of any workflow you automate: at which checkpoint would a wrong call ruin everything
+downstream? Those checkpoints get a human. Build the automation around them, never through
+them, and let the loop own the stretch in between.
+
+The last block is the run log. Every loop run appends an entry: what it did, what got fixed,
+what problem came back. Once a week, ask the agent one question across that history: which
+problems keep showing up that are worth solving? The answers become new gotchas, new scripts,
+or a better verification step, the same drift-catching habit
+<a href="/guides/keep-a-growing-knowledge-base-accurate/">Keep a growing knowledge base
+accurate</a> applies to files.
+
+<Exercise>
+1. Pick the skill you run most. Sort its steps into judgment and repetitive, have the model
+   write a script for the repetitive half, and test that the skill still works calling it.
+2. Add a verification step to the end of the same skill: an explicit pass or fail verdict with
+   reasons, checked by a separate agent.
+3. Wrap the two in a loop with training mode on: pause at every step for your approval, log
+   each run to a history file, and turn the pauses off only when the runs match what you want.
+   After a week, ask the agent which logged problems keep recurring.
+</Exercise>
+
+## Further reading
+
+- [Austin Marchese · 17 Tricks To Build 10x Faster with Claude](https://www.youtube.com/watch?v=ZzHB2mPHb2g), the video this guide distills
+- [Anthropic · Claude Code subagents documentation](https://docs.claude.com/en/docs/claude-code/sub-agents), the mechanics behind separate-agent verification
+- [Anthropic · Skill authoring best practices](https://docs.claude.com/en/docs/agents-and-tools/agent-skills/best-practices), the source of the keep-a-mistake-list pattern

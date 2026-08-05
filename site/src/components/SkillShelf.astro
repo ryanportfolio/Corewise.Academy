@@ -1,0 +1,269 @@
+---
+// A dense shelf of copyable skills: grouped rows, each with a one-line blurb and
+// one button that copies the whole file. Unlike SkillCopy (one featured plate with
+// a specimen), this fits many skills on a page without a wall of previews.
+import type { ShelfGroup } from '../data/toolShelf';
+interface Props {
+  groups: ShelfGroup[];
+}
+const { groups } = Astro.props;
+
+const lineCount = (s: string) => s.replace(/\r\n/g, '\n').replace(/\n$/, '').split('\n').length;
+---
+
+<div class="shelf">
+  {
+    groups.map((group) => (
+      <section class="shelf-group">
+        <div class="group-head">
+          <h3 class="group-title">{group.title}</h3>
+          <p class="group-note">{group.note}</p>
+        </div>
+        <ul class="rows">
+          {group.skills.map((skill) => (
+            <li class="row">
+              <div class="row-main">
+                <div class="row-id">
+                  <span class="mono-label accent name">{skill.name}</span>
+                  <span class="mono-label lines">{lineCount(skill.content)} lines</span>
+                  {skill.guideHref && (
+                    <a class="mono-label guide" href={skill.guideHref}>
+                      read the guide
+                    </a>
+                  )}
+                </div>
+                <p class="blurb">{skill.blurb}</p>
+                <p class="save mono-label">
+                  save as <code>{skill.savePath}</code>
+                </p>
+              </div>
+              <div class="row-act">
+                <button class="copy-cta" type="button" aria-live="polite" data-lines={lineCount(skill.content)}>
+                  <span class="star" aria-hidden="true">✦</span>
+                  <span class="cta-label">Copy</span>
+                </button>
+              </div>
+              <template class="skill-src">{skill.content}</template>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
+</div>
+
+<script>
+  for (const row of document.querySelectorAll<HTMLElement>('.shelf .row')) {
+    const btn = row.querySelector('.copy-cta') as HTMLButtonElement;
+    const label = btn.querySelector('.cta-label') as HTMLElement;
+    const src = (row.querySelector('.skill-src') as HTMLTemplateElement).content.textContent ?? '';
+    const lines = btn.dataset.lines ?? '';
+    const idle = label.textContent;
+    let resetTimer: number | undefined;
+
+    const fallbackCopy = (text: string) => {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      let ok = false;
+      try {
+        ok = document.execCommand('copy');
+      } catch {
+        ok = false;
+      }
+      ta.remove();
+      return ok;
+    };
+
+    const burst = () => {
+      for (let i = 0; i < 10; i++) {
+        const s = document.createElement('span');
+        s.className = 'burst-star';
+        s.textContent = '✦';
+        const angle = (i / 10) * Math.PI * 2 + Math.random() * 0.5;
+        const dist = 28 + Math.random() * 38;
+        s.style.setProperty('--dx', `${Math.cos(angle) * dist}px`);
+        s.style.setProperty('--dy', `${Math.sin(angle) * dist - 12}px`);
+        s.style.setProperty('--rot', `${Math.random() * 240 - 120}deg`);
+        s.style.setProperty('--sc', `${0.5 + Math.random() * 0.7}`);
+        btn.appendChild(s);
+        s.addEventListener('animationend', () => s.remove());
+      }
+    };
+
+    btn.addEventListener('click', async () => {
+      let ok = false;
+      try {
+        await navigator.clipboard.writeText(src);
+        ok = true;
+      } catch {
+        ok = fallbackCopy(src);
+      }
+      window.clearTimeout(resetTimer);
+      row.classList.toggle('copied', ok);
+      label.textContent = ok ? `Copied · ${lines} lines` : 'Copy blocked';
+      burst();
+      resetTimer = window.setTimeout(() => {
+        row.classList.remove('copied');
+        label.textContent = idle;
+      }, 2600);
+    });
+  }
+</script>
+
+<style>
+  .shelf {
+    margin: var(--s-4) 0;
+  }
+  .shelf-group + .shelf-group {
+    margin-top: var(--s-5);
+  }
+  .group-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--s-1) var(--s-2);
+    margin: 0 0 var(--s-2);
+    padding-bottom: var(--s-1);
+    border-bottom: 1px solid var(--ink);
+    font-family: var(--font-body);
+  }
+  .group-title {
+    margin: 0;
+    font-size: var(--text-md);
+    font-weight: 600;
+  }
+  .group-note {
+    margin: 0;
+    font-size: var(--text-sm);
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+
+  .rows {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .row {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--s-2) 0;
+    border-bottom: 1px dashed var(--line);
+  }
+  .row.copied {
+    border-bottom-color: var(--accent-deep);
+  }
+
+  .row-main {
+    min-width: 0;
+  }
+  .row-id {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--s-1) var(--s-2);
+  }
+  .row-id .name {
+    font-size: var(--text-xs);
+  }
+  .row-id .lines {
+    color: var(--ink-mute);
+  }
+  .row-id .guide {
+    color: var(--ink-soft);
+    text-decoration: underline;
+    text-decoration-color: var(--line);
+    text-underline-offset: 2px;
+  }
+  .row-id .guide:hover {
+    color: var(--accent-deep);
+  }
+  .blurb {
+    margin: var(--s-1) 0 2px;
+    font-size: var(--text-sm);
+    color: var(--ink);
+  }
+  .save {
+    margin: 0;
+    color: var(--ink-mute);
+  }
+  .save code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    color: var(--ink-soft);
+  }
+
+  .row-act {
+    flex: none;
+  }
+  .copy-cta {
+    position: relative;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    color: var(--accent-deep);
+    background: none;
+    border: 1px solid var(--accent-deep);
+    padding: var(--s-1) var(--s-2);
+    cursor: pointer;
+    white-space: nowrap;
+    transition:
+      background var(--dur) var(--ease),
+      color var(--dur) var(--ease);
+  }
+  .copy-cta:hover,
+  .row.copied .copy-cta {
+    background: var(--accent-deep);
+    color: var(--paper);
+  }
+  .copy-cta .star {
+    display: inline-block;
+    margin-right: 0.5em;
+  }
+  .copy-cta:hover .star {
+    animation: spin 0.9s var(--ease);
+  }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .copy-cta :global(.burst-star) {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    pointer-events: none;
+    color: var(--accent);
+    text-shadow: 0 0 8px var(--glow);
+    animation: fly 0.9s var(--ease) forwards;
+  }
+  @keyframes fly {
+    from {
+      transform: translate(-50%, -50%) scale(var(--sc, 1));
+      opacity: 1;
+    }
+    to {
+      transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) rotate(var(--rot)) scale(0.2);
+      opacity: 0;
+    }
+  }
+
+  @media (max-width: 34rem) {
+    .row {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .row-act {
+      align-self: flex-start;
+    }
+  }
+</style>

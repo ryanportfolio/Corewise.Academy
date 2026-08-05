@@ -1,0 +1,73 @@
+---
+// Plate: the atlas frame for a guide figure. A reusable chrome (plate number,
+// figure number, caption, scale key) wrapping an inline-SVG body passed as a slot.
+// The figure itself is drawn by the caller so the geometry can be data-driven;
+// this component only enforces the shared frame and the print-specimen apparatus.
+//
+// Contract (see .claude/reference/copy-rules.md, "Break information into the form
+// that fits"): warm paper, hairline rules, mono caps labels, ultramarine spent on
+// at most one state inside the SVG body. Screenshot-survivable: the body must paint
+// its resting frame without script.
+interface Props {
+  /** Plate line, e.g. "Plate II · Sampling". No trailing period. */
+  plate: string;
+  /** Figure mark, e.g. "Nº 25 · Fig. 1". */
+  fig: string;
+  /** One-line caption in the editor's voice. */
+  caption: string;
+  /** Optional scale/legend key, mono, right-aligned. Use " · " separators. */
+  scale?: string;
+}
+const { plate, fig, caption, scale } = Astro.props;
+---
+
+<figure class="plate">
+  <div class="frame">
+    <span class="plate-no">{plate}</span>
+    <span class="fig-no">{fig}</span>
+  </div>
+  <div class="body"><slot /></div>
+  <figcaption>
+    <span class="cap-text">{caption}</span>
+    {scale && <span class="scale" set:html={scale} />}
+  </figcaption>
+</figure>
+
+<style>
+  .plate { margin: var(--s-6) 0; border: 1px solid var(--line); background: var(--panel); }
+  .frame {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--s-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    padding: var(--s-1) var(--s-2);
+    border-bottom: 1px solid var(--line);
+  }
+  .plate-no { color: var(--accent-deep); }
+  .body :global(svg) { display: block; width: 100%; height: auto; }
+  figcaption {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-3);
+    flex-wrap: wrap;
+    align-items: baseline;
+    padding: var(--s-2);
+    border-top: 1px solid var(--line);
+  }
+  .cap-text { font-size: var(--text-sm); font-style: italic; color: var(--ink-soft); max-width: 46ch; }
+  .scale {
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    white-space: nowrap;
+    text-align: right;
+  }
+  .scale :global(b) { color: var(--accent-deep); font-weight: 400; }
+</style>

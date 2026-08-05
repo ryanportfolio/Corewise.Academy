@@ -23,9 +23,8 @@ const guides = defineCollection({
         z.object({
           url: z.string().url(),
           creator: z.string(),
-          video: z.string(),
-          timestamps: z.array(z.string()).min(1),
-          watched: z.string(), // e.g. "June 2026"
+          video: z.string(), // work title; also used for non-video sources (articles)
+          timestamps: z.array(z.string()).default([]), // empty for sources without timecodes
         }),
       )
       .default([]),
