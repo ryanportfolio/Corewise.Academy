@@ -72,7 +72,8 @@ const monthYear = (d: Date) => `${d.toLocaleString('en', { month: 'long' })} ${r
     h1 { font-family: var(--font-display); font-size: clamp(2.6rem, 7vw, var(--text-3xl)); margin: var(--s-2) 0; }
     .dek { font-size: var(--text-md); font-style: italic; color: var(--ink-soft); max-width: 52ch; }
 
-    .charted { display: grid; grid-template-columns: repeat(3, 1fr); border-left: 1px solid var(--line); border-top: 1px solid var(--line); margin-bottom: var(--s-8); }
+    /* minmax(0, …) keeps a long tag chip from pushing a column past its share */
+    .charted { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-left: 1px solid var(--line); border-top: 1px solid var(--line); margin-bottom: var(--s-8); }
     .entry {
       border-right: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
@@ -97,6 +98,7 @@ const monthYear = (d: Date) => `${d.toLocaleString('en', { month: 'long' })} ${r
       color: var(--ink-mute);
       margin-top: var(--s-3);
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: flex-start;
       gap: var(--s-2);
@@ -139,11 +141,12 @@ const monthYear = (d: Date) => `${d.toLocaleString('en', { month: 'long' })} ${r
     }
     .all-tags a:hover { color: var(--accent-deep); border-color: var(--accent-deep); }
 
-    @media (max-width: 900px) {
-      .charted { grid-template-columns: repeat(2, 1fr); }
+    /* three cards need room for a date and a tag chip side by side */
+    @media (max-width: 1080px) {
+      .charted { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
-    @media (max-width: 600px) {
-      .charted { grid-template-columns: 1fr; }
+    @media (max-width: 640px) {
+      .charted { grid-template-columns: minmax(0, 1fr); }
     }
   </style>
 </Base>
