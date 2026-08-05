@@ -9,20 +9,11 @@ const guides = (await getCollection('guides'))
   .sort((a, b) => +b.data.lastUpdated - +a.data.lastUpdated || b.data.number - a.data.number);
 const trackName = (slug: string) => TRACKS.find((t) => t.slug === slug)?.name ?? slug;
 const levelLabel = (level: string) => level.charAt(0).toUpperCase() + level.slice(1);
-// Dates read as the house does elsewhere on the site: "August MMXXVI".
-const NUMERALS: [number, string][] = [
-  [1000, 'M'], [900, 'CM'], [500, 'D'], [400, 'CD'], [100, 'C'],
-  [90, 'XC'], [50, 'L'], [40, 'XL'], [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I'],
-];
-const roman = (year: number) =>
-  NUMERALS.reduce((out, [value, numeral]) => {
-    while (year >= value) {
-      out += numeral;
-      year -= value;
-    }
-    return out;
-  }, '');
-const monthYear = (d: Date) => `${d.toLocaleString('en', { month: 'long' })} ${roman(d.getFullYear())}`;
+// Frontmatter dates parse as UTC midnight; UTC getters keep the printed day
+// from shifting with the build machine's timezone.
+const pad = (n: number) => String(n).padStart(2, '0');
+const shortDate = (d: Date) =>
+  `${pad(d.getUTCMonth() + 1)}/${pad(d.getUTCDate())}/${String(d.getUTCFullYear()).slice(-2)}`;
 ---
 
 <Base
@@ -48,7 +39,7 @@ const monthYear = (d: Date) => `${d.toLocaleString('en', { month: 'long' })} ${r
             </h3>
             <p>{g.data.description}</p>
             <span class="foot">
-              <span class="published">{monthYear(g.data.lastUpdated)}</span>
+              <span class="published">{shortDate(g.data.lastUpdated)}</span>
               <span class="chips">
                 {g.data.tags.flatMap((label) => tagByLabel(label) ?? []).map((tag) => (
                   <a class="tag-chip" href={`/tags/${tag.slug}/`}>{tag.display}</a>
