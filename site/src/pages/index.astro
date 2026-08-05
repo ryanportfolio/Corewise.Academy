@@ -280,16 +280,6 @@ const minis: Record<string, string> = {
       })();
     </script>
     <div class="reveal">
-      <span class="panel-label">Primary sources the guides teach from</span>
-      <ul class="source-roll">
-        <li><a href="https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/overview" rel="noopener">Anthropic · prompt engineering documentation</a></li>
-        <li><a href="https://platform.openai.com/docs/guides/prompt-engineering" rel="noopener">OpenAI · prompt engineering guide</a></li>
-        <li><a href="https://arxiv.org/abs/1706.03762" rel="noopener">Vaswani et al. · “Attention Is All You Need” (arXiv)</a></li>
-        <li><a href="https://www.anthropic.com/engineering" rel="noopener">Anthropic · engineering blog</a></li>
-        <li><a href="https://en.wikipedia.org/wiki/Large_language_model" rel="noopener">Wikipedia · large language model</a></li>
-      </ul>
-    </div>
-    <div class="reveal">
       <Faq heading="FAQ · working with the Academy" items={faq} />
     </div>
   </section>
@@ -571,10 +561,6 @@ const minis: Record<string, string> = {
     .margin-notes blockquote p { font-style: italic; font-size: var(--text-md); line-height: 1.3; }
     .margin-notes cite { font-family: var(--font-mono); font-size: var(--text-2xs); font-style: normal; color: var(--ink-mute); }
     .margin-notes cite a { color: var(--ink-soft); }
-    .source-roll { list-style: none; margin: var(--s-2) 0 var(--s-4); padding: 0; }
-    .source-roll li { border-bottom: 1px dashed var(--line); padding: var(--s-1) 0; font-size: var(--text-sm); }
-    .source-roll a { color: var(--ink-soft); text-decoration: none; }
-    .source-roll a:hover { color: var(--accent-deep); }
     .enrol { background: var(--ink); color: var(--paper); padding: var(--s-12) var(--s-4); position: relative; overflow: hidden; }
     .enrol-inner { max-width: 70rem; margin: 0 auto; display: grid; grid-template-columns: 1.4fr 1fr; gap: var(--s-8); align-items: center; }
     .enrol h2 { font-family: var(--font-display); font-size: var(--text-2xl); margin-bottom: var(--s-3); }
