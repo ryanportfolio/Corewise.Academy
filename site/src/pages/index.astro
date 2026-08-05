@@ -34,9 +34,36 @@ const faq = [
   },
 ];
 
-const latest = [...guides]
-  .sort((a, b) => +b.data.lastUpdated - +a.data.lastUpdated || b.data.number - a.data.number)
-  .slice(0, 3);
+// The catalogue sheet in the order /guides/ prints it, newest first. The three
+// cards below and the index plate's key both read from it, so they cannot drift.
+const sheet = [...guides].sort(
+  (a, b) => +b.data.lastUpdated - +a.data.lastUpdated || b.data.number - a.data.number,
+);
+const latest = sheet.slice(0, 3);
+
+// Key to the sheet: one cell per guide, laid out in the three columns the
+// catalogue prints at desktop width. Cells are portrait because the cards they
+// stand for are portrait (measured at 446 by 474 css px), so the array reads as
+// a page of cards rather than a table.
+const KEY_COLS = 3;
+const KEY_W = 18;
+const KEY_H = 19;
+const KEY_GAP = 3;
+const keyRows = Math.ceil(sheet.length / KEY_COLS) || 1;
+const keyBox = `0 0 ${KEY_COLS * KEY_W + (KEY_COLS - 1) * KEY_GAP} ${keyRows * KEY_H + (keyRows - 1) * KEY_GAP}`;
+const keyCells = sheet.map((g, i) => ({
+  x: (i % KEY_COLS) * (KEY_W + KEY_GAP),
+  y: Math.floor(i / KEY_COLS) * (KEY_H + KEY_GAP),
+  lit: i < 3,
+}));
+// Frontmatter dates parse as UTC midnight; UTC getters keep the printed day
+// from shifting with the build machine's timezone.
+const pad2 = (n: number) => String(n).padStart(2, '0');
+const updated = sheet.length
+  ? ((d) => `${pad2(d.getUTCMonth() + 1)}/${pad2(d.getUTCDate())}/${String(d.getUTCFullYear()).slice(-2)}`)(
+      sheet[0].data.lastUpdated,
+    )
+  : '';
 const count = (track: string, level: string) =>
   guides.filter((g) => g.data.track === track && g.data.level === level).length;
 const monthYear = (d: Date) =>
@@ -217,6 +244,61 @@ const minis: Record<string, string> = {
         )
       }
     </div>
+
+    {
+      guides.length > 0 && (
+        <aside class="plate">
+          <div class="plate-field" aria-hidden="true" />
+          <i class="rx tl" aria-hidden="true" />
+          <i class="rx tr" aria-hidden="true" />
+          <i class="rx bl" aria-hidden="true" />
+          <i class="rx br" aria-hidden="true" />
+
+          <p class="plate-head" aria-hidden="true">
+            <span>Index plate · all guides</span>
+            <span>Vol. I · MMXXVI</span>
+          </p>
+
+          <div class="plate-body">
+            <div class="plate-type reveal">
+              <h2>Every guide on one page</h2>
+              <p>
+                The three above are the newest. The catalogue lists all {guides.length}, newest
+                first. Every card is tagged by topic, and all {TAGS.length} topics are listed at
+                the bottom of that page.
+              </p>
+              <p class="plate-go">
+                <a class="btn" href="/guides/">
+                  Open the catalogue <span class="arw" aria-hidden="true">&#8594;</span>
+                </a>
+              </p>
+            </div>
+
+            <figure class="plate-key reveal" aria-hidden="true">
+              {/* The lit three breathe in step. Staggering them reads as three
+                  unequal things, and they stand for three equal cards. */}
+              <svg viewBox={keyBox} aria-hidden="true" focusable="false">
+                {keyCells.map((c) => (
+                  <rect
+                    class={c.lit ? 'cell lit' : 'cell'}
+                    x={c.x}
+                    y={c.y}
+                    width={KEY_W}
+                    height={KEY_H}
+                  />
+                ))}
+              </svg>
+              <figcaption>Key · one cell per guide · the lit three are above</figcaption>
+            </figure>
+          </div>
+
+          <p class="plate-foot">
+            <span>Updated {updated}</span>
+            <span>Free to read</span>
+          </p>
+        </aside>
+      )
+    }
   </section>
 
   <section class="ledger">
@@ -225,7 +307,7 @@ const minis: Record<string, string> = {
       <span class="mono-label">Working with AI · five layers · three depths</span>
     </div>
     <div class="ledger-grid reveal">
-      <div>
+      <div class="ledger-table">
         <table class="curriculum">
           <thead>
             <tr><th>Layer</th><th>Constellation</th><th>Guides</th><th>Topics</th></tr>
@@ -485,7 +567,8 @@ const minis: Record<string, string> = {
     }
 
     section { max-width: 70rem; margin: 0 auto; padding: var(--s-12) var(--s-4); }
-    .sec-head { display: flex; align-items: baseline; justify-content: space-between; border-bottom: 1px solid var(--ink); padding-bottom: var(--s-2); }
+    /* wrap so the label drops under the heading instead of off a 320px screen */
+    .sec-head { display: flex; flex-wrap: wrap; gap: var(--s-1) var(--s-3); align-items: baseline; justify-content: space-between; border-bottom: 1px solid var(--ink); padding-bottom: var(--s-2); }
     .sec-head h2 { font-family: var(--font-display); font-size: var(--text-2xl); }
     .sec-head .mono-label { color: var(--ink-mute); }
 
@@ -530,6 +613,143 @@ const minis: Record<string, string> = {
     .shelf { display: flex; justify-content: space-between; gap: var(--s-2); border-bottom: 1px dashed var(--line); padding-bottom: 4px; color: var(--ink-soft); }
     .shelf .stars { color: var(--accent-deep); }
     .shelf.empty .stars { color: var(--ink-mute); font-style: italic; }
+
+    /* ---- the index plate: the turn from the three latest to the whole catalogue ----
+       A star atlas puts an index plate between its sheets: a key diagram of how the
+       chart is divided. The key here is a scale model of /guides/, one cell per guide
+       in the catalogue's own three columns, the top three lit because they are the
+       cards printed directly above. */
+    .plate {
+      position: relative;
+      isolation: isolate;
+      margin-top: var(--s-6);
+      padding: var(--s-3) var(--s-4);
+      border: 1px solid var(--line);
+    }
+    /* the second engraved rule of a plate border */
+    .plate::before {
+      content: '';
+      position: absolute;
+      inset: 6px;
+      border: 1px solid var(--line-soft);
+      pointer-events: none;
+    }
+    /* registration crosses in the trim margin, one per corner */
+    .plate .rx {
+      position: absolute;
+      width: 13px;
+      height: 13px;
+      color: var(--ink-mute);
+      opacity: 0.55;
+      pointer-events: none;
+    }
+    .plate .rx::before,
+    .plate .rx::after { content: ''; position: absolute; background: currentColor; }
+    .plate .rx::before { left: 6px; top: 0; width: 1px; height: 100%; }
+    .plate .rx::after { top: 6px; left: 0; height: 1px; width: 100%; }
+    .plate .rx.tl { left: -7px; top: -7px; }
+    .plate .rx.tr { right: -7px; top: -7px; }
+    .plate .rx.bl { left: -7px; bottom: -7px; }
+    .plate .rx.br { right: -7px; bottom: -7px; }
+    /* the chart graticule, the hero's recipe, faded off at every edge */
+    .plate-field {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background:
+        repeating-linear-gradient(to right, var(--line-soft) 0 1px, transparent 1px 3rem),
+        repeating-linear-gradient(to bottom, var(--line-soft) 0 1px, transparent 1px 3rem);
+      -webkit-mask-image: radial-gradient(ellipse 88% 84% at 50% 50%, black 22%, transparent 84%);
+      mask-image: radial-gradient(ellipse 88% 84% at 50% 50%, black 22%, transparent 84%);
+    }
+
+    .plate-head, .plate-foot {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: var(--s-1) var(--s-3);
+      font-family: var(--font-mono);
+      font-size: var(--text-2xs);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-mute);
+    }
+    .plate-head { padding-bottom: var(--s-2); border-bottom: 1px solid var(--line); }
+    .plate-foot { padding-top: var(--s-2); border-top: 1px solid var(--line); }
+
+    .plate-body {
+      display: grid;
+      grid-template-columns: 8.5rem minmax(0, 1fr);
+      gap: var(--s-6);
+      /* the key is the taller column, so the type centres against it instead of
+         pooling all the spare height into one corner of the frame */
+      align-items: center;
+      padding: var(--s-4) 0;
+    }
+    /* the key is DOM-last so reading order runs heading, prose, link, key;
+       the grid seats it in the left margin where an atlas puts its key */
+    .plate-type { grid-column: 2; grid-row: 1; }
+    .plate-key { grid-column: 1; grid-row: 1; margin: 0; }
+
+    .plate-type h2 {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: var(--text-xl);
+      line-height: var(--leading-tight);
+      color: var(--ink);
+    }
+    .plate-type > p { margin-top: var(--s-2); max-width: 52ch; color: var(--ink-soft); }
+    .plate-go {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--s-2) var(--s-3);
+      margin-top: var(--s-4);
+    }
+    .plate-go .arw { display: inline-block; transition: transform var(--dur) var(--ease); }
+    .plate-go .btn:hover .arw, .plate-go .btn:focus-visible .arw { transform: translateX(4px); }
+    .plate-go .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+    .plate-key svg { display: block; width: 3.4rem; height: auto; overflow: visible; }
+    .plate-key .cell {
+      fill: none;
+      stroke: var(--line);
+      stroke-width: 1;
+      vector-effect: non-scaling-stroke;
+      transition: stroke var(--dur) var(--ease);
+    }
+    /* the three cards above, lit. Its own keyframe, not the house twinkle: that
+       one floors at 0.35, which would blink the whole idea out of sight. */
+    .plate-key .cell.lit {
+      fill: var(--accent-wash);
+      stroke: var(--accent);
+      animation: plate-breathe 5.4s var(--ease) infinite alternate;
+    }
+    @keyframes plate-breathe { from { opacity: 0.62; } to { opacity: 1; } }
+    .plate-key figcaption {
+      margin-top: var(--s-2);
+      font-family: var(--font-mono);
+      font-size: var(--text-2xs);
+      line-height: 1.5;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-mute);
+    }
+    /* the sheet warms when the reader is anywhere near the plate */
+    .plate:hover .plate-key .cell:not(.lit),
+    .plate:focus-within .plate-key .cell:not(.lit) {
+      stroke: color-mix(in srgb, var(--accent) 32%, transparent);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .plate-key .cell.lit { animation: none; opacity: 1; }
+      .plate-go .arw { transition: none; }
+    }
+    /* .reveal starts at opacity 0 and needs JS to clear it */
+    @media (scripting: none) {
+      .plate .reveal { opacity: 1; transform: none; }
+    }
 
     .charted { display: grid; grid-template-columns: repeat(3, 1fr); border-left: 1px solid var(--line); border-top: 1px solid var(--line); }
     .entry {
@@ -615,6 +835,30 @@ const minis: Record<string, string> = {
       .corner.tr { display: none; }
       .shelf { font-size: 10px; letter-spacing: 0.03em; }
       .hero-ctas { flex-wrap: wrap; }
+      /* the key lies down beside its caption instead of standing in the margin */
+      .plate { padding: var(--s-3); }
+      .plate-body { grid-template-columns: minmax(0, 1fr); gap: var(--s-4); padding: var(--s-3) 0; }
+      .plate-type, .plate-key { grid-column: 1; grid-row: auto; }
+      .plate-type h2 { font-size: var(--text-lg); }
+      .plate-key { display: flex; align-items: flex-start; gap: var(--s-3); }
+      .plate-key svg { width: 3.2rem; flex: none; }
+      .plate-key figcaption { margin-top: 0; }
+      /* .btn is nowrap sitewide, which pushes it through the plate frame on a
+         narrow phone; inside the plate the label may wrap instead */
+      .plate-go .btn { white-space: normal; min-width: 0; }
+    }
+    @media (max-width: 620px) {
+      /* A tag chip cannot wrap, so the topics column sets a min-content width the
+         table will not shrink below, and the page scrolls sideways. The
+         constellation name is the one column carrying no information the rest of
+         the row lacks, so it stands down first, and the table keeps its own
+         scroll container so the page body can never scroll at any width. */
+      .curriculum th:nth-child(2), .curriculum td:nth-child(2) { display: none; }
+      .ledger-table { overflow-x: auto; }
+    }
+    @media (max-width: 460px) {
+      /* the crosses sit outside the frame; keep them off the viewport edge */
+      .plate .rx { display: none; }
     }
   </style>
 </Base>
