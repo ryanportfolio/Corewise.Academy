@@ -56,7 +56,7 @@
   --panel: #faf7ef;        /* raised leaf */
   --ink: #1c1914;          /* warm near-black */
   --ink-soft: #574f43;     /* secondary text */
-  --ink-mute: #766d5d;     /* faint labels (AA at small mono sizes) */
+  --ink-mute: #6f6656;     /* faint labels · 4.93:1 on --paper, clears AA */
   --line: rgba(28, 25, 20, 0.16);        /* hairlines */
   --line-soft: rgba(28, 25, 20, 0.08);   /* graticule */
   --accent: #2743d0;       /* ultramarine ink */
