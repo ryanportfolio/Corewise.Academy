@@ -1,0 +1,164 @@
+---
+title: One chat can run all your other chats
+description: 'In ChatGPT, any chat can search every other chat, send work into them, and collect the results. How to find a lost conversation by asking, delegate work between chats, publish a result to a shareable page, and reach it all from your phone.'
+track: agents
+level: broad
+number: 40
+minutes: 6
+objectives:
+  - 'Locate a lost conversation by asking any chat to search your other chats, instead of scrolling the sidebar.'
+  - 'Delegate a task from the chat you are in into another chat, and find the label it leaves there ("sent by Codex from another chat").'
+  - 'Publish a result as a web page with ChatGPT Sites and hand the URL to a person or to another agent.'
+  - 'Pair your phone with your desktop so every chat is available away from your desk.'
+prerequisites: []
+sources:
+  - url: https://www.youtube.com/watch?v=jGR8LnfVPbA
+    creator: Matthew Berman
+    video: 'Master Codex with these 15 Tips'
+    timestamps: ['0:24', '1:46', '2:11', '2:42', '3:19', '3:34', '3:45', '14:47', '15:19', '15:46', '16:04', '16:18', '16:42', '17:11', '17:46', '18:00']
+selfCheck:
+  - q: Your sidebar holds fifty chats. What can the chat you have open right now do with the other forty-nine?
+    a: 'Search them, summarize them, open any one of them, and send work into them. The sidebar keeps chats separate for your benefit; the agent treats every chat as one workspace, so any chat you are in can reach all the rest.'
+  - q: You remember settling a question last week but cannot find the conversation. What is the fastest way back to it?
+    a: 'Ask the chat you are in. Something like "which of my recent chats was about the pricing decision?" returns the matches, "link me" opens the right one, and from there you can keep working in it or send new work into it without leaving the chat you started from.'
+  - q: One chat produced a spreadsheet another agent needs. How do you hand it over?
+    a: 'Publish it with ChatGPT Sites, which turns almost any result (a spreadsheet, a slide deck, a page) into a web page with a URL. It starts private; say "make it public" and then paste the URL to the other agent, which can read whatever the page holds.'
+status: published
+lastUpdated: 2026-08-05
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+
+<Chalk>every chat can see all your other chats</Chalk>
+
+<p class="lede">
+Every chat in ChatGPT can see all your other chats. Ask one to find a lost conversation
+and it searches the rest. Tell it to send work into another chat, and the work appears
+there with a label naming the chat that sent it. The sidebar keeps chats separate for
+your benefit; the agent underneath, Codex, treats the whole account as one workspace. This guide is a snapshot of
+that workspace as of early August 2026, drawn from a walkthrough by Matthew Berman.
+</p>
+
+## <span class="sec-no">01</span>Find and delegate by asking
+
+Berman loses a chat the way everyone does: he knows a poem got written somewhere, but
+the conversation has sunk down the sidebar. Instead of scrolling, he asks the chat he
+has open: "which of my recent chats was about a poem?" It returns the two matches. He
+says "link me" and the right one opens.
+
+Then he sends work into it: "in that chat, write a 50-word poem." The poem appears
+in the other chat, labeled "sent by Codex from another chat". One
+chat just gave work to another, and the label shows who asked.
+
+<PullQuote
+  quote="think of ChatGPT as one giant singular system"
+  creator="Matthew Berman"
+  video="Master Codex with these 15 Tips"
+  href="https://www.youtube.com/watch?v=jGR8LnfVPbA"
+  timestamp="15:19"
+/>
+
+That is the mental model. Chats are folders you sort your thinking into, and the agent
+can read, summarize, or continue any of them from whichever chat you are in. When two
+chats reach conflicting conclusions, you can ask a third to compare them. When the work
+in one chat wraps up, you can ask any other chat what that one concluded.
+
+For the chats your own eyes need daily, pinning still helps: right-click a chat and
+choose pin, and it stays at the top of the sidebar instead of sinking.
+
+## <span class="sec-no">02</span>Run your chats by voice
+
+ChatGPT's voice mode controls the same workspace. Press the microphone button, ask for
+a new chat that writes a 100-word poem, and one appears in the sidebar and starts
+working while you keep talking. Berman runs all his agents this way when his hands
+are busy: start work, check on other chats, send follow-ups, all spoken.
+
+Voice makes the one-workspace habit cheap: delegating to another chat becomes a
+sentence you say, not a tab you find.
+
+## <span class="sec-no">03</span>Hand the result to anyone
+
+A result trapped inside a chat is only useful to you. ChatGPT Sites turns almost any
+result (a spreadsheet, a slide deck, a portfolio, a page of text) into a web page:
+say "publish this", and it builds and hosts the page. It starts private; say "make it
+public" and you get a URL anyone can open.
+
+The URL is also a handoff between agents. Paste it into a different agent's chat, in
+ChatGPT or anywhere else, and that agent can read whatever the page holds. One chat's
+finished work becomes another agent's input without copying anything by hand.
+
+What you delegate can be real work, because Codex can use a browser and control your
+computer on your behalf:
+
+<PullQuote
+  quote="Codex can literally browse the internet on your behalf"
+  creator="Matthew Berman"
+  video="Master Codex with these 15 Tips"
+  href="https://www.youtube.com/watch?v=jGR8LnfVPbA"
+  timestamp="0:24"
+/>
+
+In the walkthrough, one prompt sends it shopping: research cameras comparable to his
+current one. Nine minutes later a spreadsheet comes back with options, prices, the
+price difference against his current camera, and ratings. He has used the same
+ability to request refunds, negotiate with customer service, and archive email he
+never needed to see. Hand that much of your accounts to an agent gradually:
+<a href="/guides/delegate-to-your-agent-in-stages/">Delegate to your agent in
+stages</a> covers how to decide what access it has earned.
+
+## <span class="sec-no">04</span>The same workspace anywhere
+
+The workspace stops being tied to one machine. Three ways to run it:
+
+- **Local.** The ChatGPT app on your computer; agents work on your machine.
+- **Cloud.** Your project lives in a hosted environment and agents run there. Useful
+  for running many agents at once without slowing your own computer.
+- **Connections.** Your phone controls your desktop from anywhere. In settings, allow
+  connections, scan the QR code with your phone, and a remote tab appears in the
+  phone app with every chat from your desktop. Berman codes from anywhere this way.
+
+Connections is the one people miss. Pairing takes a minute, and afterward the chat
+you started at your desk is the chat you check from the couch, with nothing synced by
+hand.
+
+## <span class="sec-no">05</span>One quota pays for all of it
+
+Every chat you run draws from the same weekly quota, and a workspace full of
+delegating chats drains it faster than a single conversation would. The walkthrough's
+habits for staying inside the quota are lessons this catalogue already teaches:
+
+- Route light tasks to a small model and save the big one for hard work:
+  <a href="/guides/recheck-your-model-choices-each-release/">Recheck your model
+  choices each release</a> and <a href="/guides/stop-hitting-your-token-limit/">Stop
+  hitting your token limit</a>.
+- Put recurring work on a schedule instead of re-asking:
+  <a href="/guides/automate-a-workflow-as-a-claude-routine/">Automate a workflow as a
+  Claude routine</a>.
+- Let a long run continue until a stated goal is met, with limits:
+  <a href="/guides/loop-the-agent-until-the-work-passes/">Loop the agent until the
+  work passes</a>.
+- Turn a workflow you repeat into a saved skill you invoke by name:
+  <a href="/guides/expertise-you-can-install/">Expertise you can install</a>.
+
+To see where you stand, click your name, then your usage percentage: it shows how
+much quota remains and the reset date. ChatGPT also hands out bonus quota resets,
+called banked resets. They carry an expiration date, so check for them and use them
+in time.
+
+<Exercise>
+1. In any chat, ask: "which of my recent chats was about [a topic you remember]?"
+   then say "link me" to open the match.
+2. From the chat you started in, send work into the one you found: "in that chat,
+   [a small task you can check]." Open the target chat and find the label showing
+   which chat sent it.
+3. Publish something small from any chat ("publish this as a page"), say "make it
+   public", and open the URL on your phone.
+4. Pair your phone: settings, allow connections, scan the QR code, then open the
+   remote tab on your phone and continue one desktop chat from there.
+</Exercise>
+
+## Further reading
+
+- [Matthew Berman · Master Codex with these 15 Tips](https://www.youtube.com/watch?v=jGR8LnfVPbA), the walkthrough this guide draws on
