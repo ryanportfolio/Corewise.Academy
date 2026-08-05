@@ -1,0 +1,168 @@
+---
+title: Buzz puts AI agents in your team chat
+description: 'Buzz is an open-source team chat from Jack Dorsey''s Block where AI agents are members of the channel. What that buys you (swap the model, keep the context), what it can already do, and whether your team should try it yet.'
+track: agents
+level: broad
+number: 37
+minutes: 6
+objectives:
+  - 'Describe what Buzz is: a Slack-shaped, open-source team chat where AI agents are members of the channel, built on the Nostr protocol.'
+  - 'Explain what survives when you swap the engine under a Buzz agent (the chat history, the projects, globally installed skills) and why that reduces model lock-in.'
+  - 'Assign a cheaper model to an agent whose tasks are light, so routine work stops running up your most expensive model''s bill.'
+  - 'Decide whether Buzz fits your team today, weighing its beta rough edges against its small-team sweet spot.'
+prerequisites: []
+sources:
+  - url: https://www.youtube.com/watch?v=_jGSgzBkzrY
+    creator: Greg Isenberg
+    video: 'Jack Dorsey''s Buzz: Clearly Explained (and how to use it)'
+    timestamps: ['3:10', '4:09', '5:03', '6:34', '8:56', '10:10', '11:56', '16:07', '24:21', '26:05', '30:27', '31:50', '33:26']
+selfCheck:
+  - q: What makes an agent in Buzz different from a bot added to Slack?
+    a: 'Membership. A Slack bot arrives through an integration and sees what the integration passes it. A Buzz agent is a member of the channel: it reads the same running conversation as the humans, so a request like "build the version we just discussed" needs no re-explaining. You can also open the agent and change which engine runs it.'
+  - q: You switch a Buzz agent from one coding engine to another, say from Claude Code to Codex. What do you lose?
+    a: 'Nothing in the chat. The conversation history, the projects the agent has been working on, and any skills installed globally on your machine all carry over to the new engine. That portability is the point: the agent is a stable teammate, and the engine underneath is a part you can replace.'
+  - q: Should a team doing complex software engineering move to Buzz today?
+    a: 'Probably not yet. It is early beta software: recurring workflows were unreliable in the episode''s testing, and routing work through a relay makes it slower than working in a coding tool directly. The sweet spot the episode lands on is solo founders and small teams iterating on small products. Trying it still teaches you how agent-first work tools are shaping up.'
+status: published
+lastUpdated: 2026-08-04
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+
+<Chalk>an agent that lives in the team chat already knows the context</Chalk>
+
+<p class="lede">
+Buzz looks like Slack: channels, teammates, huddles. The difference is that some of the members
+are AI agents, and they have been reading the whole conversation. Ask one to build the landing
+page your team just argued about and it starts from everything already said. This guide is a
+snapshot of Buzz as of late July 2026, drawn from a walkthrough by Vinny of the Wasp team on
+Greg Isenberg's podcast, and it ends with an honest answer to the question both of them ask:
+should you switch?
+</p>
+
+## <span class="sec-no">01</span>Agents as teammates
+
+Buzz is a team chat app from Block, the company Jack Dorsey co-founded after Twitter. It is
+open source, and it runs on Nostr, an open messaging protocol. Your messages live on a relay,
+a server you can run yourself or have hosted for you, which means your chat history belongs
+to you and can leave with you.
+
+Inside, agents are members of the team. Slack can bolt an agent on through an integration;
+in Buzz the agents sit in the channel list next to your colleagues, join conversations, and
+join audio huddles.
+
+<PullQuote
+  quote="they're like first-class citizens, right? So, they're members of your team"
+  creator="Vinny, Wasp team"
+  video="Jack Dorsey's Buzz: Clearly Explained (and how to use it)"
+  href="https://www.youtube.com/watch?v=_jGSgzBkzrY"
+  timestamp="3:10"
+/>
+
+Each agent is a small bundle of settings you can edit: instructions (a standing brief the
+agent always follows), a model, and an engine underneath. That engine setting is where Buzz
+departs furthest from Slack.
+
+## <span class="sec-no">02</span>Swap the engine, keep the chat
+
+Under every Buzz agent sits a coding engine, the program that actually runs the model and
+gives it tools: Claude Code, Codex, or Goose, your pick. Vinny calls it the harness, and
+Buzz treats it as a swappable part. Change it, and the agent keeps the conversation history, the projects it
+has been building, and every skill installed globally on your machine
+(<a href="/guides/expertise-you-can-install/">Expertise you can install</a> covers what
+those skill files are).
+
+<PullQuote
+  quote="you can change the harness under your agent, and all the context ... comes with"
+  creator="Vinny, Wasp team"
+  video="Jack Dorsey's Buzz: Clearly Explained (and how to use it)"
+  href="https://www.youtube.com/watch?v=_jGSgzBkzrY"
+  timestamp="5:07"
+/>
+
+That matters because models keep leapfrogging each other, and <a
+href="/guides/recheck-your-model-choices-each-release/">Recheck your model choices each
+release</a> argues you should re-pick yours every time they do. The usual cost of re-picking
+is starting over: new tool, new setup, context rebuilt from scratch. Buzz moves that cost
+close to zero. Switching stops being a migration you dread and becomes a settings change.
+
+The one setup step Vinny does recommend: pin each agent to a model that matches its work.
+His app-building agent runs the most capable model; the agent that summarizes channels runs
+a cheaper one, because summarizing should not cost what building costs.
+<a href="/guides/stop-hitting-your-token-limit/">Stop hitting your token limit</a> is the
+full version of that math. Past a handful of agents, he adds a dispatcher: one agent whose
+brief is knowing what the others are for, so you can hand it a task and let it pick.
+
+## <span class="sec-no">03</span>The chat does real work
+
+The agents are wired to do a developer's chores, and the wiring stays out of sight until
+you look for it:
+
+- **Version control is built in.** Agents create projects, work on separate branches, and
+  work in worktrees, separate copies of a project's files, so parallel attempts do not
+  collide. Ask for three landing-page variants and three get built side by side.
+- **Code gets hosted on your relay.** Buzz can push to GitHub, but it also hosts code
+  repositories on the same relay that stores your chats.
+- **Work ends deployed, with proof.** In the episode, one chat message ("spin up a
+  simple CRM app using the Wasp full-stack framework and deploy it to Railway") came back
+  as a live app, with links and screenshots, before Vinny had checked what the agent was doing.
+- **The apps feed back into the chat.** Another demo, an app Vinny built in Buzz to track
+  how his posts on X perform, exposes an API, a door other software can call to fetch its
+  data. A daily task pulls the numbers into a channel, where he asks an agent what his top
+  posts have in common. The app the agents built now feeds the chat the agents read.
+  <a href="/guides/automate-a-workflow-as-a-claude-routine/">Automate a workflow as a
+  Claude routine</a> builds the same daily-report setup without Buzz.
+
+Channels can be public as well as private, so a customer can report a bug in your community
+channel and an agent can prototype the fix in the same thread. Treat that power with care:
+an agent that reads a public channel reads strangers' text, and <a
+href="/guides/defend-your-agent-from-prompt-injection/">Defend your agent from prompt
+injection</a> explains why that text can steer it.
+
+## <span class="sec-no">04</span>Early software, clear fit
+
+Buzz is beta software and the episode is honest about it. Recurring workflows misfired in
+Vinny's testing. Round-trips through the relay make agents feel slower than the same engine
+run directly. Some features shown, like audio huddles with agents, he had not yet tried
+himself. And the episode's whole picture is one team's early weeks, not a settled review.
+
+The fit, as host and guest agree: solo founders and small teams iterating on small
+products, where one shared room for people, agents, and context beats a faster tool with
+none of that. Complex software engineering is better served by the coding tools directly,
+for now.
+
+The argument for trying it anyway is about who holds your data:
+
+<PullQuote
+  quote="Slack is the controller of your data, and that data is very valuable"
+  creator="Vinny, Wasp team"
+  video="Jack Dorsey's Buzz: Clearly Explained (and how to use it)"
+  href="https://www.youtube.com/watch?v=_jGSgzBkzrY"
+  timestamp="26:05"
+/>
+
+Years of decisions and ideas sit in your team chat, and whichever company holds that
+archive decides how hard it is for you to ever leave. Buzz's bet is that an open protocol, where the data
+sits on your relay, wins that argument in the long run. Whether or not Buzz itself wins,
+Isenberg's closing advice holds: play with these tools early, because even a failed trial
+teaches you what to demand from the one you keep.
+
+<Exercise>
+1. List the last three tasks you gave an AI tool where you had to paste in background the
+   tool should have known. For each, name the chat or document where that background
+   already lived. That gap is what a context-holding tool like Buzz is for.
+2. If you try Buzz: open one default agent, read its instructions, and pin it to a cheaper
+   model if its work is light. Then give one agent a task whose outcome you can verify,
+   and watch the working pane to see every tool call it makes.
+3. Whether or not you adopt it, write down the two features from this guide your current
+   setup lacks (engine swapping with context kept? work that ends deployed with proof?)
+   and check for them in the next tool you evaluate.
+</Exercise>
+
+## Further reading
+
+- [Greg Isenberg · Jack Dorsey's Buzz: Clearly Explained (and how to use it)](https://www.youtube.com/watch?v=_jGSgzBkzrY), the walkthrough this guide draws on
+- [Nostr](https://nostr.com/), the open protocol Buzz is built on
+- [Wasp](https://wasp.sh/), the guest's full-stack framework, used in the episode's CRM demo
