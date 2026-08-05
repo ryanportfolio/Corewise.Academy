@@ -46,7 +46,7 @@ const levelLabel = (level: string) => level.charAt(0).toUpperCase() + level.slic
     </ol>
 
     <p class="all-tags reveal">
-      All topics:
+      <span class="all-tags-label">All topics:</span>
       {TAGS.map((t) => <a href={`/tags/${t.slug}/`} class:list={[{ here: t.slug === tag.slug }]}>{t.display}</a>)}
     </p>
   </main>
@@ -76,7 +76,15 @@ const levelLabel = (level: string) => level.charAt(0).toUpperCase() + level.slic
     .shelf-list .m { font-family: var(--font-mono); font-size: var(--text-2xs); color: var(--ink-mute); }
     .shelf-list p { grid-column: 2; margin: 0; padding-left: var(--s-3); font-size: var(--text-sm); color: var(--ink-soft); max-width: 52ch; }
 
-    .all-tags { font-size: var(--text-sm); color: var(--ink-mute); max-width: 60ch; line-height: 2; }
+    .all-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      font-size: var(--text-sm);
+      color: var(--ink-mute);
+    }
+    .all-tags-label { margin-right: 4px; }
     .all-tags a {
       font-family: var(--font-mono);
       font-size: var(--text-2xs);
@@ -84,7 +92,6 @@ const levelLabel = (level: string) => level.charAt(0).toUpperCase() + level.slic
       border: 1px solid var(--line);
       border-radius: 999px;
       padding: 1px 9px;
-      margin: 0 4px 0 2px;
       text-decoration: none;
       white-space: nowrap;
       transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
