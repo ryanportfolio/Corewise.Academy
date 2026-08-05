@@ -1,0 +1,138 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { TRACKS } from '../../data/tracks';
+import { TAGS, tagByLabel } from '../../data/tags';
+
+const guides = (await getCollection('guides'))
+  .filter((g) => g.data.status === 'published')
+  .sort((a, b) => +b.data.lastUpdated - +a.data.lastUpdated || b.data.number - a.data.number);
+const trackName = (slug: string) => TRACKS.find((t) => t.slug === slug)?.name ?? slug;
+const levelLabel = (level: string) => level.charAt(0).toUpperCase() + level.slice(1);
+---
+
+<Base
+  title="All guides · CoreWise Academy"
+  description={`The whole catalogue: all ${guides.length} guides on working with AI, newest first, each tagged by topic.`}
+  crumbs={[{ name: 'All guides', path: '/guides/' }]}
+>
+  <main>
+    <header class="cat-head">
+      <p class="mono-label accent">The whole catalogue</p>
+      <h1 class="display">All guides</h1>
+      <p class="dek">
+        {guides.length} guides, newest first. Click a topic tag to see every guide that covers it.
+      </p>
+    </header>
+
+    <div class="charted reveal">
+      {
+        guides.map((g) => (
+          <article class="entry">
+            <span class="mono-label accent">
+              {trackName(g.data.track)} · {levelLabel(g.data.level)}
+            </span>
+            <h3>
+              <a href={`/guides/${g.id}/`}>{g.data.title}</a>
+            </h3>
+            <p>{g.data.description}</p>
+            <span class="foot">
+              <span class="min">{g.data.minutes} min</span>
+              <span class="chips">
+                {g.data.tags.flatMap((label) => tagByLabel(label) ?? []).map((tag) => (
+                  <a class="tag-chip" href={`/tags/${tag.slug}/`}>{tag.display}</a>
+                ))}
+              </span>
+            </span>
+          </article>
+        ))
+      }
+    </div>
+
+    <p class="all-tags reveal">
+      <span class="all-tags-label">All topics:</span>
+      {TAGS.map((t) => <a href={`/tags/${t.slug}/`}>{t.display}</a>)}
+    </p>
+  </main>
+
+  <style>
+    main { max-width: 70rem; margin: 0 auto; padding: var(--s-8) var(--s-4) var(--s-12); }
+    .cat-head { padding-bottom: var(--s-4); border-bottom: 1px solid var(--ink); margin-bottom: var(--s-6); }
+    h1 { font-family: var(--font-display); font-size: clamp(2.6rem, 7vw, var(--text-3xl)); margin: var(--s-2) 0; }
+    .dek { font-size: var(--text-md); font-style: italic; color: var(--ink-soft); max-width: 52ch; }
+
+    .charted { display: grid; grid-template-columns: repeat(3, 1fr); border-left: 1px solid var(--line); border-top: 1px solid var(--line); margin-bottom: var(--s-8); }
+    .entry {
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: var(--s-4);
+      position: relative;
+      transition: background var(--dur) var(--ease);
+      min-height: 14rem;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+    }
+    .entry:hover { background: var(--accent-wash); }
+    .entry .mono-label { margin-bottom: var(--s-2); }
+    .entry h3 { font-family: var(--font-display); font-size: var(--text-md); font-weight: 400; line-height: 1.15; margin-bottom: var(--s-2); }
+    .entry h3 a { color: var(--ink); text-decoration: none; }
+    .entry h3 a::after { content: ''; position: absolute; inset: 0; }
+    .entry:hover h3 a { color: var(--accent-deep); }
+    .entry p { font-size: var(--text-sm); color: var(--ink-soft); flex: 1; }
+    .entry .foot {
+      font-family: var(--font-mono);
+      font-size: var(--text-2xs);
+      color: var(--ink-mute);
+      margin-top: var(--s-3);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: var(--s-2);
+    }
+    .entry .min { padding-top: 2px; white-space: nowrap; }
+    .chips { display: flex; flex-wrap: wrap; gap: 5px; justify-content: flex-end; }
+    /* chips sit above the card's stretched link so they stay clickable */
+    .tag-chip {
+      position: relative;
+      z-index: 1;
+      color: var(--ink-soft);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 1px 9px;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+    }
+    .tag-chip:hover { color: var(--accent-deep); border-color: var(--accent-deep); }
+
+    .all-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      font-size: var(--text-sm);
+      color: var(--ink-mute);
+    }
+    .all-tags-label { margin-right: 4px; }
+    .all-tags a {
+      font-family: var(--font-mono);
+      font-size: var(--text-2xs);
+      color: var(--ink-soft);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 1px 9px;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+    }
+    .all-tags a:hover { color: var(--accent-deep); border-color: var(--accent-deep); }
+
+    @media (max-width: 900px) {
+      .charted { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .charted { grid-template-columns: 1fr; }
+    }
+  </style>
+</Base>
