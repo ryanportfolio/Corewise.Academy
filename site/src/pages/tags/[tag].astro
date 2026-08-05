@@ -30,10 +30,10 @@ const levelLabel = (level: string) => level.charAt(0).toUpperCase() + level.slic
       </p>
     </header>
 
-    <ol class="shelf-list reveal">
+    <ol class="shelf-list">
       {
         guides.map((g) => (
-          <li>
+          <li class="reveal">
             <a href={`/guides/${g.id}/`}>
               <span class="no">Nº {String(g.data.number).padStart(3, '0')}</span>
               <span class="t">{g.data.title}</span>

@@ -25,10 +25,10 @@ const levelLabel = (level: string) => level.charAt(0).toUpperCase() + level.slic
       </p>
     </header>
 
-    <div class="charted reveal">
+    <div class="charted">
       {
         guides.map((g) => (
-          <article class="entry">
+          <article class="entry reveal">
             <span class="mono-label accent">
               {trackName(g.data.track)} · {levelLabel(g.data.level)}
             </span>
