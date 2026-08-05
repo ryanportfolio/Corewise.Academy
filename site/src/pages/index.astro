@@ -248,10 +248,12 @@ const minis: Record<string, string> = {
               ))
             }
             <tr class="total">
-              <td>Whole catalogue</td>
-              <td class="mono">VOL. I</td>
-              <td class="mono">{guides.length}</td>
-              <td class="mono">{TAGS.length} topics</td>
+              <td colspan="4">
+                <a class="catalogue-cta" href="/guides/">
+                  <span>Browse the whole catalogue</span>
+                  <span class="mono">{guides.length} guides · {TAGS.length} topics →</span>
+                </a>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -567,6 +569,17 @@ const minis: Record<string, string> = {
     .curriculum td a:hover { color: var(--accent-deep); }
     .curriculum .mono { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--ink-soft); }
     .curriculum .total td { border-bottom: none; border-top: 1px solid var(--ink); font-weight: 600; }
+    .curriculum td a.catalogue-cta {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: var(--s-3);
+      border-bottom: none;
+      color: var(--accent-deep);
+      transition: color var(--dur) var(--ease);
+    }
+    .curriculum td a.catalogue-cta:hover { color: var(--ink); }
+    .curriculum td a.catalogue-cta .mono { font-weight: 400; }
     .curriculum .chips { display: flex; flex-wrap: wrap; gap: 5px; }
     .curriculum td a.tag-chip {
       display: inline-block;

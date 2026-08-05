@@ -12,6 +12,7 @@ export const GET: APIRoute = async () => {
     { path: '/', lastmod: SITE_UPDATED },
     { path: '/about/', lastmod: SITE_UPDATED },
     { path: '/how-its-built/', lastmod: SITE_UPDATED },
+    { path: '/guides/', lastmod: SITE_UPDATED },
     ...TRACKS.map((t) => ({ path: `/tracks/${t.slug}/`, lastmod: SITE_UPDATED })),
     ...TAGS.map((t) => ({ path: `/tags/${t.slug}/`, lastmod: SITE_UPDATED })),
     ...guides.map((g) => ({ path: `/guides/${g.id}/`, lastmod: day(g.data.lastUpdated) })),
