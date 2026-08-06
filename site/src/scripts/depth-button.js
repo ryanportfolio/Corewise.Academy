@@ -2,6 +2,10 @@
 // drifting toward the reader in a perspective camera. three.js is already on
 // this page for the hero sky, so this adds no new dependency.
 //
+// Motion values below were tuned by the editor in the hover lab and are the
+// source of truth for the feel; the box (padding, size, tracking) lives in
+// index.astro.
+//
 // Degrades honestly: no WebGL leaves the canvas empty and the button is still a
 // plain link, prefers-reduced-motion renders one settled frame and never
 // animates, and the loop stops whenever the tab is hidden.
@@ -9,13 +13,21 @@
 import * as THREE from 'three';
 
 const FX = {
-  SPEED: 1,
-  DEPTH: 1,
-  DENSITY: 1,
-  GLOW: 1,
-  PARALLAX: 1,
-  HOVER: 1,
-  OPACITY: 1,
+  // Hover ramps in fast and falls away slowly, so arriving feels responsive
+  // while leaving fades rather than cuts.
+  HOVER_IN: 0.4,
+  HOVER_OUT: 0.09,
+  // Heavy pointer smoothing: the field trails the cursor by a long way, which
+  // is what kills the jitter the raw 1:1 tracking used to show.
+  POINTER_LERP: 0.02,
+  PARALLAX_Y: 0.5,
+  PARALLAX_X: 0.3,
+  RECENTER: 1,
+  DRIFT_SPEED: 0.05,
+  SPEED_BOOST: 1.2,
+  ROT_SPEED: 0.05,
+  OPACITY_BASE: 0.55,
+  OPACITY_BOOST: 0.5,
 };
 const COUNT = 420;
 const FAR = -22;
@@ -39,10 +51,10 @@ export function boot() {
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(48, 1, 0.1, 100);
-  camera.position.z = 4.2 / FX.DEPTH;
+  camera.position.z = 4.2;
 
   const group = new THREE.Group();
-  group.scale.setScalar(FX.DENSITY * 0.9);
+  group.scale.setScalar(0.9);
   scene.add(group);
 
   // Deterministic layout: the same field on every load, so the button never
@@ -73,15 +85,18 @@ export function boot() {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   let hover = 0;
   let target = 0;
-  let mx = 0;
+  let rawX = 0; // where the pointer actually is
+  let rawY = 0;
+  let mx = 0; // where the field has eased to, always chasing the raw values
   let my = 0;
+  let inside = false;
 
-  button.addEventListener('pointerenter', () => { target = 1; });
-  button.addEventListener('pointerleave', () => { target = 0; mx = 0; my = 0; });
+  button.addEventListener('pointerenter', () => { target = 1; inside = true; });
+  button.addEventListener('pointerleave', () => { target = 0; inside = false; });
   button.addEventListener('pointermove', (e) => {
     const r = button.getBoundingClientRect();
-    mx = ((e.clientX - r.left) / r.width - 0.5) * 2;
-    my = ((e.clientY - r.top) / r.height - 0.5) * 2;
+    rawX = ((e.clientX - r.left) / r.width - 0.5) * 2;
+    rawY = ((e.clientY - r.top) / r.height - 0.5) * 2;
   });
   button.addEventListener('focus', () => { target = 1; });
   button.addEventListener('blur', () => { target = 0; });
@@ -95,16 +110,16 @@ export function boot() {
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
     }
-    group.rotation.y = t * 0.05 + mx * 0.5 * FX.PARALLAX;
-    group.rotation.x = my * 0.3 * FX.PARALLAX;
+    group.rotation.y = t * FX.ROT_SPEED + mx * FX.PARALLAX_Y;
+    group.rotation.x = my * FX.PARALLAX_X;
     mat.color.set(hexOf('--star'));
-    mat.opacity = Math.min(1, FX.OPACITY * FX.GLOW * (0.55 + hover * 0.5));
+    mat.opacity = Math.min(1, FX.OPACITY_BASE + hover * FX.OPACITY_BOOST);
     renderer.render(scene, camera);
   };
 
   const advance = () => {
     const arr = geom.attributes.position.array;
-    const step = 0.05 * FX.SPEED * (1 + hover * FX.HOVER * 1.2);
+    const step = FX.DRIFT_SPEED * (1 + hover * FX.SPEED_BOOST);
     for (let i = 2; i < arr.length; i += 3) {
       arr[i] += step;
       if (arr[i] > NEAR) arr[i] = FAR;
@@ -115,7 +130,15 @@ export function boot() {
   let raf = 0;
   const frame = (ms) => {
     raf = requestAnimationFrame(frame);
-    hover += (target - hover) * 0.12;
+    // separate rates in and out, so the fade away is gentler than the arrival
+    hover += (target - hover) * (target > hover ? FX.HOVER_IN : FX.HOVER_OUT);
+    // the pointer is chased, never matched; on leave the field eases back to
+    // centre at its own rate rather than being reset to zero in one frame
+    const tx = inside ? rawX : 0;
+    const ty = inside ? rawY : 0;
+    const lerp = inside ? FX.POINTER_LERP : FX.RECENTER;
+    mx += (tx - mx) * lerp;
+    my += (ty - my) * lerp;
     advance();
     draw(ms / 1000);
   };
