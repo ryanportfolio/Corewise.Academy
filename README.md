@@ -1,14 +1,17 @@
 # CoreWise Academy
 
+<!-- catalogue:plate -->
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset=".github/assets/plate-dark.svg">
-  <img alt="Plate of the catalogue: 33 published guides as stars in five constellations, one per curriculum layer, generated from the guides' own frontmatter. One star per guide; larger stars are deeper guides." src=".github/assets/plate-light.svg">
+  <img alt="Chart of the catalogue: 33 published guides as stars in five constellations, one per curriculum layer, generated from the guides' own frontmatter. One star per guide; larger stars are deeper guides." src=".github/assets/plate-light.svg">
 </picture>
+<!-- /catalogue:plate -->
 
 CoreWise Academy is a free library of original guides on working with AI, published at [corewise.academy](https://corewise.academy). The site names its five curriculum layers after constellations and charts its catalogue as a sky, one star per guide. This repo is the observatory behind it. AI agents draft the guides, machines check the copy rules, and a human editor, [Ryan D. Allen](https://corewise.academy/about/), reads every draft before it publishes. The repo holds the guides, the site, and the scripts that keep both honest.
 
 ## The catalogue
 
+<!-- catalogue:catalogue -->
 33 guides, 224 minutes of reading, sorted into five layers, each guide at one of three depths (broad, practitioner, deep). 22 of them credit the videos and articles they started from, timestamps included; 11 are original field notes with no outside source.
 
 | Layer | Constellation | Guides |
@@ -18,12 +21,15 @@ CoreWise Academy is a free library of original guides on working with AI, publis
 | III · Agents & Automation | THE COURIER | 15 |
 | IV · Building with AI | THE FORGE | 3 |
 | V · Practice | THE METRONOME | 5 |
+<!-- /catalogue:catalogue -->
+
+The numbers above are not typed by hand. [`scripts/readme-plate.mjs`](scripts/readme-plate.mjs) writes them into this page from the guides themselves, and CI fails if they fall behind.
 
 Every guide carries the same frontmatter contract ([`site/src/content.config.ts`](site/src/content.config.ts)): measurable objectives, prerequisites, cited sources, and exactly three self-check questions. A draft that does not fit the schema does not build.
 
 ## The plate above is generated, not drawn
 
-One star is one published guide. Its position comes from a hash of the guide's catalogue number, its size from the guide's depth, and the one four-pointed star marks the newest guide. The position hash, the depth radii, and the star glyph are the same ones the homepage's own chart of the catalogue uses ([`site/src/pages/index.astro`](site/src/pages/index.astro)). [`scripts/readme-plate.mjs`](scripts/readme-plate.mjs) regenerates both SVGs, light and dark, from frontmatter; its `--check` mode runs in CI and fails the build when the plate or any number printed on this page stops matching the guides. Every mark states a fact: unpublish a guide and its star goes out. You can run the check yourself:
+One star is one published guide. Its position comes from a hash of the guide's catalogue number, its size from the guide's depth, and the one four-pointed star marks the newest guide. The position hash, the depth radii, and the star glyph are the same ones the homepage's own chart of the catalogue uses ([`site/src/pages/index.astro`](site/src/pages/index.astro)). [`scripts/readme-plate.mjs`](scripts/readme-plate.mjs) draws both SVGs, light and dark, and writes this page's counts, all from frontmatter; its `--check` mode runs in CI and fails the build when either falls behind the guides. Every mark states a fact: unpublish a guide and its star goes out. You can run the check yourself:
 
 ```bash
 node scripts/readme-plate.mjs --check
@@ -76,7 +82,7 @@ The display face on the site, Alembic Titling, is built rather than bought: [`de
 | Path | What it is |
 |---|---|
 | [`site/`](site/) | The Astro site |
-| [`site/src/content/guides/`](site/src/content/guides/) | The 33 guides, MDX with the frontmatter contract |
+| [`site/src/content/guides/`](site/src/content/guides/) | The guides themselves, MDX with the frontmatter contract |
 | [`content/sources.md`](content/sources.md) | The source registry every ingested video is logged in |
 | [`design/`](design/) | Mockups and the typeface generator |
 | [`scripts/`](scripts/) | The transcript fetcher and the plate generator |
