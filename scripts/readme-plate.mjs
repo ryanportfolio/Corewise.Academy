@@ -199,9 +199,62 @@ const impression = ({ paper, ink, soft, mute, accent, lineO, starO }) => {
 const LIGHT = impression({ paper: '#f3efe4', ink: '#1c1914', soft: '#574f43', mute: '#6f6656', accent: '#1c31a4', lineO: 0.16, starO: 0.55 });
 const DARK = impression({ paper: '#121420', ink: '#e8e4d8', soft: '#a9a496', mute: '#84806f', accent: '#96a8ff', lineO: 0.16, starO: 0.6 });
 
+// ---- The README passages that carry numbers ------------------------------
+// These are written by this script, not by hand, so a new guide can never
+// leave a stale count on the page. Everything between a pair of markers is
+// generated; everything outside them is the editor's prose.
+const failures = [];
+
+const LAYER_NAMES = {
+  foundations: 'Foundations',
+  prompting: 'Prompting & Context',
+  agents: 'Agents & Automation',
+  building: 'Building with AI',
+  practice: 'Practice',
+};
+
+const BLOCKS = {
+  plate: [
+    '<picture>',
+    '  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/plate-dark.svg">',
+    `  <img alt="Chart of the catalogue: ${stats.count} published guides as stars in five constellations, one per curriculum layer, generated from the guides' own frontmatter. One star per guide; larger stars are deeper guides." src=".github/assets/plate-light.svg">`,
+    '</picture>',
+  ].join('\n'),
+
+  catalogue: [
+    `${stats.count} guides, ${stats.minutes} minutes of reading, sorted into five layers, each guide at one of three depths (broad, practitioner, deep). ${stats.sourced} of them credit the videos and articles they started from, timestamps included; ${stats.original} are original field notes with no outside source.`,
+    '',
+    '| Layer | Constellation | Guides |',
+    '|---|---|---:|',
+    ...CLUSTERS.map((c) => {
+      const n = guides.filter((g) => g.track === c.slug).length;
+      return `| ${c.numeral} · ${LAYER_NAMES[c.slug]} | ${c.name} | ${n} |`;
+    }),
+  ].join('\n'),
+};
+
+// Splice the generated blocks into the README's marker pairs.
+const applyBlocks = (text) => {
+  let out = text;
+  for (const [name, body] of Object.entries(BLOCKS)) {
+    const open = `<!-- catalogue:${name} -->`;
+    const close = `<!-- /catalogue:${name} -->`;
+    const start = out.indexOf(open);
+    const end = out.indexOf(close);
+    if (start === -1 || end === -1 || end < start) {
+      failures.push(`README.md: the ${open} ... ${close} markers are missing or out of order`);
+      continue;
+    }
+    out = out.slice(0, start + open.length) + '\n' + body + '\n' + out.slice(end);
+  }
+  return out;
+};
+
 // ---- Generate or check ---------------------------------------------------
 const lf = (s) => s.replace(/\r\n/g, '\n');
-const failures = [];
+const readmeRaw = readFileSync(README, 'utf8');
+const readmeNow = lf(readmeRaw);
+const readmeWant = applyBlocks(readmeNow);
 
 if (process.argv.includes('--check')) {
   for (const [name, want] of [['plate-light.svg', LIGHT], ['plate-dark.svg', DARK]]) {
@@ -215,26 +268,19 @@ if (process.argv.includes('--check')) {
     if (have !== want) failures.push(`${name}: stale. Frontmatter changed; run node scripts/readme-plate.mjs`);
   }
 
-  const readme = lf(readFileSync(README, 'utf8'));
-  // Every number the README prints about the catalogue, checked at the source.
-  const claims = [
-    [`${stats.count} guides`, 'guide count'],
-    [`${stats.count} published guides`, 'guide count in the image alt text'],
-    [`${stats.minutes} minutes`, 'total reading minutes'],
-    [`${stats.sourced} of them credit`, 'sourced-guide count'],
-    [`${stats.original} are original`, 'original-guide count'],
-  ];
-  for (const c of CLUSTERS) {
-    const n = guides.filter((g) => g.track === c.slug).length;
-    claims.push([new RegExp(`${c.name}[^\\n]*\\b${n}\\b`), `${c.name} row count`]);
+  if (readmeNow !== readmeWant) {
+    failures.push('README.md: the generated blocks are stale. Frontmatter changed; run node scripts/readme-plate.mjs');
   }
-  for (const [needle, what] of claims) {
-    const ok = needle instanceof RegExp ? needle.test(readme) : readme.includes(needle);
-    if (!ok) failures.push(`README.md: ${what} does not match frontmatter (expected ${needle})`);
+
+  // No hand-typed count may survive outside the generated blocks: any other
+  // "N guides" on the page is a number nothing keeps current.
+  const outside = readmeNow.split(/<!-- \/?catalogue:\w+ -->/).filter((_, i) => i % 2 === 0).join('\n');
+  for (const m of outside.matchAll(/\b(\d+)\s+(?:published\s+)?guides\b/g)) {
+    failures.push(`README.md: "${m[0]}" is typed by hand outside the generated blocks. Say it without a number, or move it inside a block.`);
   }
 
   // The site's em dash ban holds on the repo's public face too.
-  for (const [label, text] of [['README.md', readme], ['plate-light.svg', LIGHT], ['plate-dark.svg', DARK]]) {
+  for (const [label, text] of [['README.md', readmeNow], ['plate-light.svg', LIGHT], ['plate-dark.svg', DARK]]) {
     const line = text.split('\n').findIndex((l) => l.includes('—'));
     if (line !== -1) failures.push(`${label}:${line + 1}: em dash. Replace with plain punctuation.`);
   }
@@ -244,9 +290,19 @@ if (process.argv.includes('--check')) {
     for (const f of failures) console.error('  ' + f);
     process.exit(1);
   }
-  console.log(`readme-plate: clean (${stats.count} stars, light and dark SVGs, README claims match)`);
+  console.log(`readme-plate: clean (${stats.count} stars, light and dark SVGs, README numbers current)`);
 } else {
+  if (failures.length) {
+    console.error('readme-plate cannot write:');
+    for (const f of failures) console.error('  ' + f);
+    process.exit(1);
+  }
   writeFileSync(join(ASSETS, 'plate-light.svg'), LIGHT);
   writeFileSync(join(ASSETS, 'plate-dark.svg'), DARK);
-  console.log(`engraved ${stats.count} stars into .github/assets/plate-{light,dark}.svg`);
+  // Keep the file's own line endings; this repo checks out CRLF on Windows.
+  const crlf = readmeRaw.includes('\r\n');
+  writeFileSync(README, crlf ? readmeWant.replace(/\n/g, '\r\n') : readmeWant);
+  console.log(
+    `engraved ${stats.count} stars into .github/assets/plate-{light,dark}.svg and wrote the catalogue numbers into README.md`,
+  );
 }
