@@ -218,8 +218,11 @@ const minis: Record<string, string> = {
         >get the most out of AI
       </p>
       <div class="hero-ctas">
-        <a class="btn solid" href="#tracks">Browse the layers</a>
-        {latest[0] && <a class="btn" href={`/guides/${latest[0].id}/`}>Latest guide</a>}
+        <a class="btn hero-cta depth" href="/guides/">
+          <canvas data-depth aria-hidden="true"></canvas>
+          <span class="cta-label">All Guides</span>
+        </a>
+        {latest[0] && <a class="btn hero-cta" href={`/guides/${latest[0].id}/`}>Latest</a>}
       </div>
     </div>
     <p class="hero-scroll">↓ scroll</p>
@@ -308,10 +311,11 @@ const minis: Record<string, string> = {
 
           <div class="plate-body">
             <div class="plate-type reveal">
-              <h2>Every guide</h2>
               <p class="plate-go">
-                <a class="btn" href="/guides/">
-                  Every Guide <span class="arw" aria-hidden="true">&#8594;</span>
+                <a class="btn warp" href="/guides/">
+                  <canvas data-warp aria-hidden="true"></canvas>
+                  <span class="warp-label">Every Guide</span>
+                  <span class="arw" aria-hidden="true">&#8594;</span>
                 </a>
               </p>
             </div>
@@ -472,6 +476,8 @@ const minis: Record<string, string> = {
 
   <script>
     import '../scripts/hero.js';
+    import '../scripts/warp-button.js';
+    import '../scripts/depth-button.js';
   </script>
 
   <style>
@@ -596,6 +602,32 @@ const minis: Record<string, string> = {
       .dek-star { animation: none; opacity: 0.9; }
     }
     .hero-ctas { display: flex; gap: var(--s-3); margin-top: var(--s-4); }
+    /* both hero links step up from the sitewide .btn, staying a size under the
+       plate's catalogue button so the page keeps one loudest element */
+    .hero-cta {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      isolation: isolate;
+      overflow: hidden;
+      padding: 22px 38px;
+      font-size: 1.05rem;
+      letter-spacing: 0.15em;
+    }
+    .hero-cta canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      display: block;
+      pointer-events: none;
+    }
+    .hero-cta .cta-label { position: relative; z-index: 1; }
+    /* the depth field has to stay visible, so this one keeps its paper ground
+       and moves only its rule and ink on hover */
+    .hero-cta.depth:hover { background: transparent; color: var(--accent); border-color: var(--accent); }
+    .hero-cta:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
     .corner {
       position: absolute;
       z-index: 2;
@@ -729,10 +761,41 @@ const minis: Record<string, string> = {
     }
     .plate-type > p { margin-top: var(--s-3); color: var(--ink-soft); font-size: var(--text-sm); }
     .plate-go { margin-top: var(--s-4); }
+    /* The catalogue link, tuned in the button lab. 1.76rem is the editor's 38px at
+       this page's root size, kept in rem so the label scales with the rest of the
+       type instead of freezing at one width. */
+    .plate-go .btn.warp {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7em;
+      isolation: isolate;
+      overflow: hidden;
+      padding: 34px 49px;
+      font-size: 1.76rem;
+      letter-spacing: 0.16em;
+      border-width: 0.5px;
+      transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+    }
+    /* the depth sits behind the label and never intercepts the click */
+    .plate-go .btn.warp canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      display: block;
+      pointer-events: none;
+    }
+    .plate-go .btn.warp .warp-label,
+    .plate-go .arw { position: relative; z-index: 1; }
     .plate-go .arw { display: inline-block; transition: transform var(--dur) var(--ease); }
     .plate-go .btn:hover .arw,
     .plate-go .btn:focus-visible .arw { transform: translateX(4px); }
     .plate-go .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    /* the label must stay legible when the stars are behind it, so the fill
+       stays off and only the rule and the ink change on hover */
+    .plate-go .btn.warp:hover { background: transparent; color: var(--accent); border-color: var(--accent); }
 
     /* the drawing. Capped at roughly its own scale so the engraved labels never
        balloon on an ultrawide or shrink to nothing at the stacking width */
