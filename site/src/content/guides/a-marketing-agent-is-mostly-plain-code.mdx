@@ -1,0 +1,222 @@
+---
+title: A marketing agent is mostly plain code
+description: 'Cody Schneider builds agents that find leads and post content while nobody watches. The method: turn the human process into scripts on a schedule, and call the model only where a judgment is needed. Both of his builds, tool by tool.'
+track: agents
+level: practitioner
+number: 41
+minutes: 8
+tags: ['automation', 'cost control', 'claude code']
+objectives:
+  - 'Map a marketing job into scripted steps and judgment points, and mark the few steps that need a model.'
+  - 'Assemble the cold-outreach pipeline: scrape who engaged with a post, find emails with a cheapest-first chain of lookup tools, validate them, and send from separate cold-email domains.'
+  - 'Build a content agent that writes from recorded conversations and reads its own post analytics before the next round.'
+  - 'Diagnose where a per-call model fee is paying for work a script does identically every run.'
+prerequisites:
+  - slug: split-big-ai-tasks-into-steps-and-checks
+    note: Know how to break work into jobs and arrows before wiring a live pipeline of them.
+sources:
+  - url: https://www.youtube.com/watch?v=mD7JpNHLT70
+    creator: Greg Isenberg
+    video: 'These AI Marketing Agents Get You Customers'
+    timestamps: ['3:22', '5:52', '7:55', '9:19', '11:33', '12:29', '13:46', '14:42', '15:37', '17:15', '19:03', '20:06', '21:49', '22:24', '23:30', '25:41', '26:10', '28:16', '29:12', '30:43', '32:00', '33:52', '34:58', '35:44', '36:38', '37:56']
+selfCheck:
+  - q: 'Why does Schneider target people who engaged with an influencer post instead of filtering by job title and company size?'
+    a: 'A like or comment on niche content shows current interest in the topic. Job title and company size only show that a person could plausibly be a customer, and any competitor can buy the same filtered list. Ten to twenty well-chosen accounts are enough, because everyone in a niche engages with the same handful of standout creators.'
+  - q: 'You have 50 LinkedIn profiles and need their emails. What order do the lookup tools run in, and why that order?'
+    a: 'Cheapest and most accurate first. Send all 50 to a flat-price database like GetLeads, send only its misses to Apollo, send the remaining misses to a pricier tool like Origami or Prospeo, then check every address with a validator like MillionVerifier before sending anything. Each stage pays only for what the stage before it missed.'
+  - q: 'Which parts of the cold-outreach agent actually call a model?'
+    a: 'Three: deciding whether a scraped person fits the target customer before paying to enrich them, writing each personalized email or message, and answering replies in the inbox. Scraping, enrichment lookups, validation, and sending are scripted API calls that run the same way every time.'
+status: draft
+lastUpdated: 2026-08-05
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+
+<Chalk>code runs the pipeline, the model makes the judgment calls</Chalk>
+
+<p class="lede">
+Cody Schneider's company, Graphed, deploys marketing agents for other businesses:
+systems that find leads, write to them, and publish content on a schedule with nobody
+watching. On Greg Isenberg's podcast he assembles two of them on camera, and nearly
+every part turns out to be an ordinary script calling an API. The model appears at a
+few points where a judgment is needed, and nowhere else. This guide walks both
+builds: the cold-outreach agent, then the content agent.
+</p>
+
+## <span class="sec-no">01</span>Copy the human process
+
+The failed version of a marketing agent came first. Teams handed a model a Facebook
+ads account and let it improvise, and Schneider's verdict is blunt: sooner or later
+it wrecks the account. The version that works starts from a different question: what
+was the skilled human actually doing?
+
+A top ads manager runs a specific routine: study which pitches are working, make
+new ads, test them, cut the losers, put more budget on the winners. Each of those is a step
+software can perform. So the build order is: write the human routine down, turn each
+step into code, and add the model only at the steps that need an actual decision.
+
+<PullQuote
+  quote="it's code. It's maybe some thinking loop and it's a live data stream"
+  creator="Cody Schneider"
+  video="These AI Marketing Agents Get You Customers"
+  href="https://www.youtube.com/watch?v=mD7JpNHLT70"
+  timestamp="13:46"
+/>
+
+That line is his answer to "what is a marketing agent," and it has three parts:
+
+- **Code.** Scripts that call scrapers, databases, and sending platforms.
+- **A live data stream.** Fresh posts, replies, and results for the code to act on.
+- **A thinking loop, sometimes.** A model call at the steps where the next move
+  depends on a judgment.
+
+His co-founder Max puts it flatly: the only real agent is the coding agent, and
+everything else is software that agent writes for you. You build the pipeline in
+Claude Code or Codex on your own machine, watch it work once, then move it to a
+server to run on its own. Mapping the jobs and arrows before you wire anything is
+the subject of <a href="/guides/split-big-ai-tasks-into-steps-and-checks/">Split big
+AI tasks into steps and checks</a>.
+
+## <span class="sec-no">02</span>Cold outreach, tool by tool
+
+The first build finds likely customers and emails them. Its targeting idea carries
+the whole system. Cold email reply rates are falling as AI-written messages flood
+inboxes, so a list built from job titles and company size is a list every competitor
+also has. Schneider targets behavior instead: someone who likes or comments on a
+niche LinkedIn post is raising a hand, showing current interest in the topic, and
+that interest is the reason to reach out.
+
+Ten to twenty accounts are enough to watch. Every niche has a handful of standout
+creators everyone engages with, and Schneider's estimate is that monitoring them
+covers about 80 percent of the audience. He picks them by hand in minutes: a
+business already knows who its customers follow. The pipeline then runs daily:
+
+1. **Scrape the engagers.** Everyone who reacted to or commented on a post. Apify
+   sells access to ready-made scrapers behind one API key: one pulls a profile's
+   new posts each day, two more pull the reactions and comments on each post. In
+   the demo, Schneider's script pulls a single post's engagers into a spreadsheet.
+2. **Filter for fit.** A model call researches each person and their company and
+   keeps only the ones matching the target customer. This check runs before any
+   paid lookup, so the budget is spent on people worth contacting.
+3. **Find the emails, cheapest tool first.** LinkedIn profiles go in, emails and
+   phone numbers come out. Of 50 profiles, a flat-price database like GetLeads
+   might find 32 emails; only the 18 misses go to Apollo, which might find 10
+   more; the last 8 go to a pricier tool like Origami or Prospeo. Lead Magic does
+   the same for mobile numbers. Schneider calls the chain a waterfall enrichment.
+4. **Validate every address.** MillionVerifier grades each email good, risky, or
+   bad. Bounced sends damage your sender reputation, so only the good ones stay.
+5. **Send from separate domains.** Cold email goes out through Instantly, LinkedIn
+   messages through HeyReach or Botdog.
+6. **Answer the replies.** Instantly notifies your server the moment a reply lands,
+   and an agent answers it. More on that below.
+
+Step 5 has a rule behind it. Bulk sending from your real domain wrecks its sender
+reputation, and your mail stops reaching inboxes. So cold email goes out from
+throwaway domains bought for the purpose, and each kind of email gets its own
+domain:
+
+- **Cold outreach domains.** Bought in bulk, hosted as inboxes by services like
+  Hypertide or Inbox Kit. About $100 a month covers roughly 10,000 emails.
+- **An email-marketing domain.** Newsletters and campaigns people signed up for.
+- **A transactional domain.** Email the product itself sends, like password resets.
+- **The business domain.** What your team uses. It never sends bulk email.
+
+All in, Schneider puts the starting cost near $200 a month: the inboxes plus a
+sending platform (Instantly starts at $97 a month).
+
+The reply agent from step 6 gets one standing prompt: the business context plus one
+goal, such as getting the person to book a demo. It answers questions, follows up months after a
+thread goes quiet, and checks the calendar through Calendly or Cal.com to see
+whether the call it was pushing for actually got booked.
+
+One honest caveat from the episode: buying contact data from brokers is legal in the
+United States, and cold email is too if you follow the rules of CAN-SPAM, the US law
+governing commercial email. The EU's rules are stricter. Schneider flags that he is
+not a lawyer; check the rules where your recipients live before sending.
+
+## <span class="sec-no">03</span>Call the model only to decide
+
+Count the model calls in that pipeline: judging whether a person fits the target
+customer, writing each personalized message, and answering replies. Everything else,
+scraping, lookups, validation, sending, is a script that runs identically every day.
+Schneider's spending rule follows: pay the model once to write the software, then
+let the software run on cheap compute. Paying the model by the word to repeat a
+step that never varies is a tax the script removes.
+
+<PullQuote
+  quote="Build the software that does the solution for you"
+  creator="Cody Schneider"
+  video="These AI Marketing Agents Get You Customers"
+  href="https://www.youtube.com/watch?v=mD7JpNHLT70"
+  timestamp="15:37"
+/>
+
+The deployment is unglamorous. If it runs on your machine from Claude Code, it can
+run on a rented server (Schneider uses Railway) on an hourly or daily schedule. As
+the data streams grow, a database built for them, like ClickHouse, holds the
+history. He also skips agent frameworks here: for a pipeline whose steps are known
+in advance, a framework is bloat, and a simple script is the version that keeps
+working. If you want the
+scheduled run without renting a server, <a
+href="/guides/automate-a-workflow-as-a-claude-routine/">Automate a workflow as a
+Claude routine</a> covers the hosted version, and <a
+href="/guides/rent-the-model-own-the-method/">Capture the model's discipline</a>
+covers routing the judgment calls themselves to the cheapest model that clears the
+bar.
+
+## <span class="sec-no">04</span>The content agent's raw material
+
+The second build writes LinkedIn posts for a whole sales team, and one input rule
+decides whether it works. A model told to "write good LinkedIn content" from nothing
+produces generic filler, the kind LinkedIn itself has started flagging as AI slop.
+Why models default to filler, and how to catch it, is the subject of <a
+href="/guides/why-ai-makes-slop-and-how-to-catch-it/">Why AI makes slop and how to
+catch it</a>. This agent works because every post starts from something a person
+actually said.
+
+<PullQuote
+  quote="source this from real human conversation"
+  creator="Cody Schneider"
+  video="These AI Marketing Agents Get You Customers"
+  href="https://www.youtube.com/watch?v=mD7JpNHLT70"
+  timestamp="34:58"
+/>
+
+The raw material is talk that already happened. Schneider records a short weekly
+conversation with each teammate: what jumped out at you in your sales calls this
+week? Sales-call transcripts, Slack threads, and internal docs work as sources too;
+a prospect's stated reason for not buying is a post waiting to be written. From
+there the pipeline mirrors the outbound one:
+
+1. A model extracts the insights from the transcripts and drafts posts. Schneider
+   finds a mid-tier model like Claude Sonnet good enough for the writing.
+2. Ordinal, a LinkedIn scheduling platform an agent can drive through its API,
+   publishes the drafts across every connected team account.
+3. Ordinal's analytics flow back into the next writing round: the agent sees which
+   posts reached the most people and makes more like them.
+
+The feedback step copies what a good social media manager always did: hunt for
+post ideas, publish, watch what lands, and reuse the winners. Schneider reposts
+his own proven material on roughly a 90-day cycle.
+
+<Exercise>
+1. Pick the marketing job you most want off your plate and write down, step by
+   step, what a skilled human doing it actually does. Mark each step "script" or
+   "judgment".
+2. List ten LinkedIn accounts, people or companies, whose posts your target
+   customers engage with. By hand; it takes minutes.
+3. In Claude Code or Codex, get an Apify API key, point the agent at the
+   post-reactions and post-comments scrapers, and have it pull everyone who
+   engaged with one post into a spreadsheet.
+4. Ask the agent which steps of your step list it just ran as plain scripts and
+   which needed a model. Only after that split is clear, put the script steps on a
+   daily schedule.
+</Exercise>
+
+## Further reading
+
+- [Greg Isenberg · These AI Marketing Agents Get You Customers](https://www.youtube.com/watch?v=mD7JpNHLT70), the episode this guide draws on
+- [Apify](https://apify.com), the scraper marketplace the pipeline is built on
+- [Graphed](https://graphed.com), Schneider's company, which deploys these agents for businesses
