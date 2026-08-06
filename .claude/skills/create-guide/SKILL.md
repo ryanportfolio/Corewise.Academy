@@ -169,9 +169,14 @@ required step, not optional polish, and it reports its rewrites in the reply.
 
 ## Step 5: Verify and open the PR
 
-Run `npm run build` in `site/` and fix any error. Branch (never main), commit the
-guide, push, and open a PR describing what was researched, the placement call, and
-that merging is publishing. `/pr` handles the push-and-PR mechanics.
+Run `npm run build` in `site/` and fix any error. Then run
+`node scripts/readme-plate.mjs` from the repo root: a new guide changes the catalogue,
+and that script rewrites the README's counts and redraws its chart from frontmatter.
+Branch (never main), commit the guide plus the changed `README.md` and
+`.github/assets/plate-*.svg`, push, and open a PR describing what was researched, the
+placement call, and that merging is publishing. `/pr` handles the push-and-PR
+mechanics. CI runs `node scripts/readme-plate.mjs --check` and fails the PR if the
+README lags the catalogue.
 
 ## Scaling to several guides
 
