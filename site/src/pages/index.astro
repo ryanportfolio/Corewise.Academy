@@ -41,29 +41,80 @@ const sheet = [...guides].sort(
 );
 const latest = sheet.slice(0, 3);
 
-// Key to the sheet: one cell per guide, laid out in the three columns the
-// catalogue prints at desktop width. Cells are portrait because the cards they
-// stand for are portrait (measured at 446 by 474 css px), so the array reads as
-// a page of cards rather than a table.
-const KEY_COLS = 3;
-const KEY_W = 18;
-const KEY_H = 19;
-const KEY_GAP = 3;
-const keyRows = Math.ceil(sheet.length / KEY_COLS) || 1;
-const keyBox = `0 0 ${KEY_COLS * KEY_W + (KEY_COLS - 1) * KEY_GAP} ${keyRows * KEY_H + (keyRows - 1) * KEY_GAP}`;
-const keyCells = sheet.map((g, i) => ({
-  x: (i % KEY_COLS) * (KEY_W + KEY_GAP),
-  y: Math.floor(i / KEY_COLS) * (KEY_H + KEY_GAP),
-  lit: i < 3,
-}));
-// Frontmatter dates parse as UTC midnight; UTC getters keep the printed day
-// from shifting with the build machine's timezone.
-const pad2 = (n: number) => String(n).padStart(2, '0');
-const updated = sheet.length
-  ? ((d) => `${pad2(d.getUTCMonth() + 1)}/${pad2(d.getUTCDate())}/${String(d.getUTCFullYear()).slice(-2)}`)(
-      sheet[0].data.lastUpdated,
-    )
-  : '';
+// ---- The plate of the catalogue: one constellation, drawn large ----------
+// The hero above is the live sky. This is a printed page about that sky, so
+// every mark here is apparatus the sky itself has none of: a struck figure
+// line, open rings as chart symbols, roman numerals, leader lines, called-out
+// halos and named stars. Geometry is hand set so it reads as a drawing; the
+// data only decides which star is which.
+const PLATE_W = 1000;
+const PLATE_H = 400;
+// The house star, lifted from the hero dek so the plate uses the same glyph.
+const PLATE_STAR_D = 'M12 0 L14.88 9.12 L24 12 L14.88 14.88 L12 24 L9.12 14.88 L0 12 L9.12 9.12 Z';
+// One ring per layer, in curriculum order, swept left to right. Each ring
+// carries three fixed spur points and a leader direction, so the three newest
+// guides can hang off any combination of rings without ever colliding or
+// running a label off the edge of the plate.
+const PLATE_RINGS: { cx: number; cy: number; dir: number; slots: number[][] }[] = [
+  { cx: 92, cy: 296, dir: 1, slots: [[156, 236], [62, 208], [180, 344]] },
+  { cx: 286, cy: 206, dir: 1, slots: [[344, 148], [236, 126], [318, 290]] },
+  { cx: 470, cy: 262, dir: 1, slots: [[534, 200], [420, 174], [520, 338]] },
+  { cx: 678, cy: 132, dir: -1, slots: [[624, 64], [738, 78], [706, 218]] },
+  { cx: 898, cy: 84, dir: -1, slots: [[834, 38], [848, 150], [938, 170]] },
+];
+const plateSpine = PLATE_RINGS.map((r, i) => `${i === 0 ? 'M' : 'L'} ${r.cx} ${r.cy}`).join(' ');
+// Measured at build so the draw-on stroke never guesses its own length.
+const plateSpineLen = Math.ceil(
+  PLATE_RINGS.reduce(
+    (sum, r, i) =>
+      i === 0 ? sum : sum + Math.hypot(r.cx - PLATE_RINGS[i - 1].cx, r.cy - PLATE_RINGS[i - 1].cy),
+    0,
+  ),
+);
+const plateStarAt = (x: number, y: number, size: number) =>
+  `translate(${(x - size / 2).toFixed(2)} ${(y - size / 2).toFixed(2)}) scale(${(size / 24).toFixed(4)})`;
+const plateRingOf = (slug: string) => {
+  const i = TRACKS.findIndex((t) => t.slug === slug);
+  return i < 0 ? 0 : i;
+};
+const plateSlotUsed = PLATE_RINGS.map(() => 0);
+const plateLit = latest.map((g, i) => {
+  const ri = plateRingOf(g.data.track);
+  const ring = PLATE_RINGS[ri];
+  const used = plateSlotUsed[ri]++;
+  const slot = ring.slots[Math.min(used, ring.slots.length - 1)];
+  return {
+    label: `Nº ${String(g.data.number).padStart(3, '0')}`,
+    x: slot[0],
+    y: slot[1],
+    rx: ring.cx,
+    ry: ring.cy,
+    dir: ring.dir,
+    anchor: ring.dir === 1 ? 'start' : 'end',
+    delay: `${(i * 1.5).toFixed(1)}s`,
+  };
+});
+// The faint field: every guide that is not one of the three carded above.
+// Positions come from a hash of the guide's own catalogue number, so the plate
+// is byte identical on every build and a new guide only ever adds one star.
+const plateLitIds = new Set(latest.map((g) => g.id));
+const PLATE_LEVEL_R: Record<string, number> = { broad: 1.9, practitioner: 2.5, deep: 3.2 };
+const plateNoise = (n: number, salt: number) => {
+  let h = Math.imul(n + salt * 977 + 1, 2654435761) >>> 0;
+  h = Math.imul(h ^ (h >>> 15), 2246822519) >>> 0;
+  h = (h ^ (h >>> 13)) >>> 0;
+  return h / 4294967296;
+};
+const plateField = guides
+  .filter((g) => !plateLitIds.has(g.id))
+  .map((g) => ({
+    x: +(28 + plateNoise(g.data.number, 1) * (PLATE_W - 56)).toFixed(1),
+    y: +(26 + plateNoise(g.data.number, 2) * (PLATE_H - 52)).toFixed(1),
+    r: PLATE_LEVEL_R[g.data.level] ?? 2.2,
+    // the fill token is already translucent, so a low floor here leaves the
+    // field invisible on warm paper; 0.5 keeps it faint but present in both themes
+    o: +(0.5 + plateNoise(g.data.number, 3) * 0.4).toFixed(2),
+  }));
 const count = (track: string, level: string) =>
   guides.filter((g) => g.data.track === track && g.data.level === level).length;
 const monthYear = (d: Date) =>
@@ -248,54 +299,63 @@ const minis: Record<string, string> = {
     {
       guides.length > 0 && (
         <aside class="plate">
-          <div class="plate-field" aria-hidden="true" />
-          <i class="rx tl" aria-hidden="true" />
-          <i class="rx tr" aria-hidden="true" />
-          <i class="rx bl" aria-hidden="true" />
-          <i class="rx br" aria-hidden="true" />
+          <i class="plate-rule" aria-hidden="true"></i>
 
-          <p class="plate-head" aria-hidden="true">
-            <span>Index plate · all guides</span>
-            <span>Vol. I · MMXXVI</span>
+          <p class="plate-head">
+            <span>Chart of the catalogue</span>
+            <span>One star for every guide</span>
           </p>
 
           <div class="plate-body">
             <div class="plate-type reveal">
               <h2>Every guide on one page</h2>
-              <p>
-                The three above are the newest. The catalogue lists all {guides.length}, newest
-                first. Every card is tagged by topic, and all {TAGS.length} topics are listed at
-                the bottom of that page.
-              </p>
               <p class="plate-go">
                 <a class="btn" href="/guides/">
-                  Open the catalogue <span class="arw" aria-hidden="true">&#8594;</span>
+                  Every Guide <span class="arw" aria-hidden="true">&#8594;</span>
                 </a>
               </p>
             </div>
 
-            <figure class="plate-key reveal" aria-hidden="true">
-              {/* The lit three breathe in step. Staggering them reads as three
-                  unequal things, and they stand for three equal cards. */}
-              <svg viewBox={keyBox} aria-hidden="true" focusable="false">
-                {keyCells.map((c) => (
-                  <rect
-                    class={c.lit ? 'cell lit' : 'cell'}
-                    x={c.x}
-                    y={c.y}
-                    width={KEY_W}
-                    height={KEY_H}
-                  />
-                ))}
+            <div class="plate-figure reveal">
+              <svg viewBox={`0 0 ${PLATE_W} ${PLATE_H}`} aria-hidden="true" focusable="false">
+                <path
+                  class="pl-boundary"
+                  d={`M 0 ${PLATE_H - 34} C 250 ${PLATE_H - 78} 560 ${PLATE_H - 150} ${PLATE_W} ${PLATE_H - 254}`}
+                ></path>
+
+                <g class="pl-field">
+                  {plateField.map((s) => <circle cx={s.x} cy={s.y} r={s.r} style={`opacity:${s.o}`} />)}
+                </g>
+
+                <path class="pl-spine" d={plateSpine} style={`--len:${plateSpineLen}`}></path>
+
+                <g class="pl-rings">
+                  {
+                    PLATE_RINGS.map((r, i) => (
+                      <g>
+                        <circle cx={r.cx} cy={r.cy} r="7" />
+                        <text x={r.cx} y={r.cy + 27}>{TRACKS[i]?.numeral ?? ''}</text>
+                      </g>
+                    ))
+                  }
+                </g>
+
+                {
+                  plateLit.map((s) => (
+                    <g class="pl-lit">
+                      <path class="pl-spur" d={`M ${s.rx} ${s.ry} L ${s.x} ${s.y}`} />
+                      <circle class="pl-halo" cx={s.x} cy={s.y} r="17" />
+                      <path class="pl-star" d={PLATE_STAR_D} transform={plateStarAt(s.x, s.y, 22)} style={`animation-delay:${s.delay}`} />
+                      <path class="pl-lead" d={`M ${s.x + s.dir * 22} ${s.y} L ${s.x + s.dir * 32} ${s.y}`} />
+                      <text class="pl-name" x={s.x + s.dir * 40} y={s.y} text-anchor={s.anchor}>{s.label}</text>
+                    </g>
+                  ))
+                }
               </svg>
-              <figcaption>Key · one cell per guide · the lit three are above</figcaption>
-            </figure>
+            </div>
           </div>
 
-          <p class="plate-foot">
-            <span>Updated {updated}</span>
-            <span>Free to read</span>
-          </p>
+          <i class="plate-rule foot" aria-hidden="true"></i>
         </aside>
       )
     }
@@ -614,83 +674,51 @@ const minis: Record<string, string> = {
     .shelf .stars { color: var(--accent-deep); }
     .shelf.empty .stars { color: var(--ink-mute); font-style: italic; }
 
-    /* ---- the index plate: the turn from the three latest to the whole catalogue ----
-       A star atlas puts an index plate between its sheets: a key diagram of how the
-       chart is divided. The key here is a scale model of /guides/, one cell per guide
-       in the catalogue's own three columns, the top three lit because they are the
-       cards printed directly above. */
-    .plate {
-      position: relative;
-      isolation: isolate;
-      margin-top: var(--s-6);
-      padding: var(--s-3) var(--s-4);
-      border: 1px solid var(--line);
+    /* ---- the plate of the catalogue -----------------------------------------
+       The hero is the live sky. This is the printed page about it: a graduated
+       rule top and bottom instead of a frame, one figure struck across the field,
+       and a written key. Hairlines and type only, no fills, no box. */
+    .plate { margin-top: var(--s-8); }
+
+    /* graduated scale rules: a hairline with minor ticks every 2.4rem and a
+       longer tick every 12rem, the way a chart graduates its coordinate edge */
+    .plate-rule {
+      display: block;
+      height: 12px;
+      border-top: 1px solid var(--line);
+      background-image:
+    repeating-linear-gradient(to right, var(--line) 0 1px, transparent 1px 2.4rem),
+    repeating-linear-gradient(to right, var(--line) 0 1px, transparent 1px 12rem);
+      background-size: 100% 5px, 100% 11px;
+      background-repeat: no-repeat;
+      background-position: left top, left top;
     }
-    /* the second engraved rule of a plate border */
-    .plate::before {
-      content: '';
-      position: absolute;
-      inset: 6px;
-      border: 1px solid var(--line-soft);
-      pointer-events: none;
-    }
-    /* registration crosses in the trim margin, one per corner */
-    .plate .rx {
-      position: absolute;
-      width: 13px;
-      height: 13px;
-      color: var(--ink-mute);
-      opacity: 0.55;
-      pointer-events: none;
-    }
-    .plate .rx::before,
-    .plate .rx::after { content: ''; position: absolute; background: currentColor; }
-    .plate .rx::before { left: 6px; top: 0; width: 1px; height: 100%; }
-    .plate .rx::after { top: 6px; left: 0; height: 1px; width: 100%; }
-    .plate .rx.tl { left: -7px; top: -7px; }
-    .plate .rx.tr { right: -7px; top: -7px; }
-    .plate .rx.bl { left: -7px; bottom: -7px; }
-    .plate .rx.br { right: -7px; bottom: -7px; }
-    /* the chart graticule, the hero's recipe, faded off at every edge */
-    .plate-field {
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-      pointer-events: none;
-      background:
-        repeating-linear-gradient(to right, var(--line-soft) 0 1px, transparent 1px 3rem),
-        repeating-linear-gradient(to bottom, var(--line-soft) 0 1px, transparent 1px 3rem);
-      -webkit-mask-image: radial-gradient(ellipse 88% 84% at 50% 50%, black 22%, transparent 84%);
-      mask-image: radial-gradient(ellipse 88% 84% at 50% 50%, black 22%, transparent 84%);
+    .plate-rule.foot {
+      border-top: 0;
+      border-bottom: 1px solid var(--line);
+      background-position: left bottom, left bottom;
     }
 
-    .plate-head, .plate-foot {
+    .plate-head {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
       gap: var(--s-1) var(--s-3);
+      padding-top: var(--s-1);
       font-family: var(--font-mono);
       font-size: var(--text-2xs);
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--ink-mute);
     }
-    .plate-head { padding-bottom: var(--s-2); border-bottom: 1px solid var(--line); }
-    .plate-foot { padding-top: var(--s-2); border-top: 1px solid var(--line); }
 
     .plate-body {
       display: grid;
-      grid-template-columns: 8.5rem minmax(0, 1fr);
+      grid-template-columns: minmax(0, 18rem) minmax(0, 1fr);
       gap: var(--s-6);
-      /* the key is the taller column, so the type centres against it instead of
-         pooling all the spare height into one corner of the frame */
       align-items: center;
-      padding: var(--s-4) 0;
+      padding: var(--s-4) 0 var(--s-3);
     }
-    /* the key is DOM-last so reading order runs heading, prose, link, key;
-       the grid seats it in the left margin where an atlas puts its key */
-    .plate-type { grid-column: 2; grid-row: 1; }
-    .plate-key { grid-column: 1; grid-row: 1; margin: 0; }
 
     .plate-type h2 {
       font-family: var(--font-display);
@@ -699,57 +727,118 @@ const minis: Record<string, string> = {
       line-height: var(--leading-tight);
       color: var(--ink);
     }
-    .plate-type > p { margin-top: var(--s-2); max-width: 52ch; color: var(--ink-soft); }
-    .plate-go {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: var(--s-2) var(--s-3);
-      margin-top: var(--s-4);
-    }
+    .plate-type > p { margin-top: var(--s-3); color: var(--ink-soft); font-size: var(--text-sm); }
+    .plate-go { margin-top: var(--s-4); }
     .plate-go .arw { display: inline-block; transition: transform var(--dur) var(--ease); }
-    .plate-go .btn:hover .arw, .plate-go .btn:focus-visible .arw { transform: translateX(4px); }
+    .plate-go .btn:hover .arw,
+    .plate-go .btn:focus-visible .arw { transform: translateX(4px); }
     .plate-go .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
-    .plate-key svg { display: block; width: 3.4rem; height: auto; overflow: visible; }
-    .plate-key .cell {
+    /* the drawing. Capped at roughly its own scale so the engraved labels never
+       balloon on an ultrawide or shrink to nothing at the stacking width */
+    .plate-figure svg {
+      display: block;
+      width: 100%;
+      max-width: 44rem;
+      height: auto;
+      margin: 0 auto;
+      overflow: visible;
+    }
+
+    .pl-boundary { fill: none; stroke: var(--line-soft); stroke-width: 1.4; stroke-dasharray: 1 7; }
+
+    .pl-field circle { fill: var(--star-dim); transition: fill var(--dur) var(--ease); }
+    .plate:hover .pl-field circle,
+    .plate:focus-within .pl-field circle { fill: var(--star); }
+
+    .pl-spine {
       fill: none;
-      stroke: var(--line);
-      stroke-width: 1;
-      vector-effect: non-scaling-stroke;
-      transition: stroke var(--dur) var(--ease);
-    }
-    /* the three cards above, lit. Its own keyframe, not the house twinkle: that
-       one floors at 0.35, which would blink the whole idea out of sight. */
-    .plate-key .cell.lit {
-      fill: var(--accent-wash);
       stroke: var(--accent);
-      animation: plate-breathe 5.4s var(--ease) infinite alternate;
+      stroke-opacity: 0.55;
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: var(--len);
+      stroke-dashoffset: var(--len);
+      transition: stroke-opacity var(--dur) var(--ease);
     }
-    @keyframes plate-breathe { from { opacity: 0.62; } to { opacity: 1; } }
-    .plate-key figcaption {
-      margin-top: var(--s-2);
+    .plate:hover .pl-spine,
+    .plate:focus-within .pl-spine { stroke-opacity: 0.85; }
+    /* the figure is struck once, when the block arrives */
+    .plate-figure.in .pl-spine { animation: plate-draw 1.6s var(--ease) 0.1s forwards; }
+    @keyframes plate-draw { to { stroke-dashoffset: 0; } }
+
+    .pl-rings circle { fill: none; stroke: var(--ink-mute); stroke-width: 1.4; }
+    .pl-rings text {
       font-family: var(--font-mono);
-      font-size: var(--text-2xs);
-      line-height: 1.5;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--ink-mute);
+      font-size: 17px;
+      letter-spacing: 0.14em;
+      fill: var(--ink-mute);
+      text-anchor: middle;
     }
-    /* the sheet warms when the reader is anywhere near the plate */
-    .plate:hover .plate-key .cell:not(.lit),
-    .plate:focus-within .plate-key .cell:not(.lit) {
-      stroke: color-mix(in srgb, var(--accent) 32%, transparent);
+
+    /* the called-out three arrive after the figure line has been laid down */
+    .pl-lit { opacity: 0; }
+    .plate-figure.in .pl-lit { animation: plate-fade 0.9s var(--ease) 1.1s both; }
+    @keyframes plate-fade { from { opacity: 0; } to { opacity: 1; } }
+
+    .pl-spur { fill: none; stroke: var(--line); stroke-width: 1.2; stroke-dasharray: 2 5; }
+    .pl-halo { fill: none; stroke: var(--accent); stroke-opacity: 0.3; stroke-width: 1; }
+    .pl-lead { fill: none; stroke: var(--ink-mute); stroke-width: 1; }
+    .pl-star { fill: var(--star); filter: drop-shadow(0 0 5px var(--glow)); }
+    /* three separate stars, so they breathe out of step: in step they read as one
+       control, out of step they read as sky. Floors well above the hero twinkle so
+       a labelled star never blinks out from under its own name. */
+    .plate-figure.in .pl-star { animation: plate-twinkle 4.6s var(--ease) infinite alternate; }
+    @keyframes plate-twinkle { from { opacity: 0.62; } to { opacity: 1; } }
+    .pl-name {
+      font-family: var(--font-mono);
+      font-size: 17px;
+      letter-spacing: 0.1em;
+      fill: var(--accent-deep);
+      dominant-baseline: central;
+    }
+
+
+    @media (max-width: 1240px) {
+      .plate-body {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s-4);
+    padding: var(--s-3) 0;
+      }
+      .pl-rings text, .pl-name { font-size: 15px; }
+    }
+    @media (max-width: 900px) {
+      .plate-type h2 { font-size: var(--text-lg); }
+      .plate-rule { height: 9px; background-size: 100% 4px, 100% 9px; }
+      /* .btn is nowrap sitewide and would push through the plate on a narrow phone */
+      .plate-go .btn { white-space: normal; min-width: 0; }
+    }
+    @media (max-width: 620px) {
+      /* at phone width the plate is too small to letter, so it shows the figure
+     and lets the key below carry the naming */
+      .pl-rings text, .pl-name, .pl-lead { display: none; }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .plate-key .cell.lit { animation: none; opacity: 1; }
+      .plate-figure .pl-spine, .plate-figure.in .pl-spine { animation: none; stroke-dashoffset: 0; }
+      .plate-figure .pl-lit, .plate-figure.in .pl-lit { animation: none; opacity: 1; }
+      .plate-figure .pl-star, .plate-figure.in .pl-star { animation: none; opacity: 1; }
       .plate-go .arw { transition: none; }
     }
     /* .reveal starts at opacity 0 and needs JS to clear it */
     @media (scripting: none) {
       .plate .reveal { opacity: 1; transform: none; }
+      .plate-figure .pl-spine { stroke-dashoffset: 0; }
+      .plate-figure .pl-lit { opacity: 1; }
     }
+    /* editor: the catalogue link is the loud element in this block */
+    .plate-go .btn {
+      font-size: var(--text-sm);
+      padding: 18px 34px;
+      letter-spacing: 0.16em;
+    }
+    .plate-go .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
     .charted { display: grid; grid-template-columns: repeat(3, 1fr); border-left: 1px solid var(--line); border-top: 1px solid var(--line); }
     .entry {
@@ -838,11 +927,8 @@ const minis: Record<string, string> = {
       /* the key lies down beside its caption instead of standing in the margin */
       .plate { padding: var(--s-3); }
       .plate-body { grid-template-columns: minmax(0, 1fr); gap: var(--s-4); padding: var(--s-3) 0; }
-      .plate-type, .plate-key { grid-column: 1; grid-row: auto; }
+      .plate-type { grid-column: 1; grid-row: auto; }
       .plate-type h2 { font-size: var(--text-lg); }
-      .plate-key { display: flex; align-items: flex-start; gap: var(--s-3); }
-      .plate-key svg { width: 3.2rem; flex: none; }
-      .plate-key figcaption { margin-top: 0; }
       /* .btn is nowrap sitewide, which pushes it through the plate frame on a
          narrow phone; inside the plate the label may wrap instead */
       .plate-go .btn { white-space: normal; min-width: 0; }
