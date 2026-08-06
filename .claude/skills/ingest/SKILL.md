@@ -213,6 +213,11 @@ required step, not optional polish, and it reports its rewrites in the reply.
 Run `npm run build` in `site/`. It must pass — the content schema will reject a guide
 with missing or malformed frontmatter. Fix any error before opening the PR.
 
+Then run `node scripts/readme-plate.mjs` from the repo root. A new guide changes the
+catalogue, and that script rewrites the README's counts and redraws its chart from
+frontmatter. Commit the changed `README.md` and `.github/assets/plate-*.svg` with the
+guide; CI runs `node scripts/readme-plate.mjs --check` and fails the PR if they lag.
+
 ## Step 8: Open the pull request
 
 Branch (never commit to `main`), commit the new/updated MDX plus the registry change,
