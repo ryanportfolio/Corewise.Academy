@@ -22,7 +22,10 @@ const FX = {
   POINTER_LERP: 0.02,
   PARALLAX_Y: 0.5,
   PARALLAX_X: 0.3,
-  RECENTER: 1,
+  // Matches POINTER_LERP so the drift back to centre is as unhurried as the
+  // drift toward the pointer. A high rate here reads as a snap, because a long
+  // hover leaves the field rotated most of a radian off centre.
+  RECENTER: 0.02,
   DRIFT_SPEED: 0.05,
   SPEED_BOOST: 1.2,
   ROT_SPEED: 0.05,
