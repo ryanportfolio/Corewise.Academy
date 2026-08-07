@@ -30,6 +30,11 @@ const levelLabel = (level: string) => level.charAt(0).toUpperCase() + level.slic
       </p>
     </header>
 
+    <p class="all-tags top">
+      <span class="all-tags-label">All topics:</span>
+      {TAGS.map((t) => <a href={`/tags/${t.slug}/`} class:list={[{ here: t.slug === tag.slug }]}>{t.display}</a>)}
+    </p>
+
     <ol class="shelf-list">
       {
         guides.map((g) => (
@@ -136,6 +141,8 @@ const levelLabel = (level: string) => level.charAt(0).toUpperCase() + level.slic
       font-size: var(--text-sm);
       color: var(--ink-mute);
     }
+    /* the same chip row sits above the list so the neighbouring topics are reachable without scrolling past it */
+    .all-tags.top { margin: var(--s-4) 0 var(--s-5); }
     .all-tags-label { margin-right: 4px; }
     .all-tags a {
       font-family: var(--font-mono);
