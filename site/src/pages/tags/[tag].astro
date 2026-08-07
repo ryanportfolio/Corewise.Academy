@@ -136,13 +136,14 @@ const levelLabel = (level: string) => level.charAt(0).toUpperCase() + level.slic
     .all-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      column-gap: 8px;
+      row-gap: 10px;
       align-items: center;
       font-size: var(--text-sm);
       color: var(--ink-mute);
     }
     /* the same chip row sits above the list so the neighbouring topics are reachable without scrolling past it */
-    .all-tags.top { margin: var(--s-4) 0 var(--s-5); }
+    .all-tags.top { margin: var(--s-3) 0 var(--s-4); }
     .all-tags-label { margin-right: 4px; }
     .all-tags a {
       font-family: var(--font-mono);
@@ -150,7 +151,7 @@ const levelLabel = (level: string) => level.charAt(0).toUpperCase() + level.slic
       color: var(--ink-soft);
       border: 1px solid var(--line);
       border-radius: 999px;
-      padding: 1px 9px;
+      padding: 3px 10px;
       text-decoration: none;
       white-space: nowrap;
       transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
