@@ -2,7 +2,6 @@
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Faq from '../components/Faq.astro';
-import SamplingFigure from '../components/SamplingFigure.astro';
 import SkillShelf from '../components/SkillShelf.astro';
 import { TOOL_SHELF } from '../data/toolShelf';
 
@@ -129,23 +128,7 @@ const faq = [
           rel="noopener">active recall</a> to a guide format.
       </p>
 
-      <h2><span class="no">05</span>Pictures built from numbers</h2>
-      <p>
-        Guide pictures are built from the guide's own numbers, not drawn by hand, so the picture
-        always matches what the text says.
-      </p>
-      <p>
-        The plate below shows five attempts at a task a model gets right about one time in five.
-        Each star is one attempt. The bright star is the try worth keeping; the four dim ones are
-        thrown away.
-      </p>
-      <SamplingFigure
-        plate="Plate · Specimen"
-        fig="Fig. A"
-        caption="A worked example: five tries of an unreliable model, one kept. Generated from the count, not drawn by hand."
-      />
-
-      <h2><span class="no">06</span>Take the tools</h2>
+      <h2><span class="no">05</span>Take the tools</h2>
       <p>
         The skills below are real files from the repo that runs this site.
       </p>
