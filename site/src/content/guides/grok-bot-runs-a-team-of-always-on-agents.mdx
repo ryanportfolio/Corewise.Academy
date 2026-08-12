@@ -1,0 +1,180 @@
+---
+title: Grok Bot runs a team of always-on agents
+description: 'Grok Bot, the new beta app from SpaceXAI and Cursor, gives you a team of AI agents that keep working with your laptop shut, each on its own cloud computer. How work gets routed between them, how recorded skills and triggered routines run themselves, and which work should stay at your desk.'
+track: agents
+level: broad
+number: 42
+minutes: 6
+tags: ['automation', 'delegation', 'teams']
+objectives:
+  - 'Describe what Grok Bot is: a team of AI agents, each on its own cloud computer, that keep working while your devices are off and stay synced to your phone.'
+  - 'Explain how an agent''s one-line description routes work between specialized agents, and why one job per agent beats one agent with ten jobs.'
+  - 'Build a routine that runs on a schedule or fires on an event (a Slack message, a GitHub event) without your computer on.'
+  - 'Decide which of your work belongs in an always-on agent app and which stays in your desk tools.'
+prerequisites: []
+sources:
+  - url: https://www.youtube.com/watch?v=PQBYZQqan2g
+    creator: Nate Herk | AI Automation
+    video: 'Build a Fleet of AI Agents with Grok Bot in 20 Minutes'
+    timestamps: ['0:36', '1:48', '2:41', '2:48', '4:26', '6:50', '7:08', '8:27', '9:16', '11:14', '12:04', '13:23', '14:36', '15:18', '19:07']
+selfCheck:
+  - q: 'An agent''s settings ask for a one-line description. What does that line do besides label the agent?'
+    a: 'It routes work. When any agent gets a task outside its own job, it reads the other agents'' descriptions, finds the one whose line matches, and messages it. A vague description means work lands on the wrong agent or on none; a specific one ("this agent manages my Slack media and sponsorship messages") means the right specialist gets pinged without you doing the handoff.'
+  - q: 'Your laptop is shut overnight and your phone is off. Does a routine set for 7 a.m. still run?'
+    a: 'Yes. Each agent works from its own computer in the cloud, so routines run on schedule whether or not any of your devices are on. When you open the app on your phone later, the finished run and its output are waiting in the chat.'
+  - q: 'You spend your desk hours writing software. Does Grok Bot replace your coding tool?'
+    a: 'No. It runs Grok models only, with no option to swap in another model, and the walkthrough''s verdict is to keep focused desk work in a coding tool like Claude Code or Codex. Grok Bot''s fit is the time away from your desk: status checks, team messages, reviews, and reminders from your phone.'
+status: published
+lastUpdated: 2026-08-11
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+
+<Chalk>give each agent one job and let the descriptions route the rest</Chalk>
+
+<p class="lede">
+Grok Bot went into beta today, and its bet is a team of AI agents that is always running. Each
+one works from its own computer in the cloud, so the team keeps going with your laptop
+shut, and your phone shows the same chats live. This guide is a day-one snapshot, drawn
+from Nate Herk's walkthrough of building his team on camera, and it ends with the question
+he asks himself: what is this actually for?
+</p>
+
+## <span class="sec-no">01</span>A team, each with a computer
+
+Grok Bot is a beta app from SpaceXAI, the company behind the Grok models, and Cursor, the
+AI coding company. It runs on Mac, Windows, Linux, and iPhone, with everything synced
+between them, and access currently requires a top-tier subscription (SuperGrok Heavy,
+Cursor Ultra, or Cursor Teams Premium).
+
+The app looks like a messaging app: a sidebar of agents, each with a name, a title, and a
+description, and you talk to each in its own chat. The difference from a chatbot is what
+sits behind each chat. Every agent has its own cloud computer with:
+
+- **A browser** where logins persist. Sign an agent into a site once and it stays signed
+  in, which is how Herk's assistant agent works inside his customer community, signed in
+  as him.
+- **A file manager and a terminal**, so an agent can hold files and run programs of its own.
+- **A "teach a task" recorder**, covered in section 03.
+
+Because the computers live in the cloud, nothing depends on your hardware being awake.
+Herk drives one agent's browser from his phone, watching the same screen the agent uses.
+The trade-off to know before you invest an evening: the agents run Grok models only. There
+is no setting to swap in a model you might prefer, so if Grok's answers do not suit you,
+the app will not suit you either.
+
+## <span class="sec-no">02</span>Descriptions route the work
+
+Each agent carries a one-line description of its job, and that line does real work: it is
+how agents find each other. Give an agent a task outside its own job and it reads the other
+agents' descriptions, picks the one whose line matches, and messages it directly.
+
+<PullQuote
+  quote="if you try to make one mega agent do a ton of different things"
+  creator="Nate Herk"
+  video="Build a Fleet of AI Agents with Grok Bot in 20 Minutes"
+  href="https://www.youtube.com/watch?v=PQBYZQqan2g"
+  timestamp="8:27"
+/>
+
+The rest of that sentence: it gets confused. The app's examples push the same shape, one
+narrow job per agent (sales outbound, talent scout, expense manager), because a specialist
+with a precise description is findable and a generalist is not. In the walkthrough, Herk
+asks his executive-assistant agent about a YouTube video's status; it sees that another
+agent's description says Slack media and sponsorships, messages that agent, and relays the
+answer back. The agent-to-agent chat is visible to you, read-only, and each agent also
+tells you when another one came asking. <a
+href="/guides/one-chat-can-run-all-your-other-chats/">One chat can run all your other
+chats</a> shows the same pattern in Codex, where one workspace delegates into your other
+chats instead of a team of peers messaging each other.
+
+## <span class="sec-no">03</span>Skills, routines, triggers
+
+Three building blocks turn the team from chat partners into automation that runs without you:
+
+- **Skills are recorded, then self-corrected.** Press "teach a task", do the task once in
+  the agent's browser, and Grok Bot saves it as a skill any agent can reuse (type / in a
+  chat to run one). After a run, the agent reviews how it went and edits the skill itself:
+  Herk's skill for liking posts in his customer community noticed it could not tell liked
+  posts from unliked ones and added a step to open each post first. <a
+  href="/guides/expertise-you-can-install/">Expertise you can install</a> covers the same
+  idea when you write the skill by hand instead of recording it.
+
+- **Routines run on a schedule, in the cloud.** Herk asks a new agent to plan his mornings;
+  it connects Gmail and Google Calendar, writes its own instructions, and schedules itself
+  for 7 a.m. on weekdays. The sample run listed his meetings, flagged emails worth acting
+  on, and suggested where the day was overbooked. <a
+  href="/guides/automate-a-workflow-as-a-claude-routine/">Automate a workflow as a Claude
+  routine</a> is the same pattern in Claude, including how to write instructions for a run
+  nobody is watching.
+
+- **Triggers fire routines on events.** Instead of a clock, a routine can start from an
+  event: a Slack message, a GitHub event, a Teams message (six triggers exist at launch).
+  Herk builds a Slack alert in one prompt: when a message lands in a named channel, the
+  agent notifies him with a summary. Setup took about two minutes; he estimates the same
+  automation takes about fifteen in n8n, a drag-and-wire automation tool.
+
+Plugins (Gmail, Calendar, Slack, GitHub, plus a catalogue of others) connect once and are shared
+by every agent, and one service can be connected more than once, so a work Slack and a
+personal Slack can both feed the team. What stays per-agent: the computer, the chat
+history, and the description.
+
+<PullQuote
+  quote="it basically gave itself feedback on what worked and what didn't"
+  creator="Nate Herk"
+  video="Build a Fleet of AI Agents with Grok Bot in 20 Minutes"
+  href="https://www.youtube.com/watch?v=PQBYZQqan2g"
+  timestamp="7:08"
+/>
+
+## <span class="sec-no">04</span>Where this fits in your day
+
+Herk splits the work by where he is. At his desk, doing focused building work, he stays
+in Claude Code and Codex. Away from the desk, Grok Bot takes over: checking in on work,
+messaging the team, reviewing things, setting reminders, all from a phone that stays
+synced. The always-on team is for the hours you are not at a computer.
+
+<PullQuote
+  quote="Really think about what is constraining your business"
+  creator="Nate Herk"
+  video="Build a Fleet of AI Agents with Grok Bot in 20 Minutes"
+  href="https://www.youtube.com/watch?v=PQBYZQqan2g"
+  timestamp="19:07"
+/>
+
+That is his warning against building agents for the fun of it: start from a problem you
+actually have, and skip the tool if you cannot name one. <a
+href="/guides/automate-the-bottleneck/">Automate the step that slows you down</a> is the
+full version of that discipline.
+
+Two cautions before you hand the team your logins. A team signed into your Gmail and Slack
+reads text written by strangers, and <a
+href="/guides/defend-your-agent-from-prompt-injection/">Defend your agent from prompt
+injection</a> explains why that text can steer an agent. Grok Bot's settings can require
+your approval before certain actions; turn that on before the team touches anything that
+matters. And this is day-one beta software seen through one creator's first session, so
+any behavior here, from the self-editing skills to the trigger list, may have changed by
+the time you read this. For a different take on agents as teammates, chat-first and
+open-source, see <a
+href="/guides/buzz-puts-ai-agents-in-your-team-chat/">Buzz puts AI agents in your team
+chat</a>.
+
+<Exercise>
+1. List the requests you make of coworkers or tools when you are away from your desk
+   (status checks, quick replies, reminders). That list, whatever app you use, is what an
+   always-on agent team is for; if it is empty, skip the tool.
+2. If you try Grok Bot: build one agent with one job. Give it a description another agent
+   could route by ("this agent does X for Y"), connect only the plugins that job needs,
+   and set one scheduled routine. Read its first run the next morning and tell it one
+   thing to change.
+3. Before adding a second agent, write down the problem it solves in one sentence. No
+   sentence, no agent.
+</Exercise>
+
+## Further reading
+
+- [Nate Herk · Build a Fleet of AI Agents with Grok Bot in 20 Minutes](https://www.youtube.com/watch?v=PQBYZQqan2g), the walkthrough this guide draws on
+- [Introducing Grok Bot](https://x.ai/news/introducing-grok-bot), the launch announcement
+- [Grok Bot is an all-new iPhone and Mac app from SpaceXAI and Cursor](https://9to5mac.com/2026/08/11/grok-bot-is-an-all-new-iphone-and-mac-app-from-spacexai-and-cursor/), launch-day coverage
