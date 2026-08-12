@@ -1,0 +1,217 @@
+---
+title: Make your agents proactive
+description: 'Allie K. Miller runs 34 AI agents, and her day is reviewing what they propose, deciding, and handling escalations. What an agent needs before it can start work you never assigned (written goals, fresh context, tools, triggers), the four-stage ramp from one agent to a workforce, and the watchdog jobs worth assigning first.'
+track: agents
+level: broad
+number: 43
+minutes: 6
+tags: ['delegation', 'teams', 'automation']
+objectives:
+  - 'List the four things an agent needs before it can start work you never assigned: written goals, current context, connected tools with permission to use them, and a sense of what should trigger action.'
+  - 'Build a daily context habit: a short dictated note on what changed today, saved where your agents read, so their proposals rest on what is actually true.'
+  - 'Sequence the ramp from one agent to a workforce in the order that teaches the most: one agent, one proactive agent, two agents cooperating, then a workforce.'
+  - 'Assign a watchdog job that reports an anomaly with a suggested action (duplicate work in chat, calendar conflicts, disagreement across meetings) instead of a dashboard you have to read.'
+prerequisites: []
+sources:
+  - url: https://www.youtube.com/watch?v=EzQAgnjTq2k
+    creator: Greg Isenberg
+    video: 'The top 10 secrets to running 34 AI Agent Workforce'
+    timestamps: ['2:26', '4:49', '5:08', '5:52', '7:46', '8:09', '10:48', '11:32', '12:34', '14:02', '14:16', '15:13', '16:42', '18:20', '19:45', '20:31', '21:17', '22:25', '23:36', '25:44']
+selfCheck:
+  - q: 'Miller says her job used to be delegating. What does she do all day instead?'
+    a: 'She decides. The agents hold the goals and context, propose work, and execute inside their permissions; she reviews what comes back, handles escalations, and makes the final calls. One boundary did not move: risky actions still pass through her (she reads every outgoing email before it sends). The range of work expanded; the level of risk she tolerates did not.'
+  - q: 'Her favorite prompt is three words, "do smart things". Why does it work for her workforce and fail on a fresh setup?'
+    a: 'The prompt is not doing the work; the context is. Her agents hold written goals reviewed every quarter, a daily-dictated note on what changed, and connections to email, calendar, and meeting transcripts. Given all that, a vague prompt asks the model to reason across it. A fresh setup with no goals and no context has nothing to reason over, so the same words return guesses.'
+  - q: 'What does a watchdog agent give you that a dashboard does not?'
+    a: 'A dashboard shows numbers and waits for you to read them. A watchdog reads its one stream itself (chat, calendar, meeting transcripts), flags what looks off (two people doing the same work, a scheduling conflict, the same disagreement in three meetings), and comes to you with a suggested action. You hear about the anomaly, and only the anomaly.'
+status: published
+lastUpdated: 2026-08-12
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+
+<Chalk>agents propose the work once the goals and context are written down</Chalk>
+
+<p class="lede">
+Allie K. Miller ran an organization of about a hundred people at AWS. Today she runs 34
+AI agents: a chief of staff named Simon, six directors under him, specialists under
+those. In a conversation with Greg Isenberg she describes the job that fleet leaves her
+with. She writes down goals and context, gives the agents room to propose work, and
+decides on what they bring back.
+</p>
+
+## <span class="sec-no">01</span>The job becomes deciding
+
+Miller's first correction is to the phrase everyone uses, "managing agents". She does
+not stand over her agents assigning tasks the way a direct manager would. She sits
+several levels up, the way a senior executive does: set up the structure, let the team
+work out execution inside it, and come in for escalations, the problems an agent passes
+up because the call is hers to make.
+
+<PullQuote
+  quote="I am not managing them. I am enabling them"
+  creator="Allie K. Miller"
+  video="The top 10 secrets to running 34 AI Agent Workforce"
+  href="https://www.youtube.com/watch?v=EzQAgnjTq2k"
+  timestamp="14:02"
+/>
+
+One boundary stayed exactly where it was: risk. Her agents gained breadth, and they did
+not gain the right to act unsupervised on anything costly. She still reads every
+outgoing email. Her phrase for it is that the tier of risk stayed the same while the
+width expanded, and it is the same discipline as <a
+href="/guides/delegate-to-your-agent-in-stages/">Delegate to your agent in stages</a>:
+reach is earned, and the risky actions keep passing through you.
+
+What the extra breadth buys is proactivity. Isenberg ranks employees by whether they
+finish tasks, exceed them, or invent the next ones; Miller cites a five-level pyramid of
+proactivity she borrowed from Alex Lieberman, where someone at the top level arrives
+saying: this is solved, here is the plan if it goes wrong, here is the next step. That
+is the level she is pushing her agents toward, and the rest of this guide is what it
+takes to get there.
+
+## <span class="sec-no">02</span>What a proactive agent needs
+
+For an agent (or a person) to start useful work you never assigned, Miller names four
+requirements:
+
+- **A goal to aim at.** Her business and personal goals are written files, and every
+  quarter she runs a goals review with the workforce so the files stay current. When
+  an agent picks its own task, the task points at a goal.
+- **Context on what is actually happening.** Most of what she knows never lands in
+  email or a meeting, so she captures it daily (more below).
+- **Tools, with permission to use them.** Her workforce connects to her email,
+  calendar, meeting transcripts, Notion, Stripe, and GitHub.
+- **A sense of what should trigger action.** An agent that knows the goal but not when
+  to act on it stays idle.
+
+Context is the requirement that failed first. Early on, an agent reported that a guest
+had confirmed an interview; he had agreed in principle, but the dates were still being
+settled over text messages the agents could not see. Wrong context produced a wrong
+fact, stated confidently.
+
+Her fix is a daily habit. An agent prompts her at the end of each day to dictate what
+only she knows: what changed, what a client actually needs, what she is starting to
+believe. She dictates because talking is faster than typing, and the entries land in a
+personal wiki her agents read. <a href="/guides/give-your-agent-a-memory/">Give your agent a memory</a>
+covers where notes like these live and how an agent recalls them.
+
+With the four requirements in place, proactive work takes two shapes:
+
+- **Defined triggers.** An event fires a known workflow. When a screen recording lands
+  in her video folder, the workforce generates a transcript and nine social posts in
+  her voice, unprompted. <a
+  href="/guides/automate-a-workflow-as-a-claude-routine/">Automate a workflow as a
+  Claude routine</a> is how to build this shape.
+- **Open proposals.** No event and no defined workflow. Several times a day she asks
+  the workforce to look across the goals, the context, and the tools, and decide for
+  itself what is worth doing.
+
+<PullQuote
+  quote="the best prompt, three words, and it's just do smart things"
+  creator="Allie K. Miller"
+  video="The top 10 secrets to running 34 AI Agent Workforce"
+  href="https://www.youtube.com/watch?v=EzQAgnjTq2k"
+  timestamp="5:52"
+/>
+
+The three words work because everything else is written down; on a fresh setup with no
+goals file and no context they would return guesses. She notes the current top models
+handle a request this open well, and a year ago they did not.
+
+## <span class="sec-no">03</span>Grow the workforce in stages
+
+Miller's ramp for getting there is four stages, each teaching something the next stage
+needs:
+
+1. **One agent.** Learn what working with it feels like.
+2. **One proactive agent.** Let it act on your behalf and learn where you still check.
+3. **Two agents on one task.** One routes work to the other; watch how context passes
+   between them.
+4. **A workforce.** Many agents, with a mission-control view of what is moving where.
+
+The later stages are where you learn the tuning: which agent never needed which
+tool, what has to run in parallel, and which jobs run fine on smaller models. Her
+sub-agents run on Haiku and Sonnet, the smaller Claude models, with the biggest model,
+Opus, reserved for work that needs it.
+
+She recommends starting with familiar job titles (a CMO agent, a product agent) even
+though the titles are borrowed from human org charts, because they get you moving;
+renaming comes once you can see the work. The skeleton itself is cheap: one prompt
+describing your business and goals, plus "interview me", stands up a starter workforce
+in a few hours. Getting from there to output she trusts took months of iteration,
+the gap where, as Isenberg puts it, people try, fail, and decide the models are not
+good enough yet.
+
+<PullQuote
+  quote="it feels like I'm operating a company of a thousand people"
+  creator="Allie K. Miller"
+  video="The top 10 secrets to running 34 AI Agent Workforce"
+  href="https://www.youtube.com/watch?v=EzQAgnjTq2k"
+  timestamp="25:44"
+/>
+
+For a tour of what stage four looks like inside a purpose-built app, with routing
+between specialist agents handled by one-line job descriptions, see <a
+href="/guides/grok-bot-runs-a-team-of-always-on-agents/">Grok Bot runs a team of
+always-on agents</a>.
+
+## <span class="sec-no">04</span>Roles no human org would fund
+
+Another agent costs close to nothing, so Miller staffs roles that never existed in her
+human orgs. Two she singles out:
+
+- **A pusher.** Phoebe reviews finished work with one question: how would this look ten
+  times more ambitious? For years Miller wished a colleague would push her that way;
+  now the role is staffed.
+- **An observer.** Toby's only job is watching the workforce work: noting where
+  friction repeats, and flagging which agent keeps failing for lack of access to some
+  file or tool. When one agent's output needs the same correction three times, Toby is
+  the one who asks whether that agent can read the context it keeps getting wrong.
+
+The observer is one case of a pattern she thinks almost nobody uses: the watchdog, an
+agent assigned to one stream you normally track yourself.
+
+<PullQuote
+  quote="AI as a watchdog is one of the best use cases that exists right now"
+  creator="Allie K. Miller"
+  video="The top 10 secrets to running 34 AI Agent Workforce"
+  href="https://www.youtube.com/watch?v=EzQAgnjTq2k"
+  timestamp="22:25"
+/>
+
+Her examples: a watchdog on team chat catching two people doing the same work, one on
+the calendar catching conflicts, one across meeting transcripts catching disagreements
+nobody has named. What the watchdog reports matters as much as what it watches. She
+calls plain dashboards dumb; a watchdog reports what looks off and what to do about it,
+so you read nothing when nothing is wrong.
+
+Her human team uses the workforce too. Claude sits in her team's chat channels, and her
+human teammates ask it directly (did that client reply to Allie's email yet?) instead
+of waiting hours for her. <a
+href="/guides/buzz-puts-ai-agents-in-your-team-chat/">Buzz puts AI agents in your team
+chat</a> covers that shape of shared access. One caution before you wire agents into
+email, chat, and calendars: they will read text written by strangers, and <a
+href="/guides/defend-your-agent-from-prompt-injection/">Defend your agent from prompt
+injection</a> explains why that text can steer them.
+
+<Exercise>
+1. Write the goals file: this quarter's goals, the constraints, and what done looks
+   like. Save it where your agent already reads (its memory, a project folder, an
+   instruction file).
+2. Tonight, dictate five minutes of what only you know: what changed today, what a
+   client actually needs, what you are starting to believe. Save it next to the goals
+   file, and repeat daily for a week.
+3. With both files in view, ask your agent to propose three tasks it could start this
+   week toward the goals, and to wait for approval. Approve one. What it proposes tells
+   you what context is still missing.
+4. Assign one watchdog: pick one stream (inbox, calendar, team chat), and set the
+   output rule to anomaly plus suggested action, nothing when nothing is wrong.
+</Exercise>
+
+## Further reading
+
+- [Greg Isenberg · The top 10 secrets to running 34 AI Agent Workforce](https://www.youtube.com/watch?v=EzQAgnjTq2k), the conversation this guide draws on
+- [Allie K. Miller](https://www.alliekmiller.com/), the guest's site
