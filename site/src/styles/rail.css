@@ -1,0 +1,183 @@
+/* ============================================================
+   The graduated edge: the site's scrollbar.
+
+   A plate in a star atlas graduates its coordinate edge: a hairline
+   down the margin, minor ticks, longer labelled majors. The scrollbar
+   sits where that edge belongs, so here it is that edge. The bracket
+   riding it is your field of view; the stars on it are the page's real
+   <h2> sections. Geometry and behaviour: src/scripts/atlas-rail.js.
+
+   Everything is namespaced .atlas-rail: the About page already owns
+   .rail / .rail-rule for its margin asides.
+
+   Column geometry, measured from the right edge of the viewport:
+     0–30px   the rail's hit area
+     9px      the rule (the graduated edge itself)
+     9–14px   minor ticks · 9–19px majors · 9–21px the field's corners
+     22px     the graduation numbers, right-aligned, on hover
+     46px     the section catalogue, right-aligned, on hover
+   ============================================================ */
+
+/* The native bar is hidden only once the rail has actually mounted, so a
+   script failure leaves the browser's own scrollbar in place. */
+html.has-atlas-rail { scrollbar-width: none; }
+html.has-atlas-rail::-webkit-scrollbar { width: 0; height: 0; }
+html.has-atlas-rail body { padding-right: 30px; }
+body.atlas-rail-dragging { user-select: none; }
+
+/* inner scrollers keep the same square, hairline manner */
+:where(pre, .ledger-table) { scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
+:where(pre, .ledger-table)::-webkit-scrollbar { width: 7px; height: 7px; }
+:where(pre, .ledger-table)::-webkit-scrollbar-thumb { background: var(--line); }
+:where(pre, .ledger-table)::-webkit-scrollbar-track { background: transparent; }
+
+.atlas-rail {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 30px;
+  z-index: 55; /* over the sticky masthead, under the paper grain */
+}
+.atlas-rail.is-idle { display: none; }
+
+/* The margin column the catalogue is read in, open only while the edge is held.
+   Solid paper with a ruled edge, not a gradient wash: a chart's margin column
+   has a boundary, and half-visible text under a fading scrim reads as a bug.
+   It starts below the running head so the masthead is never covered. */
+.atlas-rail::before {
+  content: '';
+  position: absolute;
+  top: var(--atlas-head, 0px);
+  bottom: 0;
+  right: 0;
+  width: 300px;
+  max-width: 34vw;
+  pointer-events: none;
+  background: var(--paper);
+  border-left: 1px solid var(--line);
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease);
+}
+.atlas-rail:hover::before { opacity: 1; }
+
+/* the layers are full-height containers, so only the marks themselves take the
+   pointer; everything else falls through to the track's click-to-jump */
+.atlas-rail .rule,
+.atlas-rail .ticks,
+.atlas-rail .stars,
+.atlas-rail .nums,
+.atlas-rail .names { position: absolute; inset: 0; pointer-events: none; }
+/* the graduated edge itself */
+.atlas-rail .rule { inset: 0 9px 0 auto; width: 1px; background: var(--line); }
+
+/* ---- graduation ---- */
+.atlas-rail .tick {
+  position: absolute;
+  right: 9px;
+  width: 5px;
+  height: 1px;
+  background: var(--line-soft);
+  transition: background var(--dur) var(--ease);
+}
+.atlas-rail .tick.major { width: 10px; background: var(--line); }
+.atlas-rail:hover .tick { background: var(--line); }
+
+.atlas-rail .nums,
+.atlas-rail .names {
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease);
+}
+.atlas-rail:hover .nums,
+.atlas-rail:hover .names { opacity: 1; }
+
+.atlas-rail .num,
+.atlas-rail .name {
+  position: absolute;
+  transform: translateY(-50%);
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  line-height: 1;
+  white-space: nowrap;
+  text-align: right;
+}
+.atlas-rail .num {
+  right: 22px;
+  letter-spacing: 0.08em;
+  color: var(--ink-mute);
+}
+.atlas-rail .name {
+  right: 46px;
+  max-width: min(236px, 26vw);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--ink-soft);
+}
+.atlas-rail .name .no { font-style: normal; color: var(--ink-mute); margin-right: 0.7em; }
+
+/* ---- the catalogue ---- */
+.atlas-rail .star {
+  position: absolute;
+  right: 3.5px;
+  width: 11px;
+  height: 11px;
+  margin-top: -5.5px;
+  color: var(--star-dim);
+  transition: color var(--dur) var(--ease), filter var(--dur) var(--ease);
+}
+.atlas-rail .star path { fill: currentColor; }
+.atlas-rail .star.lit {
+  color: var(--star);
+  filter: drop-shadow(0 0 5px var(--glow));
+}
+.atlas-rail .star-hit {
+  position: absolute;
+  pointer-events: auto;
+  right: 0;
+  width: 30px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+/* ---- the field of view ---- */
+.atlas-rail .field {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 30px;
+  cursor: grab;
+  touch-action: none;
+}
+.atlas-rail.is-dragging .field { cursor: grabbing; }
+/* the field's own segment of the rule, struck in ink */
+.atlas-rail .field::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 9px;
+  width: 1px;
+  background: var(--accent);
+}
+/* the band it covers on the graduation */
+.atlas-rail .field::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 10px;
+  width: 6px;
+  background: var(--accent-wash);
+}
+.atlas-rail .corner {
+  position: absolute;
+  right: 9px;
+  width: 12px;
+  height: 1px;
+  background: var(--accent);
+}
+.atlas-rail .corner.top { top: 0; }
+.atlas-rail .corner.bot { bottom: 0; }
