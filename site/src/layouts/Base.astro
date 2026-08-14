@@ -166,6 +166,8 @@ const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': grap
     </footer>
 
     <script>
+      import { boot as bootRail } from '../scripts/atlas-rail.js';
+
       const root = document.documentElement;
       const label = document.getElementById('toggle-label')!;
       const apply = (t: string) => {
@@ -191,11 +193,15 @@ const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': grap
         { threshold: 0.12 },
       );
       document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+
+      // the scrollbar: the plate's graduated edge (src/scripts/atlas-rail.js)
+      bootRail();
     </script>
 
     <style is:global>
       @import '../styles/fonts.css';
       @import '../styles/tokens.css';
+      @import '../styles/rail.css';
 
       .masthead {
         position: sticky;
