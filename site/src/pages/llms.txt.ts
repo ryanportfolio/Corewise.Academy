@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import { TRACKS } from '../data/tracks';
 import { SITE_URL } from '../data/site';
+import { agentArtifactFor } from '../data/agentArtifacts';
 
 export const GET: APIRoute = async () => {
   const guides = (await getCollection('guides')).filter((g) => g.data.status === 'published');
@@ -11,6 +12,34 @@ export const GET: APIRoute = async () => {
       .sort((a, b) => a.data.number - b.data.number)
       .map((g) => `- [${g.data.title}](${SITE_URL}/guides/${g.id}/): ${g.data.description}`)
       .join('\n');
+  // Only guides in AGENT_ARTIFACTS get a /guides/<slug>.md route, so the list is
+  // derived from the same map the route uses. Never claim the whole catalogue.
+  const trackOrder = new Map(TRACKS.map((t, i) => [t.slug, i]));
+  const agentFiles = guides
+    .flatMap((g) => {
+      const artifact = agentArtifactFor(g.id);
+      return artifact ? [{ guide: g, artifact }] : [];
+    })
+    .sort(
+      (a, b) =>
+        (trackOrder.get(a.guide.data.track) ?? TRACKS.length) - (trackOrder.get(b.guide.data.track) ?? TRACKS.length) ||
+        a.guide.data.number - b.guide.data.number,
+    );
+  const agentFilesSection = agentFiles.length
+    ? [
+        '## Agent files',
+        '',
+        `These ${agentFiles.length} guides also ship a plain-markdown version for agents, served at ${SITE_URL}/guides/<slug>.md. Guides outside this list have no .md file.`,
+        '',
+        ...agentFiles.map(
+          ({ guide, artifact }) =>
+            `- [${guide.data.title}](${SITE_URL}/guides/${guide.id}.md): ${
+              artifact.kind === 'skill' ? 'installable skill' : 'agent guide'
+            }, save as ${artifact.savePath}`,
+        ),
+        '',
+      ]
+    : [];
   const body = [
     '# CoreWise Academy',
     '',
@@ -19,8 +48,7 @@ export const GET: APIRoute = async () => {
     `- [About the editor](${SITE_URL}/about/)`,
     `- [How guides get made](${SITE_URL}/how-its-built/)`,
     '',
-    `Every guide is also published as a plain-markdown skill file for agents: swap the guide URL's trailing slash for ".md" (for example ${SITE_URL}/guides/brief-the-model.md).`,
-    '',
+    ...agentFilesSection,
     ...TRACKS.flatMap((t) => {
       const list = byTrack(t.slug);
       return list ? [`## ${t.name}`, '', `- [Layer page](${SITE_URL}/tracks/${t.slug}/): ${t.description}`, list, ''] : [];
