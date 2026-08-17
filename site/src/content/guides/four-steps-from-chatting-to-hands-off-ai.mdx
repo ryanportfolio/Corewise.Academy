@@ -1,0 +1,241 @@
+---
+title: Four steps from chatting to hands-off AI
+description: 'Boris Cherny, who created Claude Code, maps four steps between chatting with an AI and a system that starts work you never assigned. Find your step from the bottleneck you feel, and make the one change that moves you up.'
+track: agents
+level: broad
+number: 44
+minutes: 6
+tags: ['delegation', 'automation']
+objectives:
+  - 'Locate your current step on the four-step path from the bottleneck you feel: reading every change, steering every session, or not yet trusting unattended runs.'
+  - 'Diagnose whether you have reached step one with two questions: do you paste AI output into other tools, and do you paste outside information into the chat.'
+  - 'Split your checks into rule-based (pass or fail) and taste-based (judged against written standards) before running agents in parallel.'
+  - 'Decide which tasks to automate end to end with the 80 percent rule, and cap an unattended run''s cost with a smaller model and an iteration limit.'
+prerequisites: []
+sources:
+  - url: https://www.youtube.com/watch?v=clDlAmHsiKw
+    creator: Austin Marchese
+    video: "Boris Cherny's 4 Step Playbook to 10x Your AI Productivity"
+    timestamps: ['1:33', '2:01', '3:28', '4:02', '4:11', '4:38', '6:10', '6:29', '8:38', '9:34', '9:45', '10:37', '11:52', '12:37', '13:04', '14:29', '15:34', '15:43', '16:23', '16:46', '17:09', '17:52']
+selfCheck:
+  - q: 'Two questions tell you whether you have reached step one. What are they, and what does a yes mean?'
+    a: 'Do you paste AI output into other tools, and do you paste outside information into the chat? A yes to either means you are still the courier between the AI and the place the work lives. The fix is access: a tool that edits your files directly, and connected accounts it can read on its own.'
+  - q: '"It is faster to do this task myself than to set up the system." What does the objection get right, and what does it miss?'
+    a: 'It is usually right about the single task in front of you. What it misses is what happens after: Marchese hired his first two contractors and every video took longer for two weeks while he trained them, then it got faster, then he was not involved at all. Doing the task yourself is fast today and fast forever; setting up the system is slow today and drops toward zero.'
+  - q: 'Which tasks qualify for end-to-end automation at step four, and what two caps keep an unattended run from burning money?'
+    a: 'Tasks where 80 percent quality is good enough. Where quality is critical, keep a person at the checkpoints instead of automating end to end. The two caps: pin each job to the smallest model that handles it, and set a maximum number of iterations so a stuck run stops instead of looping. One of Marchese''s clients skipped the second cap and woke up to a single task that had burned over $3,000 in tokens.'
+status: draft
+lastUpdated: 2026-08-17
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+
+<Chalk>you move up by removing a bottleneck, not by adding more AI</Chalk>
+
+<p class="lede">
+Boris Cherny built Claude Code at Anthropic, and in July 2026 he published a short
+map of how people adopt AI at work: four steps, from one supervised session to a
+system that starts its own work. Austin Marchese's walkthrough translates the map
+for people who do not write code. The useful part is the diagnosis. Each step has
+one named bottleneck, and the bottleneck you feel tells you which step you are on
+and what to change next.
+</p>
+
+## <span class="sec-no">01</span>Four steps, four bottlenecks
+
+Cherny wrote the map after hearing the same thing from company after company: one
+person is getting ten times the output from AI while the rest of the organization
+has not caught up. The steps describe what that person does differently at each
+stage. Below the first step sits the place most people start, using AI only in a
+chat window, asking questions and copying answers out.
+
+| Step | What it looks like | The bottleneck |
+|---|---|---|
+| 1 · Assisted | One AI session at a time does tasks for you; you review every change | Your attention: you read everything |
+| 2 · Parallel | Five to ten agents at once, each on separate work, checked by machine first | Steering: you still prompt and redirect each session |
+| 3 · Supervised autonomy | Agents start scheduled and background work on their own; you review results | Trust, your decision speed, and cost |
+| 4 · AI native | The system kicks off most work itself; you set direction and look at exceptions | Choosing what to automate, and keeping it cheap |
+
+Each bottleneck is the admission ticket to the next step: what blocks you at step
+one is exactly what step two removes. The rest of this guide takes the steps one
+at a time.
+
+## <span class="sec-no">02</span>Step 1: stop copy-pasting
+
+Cherny describes step one as one person with one agent, mostly supervised: "a fast
+pair programmer" (1:33), an engineer's phrase for a colleague working beside you on
+the same task. For everyone else it means an assistant that does tasks rather than
+answering questions.
+
+Most people believe they are here already. Marchese offers two questions to check
+(2:01):
+
+- Do you copy AI output and paste it into other tools?
+- Do you copy information from outside the chat and paste it in?
+
+A yes to either means you are still the courier. The fix is access: a tool that
+reads and edits files directly (Claude Code is the one Marchese uses, for far more
+than code), plus connectors that link the accounts where your information already
+lives, so the AI pulls what it needs and writes results where they belong.
+<a href="/guides/delegate-to-your-agent-in-stages/">Delegate to your agent in
+stages</a> covers connecting that first account and how much power to grant on day
+one.
+
+Then you hit the wall Cherny names for this step: "you feel you must read
+everything, so you never look away" (3:28).
+
+## <span class="sec-no">03</span>Step 2: machines check first
+
+Step two is running several agents at once, five to ten in Cherny's version, each
+on its own piece of work. What makes that possible is agents that finish a task and
+check their own output, so you look at a final product instead of every
+intermediate step.
+
+<PullQuote
+  quote="a backlog that used to take the team weeks becomes one engineer's afternoon of orchestration"
+  creator="Boris Cherny"
+  video="Boris Cherny's 4 Step Playbook to 10x Your AI Productivity"
+  href="https://www.youtube.com/watch?v=clDlAmHsiKw"
+  timestamp="4:11"
+/>
+
+That speed only arrives once a machine does the checking, so the checking is the
+first thing to hand over. Marchese splits the checks into two kinds (4:38):
+
+- **Rule-based checks.** Yes-or-no questions with no room for debate. For code,
+  that means automated tests; for a report, the right fonts, the right colors, no
+  banned punctuation. Write the list once and a machine can run it every time;
+  <a href="/guides/loop-the-agent-until-the-work-passes/">Loop the agent until the
+  work passes</a> builds that loop.
+- **Taste-based checks.** Quality calls with no objective answer: does the design
+  look good, is the writing tight. Write your standards down and have a second AI
+  judge drafts against them. <a href="/guides/why-ai-makes-slop-and-how-to-catch-it/">Why
+  AI makes slop and how to catch it</a> covers what those written standards need.
+
+The second move is permissions. An agent working unwatched needs room to act
+without the ability to cause permanent damage.
+
+<PullQuote
+  quote="thinking of agents like a drunk intern"
+  creator="Austin Marchese"
+  video="Boris Cherny's 4 Step Playbook to 10x Your AI Productivity"
+  href="https://www.youtube.com/watch?v=clDlAmHsiKw"
+  timestamp="6:10"
+/>
+
+If the agent can reach something breakable, assume it will break it, and remove
+the access rather than hoping. Claude Code's auto mode is the preset version: low-risk
+actions run without asking, risky ones still stop for your approval (6:29).
+<a href="/guides/assume-your-agent-uses-every-tool-it-has/">Assume your agent uses
+every tool it has</a> explains why the boundary belongs in the permissions, not the
+prompt.
+
+The third move is picking work that can run side by side. Marchese keeps unrelated
+projects in separate folders so each agent sees only its own context (8:38), and
+within one project he picks units that do not touch: different customer proposals,
+different scripts, different parts of an app. When one big task needs many hands
+instead, <a href="/guides/split-big-ai-tasks-into-steps-and-checks/">Split big AI
+tasks into steps and checks</a> covers cutting it into independent pieces.
+
+The bottleneck that remains: "prompting and steering the model as you juggle
+sessions" (9:34). Every piece of work still starts with you typing.
+
+## <span class="sec-no">04</span>Step 3: work you never assigned
+
+At step three the agents start work themselves. Cherny's description: maintenance
+and cleanup that used to wait for someone to find time now runs continuously in the
+background (9:45).
+
+The objection Marchese hears most: "it is faster if I just do it myself." Usually
+true, for that one task, and beside the point. When he hired his first two
+contractors, every video took longer for two weeks while he trained them; then it
+got faster, and then he was not involved at all (10:37). Setting up the system is
+slow today and drops toward zero. Doing it yourself is fast today and fast forever.
+
+Three moves turn a supervised setup into one that runs without a kickoff from you:
+
+1. **Write the procedure once.** Do the task with the AI, going back and forth
+   until the output is good, then tell it: based on this conversation, create a
+   skill that makes the process repeatable (11:52). The skill becomes a standard operating procedure any future run
+   follows. <a href="/guides/rent-the-model-own-the-method/">Capture the model's
+   discipline</a> is this move in full.
+2. **Put it on a schedule.** A routine runs the skill unattended, every Monday at
+   8 a.m. or on whatever schedule you set (12:37). <a
+   href="/guides/automate-a-workflow-as-a-claude-routine/">Automate a workflow as a
+   Claude routine</a> covers what an unattended run needs.
+3. **Give it a place to report.** A channel you actually check (Slack, WhatsApp,
+   Telegram) where every finished run posts its result (13:04), the pattern
+   <a href="/guides/buzz-puts-ai-agents-in-your-team-chat/">Buzz puts AI agents in
+   your team chat</a> covers.
+
+An agent that proposes work beyond the scheduled kind needs more: written goals
+and fresh context on what is actually happening. <a
+href="/guides/make-your-agents-proactive/">Make your agents proactive</a> covers
+what to write down.
+
+Cherny's bottleneck here has three parts: how far you trust the runs you no longer
+watch, how fast you can decide on what the agents send up, and whether tokens (the
+units AI use is billed in) are spent efficiently as usage grows (14:29). Step four
+answers all three.
+
+## <span class="sec-no">05</span>Step 4: pick what to hand off
+
+At the last step, most work is started by the system itself. Cherny: hundreds to
+thousands of agents run, and "quarter-long migrations become a workflow you kick
+off and check on" (15:43).
+
+<PullQuote
+  quote="you steer by intent and monitor by exception"
+  creator="Boris Cherny"
+  video="Boris Cherny's 4 Step Playbook to 10x Your AI Productivity"
+  href="https://www.youtube.com/watch?v=clDlAmHsiKw"
+  timestamp="15:34"
+/>
+
+Getting there is two judgment calls rather than more setup.
+
+**Choosing the candidates.** Marchese's rule comes from hiring: if someone can do a
+task 80 percent as well as you, hire them. Same test here. Where 80 percent quality
+is good enough, automate end to end. Where quality is critical, keep a person at
+the checkpoints instead. <a href="/guides/what-still-pays-when-ai-does-the-work/">What
+still pays when AI does the work</a> is about the judgment that stays yours.
+
+**Capping the cost.** One of Marchese's clients ran proactive agents without
+guardrails and woke up to a single task that had burned over $3,000 in tokens,
+stuck in a loop, spending until he manually stopped it (16:23). Two caps prevent
+a repeat:
+
+- Pin each job to the smallest model that handles it, instead of paying the
+  biggest model's prices for routine work. <a
+  href="/guides/stop-hitting-your-token-limit/">Stop hitting your token limit</a>
+  shows how to set the model inside a skill.
+- Set a maximum number of iterations on any loop or routine, so a stuck run stops
+  on its own. <a href="/guides/guardrails-for-long-runs/">Guardrails for hours-long
+  agent runs</a> covers the fuller set of stop conditions.
+
+The steps compound in one direction: each one hands the machine another piece of
+your attention, and the bottleneck you feel right now is the only one you need to
+work on.
+
+<Exercise>
+1. Answer the two step-one questions: do you paste AI output into other tools, and
+   do you paste outside information into the chat? If either is a yes, connect the
+   tool or account so the AI works where the work lives.
+2. Name the bottleneck you feel most: reading every change, steering every session,
+   or not trusting unattended runs. Find its row in the table; that is your step.
+3. Make the one move for your step. On step one: write a pass-or-fail checklist
+   for one recurring output and have the AI run it against its own work. On step
+   two: turn one finished piece of work into a skill and schedule it, with results
+   posting to a channel you check. On step three: pick one task where 80 percent
+   is good enough, pin a smaller model and an iteration cap, and let it run end
+   to end.
+4. Revisit the table in a month and check whether the bottleneck you feel has
+   moved. That, and nothing else, is the sign you changed steps.
+</Exercise>
+
+## Further reading
+
+- [Austin Marchese · Boris Cherny's 4 Step Playbook to 10x Your AI Productivity](https://www.youtube.com/watch?v=clDlAmHsiKw), the walkthrough this guide draws on
+- [Boris Cherny · Steps of AI Adoption](https://x.com/bcherny/status/2077929379661844559), the original map, announced on his X account
