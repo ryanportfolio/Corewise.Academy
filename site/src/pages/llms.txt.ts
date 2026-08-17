@@ -12,8 +12,9 @@ export const GET: APIRoute = async () => {
       .sort((a, b) => a.data.number - b.data.number)
       .map((g) => `- [${g.data.title}](${SITE_URL}/guides/${g.id}/): ${g.data.description}`)
       .join('\n');
-  // Only guides in AGENT_ARTIFACTS get a /guides/<slug>.md route, so the list is
-  // derived from the same map the route uses. Never claim the whole catalogue.
+  // Every published guide has a .md route; these serve a ready-to-use file there
+  // instead of the article. Derived from the same map the route reads, so the
+  // list cannot drift from what is actually served.
   const trackOrder = new Map(TRACKS.map((t, i) => [t.slug, i]));
   const agentFiles = guides
     .flatMap((g) => {
@@ -29,7 +30,7 @@ export const GET: APIRoute = async () => {
     ? [
         '## Agent files',
         '',
-        `These ${agentFiles.length} guides also ship a plain-markdown version for agents, served at ${SITE_URL}/guides/<slug>.md. Guides outside this list have no .md file.`,
+        `These ${agentFiles.length} addresses serve a ready-to-use file instead of the article: an installable skill, or a version of the guide distilled for an agent to follow.`,
         '',
         ...agentFiles.map(
           ({ guide, artifact }) =>
@@ -47,6 +48,8 @@ export const GET: APIRoute = async () => {
     '',
     `- [About the editor](${SITE_URL}/about/)`,
     `- [How guides get made](${SITE_URL}/how-its-built/)`,
+    '',
+    `Every guide is also served as plain markdown for agents: swap the guide URL's trailing slash for ".md" (for example ${SITE_URL}/guides/brief-the-model.md).`,
     '',
     ...agentFilesSection,
     ...TRACKS.flatMap((t) => {
