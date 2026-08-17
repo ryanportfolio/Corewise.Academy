@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 430" role="img" aria-label="Chart of the CoreWise Academy catalogue: 36 published guides as stars in five constellations, one per curriculum layer.">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 430" role="img" aria-label="Chart of the CoreWise Academy catalogue: 37 published guides as stars in five constellations, one per curriculum layer.">
 <g font-family="ui-monospace, 'IBM Plex Mono', SFMono-Regular, Menlo, monospace">
 <rect x="0" y="0" width="1000" height="430" fill="#f3efe4"/>
 <rect x="8" y="8" width="984" height="414" fill="none" stroke="#1c1914" stroke-width="1.2"/>
@@ -27,17 +27,18 @@
 <circle cx="483.7" cy="211.2" r="1.9" fill="#1c1914" fill-opacity="0.71"/>
 <circle cx="533.1" cy="177.1" r="1.9" fill="#1c1914" fill-opacity="0.68"/>
 <circle cx="571.8" cy="252.1" r="1.9" fill="#1c1914" fill-opacity="0.64"/>
+<path d="M12 0 L14.88 9.12 L24 12 L14.88 14.88 L12 24 L9.12 14.88 L0 12 L9.12 9.12 Z" transform="translate(513.00 189.10) scale(0.6250)" fill="#1c31a4"/>
 <circle cx="575.5" cy="257.5" r="3.2" fill="#1c1914" fill-opacity="0.67"/>
 <circle cx="532.2" cy="240.1" r="1.9" fill="#1c1914" fill-opacity="0.57"/>
 <circle cx="470.1" cy="193.7" r="2.5" fill="#1c1914" fill-opacity="0.75"/>
 <circle cx="499.9" cy="293.7" r="2.5" fill="#1c1914" fill-opacity="0.72"/>
-<path d="M12 0 L14.88 9.12 L24 12 L14.88 14.88 L12 24 L9.12 14.88 L0 12 L9.12 9.12 Z" transform="translate(503.90 198.60) scale(0.6250)" fill="#1c31a4"/>
+<circle cx="511.4" cy="206.1" r="1.9" fill="#1c1914" fill-opacity="0.77"/>
 <circle cx="603.4" cy="222.8" r="1.9" fill="#1c1914" fill-opacity="0.58"/>
 <circle cx="577.4" cy="250.5" r="2.5" fill="#1c1914" fill-opacity="0.65"/>
 <circle cx="594.2" cy="249.9" r="1.9" fill="#1c1914" fill-opacity="0.74"/>
 <circle cx="554.8" cy="224.7" r="1.9" fill="#1c1914" fill-opacity="0.55"/>
 <text x="520" y="382" text-anchor="middle" font-size="11.5" letter-spacing="1.5" fill="#574f43">III · THE COURIER</text>
-<text x="520" y="399" text-anchor="middle" font-size="10" letter-spacing="1" fill="#574f43">18 GUIDES</text>
+<text x="520" y="399" text-anchor="middle" font-size="10" letter-spacing="1" fill="#574f43">19 GUIDES</text>
 <circle cx="710.9" cy="132.6" r="1.9" fill="#1c1914" fill-opacity="0.58"/>
 <circle cx="697.4" cy="165.1" r="2.5" fill="#1c1914" fill-opacity="0.79"/>
 <circle cx="685.1" cy="134.6" r="2.5" fill="#1c1914" fill-opacity="0.68"/>
@@ -50,11 +51,11 @@
 <circle cx="834.3" cy="87.3" r="1.9" fill="#1c1914" fill-opacity="0.88"/>
 <text x="880" y="382" text-anchor="middle" font-size="11.5" letter-spacing="1.5" fill="#574f43">V · THE METRONOME</text>
 <text x="880" y="399" text-anchor="middle" font-size="10" letter-spacing="1" fill="#574f43">5 GUIDES</text>
-<path d="M 517.4 200.1 L 525.4 192.1" stroke="#1c1914" stroke-opacity="0.55" stroke-width="0.7" fill="none"/>
-<text x="529.4" y="195.1" font-size="10.5" letter-spacing="1" fill="#1c31a4">Nº 043 · NEWEST</text>
+<path d="M 526.5 190.6 L 534.5 182.6" stroke="#1c1914" stroke-opacity="0.55" stroke-width="0.7" fill="none"/>
+<text x="538.5" y="185.6" font-size="10.5" letter-spacing="1" fill="#1c31a4">Nº 044 · NEWEST</text>
 <text x="34" y="46" font-size="15" letter-spacing="2.8" fill="#1c1914" font-weight="600">COREWISE ACADEMY</text>
 <text x="34" y="68" font-size="10.5" letter-spacing="2" fill="#574f43" font-weight="400">PLATE OF THE CATALOGUE</text>
-<text x="34" y="83" font-size="11.5" letter-spacing="1.2" fill="#1c1914" font-weight="600">36 GUIDES · 244 MINUTES OF READING</text>
+<text x="34" y="83" font-size="11.5" letter-spacing="1.2" fill="#1c1914" font-weight="600">37 GUIDES · 250 MINUTES OF READING</text>
 <text x="34" y="101" font-size="9.5" letter-spacing="1" fill="#6f6656" font-weight="400">SURVEYED FROM GUIDE FRONTMATTER</text>
 <text x="34" y="116" font-size="9.5" letter-spacing="1" fill="#6f6656" font-weight="400">ENGRAVED BY scripts/readme-plate.mjs · CORRECTED TO AUGUST 2026</text>
 <text x="34" y="135" font-size="10" letter-spacing="1" fill="#574f43">ONE STAR = ONE PUBLISHED GUIDE · LARGER = DEEPER</text>
