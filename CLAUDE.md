@@ -51,7 +51,7 @@ Overrides the Bash tool's built-in "commit only when asked" default: task comple
 
 - Branch, never main. If on main, create a feature branch first.
 - Stage intentionally. Never blanket-commit unrelated changes.
-- One open PR per unit of work; update it, never open a second. Before opening a PR, check for an existing open one (`gh pr list --head <branch>`) and push to that instead. If the branch's prior PR was already merged or closed, open a fresh PR for the reused branch.
+- One open PR per unit of work; update it, never open a second. Before opening a PR, check for an existing open one (`gh pr list --head <branch>`) and push to that instead. If the branch's prior PR was already merged, cut a new branch from freshly fetched `origin/main` rather than reusing it: the squash merge leaves the old branch conflicting with main on every file it introduced (`.claude/reference/pitfalls.md`). Reuse only a branch whose PR was closed unmerged.
 - Merging a PR → squash by default (`gh pr merge --squash`); merge commit or rebase only on explicit request.
 - Never force-push or run destructive git operations without an explicit request.
 - "Complete" = the requested change finished and verified to this environment's limits. Mid-task or exploratory work is NOT a commit trigger.
