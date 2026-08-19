@@ -63,12 +63,12 @@ Removing patterns is half the job.
 
 ## Pattern checklist
 
-Scan for these. Numbers map to `patterns.md` for examples.
+The canonical tell list is the `unslop` skill (`.claude/skills/unslop/SKILL.md`, or `~/.claude/skills/unslop/` globally) — the always-on floor this deep pass builds on. Scan its full list every pass; don't duplicate it here. The table below is the index into `patterns.md` for before/after examples, and carries the humanizer-only extras (tail negations, authority tropes, signposting, hyphenated compounds).
 
 | # | Category | Scan for |
 |---|----------|----------|
 | 1–6 | Content | Significance inflation; notability name-drops; promotional language; vague attribution; formulaic "despite challenges…" sections |
-| 7–12 | Language | AI vocabulary; copula dodge (serves as → is); -ing filler; negation pivots in any disguise ("not just X, it's Y", "the point isn't X. It's Y", "less about X than Y"); tail negations; rule of three; synonym cycling; false ranges |
+| 7–12 | Language | AI vocabulary; copula dodge (serves as → is); -ing filler; "not just X, it's Y"; tail negations; rule of three; synonym cycling; false ranges |
 | 13 | Grammar | Passive voice and subjectless fragments when active voice is clearer |
 | 14–19 | Style | Em dash overuse; colon as mid-sentence crutch; mechanical boldface; inline-header bullets that restate the line; Title Case headings; decorative emojis; curly quotes |
 | 20–22 | Chatbot | "I hope this helps", cutoff disclaimers, sycophantic openers |
@@ -76,15 +76,6 @@ Scan for these. Numbers map to `patterns.md` for examples.
 | 26 | Modifiers | Stacked uniform hyphenated compounds (keep required hyphens) |
 | 27–29 | Framing | Authority tropes (at its core); signposting (let's dive in); fragmented headers |
 | 30–34 | Plain speech | Abstract jargon nouns (substrate, wedge, paradigm); vague product copy; dense sentences; weak adverbs; fancy synonyms (utilize → use) |
-
-**Compact scan lines** (use every pass):
-
-- **Content** — pivotal moment, testament, evolving landscape, nestled, experts say, despite challenges… continues to thrive.
-- **Language** — delve, crucial, showcase, foster, leverage, serves as, highlighting…/ensuring…, negation pivots in any disguise (not just X it's Y; the point isn't X. It's Y; isn't about A, it's about B; less about X than Y), rule of three, from X to Y.
-- **Style** — do not use excessive em dashes (—); use periods, commas, semicolons, or hyphens instead. Also cut colon comparison crutches, **Speed:** Speed improved…, Great question! / I hope this helps!
-- **Plain speech** — substrate/wedge/harness/paradigm; feelings instead of mechanism; split sentences that need a second read; utilize/leverage/facilitate.
-
-**Inline-header nuance:** bad = `**Speed:** Speed improved…` (label restates the line). OK = `**Schema in TypeScript.** Tables live in one file.` (label names; next sentence adds detail).
 
 ## Output
 
