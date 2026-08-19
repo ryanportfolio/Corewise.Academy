@@ -48,3 +48,11 @@ If a reused branch is already conflicted, merge `origin/main` into it and keep
 the branch copy, since the branch content is main's content plus the new edit.
 Confirm with `git diff origin/main` that the net change is only the intended
 lines before merging.
+
+## GitHub recomputes mergeability asynchronously (2026-08-19)
+
+`gh pr view --json mergeable` right after a push returns the previous answer. It
+reported `CONFLICTING` on a branch whose conflict was already resolved and
+pushed, then `MERGEABLE UNSTABLE` on the next query seconds later. Re-query
+before acting on a mergeability verdict, and read `UNSTABLE` as checks still
+running rather than as a failure.
