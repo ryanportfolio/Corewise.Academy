@@ -16,15 +16,31 @@ That is the workflows not having registered yet, not the repo lacking CI. This
 repo runs three jobs on every PR: `no-em-dash`, `readme-plate`, and `validate`.
 Reading the message as a green light merged PR #250 with no CI run against it.
 
-Fix: merge with `--auto` so GitHub waits for the checks itself.
+`--auto` does not fix this on its own. Auto-merge waits only for checks that
+branch protection marks required, and `main` here is unprotected:
 
-```bash
-gh pr merge <n> --squash --auto
+```
+gh api repos/ryanportfolio/Corewise.Academy/branches/main/protection
+{"message":"Branch not protected", "status":"404"}
 ```
 
-Where a plain merge is wanted, poll until at least one check appears before
-trusting the result. A zero-check answer within a minute of a push is not an
-answer yet.
+So PR #252 merged with `no-em-dash` and `validate` still `IN_PROGRESS`. They
+passed, but nothing had gated the merge.
+
+Fix: poll until no check is pending, then merge.
+
+```bash
+for i in $(seq 1 20); do
+  out=$(gh pr checks <n> --json name,state --jq '.[] | .name+": "+.state')
+  echo "$out" | grep -qE "IN_PROGRESS|PENDING|QUEUED" || { echo "$out"; break; }
+  sleep 15
+done
+```
+
+A zero-check answer within a minute of a push is not an answer yet; wait for at
+least one check to appear before trusting it. Protecting `main` with the three
+jobs required would make `--auto` sufficient and remove the polling, but that
+changes repository settings, so it needs the owner's say-so.
 
 ## Reusing a branch after its squash merge conflicts on every file (2026-08-19)
 
