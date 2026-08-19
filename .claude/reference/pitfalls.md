@@ -1,6 +1,8 @@
 # Pitfalls
 
-Accumulated gotchas. Add an entry when something bites; quote the evidence.
+> Accumulated project-specific gotchas. Dated entries, newest at the bottom. If this file exceeds ~200 lines, split by area (`pitfalls-<area>.md`) and update the CLAUDE.md index.
+
+Quote the evidence in each entry: the command, the message, what it cost.
 
 ## "no checks reported" means too early, not no CI (2026-08-19)
 
