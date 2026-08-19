@@ -1,0 +1,199 @@
+---
+title: One skills library for your whole team
+description: 'Skills built on one person''s machine stay there, and mailed copies drift apart. Put the team''s skills in one GitHub repository, install it as a plugin, and every edit reaches every teammate''s agent.'
+track: agents
+level: practitioner
+number: 45
+minutes: 7
+tags: ['skills', 'teams']
+objectives:
+  - 'Diagnose why sending skill files around, or syncing them through Drive or Dropbox, leaves a team with drifting copies instead of a shared library.'
+  - Publish a team skills library as a GitHub repository installed as a plugin in Claude Code or Codex, with auto-update on for every installer.
+  - Decide when a process ships as one skill and when as a chain of smaller skills run by an orchestrator.
+  - 'Add a self-review step to a skill so each run proposes its own improvements, and route accepted ones to the whole team.'
+prerequisites:
+  - slug: automate-the-bottleneck
+    note: Assumes you know what a skill is and have built at least one of your own.
+sources:
+  - url: https://www.youtube.com/watch?v=xHsftiyT9pQ
+    creator: Greg Isenberg
+    video: Why Skill Chaining will 10x your Claude/Codex
+    timestamps: ['2:45', '4:47', '5:15', '6:05', '8:13', '8:42', '9:57', '11:43', '12:07', '13:10', '13:42', '14:27', '15:45', '16:58', '18:14', '18:49', '20:38', '21:34', '24:25', '25:58', '26:32', '27:29', '28:36', '29:58']
+selfCheck:
+  - q: Why does sending a teammate a skill file over Slack or email fail as a sharing method?
+    a: 'The moment either of you edits your copy, the other copy is stale, and neither of you receives the other''s change. Share that way across a team and you end up with ten diverging copies and no place that holds the current version. Synced folders (Drive, Dropbox, Obsidian) fail one step later: the agent only reads skills from its own skills folder, so every machine needs a linking workaround that breaks for less technical teammates.'
+  - q: What two steps make a skills repository actually reach the whole team?
+    a: 'Each teammate adds the repository as a plugin marketplace (in Claude Code, /plugin, then add the repo URL) and installs the plugins they need, and each of them turns auto-update on. Without auto-update the install is just another frozen copy: edits pushed to the repository never arrive on their machine.'
+  - q: When should a process be a chain of small skills instead of one big skill?
+    a: 'When you will ever want to run one of its sub-steps on its own. Remy''s video-publishing workflow is three skills (titles, thumbnails, descriptions) run in sequence by an orchestrator skill, because some days he only wants thumbnails. A process whose steps never run alone can stay one skill.'
+status: draft
+lastUpdated: 2026-08-19
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+
+<Chalk>edit the skill once, every teammate's next run improves</Chalk>
+
+<p class="lede">
+A good skill saves the same conversation every week: instead of re-explaining your
+preferences each session, you write them down once and the agent follows them every
+run (<a href="/guides/automate-the-bottleneck/">Automate the step that slows you
+down</a> covers building one). Remy, who runs his company this way and shows the
+setup on Greg Isenberg's channel, hits the wall that comes next: a skill
+lives on the machine of the person who wrote it. The fix is one GitHub repository
+holding the team's skills, installed by everyone as a plugin, so an edit by anyone
+reaches every teammate's agent.
+</p>
+
+## <span class="sec-no">01</span>Why sent copies fail
+
+<PullQuote
+  quote="skills are literally just SOPs for AI"
+  creator="Remy (AI with Remy)"
+  video="Why Skill Chaining will 10x your Claude/Codex"
+  href="https://www.youtube.com/watch?v=xHsftiyT9pQ"
+  timestamp="2:45"
+/>
+
+A company writes standard operating procedures so any employee can do a task the
+approved way. A skill is that document written for an agent, and a team wants the
+same thing from it: everyone's agent formatting documents, emails, and proposals
+the same way. The obvious sharing methods both break (8:13):
+
+- **Mailing the file.** Zip the skill, send it over Slack or email, teammate
+  uploads it. It works once. The moment either side edits their copy, the other is
+  stale, and neither receives the other's change. Across a team that becomes ten
+  diverging copies and no place that holds the current version.
+- **A synced folder.** Drive, Dropbox, or Obsidian puts one folder on every
+  machine, but the agent reads skills only from its own skills directory, never
+  from a synced folder elsewhere. Every machine needs a linking workaround, and
+  those hold up only while everyone involved is comfortable with file systems;
+  the first hire who is not gets a setup that fails (8:42).
+
+Remy's summary of the moment: "We're kind of in our Microsoft Word era of skills"
+(6:05). Everyone is producing valuable documents; each one is trapped on its
+author's machine. Google Docs fixed this for documents with one shared cloud copy
+anyone can open. The next step does the same for skills.
+
+## <span class="sec-no">02</span>One repo, installed as a plugin
+
+The setup that works has two parts (9:57):
+
+1. **A GitHub repository holds every team skill.** GitHub is a shared drive for
+   code: one cloud copy, a record of every change. Remy's repository sorts skills
+   into folders by department (brand, content, newsletter, marketing, finance).
+2. **A few small configuration files make the repository a plugin.** A plugin is
+   a bundle of skills that Claude Code and Codex know how to install and keep
+   current (11:43); a plugin can also bundle tool connections and hooks, but this
+   one is skills only. Remy had Claude write the configuration files for him, and
+   the same request works from any skills folder: ask the agent to turn the
+   folder into a GitHub repository set up as a plugin.
+
+Installing it takes one command. In Claude Code, `/plugin` opens the plugin menu;
+add the repository's URL as a marketplace, and its plugins appear ready to install
+(12:07). The marketplace is the app store, the plugins are the apps: because
+Remy's repository defines one plugin per department, his copywriter installs the
+brand and newsletter plugins and never sees the finance one (13:10). Codex
+installs from the same repository the same way (14:27), which means the library
+is not tied to one vendor's tool.
+
+One setting decides whether this works at all: **every installer turns
+auto-update on** (13:42). With it, an edit pushed to the repository lands on each
+teammate's machine the next time they run the skill. Without it, the install is
+one more frozen copy: edits pushed to the repository never arrive.
+
+## <span class="sec-no">03</span>What the repo buys you
+
+Getting skills onto every machine is only the first win. The repository also
+fixes four things a folder of local files cannot:
+
+- **A record of every version.** A teammate edits a skill and makes it worse: roll
+  it back (15:45).
+- **Company ownership.** Held in the company's GitHub organization, the skills
+  stay when the person who wrote them leaves (20:38). Remy's view: skills that
+  capture how the company does paid work are a company asset, the same way its
+  written procedures are.
+- **A backup.** Two months before recording, Claude deleted Remy's local skills
+  folder: 150 skills, upwards of 500 hours of work, no backups (18:49). A cloud
+  repository turns that from a catastrophe into a re-install.
+- **Reachable by cloud agents.** An agent running on a server can install the
+  same plugin; skills sitting in a local folder are reachable only from that
+  machine (18:14).
+
+On a Claude enterprise plan, an admin can go further and preinstall organization
+plugins into everyone's account, so non-technical staff never touch a terminal
+(24:25). And a second, personal repository is worth keeping beside the team one:
+Remy keeps skills tied to his own accounts (how his email gets handled, a morning
+brief) and downloaded third-party skills he is still trying out there, installed
+as a plugin only on his machine (16:58). Anything downloaded gets read before it
+gets installed; <a href="/guides/expertise-you-can-install/">Expertise you can
+install</a> covers vetting a stranger's skill like untrusted input.
+
+## <span class="sec-no">04</span>When one skill becomes a chain
+
+Remy's rule for sizing skills: any repeatable task you do on a computer is a
+candidate, and the moment you finish a task you know you will repeat, tell the
+agent to turn the conversation into a skill (26:32). <a
+href="/guides/rent-the-model-own-the-method/">Capture the model's discipline</a>
+is that move in full.
+
+The sizing question is when a bigger process should split. His test: if you will
+ever want to run one of the steps on its own, split (25:58). Publishing a video
+could be one skill, but some days he only wants thumbnails, so it is three
+(titles, thumbnails, descriptions) plus a fourth, orchestrator skill that runs
+the three in sequence (21:34). One command still runs the whole workflow; each
+piece also runs alone.
+
+The chain design pairs with a principle he borrows from another builder: thin
+agents, thick skills (28:36). Keep the agent's standing instruction file lean, and
+put the detail (context, steps, standards) in the skill files. A skill that
+carries all its own context runs the same in Claude Code, Codex, or whichever
+agent tool comes next. <a href="/guides/trim-the-instructions-your-model-outgrew/">Trim
+the instructions your model outgrew</a> makes the case for the thin half.
+
+## <span class="sec-no">05</span>Skills that update themselves
+
+The last piece turns the shared library into one that improves itself. Remy
+appends a self-review step to the bottom of every skill file (27:29). After each
+run, the agent answers three questions before finishing:
+
+1. Did any step fail or need a workaround?
+2. Did the user correct or reject anything meaningful?
+3. Did the run discover something a future run will need?
+
+When an answer is worth acting on, the agent proposes an edit to the skill; Remy
+says yes or no, and a yes updates the file. It is the same move as <a
+href="/guides/turn-repeated-fixes-into-rules/">Turn repeated fixes into rules</a>,
+scoped to a single skill and made automatic.
+
+Combined with the shared repository, one person's fix becomes everyone's. The week
+of recording, one of Remy's team hit an image-upload error inside the email
+formatting skill, worked out the fix with the agent, and accepted the proposed
+skill update; auto-update then delivered the improved skill to every other machine
+before its next run (29:58). One person hit the error, and nobody else ever has
+to. That is the argument for the whole setup.
+
+<Exercise>
+1. Collect the skills your team already has: each person lists the skill files on
+   their machine worth sharing, and you pick the ones everyone should run the
+   same way.
+2. Ask your agent to turn that folder into a GitHub repository set up as a plugin,
+   grouped into one plugin per team or department. Put the repository in your
+   company's GitHub organization, not a personal account.
+3. Install it yourself first: `/plugin`, add the repository URL as a marketplace,
+   install your department's plugin, and turn auto-update on. Run one skill to
+   confirm it behaves exactly as the local copy did.
+4. Have one teammate install it the same way. Push a small wording edit to a
+   skill, then have them run it and confirm the edit arrived.
+5. Append the three-question self-review step to one heavily used skill. Accept or
+   reject its first proposed change, and check the accepted change reaches the
+   teammate's machine.
+</Exercise>
+
+## Further reading
+
+- [Greg Isenberg · Why Skill Chaining will 10x your Claude/Codex](https://www.youtube.com/watch?v=xHsftiyT9pQ), the walkthrough this guide draws on
+- [Anthropic · plugins documentation](https://docs.claude.com/en/docs/claude-code/plugins), how plugins and marketplaces install
+- [Anthropic · agent skills documentation](https://docs.claude.com/en/docs/claude-code/skills), how skill files load and run
