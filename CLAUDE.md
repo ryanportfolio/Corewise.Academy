@@ -74,13 +74,17 @@ Topical reference lives in `.claude/reference/`. Consult BEFORE non-trivial work
 
 | File | Covers |
 |---|---|
-| `secrets.md` | Env var names + purpose |
-| `architecture.md` | System flow, auth, state |
 | `pitfalls.md` | Accumulated gotchas |
-| `commands.md` | Build / dev / test commands |
-| `tech-stack.md` | Non-default picks + why |
 | `deployment.md` | Deploy target, artifacts |
+| `copy-rules.md` | Editorial rulings for every guide and page; canonical |
 | `voice.md` | House voice for site/guide prose; loaded by the `writing` skill |
+| `geo-audit.md` | The willaicite scoring the site holds at 100/100 |
+| `prompting-newest-claude-models.md` | Writing system prompts for Opus 4.5 and later |
+| `design-learnings.html`, `design-study/` | Studied reference sites; consult before design work |
+
+From the starter's set, not written here yet: `secrets.md`, `architecture.md`,
+`commands.md`, `tech-stack.md`. Write one when it has something to hold; until
+then there is no file to read.
 
 New quirk bites → `/recall save <text>`.
 
