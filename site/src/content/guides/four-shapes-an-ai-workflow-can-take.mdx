@@ -1,0 +1,153 @@
+---
+title: Four shapes an AI workflow can take
+description: 'Agent workflows run one step after another by default, which is the slowest shape. Ask at each step whether it needs the result of the step before it, then re-shape the work: fan out independent steps, route requests down branches, loop until a check passes, and cap what each shape can waste.'
+track: agents
+level: practitioner
+number: 46
+minutes: 6
+tags: ['automation', 'planning', 'cost control']
+objectives:
+  - 'Name the shape a workflow is running (chain, fan-out, branch, or loop) from a list of its steps.'
+  - 'Run the wait test: ask at each step whether it needs the result of the step before it, and flag the waits that earn nothing.'
+  - 'Restructure a chain so the steps that fail the wait test run at the same time.'
+  - 'Guard each shape against its failure mode: cheap-to-retry tasks for a fan-out, about five routes for a branch, an iteration cap for a loop.'
+prerequisites:
+  - slug: split-big-ai-tasks-into-steps-and-checks
+    note: 'Introduces mapping a task into jobs and arrows; this guide names the shapes those maps take.'
+sources:
+  - url: https://www.youtube.com/watch?v=5nB8Rs4l0_M
+    creator: Austin Marchese
+    video: 'You''re Prompting Claude Wrong. Use this Stanford Method Instead'
+    timestamps: ['0:37', '1:56', '5:22', '6:03', '7:04', '9:57', '10:07', '10:55', '11:24']
+selfCheck:
+  - q: 'A five-step workflow runs one step after another and feels slow. What question do you ask at each step, and what does a no tell you?'
+    a: 'The wait test: does this step need the result of the step before it? A no means the step is waiting for something it never uses, so the wait earns nothing. Run that step at the same time as the one before it. In the report example, researching Google does not need the YouTube results, so both searches run at once and the workflow finishes in about half the time.'
+  - q: 'Why is a failure inside a fan-out harder to notice than a failure inside a chain?'
+    a: 'A chain stops at the broken step, so the break is obvious: nothing after it runs. In a fan-out, each agent works alone with no view of the others; when one fails, the rest keep going and the merge step still produces something, so the workflow looks finished with a piece missing. That is why fan-outs suit tasks where one bad result is cheap, and why the merged output deserves a check.'
+  - q: 'What guard does every loop need before you walk away from it, and what happens without one?'
+    a: 'A maximum number of iterations, after which the loop stops and reports a fail instead of trying again. Without the cap, a check that never passes reruns the work forever; one of Marchese''s clients slept through exactly that and woke to thousands of dollars of model usage.'
+status: review
+lastUpdated: 2026-08-20
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+
+<Chalk>a step should wait only for what it needs</Chalk>
+
+<p class="lede">
+Every workflow you hand an agent has a shape, and the default shape, one step after
+another, is usually the slowest one. Austin Marchese, who builds client systems on
+Claude, took a course by Andrew Ng, the Stanford AI professor, and came back with a
+short vocabulary for those shapes and a one-question test that finds the wasted time
+in yours. <a href="/guides/split-big-ai-tasks-into-steps-and-checks/">Split big AI
+tasks into steps and checks</a> showed how to break one big task into jobs and mark
+which job depends on which; this guide names the shapes those maps take, and what
+breaks each one.
+</p>
+
+## <span class="sec-no">01</span>Every workflow has a shape
+
+Take a task like writing a report on the current state of AI. Written as a to-do
+list, it reads: research YouTube, research Google, write the report, review it, send
+it. Give that list to an agent and it runs exactly as written, each step starting
+when the one before it finishes. That shape is a chain.
+
+The chain is what you get whenever you describe work in the order it occurred to
+you, which is why almost everything starts as one. <a
+href="/guides/expertise-you-can-install/">Skills</a> are workflows too: every skill
+file you write runs as one of these shapes, whether you chose the shape or not.
+
+## <span class="sec-no">02</span>The wait test
+
+<PullQuote
+  quote="Does this actually need the result of the one before it?"
+  creator="Austin Marchese"
+  video="You're Prompting Claude Wrong. Use this Stanford Method Instead"
+  href="https://www.youtube.com/watch?v=5nB8Rs4l0_M"
+  timestamp="1:59"
+/>
+
+Walk the chain step by step and ask that question at each one. A yes means the wait
+earns its place: writing the report needs both piles of research, so it waits. A no
+means the step fails the test: it is waiting for something it never uses.
+Researching Google does not need the YouTube results, so the two searches can run at
+the same time.
+
+A failed wait costs nothing to fix: run the step alongside the one it was waiting
+on. In the report example, running the two searches at once finishes the workflow in
+about half the time, with no change to what any step does.
+
+## <span class="sec-no">03</span>The four shapes
+
+| Shape | How it runs | Reach for it when |
+| --- | --- | --- |
+| Chain | One step after another, each fed by the last | Every new workflow; easiest to build and test |
+| Fan-out | Several agents work at the same time, results merge into one step | Steps that fail the wait test: parallel research, code review from several angles |
+| Branch | One entry point sends each request down the route that fits it | One skill serving a few related jobs |
+| Loop | Do the work, check it, redo it until the check passes | Output with a clear pass or fail: builds, tests, style rules |
+
+The shapes are building blocks, and a real workflow mixes them: a fan-out can feed a
+loop, and each route of a branch can hold its own chain.
+
+Two of them deserve a closer look. A branch is how one skill serves several jobs:
+Marchese runs a skill that reads the conversation and picks one of a few routes:
+improve a skill from recent history, audit the whole system, or mine past chats for
+skills worth creating. One command, several destinations.
+
+The loop is the shape with its own guide: <a
+href="/guides/loop-the-agent-until-the-work-passes/">Loop the agent until the work
+passes</a> builds one part by part. The check is the piece that makes it work: a
+loop without a clear pass-or-fail verdict has no way to stop.
+
+## <span class="sec-no">04</span>What breaks each shape
+
+**Chain: one broken step stops everything.** Slow by design, and brittle: if step
+three fails, steps four and five never run. Both defects are acceptable, because
+the chain's job is to be the prototype. Get the work right in a chain first, then
+re-shape it.
+
+**Fan-out: failures are silent, and independence can be false.** Each agent in a
+fan-out works alone, with no view of what the others are doing. Two agents can do
+the same work twice, or one can miss information it needed, because nothing
+connects them mid-run. And when one fails, the rest keep going, so the workflow looks finished
+with a piece missing instead of stopping at the break the way a chain does. The
+guards: fan out only steps the wait test shows are truly independent, and prefer
+tasks where one bad result is cheap to redo.
+
+**Branch: routes multiply until nobody can follow them.** The first branch feels so
+useful that the next ten follow, and one skill ends up trying to route everything
+you do. Keep a branch to about five routes; past that, ask the model whether the
+skill should split into several.
+
+**Loop: it can run all night.** One of Marchese's clients went to sleep with a loop
+running; the check never passed, the loop never stopped, and he woke to thousands of
+dollars of model usage. Every loop gets a maximum number of iterations, after which
+it stops and reports a fail instead of trying again. <a
+href="/guides/stop-hitting-your-token-limit/">Stop hitting your token limit</a>
+covers what that burn looks like from the billing side.
+
+## <span class="sec-no">05</span>Start as a chain, then re-shape
+
+Build every new workflow as a chain, because a chain is the easiest shape to test:
+run it, watch it break at a visible step, fix that step. Once it works end to end,
+run the wait test and
+upgrade only the parts the test flags: independent steps become a fan-out, a
+redo-until-good step becomes a loop, a growing pile of similar skills becomes one
+branch.
+
+<Exercise>
+1. Pick a workflow or skill you run often and write it as a numbered list of steps,
+   one per line.
+2. Run the wait test: at each step, write yes if it needs the result of the step
+   before it, no if it does not.
+3. Re-shape it. Steps marked no run at the same time. Any redo-until-good step gets
+   a pass-or-fail check and a maximum number of iterations. If the workflow routes
+   requests, count the routes; past five, ask the model whether to split it.
+</Exercise>
+
+## Further reading
+
+- [Austin Marchese · You're Prompting Claude Wrong. Use this Stanford Method Instead](https://www.youtube.com/watch?v=5nB8Rs4l0_M), the video this guide distills
+- [Anthropic · Claude Code subagents documentation](https://docs.claude.com/en/docs/claude-code/sub-agents), the mechanics behind fan-out agents and why they cannot see each other
