@@ -26,7 +26,7 @@ selfCheck:
     a: 'A chain stops at the broken step, so the break is obvious: nothing after it runs. In a fan-out, each agent works alone with no view of the others; when one fails, the rest keep going and the merge step still produces something, so the workflow looks finished with a piece missing. That is why fan-outs suit tasks where one bad result is cheap, and why the merged output deserves a check.'
   - q: 'What guard does every loop need before you walk away from it, and what happens without one?'
     a: 'A maximum number of iterations, after which the loop stops and reports a fail instead of trying again. Without the cap, a check that never passes reruns the work forever; one of Marchese''s clients slept through exactly that and woke to thousands of dollars of model usage.'
-status: review
+status: published
 lastUpdated: 2026-08-20
 ---
 
