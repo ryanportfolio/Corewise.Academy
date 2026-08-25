@@ -1,0 +1,198 @@
+---
+title: Audit what your agent saved to memory
+description: 'Theo let Claude Code save memories on its own, then audited them: 45 files, written three times more often than read, most never opened again. How to run the same audit on your machine, the three ways saved memories rot, and the ladder that finds a better home for each lesson.'
+track: agents
+level: practitioner
+number: 47
+minutes: 7
+tags: ['memory', 'instruction files', 'claude code']
+objectives:
+  - 'Run the memory audit: ask the agent what it has saved about your projects and how often each file is actually read.'
+  - 'Sort saved memories into the three rot categories: duplicates of the instruction file, records of finished work, and snapshots of a moment.'
+  - 'Place a repeated agent mistake on the four-rung ladder: remove it in the code, catch it with an automated check, write a rule or skill, or add a human review.'
+  - 'Decide which memories earn a permanent home: lessons that are not in the code and cannot be derived from it.'
+prerequisites:
+  - slug: turn-repeated-fixes-into-rules
+    note: 'Introduces encoding repeated fixes as lint rules, CI checks, and instruction-file lines; this guide orders those options and adds the audit that shows why memory ranks last.'
+sources:
+  - url: https://www.youtube.com/watch?v=Jf54k7tFeEc
+    creator: Theo (t3.gg)
+    video: "Turn off Claude Code's Memory"
+    timestamps: ['3:22', '5:02', '8:39', '13:15', '17:15', '21:26', '21:40', '24:12', '28:15', '31:52', '38:26']
+selfCheck:
+  - q: 'Theo found 80 sessions had written memories while 19 had read one, and 26 of 45 files had never been read at all. What does that ratio tell you about an automatic memory system?'
+    a: 'The system optimizes for capture, not for use. Every write costs tokens and adds a file a future session might load, but if almost nothing is ever read back, the store is a cost with no return. And the unread files are worse than dead weight: they still shape behavior when a session does load one, and by then many describe a codebase that no longer exists.'
+  - q: 'Name the three rot categories and why the third one is the most dangerous.'
+    a: 'Duplicates of the instruction file, records of finished work, and snapshots of a moment. The third is the most dangerous because it captures a moment: a bug that has since been fixed, a plan that shipped or was dropped, a tool version that has since updated. A duplicate wastes space and a finished-work record wastes attention, but a stale snapshot actively steers the agent toward a world that is gone.'
+  - q: 'The agent keeps making the same mistake. In what order do you try fixes, and when does writing a rule become the right answer?'
+    a: 'First try to remove the mistake in the code itself, through architecture or data structures that make it impossible. If that fails, add a lint rule, test, or CI check so the agent discovers the failure before you do. Only when neither works do you write a rule or skill, and a human review is the last resort behind that. A rule is the right answer only after the two stronger rungs have been tried and failed, because rules depend on being read and followed while the first two rungs enforce themselves.'
+status: draft
+lastUpdated: 2026-08-25
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+
+<Chalk>a memory earns its keep when it gets read</Chalk>
+
+<p class="lede">
+Claude Code can save notes for itself: small files it writes during a session so the
+next session starts knowing what this one learned. Theo, who runs the t3.gg channel
+and builds the agent app T3 Code, left that feature on for months across his
+machines, then sat down on stream to read what it had collected. He found 45 files
+on one project alone, written three times more often than they were read, and
+concluded on camera that the whole store was garbage. This guide walks through what
+he found, how to run the same audit on your own machine, and where each lesson
+should live instead.
+</p>
+
+## <span class="sec-no">01</span>Run the audit
+
+The audit takes two prompts. Ask the agent what memories it has saved about your
+project, and read every one. Then ask it to check its own transcripts for how often
+those files are actually opened.
+
+Theo's numbers from the second prompt: across 355 sessions on one machine, 80
+sessions had written or edited a memory while only 19 had ever opened one. Of the
+45 files, 26 had never been read back at all.
+
+<PullQuote
+  quote="The memories get written far more than they get read."
+  creator="Theo (t3.gg)"
+  video="Turn off Claude Code's Memory"
+  href="https://www.youtube.com/watch?v=Jf54k7tFeEc"
+  timestamp="21:26"
+/>
+
+That ratio is the whole verdict. A memory system earns its keep when a future
+session reads a note and avoids a mistake. A store that is written three times more
+often than it is read is a diary, not a memory, and each unread file still costs
+something: it sits where a session might load it, and what it says drifts further
+from the truth every week.
+
+## <span class="sec-no">02</span>Three ways a saved memory rots
+
+Reading his 45 files, Theo sorted the rot into three piles:
+
+| Category | Example from his audit | Why it hurts |
+| --- | --- | --- |
+| Duplicates of the instruction file | Ten files repeating rules from the instruction file every session already reads | Two copies of one rule drift apart; the agent reads the stale one |
+| Records of finished work | Twelve shipped feature designs, complete with the pull request numbers | The work is finished; the note keeps presenting it as open |
+| Snapshots of a moment | An out-of-date tool that has since been updated, a leak that has since been fixed, a comparison of two plans from three months earlier | The moment passed; the note still steers the agent by it |
+
+The pattern across all three: the agent saved what happened, not what stays true.
+A pull request number, a bug that got fixed, a plan that shipped. None of it is
+knowledge a future session needs, and the third pile is the dangerous one, because
+a session that loads it inherits a picture of the codebase that is months old.
+
+## <span class="sec-no">03</span>The code is already the record
+
+The clip that opens Theo's video comes from Armin Ronacher, the creator of the
+Flask web framework, in conversation with Mario Zechner, who built the minimal
+coding agent Pi.
+
+<PullQuote
+  quote="For coding, I don't want a memory system. Code is the ground truth."
+  creator="Armin Ronacher"
+  video="Turn off Claude Code's Memory"
+  href="https://www.youtube.com/watch?v=Jf54k7tFeEc"
+  timestamp="3:22"
+/>
+
+His argument: a codebase is already a complete, current record of how the project
+works, and it is the one record that cannot go stale, because it is the thing
+itself. Every extra store of facts about the code is a second surface to maintain,
+and every fact written twice can drift. Code comments show the failure in
+miniature: a comment explains why a line works a certain way, the line changes, the
+comment stays, and now it misleads every reader. A memory store is that problem
+multiplied by every file in it.
+
+Ronacher's ceiling for project memory is a map: a list of folders with short
+descriptions, cheap for the agent itself to maintain. Beyond that, he argues,
+current models read a file or two and pick up the structure and style on their own.
+Fancier machinery, indexing the codebase so relevant pieces can be fetched for the
+agent by meaning, does not survive his test either: he wagers that nobody adding it
+has measured whether it improves output, and that it does not.
+
+## <span class="sec-no">04</span>Four homes for one lesson
+
+The audit tells you what to delete. The harder question is where each surviving
+lesson should live, and the video's answer is a ladder Theo borrows from an
+engineer at Cursor: when you correct your agent, work out how to never make that
+correction again, trying the strongest home first.
+
+1. **The code itself.** Restructure so the mistake cannot happen. Shared types
+   between backend and frontend remove a whole category of mismatch bugs; T3 Code
+   shares one data layer across web, desktop, and mobile so a change cannot break
+   one platform quietly.
+2. **An automated check.** When the code cannot forbid the mistake, a lint rule,
+   a test, or a check that runs on every proposed change can catch it. Theo capped
+   how much data his app may send to load one conversation, as a check on every
+   change, after repeated regressions; now his agents hit the failing check and fix
+   the regression before telling him the work is done.
+3. **A rule or skill.** Only when both fail does the lesson go into an instruction
+   file or a skill, and skills fit process best: how to deploy, how to reach a
+   server, things outside the code's reach. <a
+   href="/guides/turn-repeated-fixes-into-rules/">Turn repeated fixes into
+   rules</a> covers writing these well.
+4. **A human review.** The last resort, and a sign the first three rungs have not
+   been tried hard enough.
+
+Automatic memory does not appear on the ladder at all. Every lesson it captures
+belongs on some rung, chosen deliberately, and the rungs enforce themselves in a
+way a saved note never can: a type error blocks the build whether or not anyone
+reads it.
+
+One more steer for rung three. Theo's instruction files spend fewer lines on
+prohibitions than on direction: what the product is, what makes it different, what
+he refuses to compromise on. A model told that the app must work over remote
+connections tests that case without being asked. He quotes Robert C. Martin's
+line that imposing human discipline on an agent is probably a mistake, but imposing
+human values is not. <a href="/guides/brief-the-model/">Brief the model like a
+brilliant new hire</a> makes the same case from the prompting side.
+
+## <span class="sec-no">05</span>What deserves to survive
+
+The audit and the ladder leave a small pile worth keeping:
+lessons that are not in the code and cannot be put there. A quirk of one machine's
+setup. The reason a dependency is pinned. Where the deploy credentials live. For
+that pile, the failures Theo found suggest three tests, applied at write time:
+
+- **Would a fresh session find this by reading the code?** Then the code is the
+  home, and the note is a future duplicate.
+- **Does it describe a moment or a standing truth?** Moments rot; only standing
+  truths go in.
+- **Did a person approve the save?** Theo's slop accumulated precisely because the
+  agent decided alone what was worth remembering.
+
+A memory that passes all three does better committed to the repository than hidden
+in a per-machine store, so it travels with the project and shows up in review like
+any other change. <a href="/guides/firmware-not-folklore/">Every new repo starts with
+your lessons</a> builds that committed layer, and <a
+href="/guides/keep-a-growing-knowledge-base-accurate/">Keep a growing knowledge
+base accurate</a> covers catching the drift in what remains. For agents that need
+long-lived stores at scale, <a href="/guides/give-your-agent-a-memory/">Give your
+agent a memory</a> covers designing and pruning those stores.
+
+Memory also keeps a defensible role outside coding. Ronacher runs a Slack bot that
+appends every exchange to one log file and searches it on demand, and Theo grants
+that chat assistants benefit from recalling personal context, where no code exists
+to be the ground truth. The skepticism in this guide is scoped to codebases, where
+a better record already exists.
+
+<Exercise>
+1. Ask your agent: "What memories do you have saved about this project? List every
+   file and summarize each." Read them all.
+2. Ask it to check its transcripts: how many sessions wrote a memory, and how many
+   ever read one back?
+3. Sort each memory into the three rot categories, or the keep pile if it passes
+   all three write-time tests.
+4. For each keeper, walk the ladder: can the code enforce it? A check? Only then a
+   rule. Move it to the strongest rung it fits, then delete the store's copy.
+</Exercise>
+
+## Further reading
+
+- [Theo · Turn off Claude Code's Memory](https://www.youtube.com/watch?v=Jf54k7tFeEc), the video this guide distills
+- [Anthropic · Manage Claude's memory](https://docs.claude.com/en/docs/claude-code/memory), the official docs for the feature Theo audited, including how to disable it
