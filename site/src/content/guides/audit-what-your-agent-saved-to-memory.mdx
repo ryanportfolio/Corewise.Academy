@@ -1,16 +1,17 @@
 ---
 title: Audit what your agent saved to memory
-description: 'Theo let Claude Code save memories on its own, then audited them: 45 files, written three times more often than read, most never opened again. How to run the same audit on your machine, the three ways saved memories rot, and the ladder that finds a better home for each lesson.'
+description: 'Theo let Claude Code save memories on its own, then audited them: 45 files, written three times more often than read, most never opened again. How to run the same audit on your machine, the three ways saved memories rot, the ladder that finds a better home for each lesson, and what a harness built to pass the audit looks like.'
 track: agents
 level: practitioner
 number: 47
-minutes: 7
+minutes: 8
 tags: ['memory', 'instruction files', 'claude code']
 objectives:
   - 'Run the memory audit: ask the agent what it has saved about your projects and how often each file is actually read.'
   - 'Sort saved memories into the three rot categories: duplicates of the instruction file, records of finished work, and snapshots of a moment.'
   - 'Place a repeated agent mistake on the four-rung ladder: remove it in the code, catch it with an automated check, write a rule or skill, or add a human review.'
   - 'Decide which memories earn a permanent home: lessons that are not in the code and cannot be derived from it.'
+  - 'Map each of the video''s criticisms to the countermeasure that answers it: a committed reviewed store, a save-time gate, read-count audits, and a direction block.'
 prerequisites:
   - slug: turn-repeated-fixes-into-rules
     note: 'Introduces encoding repeated fixes as lint rules, CI checks, and instruction-file lines; this guide orders those options and adds the audit that shows why memory ranks last.'
@@ -33,6 +34,7 @@ lastUpdated: 2026-08-25
 import PullQuote from '../../components/PullQuote.astro';
 import Exercise from '../../components/Exercise.astro';
 import Chalk from '../../components/Chalk.astro';
+import FirmwareCta from '../../components/FirmwareCta.astro';
 
 <Chalk>a memory earns its keep when it gets read</Chalk>
 
@@ -181,6 +183,42 @@ that chat assistants benefit from recalling personal context, where no code exis
 to be the ground truth. The skepticism in this guide is scoped to codebases, where
 a better record already exists.
 
+For codebases, the practice this video ends on is the one we recommend: turn the
+automatic feature off. In Claude's settings it is a single switch, labeled
+"Generate memory from chats"; Theo closes the video disabling it across every
+machine he owns. Turning it off loses nothing the write-time tests would have
+kept, because anything that passes them belongs in the repository anyway.
+
+## <span class="sec-no">06</span>Built to pass the audit
+
+The video's criticisms double as a checklist, and a harness can be designed
+against it. <a href="https://github.com/ryanportfolio/AI-Firmware">AI
+Firmware</a>, the template this catalogue's own lessons live in (<a
+href="/guides/firmware-not-folklore/">Every new repo starts with your
+lessons</a> covers it), answers each charge with a mechanism rather than a
+policy:
+
+| Charge from the video | The firmware's answer |
+| --- | --- |
+| Memory hides in a per-machine file nobody reviews | Project knowledge lives in a committed reference folder inside the repo; every entry arrives as a reviewable change and travels to every machine |
+| The agent decides alone what to save | A save passes three tests first: not findable by reading the code, a standing truth rather than a moment, confirmed by a person |
+| Written three times more often than read | An audit script counts writes against reads for every reference file and skill from the machine's own session history, and flags what is never read |
+| Stale snapshots steer later sessions | Moments are banned at save time (pull request numbers, task status, tool versions); every entry carries its date, and stale ones are replaced rather than appended to |
+| Rules pile up as prose | The post-task review prefers a check the machine enforces (a lint rule, a hook, a script) over a sentence asking the agent to behave; prose is the fallback, same order as the ladder |
+| Instructions list don'ts instead of direction | Project setup asks what the product is and what it refuses to compromise on, and writes the answer at the top of the always-loaded file |
+
+The same design keeps the harness small. Its always-loaded layer is measured,
+not guessed: a health-check script prints the token weight of everything that
+rides along every turn (about 3,500 tokens) and the per-skill share of it, and
+skills a project will never use are switched off so their descriptions stop
+loading. Everything heavier loads on demand, when a task matches it.
+
+Durability is git doing what git already does. Each learning is one commit, so
+one step rolls it back; a lost machine loses nothing; and improvements flow back
+to the template, so the next repository starts with every lesson the last one
+paid for. The rule holding it together is the same restraint the audit teaches:
+a new rule, skill, or entry must earn its place, and pruning beats accreting.
+
 <Exercise>
 1. Ask your agent: "What memories do you have saved about this project? List every
    file and summarize each." Read them all.
@@ -191,6 +229,8 @@ a better record already exists.
 4. For each keeper, walk the ladder: can the code enforce it? A check? Only then a
    rule. Move it to the strongest rung it fits, then delete the store's copy.
 </Exercise>
+
+<FirmwareCta />
 
 ## Further reading
 
