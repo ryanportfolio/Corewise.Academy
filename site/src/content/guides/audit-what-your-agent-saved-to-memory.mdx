@@ -27,7 +27,7 @@ selfCheck:
     a: 'Duplicates of the instruction file, records of finished work, and snapshots of a moment. The third is the most dangerous because it captures a moment: a bug that has since been fixed, a plan that shipped or was dropped, a tool version that has since updated. A duplicate wastes space and a finished-work record wastes attention, but a stale snapshot actively steers the agent toward a world that is gone.'
   - q: 'The agent keeps making the same mistake. In what order do you try fixes, and when does writing a rule become the right answer?'
     a: 'First try to remove the mistake in the code itself, through architecture or data structures that make it impossible. If that fails, add a lint rule, test, or CI check so the agent discovers the failure before you do. Only when neither works do you write a rule or skill, and a human review is the last resort behind that. A rule is the right answer only after the two stronger rungs have been tried and failed, because rules depend on being read and followed while the first two rungs enforce themselves.'
-status: draft
+status: published
 lastUpdated: 2026-08-25
 ---
 
