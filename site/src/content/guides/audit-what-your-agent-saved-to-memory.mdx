@@ -51,11 +51,13 @@ should live instead.
 
 ## <span class="sec-no">01</span>Run the audit
 
-The audit takes two prompts. Ask the agent what memories it has saved about your
-project, and read every one. Then ask it to check its own transcripts for how often
-those files are actually opened.
+The audit takes two prompts, and the order matters. First ask the agent to check
+its own transcripts: how many past sessions wrote a memory, how many read one, and
+which files were never read. Count before opening anything, because the reading you
+are about to do gets recorded too, and it would mark every file as read. Then ask
+what memories it has saved about your project, and read every one.
 
-Theo's numbers from the second prompt: across 355 sessions on one machine, 80
+Theo's numbers from the counting prompt: across 355 sessions on one machine, 80
 sessions had written or edited a memory while only 19 had ever opened one. Of the
 45 files, 26 had never been read back at all.
 
@@ -184,10 +186,13 @@ to be the ground truth. The skepticism in this guide is scoped to codebases, whe
 a better record already exists.
 
 For codebases, the practice this video ends on is the one we recommend: turn the
-automatic feature off. In Claude's settings it is a single switch, labeled
-"Generate memory from chats"; Theo closes the video disabling it across every
-machine he owns. Turning it off loses nothing the write-time tests would have
-kept, because anything that passes them belongs in the repository anyway.
+automatic feature off. Theo closes the video disabling it across every machine he
+owns. In Claude Code, run the /memory command and switch auto memory off, which
+saves `autoMemoryEnabled: false` to your settings; the environment variable
+`CLAUDE_CODE_DISABLE_AUTO_MEMORY=1` does the same. The Claude chat apps keep a
+separate switch, "Generate memory from chats", for readers who want the same in
+chat. Turning it off loses nothing the write-time tests would have kept, because
+anything that passes them belongs in the repository anyway.
 
 ## <span class="sec-no">06</span>Built to pass the audit
 
@@ -220,10 +225,12 @@ paid for. The rule holding it together is the same restraint the audit teaches:
 a new rule, skill, or entry must earn its place, and pruning beats accreting.
 
 <Exercise>
-1. Ask your agent: "What memories do you have saved about this project? List every
-   file and summarize each." Read them all.
-2. Ask it to check its transcripts: how many sessions wrote a memory, and how many
-   ever read one back?
+1. Before opening anything, ask your agent to check its transcripts: how many
+   sessions wrote a memory, how many ever read one back, and which files were
+   never read? Counting comes first; reading the files first would record a fresh
+   read on every one.
+2. Then ask: "What memories do you have saved about this project? List every file
+   and summarize each." Read them all.
 3. Sort each memory into the three rot categories, or the keep pile if it passes
    all three write-time tests.
 4. For each keeper, walk the ladder: can the code enforce it? A check? Only then a
@@ -235,4 +242,4 @@ a new rule, skill, or entry must earn its place, and pruning beats accreting.
 ## Further reading
 
 - [Theo · Turn off Claude Code's Memory](https://www.youtube.com/watch?v=Jf54k7tFeEc), the video this guide distills
-- [Anthropic · Manage Claude's memory](https://docs.claude.com/en/docs/claude-code/memory), the official docs for the feature Theo audited, including how to disable it
+- [Anthropic · How Claude remembers your project](https://code.claude.com/docs/en/memory), the official docs for the feature Theo audited, including the auto memory toggle
