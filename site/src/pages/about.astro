@@ -13,7 +13,7 @@ const faq = [
   },
   {
     q: 'How I think about design',
-    a: 'First, simplicity: no one should be confused or have to guess. Complexity does not need to be complicated.\nNext, context and specificity when building is everything: vague goals produce bad results. Audience, purpose, and brand must be clearly defined.\nPreferences change with audience and situation.\nNever stop after just one pass from one model.',
+    a: '· Simplicity first: no one should be confused or have to guess. Complexity does not need to be complicated.\n\n· Context and specificity: vague goals produce bad results. Define audience, purpose, and brand.\n\n· Preferences change with audience and situation.\n\n· Never stop after one pass from one model.',
   },
 ];
 ---
@@ -38,6 +38,7 @@ const faq = [
             <a href="https://kinefractal.com">kinefractal.com</a><br />
             <a href="https://truenote.org">truenote.org</a> ·
             <a href="https://willaicite.com">willaicite.com</a><br />
+            <a href="https://layline.site">layline.site</a> ·
             <a class="gh" href="https://github.com/ryanportfolio">github.com/ryanportfolio</a>
             <span class="fullbuild"><a href="https://fullbuild.ai">fullbuild.ai</a> · <a href="https://savetokens.tips">savetokens.tips</a></span>
           </p>
@@ -56,6 +57,7 @@ const faq = [
         <li><a href="#sec-a400"><span class="idx-no">A-400</span><span class="idx-name">WillAICite · deterministic GEO audit</span><span class="idx-live"><span class="ext">willaicite.com ↗</span> LIVE</span></a></li>
         <li><a href="#sec-a500"><span class="idx-no">A-500</span><span class="idx-name">Method of construction</span><span class="idx-tag">METHOD</span></a></li>
         <li><a href="#sec-a600"><span class="idx-no">A-600</span><span class="idx-name">Works in progress</span><span class="idx-tag">TOOLING</span></a></li>
+        <li><a href="#sec-a650"><span class="idx-no">A-650</span><span class="idx-name">Harness-Firmware · the template the shop runs on</span><span class="idx-tag">TEMPLATE</span></a></li>
         <li><a href="#sec-a700"><span class="idx-no">A-700</span><span class="idx-name">Prototype register</span><span class="idx-tag">PROTOTYPES</span></a></li>
       </ol>
 
@@ -390,37 +392,21 @@ const faq = [
       </header>
       <div class="cols">
         <div class="main">
-          <div class="fig-row">
-            <div>
-              <div class="fig" id="fig-skills" aria-label="20 skill cells, one per skill"></div>
-              <p class="fig-cap narrow"><span class="fig-no">FIG 1</span><span id="skill-count">0</span> cells, one
-                per skill directory in the repo.</p>
-            </div>
-            <div class="side-copy">
-              <h3 class="sec-head">HARNESS-FIRMWARE</h3>
-              <p class="body-block small">A self-syncing template: an always-loaded kernel of rules, 31
-                on-demand skills, committed memory, and automatic checks that catch when it goes off track. One rule set
-                for both agent tools. Improvements flow both ways between the template and the repos it
-                spawns; the repo behind this site is one of them. Installable as a versioned plugin,
-                v1.2.0, without cloning the template.</p>
-              <p class="mono-link"><a href="https://github.com/ryanportfolio/Harness-Firmware">github.com/ryanportfolio/Harness-Firmware ↗</a></p>
-            </div>
-          </div>
           <h3 class="sec-head">LOCAL-CPU-ONLY-PTT</h3>
           <div class="fig" id="fig-ptt" aria-label="Offline dictation pipeline inside a boundary box"></div>
-          <p class="fig-cap"><span class="fig-no">FIG 2</span>Offline push-to-talk dictation for Windows:
+          <p class="fig-cap"><span class="fig-no">FIG 1</span>Offline push-to-talk dictation for Windows:
             microphone, voice activity detection, Whisper on CPU only, clipboard. The boundary box is the
             feature: no cloud, no network path, nothing leaves the machine.
             <a href="https://github.com/ryanportfolio/Local-CPU-only-PTT">Public repo ↗</a></p>
           <h3 class="sec-head">GITHELP</h3>
           <div class="fig" id="fig-githelp" aria-label="Discussion-scouting pipeline with a normally-open human switch"></div>
-          <p class="fig-cap"><span class="fig-no">FIG 3</span>A workspace that scouts GitHub Discussions, ranks
+          <p class="fig-cap"><span class="fig-no">FIG 2</span>A workspace that scouts GitHub Discussions, ranks
             what's answerable, reads the full thread, and drafts a verified answer.</p>
           <div class="fig-row">
             <div class="fig" id="fig-pixelswarm" aria-label="Maimcoil drawn entirely in phantom line"></div>
             <div class="side-copy">
               <h3 class="sec-head">MAIMCOIL</h3>
-              <p class="fig-cap"><span class="fig-no">FIG 4</span>A survivors-style action game headed for Steam:
+              <p class="fig-cap"><span class="fig-no">FIG 3</span>A survivors-style action game headed for Steam:
                 Tauri 2 + React with a Rust/Steamworks bridge, ~47k lines of game code. A playable
                 prototype is live at <a href="https://corewise.video/play">corewise.video/play ↗</a>.</p>
             </div>
@@ -430,10 +416,45 @@ const faq = [
           <p class="rail-head">TOOLING</p>
           <div class="rail-rule"></div>
           <dl>
-            <dt>HARNESS-FIRMWARE</dt><dd>PUBLIC · PLUGIN v1.2.0 · 31 SKILLS</dd>
             <dt>LOCAL-CPU-ONLY-PTT</dt><dd>PUBLIC · OFFLINE · CPU-ONLY WHISPER · <a href="https://github.com/ryanportfolio/Local-CPU-only-PTT">REPO ↗</a></dd>
             <dt>GITHELP</dt><dd>PRIVATE · HUMAN-GO GATE</dd>
             <dt>MAIMCOIL</dt><dd>STEAM GAME · PROTOTYPE · <a href="https://corewise.video/play">PLAY ↗</a></dd>
+          </dl>
+        </aside>
+      </div>
+    </section>
+
+    <!-- A-650 · Harness-Firmware -->
+    <section class="sheet" data-sheet="A-650" id="sec-a650">
+      <header class="sheet-head">
+        <div>
+          <p class="sheet-no">A-650</p>
+          <h2 class="sheet-title">HARNESS-FIRMWARE</h2>
+        </div>
+        <p class="sheet-sub">THE TEMPLATE THE SHOP RUNS ON</p>
+      </header>
+      <div class="cols">
+        <div class="main">
+          <p class="lede">Every repo above starts from the same self-syncing template: an always-loaded
+            kernel of rules, 31 on-demand skills, committed memory, and automatic checks that catch when
+            it goes off track.</p>
+          <div class="fig" id="fig-skills" aria-label="31 skill cells, one per skill"></div>
+          <p class="fig-cap"><span class="fig-no">FIG 1</span><span id="skill-count">0</span> cells, one
+            per skill directory in the repo.</p>
+          <p class="body-block small">One rule set for both agent tools. Improvements flow both ways
+            between the template and the repos it spawns; the repo behind this site is one of them.
+            Installable as a versioned plugin, v1.2.0, without cloning the template.</p>
+          <p class="mono-link"><a href="https://github.com/ryanportfolio/Harness-Firmware">github.com/ryanportfolio/Harness-Firmware ↗</a></p>
+        </div>
+        <aside class="rail">
+          <p class="rail-head">HARNESS-FIRMWARE</p>
+          <a class="rail-url" href="https://github.com/ryanportfolio/Harness-Firmware">github.com/ryanportfolio/Harness-Firmware ↗</a>
+          <div class="rail-rule"></div>
+          <dl>
+            <dt>STATUS</dt><dd>PUBLIC</dd>
+            <dt>SKILLS</dt><dd>31</dd>
+            <dt>PLUGIN</dt><dd>v1.2.0 · INSTALLS WITHOUT CLONING</dd>
+            <dt>SYNC</dt><dd>TWO-WAY · TEMPLATE ↔ SPAWNED REPOS</dd>
           </dl>
           <p class="rail-note">Instant repo with durable memory system</p>
         </aside>
@@ -450,7 +471,7 @@ const faq = [
         <p class="sheet-sub">PUBLIC REPOS · SUMMER 2026</p>
       </header>
       <div class="reg-wrap">
-          <p class="lede">Smaller builds shipped alongside the four live systems. Every repo is public.</p>
+          <p class="lede">Other projects</p>
           <table class="rev reg">
             <thead><tr><th>MARK</th><th>WORK</th><th>DESCRIPTION</th></tr></thead>
             <tbody>
