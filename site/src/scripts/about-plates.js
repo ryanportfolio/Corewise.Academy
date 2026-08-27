@@ -718,29 +718,25 @@ function initStemma(host) {
   onEnter(host, prepDraw(svg, { stagger: 9, dur: 460 }));
 }
 
-/* ------------------------------------------------------------ skill grid - */
-function initSkillGrid(host, counter) {
-  const cols = 8, size = 20, gap = 8;
-  const w = cols * (size + gap), rows = Math.ceil(31 / cols);
-  const svg = svgRoot(host, w, rows * (size + gap) + 6, true);
-  const cells = [];
-  for (let i = 0; i < 31; i++) {
-    const c = i % cols, r0 = Math.floor(i / cols);
-    const x = 2 + c * (size + gap), y = 4 + r0 * (size + gap);
-    const g = el('g', {}, svg);
-    el('rect', { x, y, width: size, height: size, class: 'st-carbon', fill: 'none' }, g);
-    el('line', { x1: x + 4, y1: y + size - 4.5, x2: x + size - 4, y2: y + size - 4.5, class: 'st-graphite' }, g);
-    cells.push(g);
-  }
-  if (reduced) { counter.textContent = '31'; return; }
-  cells.forEach((c) => { c.style.opacity = '0'; });
-  new IntersectionObserver((es, io) => {
-    es.forEach((e) => {
-      if (!e.isIntersecting) return;
-      io.unobserve(host);
-      cells.forEach((c, i) => setTimeout(() => { c.style.transition = 'opacity 160ms ease'; c.style.opacity = '1'; counter.textContent = String(i + 1); }, 120 + i * 55));
-    });
-  }, { threshold: 0.4 }).observe(host);
+/* -------------------------------------------------- harness conditions - */
+function initHarnessSystem(host) {
+  const stages = [
+    ['LOAD CONTEXT', 'Only the project knowledge this task needs'],
+    ['SMALL STEPS', 'One inspectable change at a time'],
+    ['CHECK EVIDENCE', 'Tests, renders, and runtime behavior'],
+    ['FRESH REVIEW', 'A clean workspace or direct cross-model review'],
+    ['FAILURE RECOVERY', 'Keep the finding, change the approach, preserve progress'],
+  ];
+  const bandH = 26, gap = 16, x0 = 4, boxW = 178, w = 560;
+  const svg = svgRoot(host, w, 8 + stages.length * (bandH + gap) - gap + 8);
+  stages.forEach(([label, sub], i) => {
+    const y = 8 + i * (bandH + gap);
+    el('rect', { x: x0, y, width: boxW, height: bandH, class: 'st-carbon stage', fill: 'none' }, svg);
+    el('text', { x: x0 + boxW / 2, y: y + bandH / 2 + 3.5, class: 'annf', 'text-anchor': 'middle' }, svg).textContent = label;
+    el('text', { x: x0 + boxW + 16, y: y + bandH / 2 + 3.5, class: 'ann' }, svg).textContent = sub;
+    if (i) el('line', { x1: x0 + boxW / 2, y1: y - gap, x2: x0 + boxW / 2, y2: y, class: 'st-carbon-thin pulse-path' }, svg);
+  });
+  onEnter(host, prepDraw(svg, { stagger: 30, dur: 420 }));
 }
 
 /* ------------------------------------------------------- ptt + githelp --- */
@@ -1030,7 +1026,7 @@ export function boot() {
   gate('daybar', () => initDayBar($('fig-daybar')));
   gate('rings', () => initRings($('fig-rings')));
   gate('stemma', () => initStemma($('fig-stemma')));
-  gate('skills', () => initSkillGrid($('fig-skills'), $('skill-count')));
+  gate('skills', () => initHarnessSystem($('fig-harness')));
   gate('ptt', () => initPtt($('fig-ptt')));
   gate('githelp', () => initGithelp($('fig-githelp')));
   gate('pixel', () => initPixelswarm($('fig-pixelswarm')));

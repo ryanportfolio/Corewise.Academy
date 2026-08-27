@@ -57,7 +57,7 @@ const faq = [
         <li><a href="#sec-a400"><span class="idx-no">A-400</span><span class="idx-name">WillAICite · deterministic GEO audit</span><span class="idx-live"><span class="ext">willaicite.com ↗</span> LIVE</span></a></li>
         <li><a href="#sec-a500"><span class="idx-no">A-500</span><span class="idx-name">Method of construction</span><span class="idx-tag">METHOD</span></a></li>
         <li><a href="#sec-a600"><span class="idx-no">A-600</span><span class="idx-name">Works in progress</span><span class="idx-tag">TOOLING</span></a></li>
-        <li><a href="#sec-a650"><span class="idx-no">A-650</span><span class="idx-name">Harness-Firmware · the template the shop runs on</span><span class="idx-tag">TEMPLATE</span></a></li>
+        <li><a href="#sec-a650"><span class="idx-no">A-650</span><span class="idx-name">Harness-Firmware · how I engineer with AI</span><span class="idx-tag">TEMPLATE</span></a></li>
         <li><a href="#sec-a700"><span class="idx-no">A-700</span><span class="idx-name">Prototype register</span><span class="idx-tag">PROTOTYPES</span></a></li>
       </ol>
 
@@ -431,19 +431,25 @@ const faq = [
           <p class="sheet-no">A-650</p>
           <h2 class="sheet-title">HARNESS-FIRMWARE</h2>
         </div>
-        <p class="sheet-sub">THE TEMPLATE THE SHOP RUNS ON</p>
+        <p class="sheet-sub">HOW I ENGINEER WITH AI</p>
       </header>
       <div class="cols">
         <div class="main">
-          <p class="lede">Every repo above starts from the same self-syncing template: an always-loaded
-            kernel of rules, 31 on-demand skills, committed memory, and automatic checks that catch when
-            it goes off track.</p>
-          <div class="fig" id="fig-skills" aria-label="31 skill cells, one per skill"></div>
-          <p class="fig-cap"><span class="fig-no">FIG 1</span><span id="skill-count">0</span> cells, one
-            per skill directory in the repo.</p>
-          <p class="body-block small">One rule set for both agent tools. Improvements flow both ways
-            between the template and the repos it spawns; the repo behind this site is one of them.
-            Installable as a versioned plugin, v1.2.0, without cloning the template.</p>
+          <p class="lede">AI can write code. Reliable software still needs the right context, clear
+            limits, real evidence, fresh review, and a way to recover when a plan fails.</p>
+          <p class="body-block">Harness Firmware is the open-source repository system I built around
+            Claude Code and Codex. It loads relevant project knowledge, keeps work small enough to
+            inspect, checks the result in realistic conditions, calls fresh reviewers, and preserves
+            recovery paths.</p>
+          <div class="fig" id="fig-harness" aria-label="Five ways the repository improves the model's working conditions"></div>
+          <p class="fig-cap"><span class="fig-no">FIG 1</span>Five ways the repository improves the
+            model's working conditions.</p>
+          <p class="body-block">The model provides capability. I design the conditions around it and set
+            the goals, permissions, proof bar, and release decision. Every new repo starts with that
+            engineering system already inside.</p>
+          <p class="body-block small">One canonical skill source supports Claude Code and Codex through
+            runtime-specific adapters. Confirmed project lessons stay with the repository. Reviewed
+            improvements can move into future projects.</p>
           <p class="mono-link"><a href="https://github.com/ryanportfolio/Harness-Firmware">github.com/ryanportfolio/Harness-Firmware ↗</a></p>
         </div>
         <aside class="rail">
@@ -451,12 +457,13 @@ const faq = [
           <a class="rail-url" href="https://github.com/ryanportfolio/Harness-Firmware">github.com/ryanportfolio/Harness-Firmware ↗</a>
           <div class="rail-rule"></div>
           <dl>
-            <dt>STATUS</dt><dd>PUBLIC</dd>
-            <dt>SKILLS</dt><dd>31</dd>
-            <dt>PLUGIN</dt><dd>v1.2.0 · INSTALLS WITHOUT CLONING</dd>
-            <dt>SYNC</dt><dd>TWO-WAY · TEMPLATE ↔ SPAWNED REPOS</dd>
+            <dt>STATUS</dt><dd>OPEN SOURCE · MIT</dd>
+            <dt>BUILT FOR</dt><dd>CLAUDE CODE · CODEX</dd>
+            <dt>SYSTEM INCLUDES</dt><dd>CONTEXT · METHODS · CHECKS · REVIEW · MEMORY · RECOVERY</dd>
+            <dt>HUMAN OWNS</dt><dd>GOALS · PERMISSIONS · QUALITY BAR · RELEASE</dd>
+            <dt>INSTALL</dt><dd>TEMPLATE · VERSIONED PLUGIN</dd>
           </dl>
-          <p class="rail-note">Instant repo with durable memory system</p>
+          <p class="rail-note">Start with the engineering system already inside</p>
         </aside>
       </div>
     </section>
