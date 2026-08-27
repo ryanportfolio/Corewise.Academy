@@ -721,10 +721,10 @@ function initStemma(host) {
 /* ------------------------------------------------------------ skill grid - */
 function initSkillGrid(host, counter) {
   const cols = 8, size = 20, gap = 8;
-  const w = cols * (size + gap), rows = Math.ceil(20 / cols);
+  const w = cols * (size + gap), rows = Math.ceil(31 / cols);
   const svg = svgRoot(host, w, rows * (size + gap) + 6, true);
   const cells = [];
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 31; i++) {
     const c = i % cols, r0 = Math.floor(i / cols);
     const x = 2 + c * (size + gap), y = 4 + r0 * (size + gap);
     const g = el('g', {}, svg);
@@ -732,7 +732,7 @@ function initSkillGrid(host, counter) {
     el('line', { x1: x + 4, y1: y + size - 4.5, x2: x + size - 4, y2: y + size - 4.5, class: 'st-graphite' }, g);
     cells.push(g);
   }
-  if (reduced) { counter.textContent = '20'; return; }
+  if (reduced) { counter.textContent = '31'; return; }
   cells.forEach((c) => { c.style.opacity = '0'; });
   new IntersectionObserver((es, io) => {
     es.forEach((e) => {
