@@ -1,0 +1,219 @@
+---
+title: Take a problem apart before AI solves it
+description: 'A language model reaches for the most familiar answer, and the better it sounds the less you check. Four staged prompts make it do the opposite: break the problem into parts, sort facts from assumptions, recombine the checked parts into options, and design cheap tests. You keep the judgment.'
+track: prompting
+level: practitioner
+number: 48
+minutes: 6
+tags: ['writing prompts', 'planning']
+objectives:
+  - 'Diagnose why a model left to itself answers with the conventional plan instead of the essential parts.'
+  - 'Decompose a problem into a hierarchy of parts with a prompt that bans advice and solutions.'
+  - 'Classify each part of a problem as a verified fact or an inherited assumption, and demand the evidence.'
+  - 'Design a test with the rule-out and keep-alive results written down before it runs.'
+prerequisites:
+  - slug: brief-the-model
+    note: 'Assumes the briefing fundamentals; each staged prompt here is a role, context, and a definition of done.'
+sources:
+  - url: https://www.youtube.com/watch?v=jPSirKTGTfo
+    creator: Sandeep Swadia
+    video: "Every High Performer Should Think In First Principles, Here's Why"
+    timestamps: ['1:51', '2:19', '3:11', '4:41', '4:52', '5:02', '5:59', '6:38', '6:59', '7:17', '10:03', '10:52', '11:44', '12:35', '13:56', '15:40', '16:11', '16:57', '17:55']
+selfCheck:
+  - q: 'Why does a model left to itself hand you the conventional plan instead of the essential parts?'
+    a: 'A language model answers with whatever best matches the patterns in its training data, so the most familiar answer comes out looking like the best one. It is also trained to be eager: the moment it sees a problem it wants to solve it. And the better the answer sounds, the less you check it. All three defaults pull toward the average, which is why each stage gets a prompt that names one job and bans the rest.'
+  - q: 'You decomposed a problem into parts. What does the audit stage do with those parts, and what example shows the payoff?'
+    a: 'It labels each part a verified fact or an inherited assumption, treating every obvious part as a possible convention until evidence says otherwise. Toyota after the war could not afford to copy Detroit, so it audited the assumptions under mass production itself, big cars, big batches, big inventories, and the just-in-time system that came out of that audit carried it past GM. Tesla later audited the part everyone else had marked a fact, the combustion engine.'
+  - q: 'What must be written down before you run an experiment, and why before rather than after?'
+    a: 'For each test: the result that rules the option out, the result that keeps it alive, and what you learn either way. Writing them first means you cannot reinterpret a bad result into a pass after the fact. If every test fails, the ask goes one step further: which building block to revisit. The goal is not being right every time; it is learning quickly why you were wrong.'
+status: review
+lastUpdated: 2026-08-27
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+
+<Chalk>the familiar answer wins by default</Chalk>
+
+<p class="lede">
+For twelve years Sandeep Swadia woke up exhausted, and for twelve years he told
+himself the story everyone around him told: it is the grind, drink more coffee,
+work less. Then a sleep study measured what was actually happening: his jaw was
+blocking his airway, waking him 34 times an hour, every hour. The problem was
+never where the story said it was. Swadia, a former CEO who now sits on boards
+and advises, calls the thinking that found the real cause first-principles
+thinking: start from what you can verify and build up from there, instead of
+reasoning from the story you inherited. His warning is that AI makes the
+inherited story stronger, and his fix is four prompts that make the model take
+the problem apart before it answers.
+</p>
+
+## <span class="sec-no">01</span>The most familiar answer
+
+A language model answers with whatever best matches the patterns in everything
+it has read. The most familiar answer comes out
+looking like the best answer, delivered fluently, and the fluency is the trap.
+
+<PullQuote
+  quote="The better AI sounds, the less you will check."
+  creator="Sandeep Swadia"
+  video="Every High Performer Should Think In First Principles, Here's Why"
+  href="https://www.youtube.com/watch?v=jPSirKTGTfo"
+  timestamp="4:52"
+/>
+
+How much real understanding that pattern-learning can build is its own question,
+and <a href="/guides/judge-whether-ai-has-original-ideas/">Judge whether AI has
+original ideas</a> takes it seriously. This guide is about the default: ask a
+model for help and it hands you the consensus, because the consensus is what
+the patterns agree on. Lean on that every day and your thinking drifts toward
+the average of everyone else's.
+
+The other default is eagerness. Models are trained to be helpful, so the moment
+one sees a problem it starts solving it. First-principles thinking needs the
+opposite: a long look at the problem before anyone proposes anything. So each
+stage below gets a prompt that names one job and bans everything else.
+
+## <span class="sec-no">02</span>Four stages, one prompt each
+
+Swadia's framework runs four stages, each with its own prompt. Every prompt has
+the same three parts: who the model is acting as, what you want from this stage,
+and what done looks like. That is the briefing structure from <a
+href="/guides/brief-the-model/">Brief the model like a brilliant new hire</a>,
+pointed at one stage at a time.
+
+| Stage | The model acts as | The one job | Banned |
+| --- | --- | --- | --- |
+| Decompose | An analyst who only takes things apart | List the parts of the problem and how they connect | Advice, solutions, standard playbooks |
+| Audit | A hired skeptic | Label each part a fact or an assumption | Accepting the obvious without evidence |
+| Recombine | A search partner | Combine the surviving parts into candidate options | Inventing a missing magic ingredient |
+| Experiment | A skeptical scientist | Design the cheapest, fastest test for each option | Selling you the idea |
+
+The stages run in order, and the order is the point: no options until the parts
+are audited, no tests until there are options.
+
+## <span class="sec-no">03</span>Break the problem into parts
+
+Ask experts what you need to start a YouTube channel and you get the
+conventional list: a studio, a professional camera, lighting, an editor, a
+production agency.
+
+Boil the problem down to its essential parts and you need two things: a phone
+and a story. You can start tonight. Decomposition is seeing the parts of the
+machinery instead of the package the experts sell.
+
+Swadia's decompose prompt constrains the model hard. It is told its job is
+decomposition only, and that it is penalized for introducing advice, solutions,
+assumptions, or standard playbooks. It breaks the problem into a hierarchy: the
+overall problem, its major components, the smaller elements inside each, along
+whichever dimensions fit (people, process steps, time, resources, costs). For
+each part it says what the part contains and how it connects to the whole, and
+it stops when going deeper would no longer improve your understanding.
+
+One instruction in it deserves a closer look: if the stated problem seems to
+hide a deeper one, the model must name that deeper problem in one sentence and
+ask which one to decompose, then wait. "I can't focus" might really be sleep,
+phone addiction, unclear tasks, or work with no stakes. Deciding which problem
+you are actually solving is the same call <a
+href="/guides/sharpen-the-prompt-or-brainstorm-first/">Sharpen the prompt or
+brainstorm first</a> is about: whether the goal itself is still open.
+
+## <span class="sec-no">04</span>Sort facts from assumptions
+
+After the Second World War, American factories built big cars in big batches
+for a big market. Toyota was small, in a recovering Japan, with little capital,
+so copying Detroit was not an option. Instead it audited the assumptions under
+mass production itself: why big cars, why huge batches, why hold so much
+inventory. The just-in-time system that came out of that audit eventually
+carried Toyota past GM to become the world's largest automaker. Then Tesla
+audited the part everyone else had marked a fact, why a combustion engine at
+all, and by 2020 it had passed Toyota as the world's most valuable automaker.
+
+Most conventions are assumptions that survived long enough to look like facts.
+The audit prompt makes the model act as a hired skeptic whose only job is to
+uncover and question inherited assumptions, treating every obvious part of the
+problem as a possible convention until evidence proves otherwise. Run it on the
+parts from stage one and each part comes back labeled: verified fact, or
+assumption you absorbed from colleagues, family, industry, experts, or your own
+past experience.
+
+Expect the audit to knock down the solution you had in mind. That is the stage
+working: now you can build a better one from parts you have actually checked.
+
+## <span class="sec-no">05</span>Recombine what survived
+
+Most Western music is built from 12 notes. Bach, the Beatles, and Beyoncé used
+the same 12 and made different things, and nobody spent a career hunting for a
+secret 13th. Innovation is usually a new combination of parts everyone already
+has, and this is the stage a model is built for: it can search combinations at
+a scale no person can.
+
+The ask is plain: using only the parts that survived the audit, propose ways to
+recombine them into candidate options. The ban matters as much as the ask.
+No inventing a missing magic ingredient; the constraint is the same one the 12
+notes impose. What comes back is a handful of options that are still
+theoretical, which is exactly what the last stage is for.
+
+## <span class="sec-no">06</span>Design the cheapest test
+
+The first three stages happen on paper. Testing is where the cost starts:
+James Dyson built 5,127 prototypes before his bagless vacuum worked, and
+Google tested shade after shade of blue on its links before settling on one.
+
+Real experiments are messy, risky, and cost something,
+which is why the last prompt makes the model act as a skeptical scientist whose
+job is to design the cheapest, fastest way to find out whether an option holds
+up, before it costs you anything real in time, money, effort, or reputation.
+It is told directly: do not sell me the idea, give me the test I could
+actually run.
+
+The part Swadia likes best, and the part worth stealing even if you ignore the
+rest, is written into the definition of done. For each test, the model states
+the result that would rule the option out, the result that would keep it alive,
+and what you learn either way, before the test runs. If every test fails, it
+says which building block to revisit. You cannot reinterpret a bad result into
+a pass when the rule-out result was written down first.
+
+## <span class="sec-no">07</span>Keep the judgment
+
+<PullQuote
+  quote="AI does the work. AI shows you the work. You keep the judgment."
+  creator="Sandeep Swadia"
+  video="Every High Performer Should Think In First Principles, Here's Why"
+  href="https://www.youtube.com/watch?v=jPSirKTGTfo"
+  timestamp="16:57"
+/>
+
+Every prompt in the framework makes the model show its work: the parts, the
+labels, the combinations, the rule-out results. The decisions stay with you:
+which problem to decompose, which assumption to challenge, which option to
+test, whether a result ends the idea. <a
+href="/guides/what-still-pays-when-ai-does-the-work/">What still pays when AI
+does the work</a> argues that choosing well is exactly the part people still
+pay for.
+
+The framework does not make you right. Swadia retells advice Martin Short gave
+a young comedian: "In this business, you fail 98% of the time. Those are great
+odds." His own hit rate, he says, is about the same. The framework's job is to
+make each failure cheap and its cause easy to find, so you learn quickly why
+you were wrong and the 2% that works has time to change everything.
+
+<Exercise>
+1. Write down a problem you are stuck on in one sentence.
+2. Run the decompose stage: tell the model its job is decomposition only, ban
+   advice and solutions, ask for the hierarchy of parts, and have it flag any
+   deeper problem hiding under yours before it starts.
+3. Run the audit: have it label every part a verified fact or an inherited
+   assumption, with the evidence for each fact.
+4. Run the recombine stage: ask for three candidate options built only from
+   the parts that survived.
+5. Pick the option you like most and ask for the cheapest test, with the
+   rule-out result and the keep-alive result written down. Run the test.
+</Exercise>
+
+## Further reading
+
+- [Sandeep Swadia · Every High Performer Should Think In First Principles, Here's Why](https://www.youtube.com/watch?v=jPSirKTGTfo), the video this guide distills
+- [Farnam Street · First Principles: The Building Blocks of True Knowledge](https://fs.blog/first-principles/), the long-form treatment of reasoning from verified parts
+- [Anthropic · Prompt engineering overview](https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/overview), the vendor documentation behind role and constraint prompting
