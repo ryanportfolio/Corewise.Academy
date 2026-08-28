@@ -17,6 +17,7 @@ export const TAGS: Tag[] = [
   { slug: 'codex', label: 'codex', display: 'Codex' },
   { slug: 'cost-control', label: 'cost control', display: 'cost control' },
   { slug: 'delegation', label: 'delegation', display: 'delegation' },
+  { slug: 'design', label: 'design', display: 'design' },
   { slug: 'instruction-files', label: 'instruction files', display: 'instruction files' },
   { slug: 'knowledge-bases', label: 'knowledge bases', display: 'knowledge bases' },
   { slug: 'memory', label: 'memory', display: 'memory' },
