@@ -1,0 +1,202 @@
+---
+title: Move design work into Claude Design
+description: 'Claude Design asks the questions a designer would, keeps your colors and fonts in a design system your whole team reuses, and fixes whatever a teammate circles in a comment. When it beats a plain chat, and the path from brand system to finished asset.'
+track: building
+level: broad
+number: 49
+minutes: 7
+tags: ['design', 'teams']
+objectives:
+  - "Decide when an asset belongs in Claude Design instead of a plain chat, by whether it deserves a designer's questions."
+  - 'Build a design system from an existing website and reuse it to rebuild old documents, decks, and proposals.'
+  - 'Iterate a design by fanning out variations and converging on the ones you pick, instead of describing changes in words.'
+  - 'Collect teammate feedback as comments and drawings on the design itself, and have the AI resolve them.'
+sources:
+  - url: https://www.youtube.com/watch?v=7rRVwjzVQsc
+    creator: Austin Marchese
+    video: "17 Things You Didn't Know Claude Design Could Do"
+    timestamps: ['0:21', '1:02', '1:06', '1:53', '2:09', '2:41', '3:20', '4:18', '4:49', '7:20', '7:50', '8:53', '9:17', '10:07', '10:44', '11:01', '11:39', '12:18', '12:40', '13:34', '14:25', '15:07', '16:15', '16:40']
+selfCheck:
+  - q: 'You ask for a party flyer in a plain Claude chat and again in Claude Design. What happens differently, and why?'
+    a: 'The plain chat generates an image right away. Claude Design first asks questions a designer would ask, like who is hosting and what paper the flyer will print on, because it is trained specifically for design work. The extra questions are the sign that you are in the right tool for a visual asset.'
+  - q: 'What will Claude Design refuse to do, and what is the workaround?'
+    a: 'It will not generate photos or images. It creates the layout with placeholders where images belong; you generate or source the image elsewhere and drop it in. Treat it as the tool that decides the design and the layout, not the pixels inside the picture frames.'
+  - q: 'What is doom prompting, and how does editing in place avoid it?'
+    a: 'Doom prompting is going back and forth with a chat, never quite getting the words right, giving up, and exporting the near-miss anyway. Claude Design lets you click into the design and rewrite the text directly on the page, so the last pass over the words is yours and the thing you send reads like you wrote it.'
+status: published
+lastUpdated: 2026-08-28
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+
+<Chalk>it asks what paper the flyer prints on</Chalk>
+
+<p class="lede">
+Claude Design is Anthropic's design tool, at claude.ai/design. Where a plain
+chat answers a design request instantly, this one interviews you first, keeps
+your brand's colors and fonts on file, and lets anyone on the team fix a draft
+by circling the problem. Austin Marchese, a creator who uses Claude Code daily,
+walked through seventeen uses of it in an Anthropic-sponsored video. This guide
+distills them into one workflow.
+</p>
+
+## <span class="sec-no">01</span>Trained to ask design questions
+
+Claude comes in several general-purpose products (the chat, Claude Code for
+coding, Cowork for office work) and this specialized one. The difference shows
+the moment you ask for something visual.
+Marchese asks for a party flyer, and instead of producing one, Claude Design
+asks who is hosting and what paper the flyer will print on. The same prompt in
+a plain chat generates an image immediately and never asks.
+
+<PullQuote
+  quote="It'll ask you questions that normal Claude just would never think to ask."
+  creator="Austin Marchese"
+  video="17 Things You Didn't Know Claude Design Could Do"
+  href="https://www.youtube.com/watch?v=7rRVwjzVQsc"
+  timestamp="1:06"
+/>
+
+If an asset deserves a designer's questions, it belongs here; for a quick
+answer or working code, stay in a plain chat or Claude Code.
+
+One limit to know going in: it is a layout tool, in the same category as Canva
+or Figma, and it will not generate photos or images. Where a picture belongs,
+it leaves a labeled empty box, a placeholder, for you to fill. Generate the
+image elsewhere and drop it in; the design and the layout are what this tool
+decides.
+
+## <span class="sec-no">02</span>Start with a design system
+
+The usual failure with AI-made assets is that every one starts from scratch:
+you argue a report into the right look, and the next report forgets everything.
+The fix is a design system, the written record of your brand's colors, fonts,
+and layout rules that every later asset inherits.
+
+In Claude Design that record is a built-in feature. Open the design system
+tab, attach your website so it can read your existing branding, answer its
+questions (or click "decide for me"), and it produces a system the whole
+organization can use. It is the same move <a
+href="/guides/one-skills-library-for-your-whole-team/">One skills library for
+your whole team</a> makes with written procedures: build the standard once,
+and everyone's output inherits it.
+
+Once the system exists, it feeds four kinds of work:
+
+- **Rebuild old documents.** Marchese uploads a client proposal made in Canva
+  under his old branding and has it rebuilt in the new system, then tweaks it
+  directly on the page. Any stale deck, one-pager, or PDF gets the same
+  treatment.
+- **Rebuild in the client's branding.** The same trick reversed: hand a prospect a
+  proposal that looks like their own company made it. Give the tool your
+  proposal and the client's site, and ask for the remake in their style.
+- **Templates for the rest of the team.** A designer saves an Instagram
+  graphic, weekly report, or proposal as a template inside the design system,
+  and non-designers fill it in without breaking the brand.
+- **Working email templates.** He shows it a plain login email, asks how to move
+  the redesign into Supabase (the service that sends his login emails), and it
+  rewrites the email with the per-user parts, like the login link, marked the
+  way Supabase expects, ready to paste in.
+
+## <span class="sec-no">03</span>Fan out variations, then pick
+
+Describing a design change in words is slow and imprecise. Marchese's habit is
+to make the tool show him options instead: ask for five variations of a landing
+page, or of one piece of it like a header or a chart, pick the two he likes,
+ask for five more in that direction, and converge over a few rounds. Five is
+a starting point, not a rule.
+
+Color gets the same treatment. Ask it to explore color and type pairings for
+your channel or product, and it renders them on your actual design; a built-in
+switcher lets you click between pairings and watch the page change. Seeing
+options beats reasoning about them in the abstract, and clicking between
+rendered versions beats editing code and reloading.
+
+The tool can also decide how an asset gets used. He has it model a 3D version
+of his logo, likes it, and has no idea what to do with it, so he asks the tool
+to put it on his website in a few realistic ways. It returns three options and
+he picks the slowly rotating version. When you have an asset and no plan, ask
+the tool how it would use it. What makes an option good rather than merely
+different is its own craft; <a
+href="/guides/the-design-concept-does-the-work/">The design concept does the
+work</a> covers where design quality comes from.
+
+## <span class="sec-no">04</span>Wireframe before you build
+
+A wireframe is a clickable mock-up: it looks and feels like the product, but
+nothing behind the buttons is real. At Marchese's last startup, pitches to
+artists like Ed Sheeran were wireframes, because clicking through a fake
+product persuades better than pictures of one, at a fraction of the
+engineering cost.
+
+Claude Design makes them from a prompt. He describes a workout-plan product,
+lets the tool decide the open questions, and gets screens he can click through
+to feel how the app would work. Coding agents have made real products cheaper
+to build, but building one is still the expensive way to test an idea; a
+wireframe is often enough. When a design settles, connect your code base and
+have the tool port it over as the starting point for the real build.
+
+## <span class="sec-no">05</span>Comments the AI acts on
+
+Feedback on a design usually degrades into words about pictures: screenshots,
+arrows, "a bit higher". Claude Design keeps the feedback on the design itself.
+Marchese reviews a website draft, adds a comment telling the header to span two
+lines, draws a circle around a graphic where he wants it moved, then clicks
+"send to Claude", and the tool works through the comments and fixes them.
+
+The same mechanism carries a team. Share the design and teammates comment
+directly on it; nobody installs anything, pulls the latest code, or trades
+screenshots. A reviewer with no technical background can mark up the draft the
+way they would mark up paper, and the AI applies the changes.
+
+## <span class="sec-no">06</span>Edit it until it reads like you
+
+Everyone has a backlog of assets that never get made because they are nobody's
+job: the how-to video you wish existed, the onboarding explainer for a new
+teammate, the one-page PDF version of something you published, the resume
+untouched for eight years. Marchese makes several on camera: an animated
+explainer of his product, a branded PDF companion to a video, a resume
+rebuilt from his LinkedIn. His rule of thumb: use the generated version where
+the stakes are low and the asset would otherwise not exist; a product launch
+still deserves exact, by-hand control.
+
+The reason generated assets are often embarrassing to send has a name in his
+telling: doom prompting. You go back and forth with a chat, it never quite
+lands, you give up and export the near-miss anyway.
+
+<PullQuote
+  quote="AI slop is destroying what people think about what you produce."
+  creator="Austin Marchese"
+  video="17 Things You Didn't Know Claude Design Could Do"
+  href="https://www.youtube.com/watch?v=7rRVwjzVQsc"
+  timestamp="16:15"
+/>
+
+Claude Design's answer is editing in place: click into the draft and rewrite
+the text directly on the page until it sounds like you, no more prompting
+round-trips. The design carries your brand because of the system; the words
+carry your voice because the final pass over them was yours. For why generated
+output drifts into slop in the first place, and how to catch it in text too,
+see <a href="/guides/why-ai-makes-slop-and-how-to-catch-it/">Why AI makes slop
+and how to catch it</a>.
+
+<Exercise>
+1. Go to claude.ai/design, open the design system tab, and build your design
+   system: attach your existing website for the branding, answer the questions
+   you care about, and click "decide for me" for the rest.
+2. Pick one stale document (an old proposal, deck, or one-pager), upload it,
+   and have it rebuilt in the new system. Fix the details by editing directly
+   on the page.
+3. Take one piece of the result and ask for five variations. Pick the two
+   you like, ask for five more like those, and notice how fast you converge.
+4. Share the finished draft with one teammate and have them leave a comment
+   and a drawn markup. Click "send to Claude" and check what it fixed.
+</Exercise>
+
+## Further reading
+
+- [Austin Marchese · 17 Things You Didn't Know Claude Design Could Do](https://www.youtube.com/watch?v=7rRVwjzVQsc), the video this guide distills
+- [Anthropic · Claude Design](https://claude.ai/design), the tool itself
+- [Anthropic · Claude product page](https://claude.com/product/overview), where Design sits among the Claude surfaces
