@@ -203,6 +203,9 @@ const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': grap
       @import '../styles/tokens.css';
       @import '../styles/rail.css';
 
+      /* Avoid one-word last lines in running text (ignored by browsers without text-wrap: pretty) */
+      p { text-wrap: pretty; }
+
       .masthead {
         position: sticky;
         top: 0;
