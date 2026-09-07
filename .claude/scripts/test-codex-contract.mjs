@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import fs from "node:fs";
+import { nativeSkills } from "./codex-native-skills.mjs";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
@@ -56,11 +57,15 @@ const disabled = new Set(
 );
 
 const skillsRoot = path.join(root, ".claude", "skills");
-const skills = fs.readdirSync(skillsRoot, { withFileTypes: true })
+const canonicalNames = fs.readdirSync(skillsRoot, { withFileTypes: true })
   .filter((entry) => entry.isDirectory() && !disabled.has(entry.name))
   .filter((entry) => fs.existsSync(path.join(skillsRoot, entry.name, "SKILL.md")))
-  .map((entry) => {
-    const relativePath = `.claude/skills/${entry.name}/SKILL.md`;
+  .map((entry) => entry.name);
+const skills = [...new Set([...canonicalNames, ...nativeSkills])].map((name) => {
+    const entry = { name };
+    const relativePath = nativeSkills.has(name)
+      ? `.agents/skills/${name}/SKILL.md`
+      : `.claude/skills/${name}/SKILL.md`;
     const metadata = frontmatter(relativePath);
     if (metadata.name && metadata.name !== entry.name) {
       failures.push(`${relativePath}: declared name ${metadata.name} does not match directory ${entry.name}`);
@@ -108,7 +113,7 @@ for (const skill of skills) {
 }
 for (const skill of classifications.keys()) {
   if (!skills.some((entry) => entry.directory === skill)) {
-    failures.push(`${skill}: compatibility classification has no active canonical skill`);
+    failures.push(`${skill}: compatibility classification has no active skill`);
   }
 }
 

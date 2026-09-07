@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import fs from "node:fs";
+import { nativeSkills } from "./codex-native-skills.mjs";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
@@ -116,10 +117,22 @@ if (fs.existsSync(sourceRoot)) {
     if (!entry.isDirectory() || disabled.has(entry.name)) continue;
     const skillPath = path.join(sourceRoot, entry.name, "SKILL.md");
     if (!fs.existsSync(skillPath)) continue;
+    if (nativeSkills.has(entry.name)) continue;
     const metadata = readMetadata(entry.name, skillPath);
     metadata.description = codexDescription(metadata.description);
     desired.set(entry.name, adapterText(entry.name, metadata));
   }
+}
+
+// Native skills remain active without a matching Claude directory or override.
+for (const name of nativeSkills) {
+  const nativePath = path.join(targetRoot, name, "SKILL.md");
+  if (!fs.existsSync(nativePath) || generatedAdapter(nativePath)) {
+    throw new Error(`${nativePath}: expected hand-authored Codex skill`);
+  }
+  const metadata = readMetadata(name, nativePath);
+  if (metadata.name !== name) throw new Error(`${nativePath}: skill name must be ${name}`);
+  desired.set(name, fs.readFileSync(nativePath, "utf8").replaceAll("\r\n", "\n"));
 }
 
 const actions = [];
