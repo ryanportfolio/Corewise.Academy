@@ -88,8 +88,8 @@ Clear, to the point, plain words. Fewer words beat more words everywhere on the 
   followed). Latinate dress-ups (prohibition, corroborated, subsequent,
   verbatim), insider terms (exfiltration, happy case, load-bearing as a
   metaphor), and literary flourishes (disarmingly) get replaced with the plain
-  everyday phrase. The /plain-words skill holds the full trap list and the
-  sweep procedure.
+  everyday phrase. The /writing skill holds the full trap list (patterns.md,
+  pattern 31); the /plain-words skill holds the sitewide sweep procedure.
 - **No jargon, no invented coinages** (editor ruling, 2026-07-18). A made-up
   label ("deliberation dial") or insider word ("colophon") is a defect even when
   the author finds it charming: the reader has to ask what it means, so it fails.

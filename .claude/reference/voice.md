@@ -47,6 +47,6 @@ after it.
 
 Every ban and gate (em dashes, heading periods, negation pivots, jargon, walls of
 text, scaffolding cuts) is in `copy-rules.md` with its ruling date. Procedures:
-`/plain-words` (fancy-word sweep), `/stranger-test` (insider-frame fix),
-`/humanizer` (AI-tell catalog). This file only records how the site sounds when
+`/writing` (drafting rules, AI-tell catalog, fancy-word trap table),
+`/plain-words` (sitewide fancy-word sweep), `/stranger-test` (insider-frame fix). This file only records how the site sounds when
 those rules are already obeyed.
