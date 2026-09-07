@@ -55,7 +55,7 @@ Patterns 1-27 derive from Wikipedia's [Signs of AI writing](https://en.wikipedia
 **Before:**
 > Due to its unique characteristics, the Haolai River is of interest to researchers and conservationists. Experts believe it plays a crucial role in the regional ecosystem.
 
-**After:**
+**After** (the writer had the survey on hand; the example does not license adding one):
 > The Haolai River supports several endemic fish species, according to a 2019 survey by the Chinese Academy of Sciences.
 
 If the writer has no source, ask for one or flag the claim. Never invent a source.
