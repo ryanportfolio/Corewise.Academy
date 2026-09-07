@@ -10,7 +10,7 @@ this copy stands alone) plus the sweep procedure for copy that already shipped.
 
 ## Word test and trap table
 
-Test for any word:would a smart reader outside the domain pause on it? If a plain phrase says the same thing, the plain phrase ships. Swaps a real editor made on shipped copy; the same word appearing again is a defect:
+Test for any word: would a smart reader outside the domain pause on it? If a plain phrase says the same thing, the plain phrase ships. Swaps a real editor made on shipped copy; the same word appearing again is a defect:
 
 | Fancy | Plain |
 |---|---|
