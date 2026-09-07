@@ -1,6 +1,6 @@
 # House voice: CoreWise Academy site and guide prose
 
-> The voice for everything a visitor reads on corewise.academy. The global `writing`
+> The voice for everything a visitor reads on corewise.academy. The repo `writing`
 > skill loads this file on top of its editorial rules; where they conflict, this file
 > wins (the em-dash ban always holds). The *rules* (bans, gates, rulings with dates)
 > stay canonical in `copy-rules.md`; this file is the sound.

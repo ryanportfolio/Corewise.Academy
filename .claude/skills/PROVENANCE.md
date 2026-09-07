@@ -25,6 +25,7 @@ LICENSE/NOTICE files in the skill folder.
 | `writing-skills` | obra/superpowers | MIT (in folder) | Stock |
 | `caveman` | Community token-compression pattern (viral skill, author attribution unclear) | Reimplemented here | Intensity tiers (lite/full/ultra), output budget, auto-clarity carve-outs, persistence rules |
 | `humanizer` | Community "humanizer" de-AI-writing pattern | Reimplemented here | patterns.md tell catalog; voice-matching; review-only mode |
+| `writing` | [ryanportfolio/Harness-Firmware](https://github.com/ryanportfolio/Harness-Firmware/tree/main/.claude/skills/writing) at 4b3f75e; merges Wikipedia Signs of AI writing (CC BY-SA 4.0), cursor/plugins unslop, Hermes purposeful-writing, SlopMonster, no-ai-slop (all MIT) | MIT + CC BY-SA 4.0 (NOTICE.md in folder) | Stock |
 
 ## Homegrown (this repo)
 
