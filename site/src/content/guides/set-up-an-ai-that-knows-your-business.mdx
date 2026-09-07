@@ -1,6 +1,6 @@
 ---
 title: Set up an AI that knows your business
-description: 'Nate Herk runs his company from one folder of files that Codex reads before every message. The four parts that folder needs, in the order to build them, the three tests that show it is working, and the interview and wiki habits that move what is in your head into files.'
+description: 'An AI operating system is a folder of files your agent reads before every message. The four parts it needs, in build order, and the habits that fill it from your head.'
 track: agents
 level: broad
 number: 50
@@ -142,7 +142,7 @@ have never written down. Nate's fix is a skill he calls grill me, adapted from M
 Pocock's skill of the same name (Pocock's version interrogates a coding plan before any
 code is written). Pick a topic, say current priorities, and the skill asks question after
 question until the topic is exhausted. Every interview writes a new file into the folder,
-so each 20-minute session leaves a document the agent can read later.
+so each session of 20 or 30 minutes leaves a document the agent can read later.
 
 Run it whenever a topic lives only in your head. The interview is faster than writing
 the document yourself, and the questions surface things you would not have thought to
@@ -181,7 +181,7 @@ Nate keeps the folder improving with a loop of three skills:
    again.
 
 Because every audit is stored with its date, the scores form a record. Run it every
-Monday or every other week and you can see whether the system is improving month over
+Monday or every 2 weeks and you can see whether the system is improving month over
 month, rather than feeling that it is. The audit writes a report and waits for you, the same
 shape <a href="/guides/keep-a-growing-knowledge-base-accurate/">Keep a growing
 knowledge base accurate</a> describes; running it on a schedule is a job for <a
@@ -204,10 +204,11 @@ better model arrives, the knowledge moves with him; the tool is the part he swap
 href="/guides/firmware-not-folklore/">Every new repo starts with your lessons</a> makes
 the same argument for a codebase.
 
-The same logic picks the model for daily use. Nate built his folder with GPT-6 Astra, the
-most capable model he has used, and says that for most of what the folder is for
-(find this document, make this spreadsheet) it is overkill and eats the weekly usage limit
-faster. His advice: build with the top model to learn what it can do, then switch
+The same logic picks the model for daily use. Nate built his folder with GPT-6 Astra,
+recorded 4 days after OpenAI announced it, and calls it the most capable model he has
+used. He also says that for most of what the folder is for (find this document, make
+this spreadsheet) it is overkill and eats the weekly usage limit faster than GPT-5.6
+Sol, which OpenAI prices at $5 per 1 million input tokens. His advice: build with the top model to learn what it can do, then switch
 everyday questions to GPT-5.6 Sol at a lower effort setting (how hard the model thinks
 per answer), and turn the top model
 back on for the hard builds. <a
@@ -236,4 +237,5 @@ release</a> covers how to make that call each time the lineup changes.
 - [Andrej Karpathy · LLM wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f), the note to paste into the agent for the wiki step
 - [Matt Pocock · grill-me skill](https://skillselion.com/skills/mattpocock/skills/grill-me), the interview skill Nate's version adapts
 - [AGENTS.md](https://agents.md), the cross-tool instruction-file convention
+- [Wikipedia · Personal knowledge base](https://en.wikipedia.org/wiki/Personal_knowledge_base), the older idea (a person's own notes, linked and searchable) that the folder in this guide extends to an agent
 - [OpenAI · Previewing GPT-5.6 Sol](https://openai.com/index/previewing-gpt-5-6-sol/), the model Nate recommends for everyday questions against the folder
