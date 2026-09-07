@@ -135,7 +135,8 @@ function pickSubFile(dir, base) {
 function tryYtDlp() {
   const cmd = findYtDlp();
   if (!cmd) return null;
-  console.error(`# yt-dlp via: ${cmd.join(' ')}`);
+  // Quote any part with whitespace so the line can be pasted back into a shell.
+  console.error(`# yt-dlp via: ${cmd.map((p) => (/\s/.test(p) ? `"${p}"` : p)).join(' ')}`);
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cw-transcript-'));
   try {
     // Two passes: manual subtitles first, auto-generated only if none exist.

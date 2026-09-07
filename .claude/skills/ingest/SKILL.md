@@ -65,14 +65,17 @@ which video to ingest.
 
 Run these from the repo root, in this order:
 
-1. `node scripts/transcript.mjs "<youtube-url>" > .tmp/<video-id>.txt` (stdout is the
+1. Create the scratch folder; it is gitignored, so a fresh clone or worktree lacks it
+   and the redirect in the next step fails without it: `mkdir -p .tmp` (bash) or
+   `New-Item -ItemType Directory -Force .tmp` (PowerShell).
+2. `node scripts/transcript.mjs "<youtube-url>" > .tmp/<video-id>.txt` (stdout is the
    transcript, stderr the diagnostics; the first stderr lines say which fetch path won
    and whether the captions are auto-generated).
-2. Metadata for crediting:
-   `yt-dlp --skip-download --print "%(channel)s | %(title)s | %(upload_date)s | %(duration_string)s" "<youtube-url>"`
-   (substitute the same yt-dlp invocation the script reported if `yt-dlp` alone is not
-   on this shell's PATH).
-3. Read the saved transcript file in full before synthesizing. A 20-minute video is
+3. Metadata for crediting:
+   `yt-dlp --skip-download --print "%(channel)s | %(title)s | %(upload_date)s | %(duration_string)s" "<youtube-url>"`.
+   If `yt-dlp` alone is not on this shell's PATH, reuse the invocation the script
+   printed on its `# yt-dlp via:` line; it is already quoted for paths with spaces.
+4. Read the saved transcript file in full before synthesizing. A 20-minute video is
    roughly 700 caption lines.
 
 The script tries yt-dlp first (manual subtitles preferred, then auto-generated). It
@@ -97,7 +100,7 @@ Making yt-dlp reachable:
 - Not installed anywhere: ask the editor before installing
   (`py -3.13 -m pip install yt-dlp`), per the dependency rule in CLAUDE.md.
 - Sandboxed shell with network off: yt-dlp needs outbound HTTPS to youtube.com. Ask
-  for network access for that one command, then rerun step 1.
+  for network access for that one command, then rerun step 2.
 - A yt-dlp warning about a missing JavaScript runtime (deno) or an unavailable
   impersonation target is harmless for captions; the transcript still downloads.
 
