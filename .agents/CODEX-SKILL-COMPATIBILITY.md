@@ -10,7 +10,7 @@
 
 | Status | Skills |
 |---|---|
-| Native | `babysit-ci`, `brainstorming`, `bro`, `caveman`, `enhance-prompt`, `forge-repo-ui-skill`, `handoff-audit`, `humanizer`, `plain-words`, `recall`, `unslop`, `verify-this`, `writing-plans` |
+| Native | `babysit-ci`, `brainstorming`, `bro`, `caveman`, `enhance-prompt`, `forge-repo-ui-skill`, `handoff-audit`, `humanizer`, `plain-words`, `recall`, `unslop`, `verify-this`, `writing-plans`, `writing` |
 | Adapted | `addskill`, `automate-me`, `fable-mode`, `init-project`, `lab`, `optimize-context`, `sync-starter`, `writing-skills` |
 | Capability-gated | `advocate`, `arena`, `design-study`, `impartial-review`, `why` |
 | Dangerous | `clarity-pass`, `create-guide`, `crosslink`, `ingest`, `merge` |
@@ -19,3 +19,7 @@
 `advocate`, `impartial-review`, and `why` require fresh independent context; do not replace them with self-review and call it equivalent. `merge` becomes session-wide only after explicit `$merge` or an unambiguous auto-merge request. Current system, developer, sandbox, approval, and user instructions win. Resolve canonical resources from `.claude/skills/<name>/` and never claim a gated workflow ran unless its tools were used.
 
 `node .claude/scripts/test-codex-contract.mjs` verifies that every active skill has exactly one classification and that Codex routing metadata stays within its context budget.
+
+`ingest` is a hand-authored Codex workflow at `.agents/skills/ingest/SKILL.md`, preserved by the sync script. It shares site editorial references and schema with Claude but does not load Claude's ingest workflow. Its Dangerous classification describes shipping authorization, not adapter ownership.
+
+`writing` is a standalone Codex skill imported from Harness-Firmware, with source provenance and third-party notices beside its SKILL.md. Native ownership is registered in `.claude/scripts/codex-native-skills.mjs`; these skills remain active independently of Claude skill directories and overrides, and sync never replaces their content.

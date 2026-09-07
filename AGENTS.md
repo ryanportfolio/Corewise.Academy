@@ -32,7 +32,9 @@ This is the Codex boundary for repositories using the AI Operating System starte
 
 ## Shared Assets
 
-- `.claude/skills/` is canonical; `.agents/skills/` contains Codex adapters. Treat `$ARGUMENTS` as invocation input.
+- For repository deliverables, use `.agents/skills/writing/SKILL.md` as the Writing skill. It applies the shared house voice and copy rules for site prose.
+
+- `.claude/skills/` is canonical for Claude; `.agents/skills/` contains Codex adapters except `ingest` and `writing`, which are hand-authored Codex skills preserved by the sync script. Treat `$ARGUMENTS` as invocation input.
 - Read relevant `.claude/reference/` material before unfamiliar work and `.agents/CODEX-SKILL-COMPATIBILITY.md` before adapted, gated, or dangerous skills.
 - After canonical skill changes run `node .claude/scripts/sync-codex-skills.mjs --write`.
 - Tool mapping: `.claude/skills/using-superpowers/references/codex-tools.md`.
