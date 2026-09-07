@@ -5,7 +5,6 @@
 import { SHOWPIECE_SKILL } from './showpieceSkill';
 import { CAVEMAN_SKILL } from './cavemanSkill';
 import vetThirdPartySkill from './skills/vet-third-party-skill.md?raw';
-import humanizer from './skills/humanizer.md?raw';
 import writing from './skills/writing.md?raw';
 import plainWords from './skills/plain-words.md?raw';
 import enhancePrompt from './skills/enhance-prompt.md?raw';
@@ -39,21 +38,15 @@ export const TOOL_SHELF: ShelfGroup[] = [
     note: 'Point these at a draft to tighten the writing.',
     skills: [
       {
-        name: '/humanizer',
-        savePath: '.claude/skills/humanizer/SKILL.md',
-        blurb: 'Edit a draft to cut AI tells and sound more human.',
-        content: humanizer,
-      },
-      {
         name: '/writing',
         savePath: '.claude/skills/writing/SKILL.md',
-        blurb: 'Draft or edit any text that leaves the session, from docs to emails, so it reads as human-made.',
+        blurb: 'Draft, edit, or humanize any text that leaves the session, from docs to emails, so it reads as human-made.',
         content: writing,
       },
       {
         name: '/plain-words',
         savePath: '.claude/skills/plain-words/SKILL.md',
-        blurb: 'Swap fancy or insider words for plain ones.',
+        blurb: 'Sweep shipped site copy for fancy or insider words.',
         content: plainWords,
       },
       {

@@ -36,15 +36,15 @@ Form follows the job. Application answer: answer, one example, what it reveals. 
 
 ## Tells
 
-Mannered prose substitutes metaphor and flourish for direct statement: "a dial worth turning" for "a parameter worth varying". The phrases display the writer instead of conveying the idea, and readers can tell. Say what you mean; when a literal phrase exists, use it. The lists below name the recurring forms.
+Mannered prose substitutes metaphor and flourish for direct statement: "a dial worth turning" for "a parameter worth varying". The phrases display the writer instead of conveying the idea, and readers can tell. Say what you mean; when a literal phrase exists, use it. The lists below name the recurring forms. Catalog with before/after examples in `patterns.md`; open it when a tell is ambiguous.
 
-- **Puffery and AI vocabulary.** pivotal, testament, landscape, groundbreaking, delve, crucial, showcase, robust, seamless, transformative, empower, streamline; leverage and utilize (use), facilitate (help).
+- **Puffery and AI vocabulary.** pivotal, testament, landscape, groundbreaking, delve, crucial, showcase, robust, seamless, transformative, empower, streamline; leverage and utilize (use), facilitate (help). Full list: patterns 1, 4, 7.
 - **Superficial -ing tails** ("highlighting the team's commitment"), **vague attribution** (experts agree), **copula dodges and inanimate actors** (serves as, "the decision emerged"), **fake structure** (rule of three, false ranges, synonym cycling).
-- **Filler and empty adverbs.** in order to, it is important to note, at the end of the day, when it comes to, going forward; just, literally, honestly, actually, fundamentally. Hedging stacks collapse to one word.
-- **Rhetorical setups.** Throat-clearing ("Here's the thing", "Let me be clear"); faux-insight ("what nobody tells you"); colon reveals ("The best part: it learns."); dramatic fragmentation ("That's it. That's the whole thing."); self-answered questions, "Plot twist:"; metadiscourse ("this distinction matters", "as you can see"). State the point.
+- **Filler and empty adverbs.** in order to, it is important to note, at the end of the day, when it comes to, going forward; just, literally, honestly, actually, fundamentally. Hedging stacks collapse to one word. Pattern 25.
+- **Rhetorical setups.** Throat-clearing ("Here's the thing", "Let me be clear"); faux-insight ("what nobody tells you"); colon reveals ("The best part: it learns."); dramatic fragmentation ("That's it. That's the whole thing."); self-answered questions, "Plot twist:"; metadiscourse ("this distinction matters", "as you can see"). State the point. Patterns 35-42.
 - **Kicker endings and recaps.** A final aphorism or mic-drop line, "In conclusion". Delete; never rewrite into a better metaphor. End on the last concrete sentence or a plain next action.
 - **Style tics.** Colon as mid-sentence hinge; bold on every noun; inline-header bullets that restate their label; Title Case headings; decorative emojis; curly quotes; uniform hyphenated compounds; bullets where prose reads better; a header over two sentences.
-- **Marketing shapes.** "whether you're X or Y", "that's where X comes in", "say goodbye to", "imagine a", hedged benefits ("helps you to"), boilerplate CTAs, process bleed.
+- **Marketing shapes.** "whether you're X or Y", "that's where X comes in", "say goodbye to", "imagine a", hedged benefits ("helps you to"), boilerplate CTAs, process bleed. Patterns 46-54.
 - **Chatbot artifacts** (Great question, I hope this helps) and **abstract metaphor nouns** (substrate, wedge, paradigm, north star, flywheel). Pick the concrete word.
 
 Words naming a real thing in the repo ("harness") are terms, not tells.
@@ -56,7 +56,7 @@ Words naming a real thing in the repo ("harness") are terms, not tells.
 - **Protect the specific fact.** "Significantly faster" becomes the measured delta.
 - **Show, do not label.** Cut commentary calling a point important, surprising, or subtle.
 - **Earn every claim.** Never say passionate, innovative, hard-working, strategic, collaborative unless the sentence shows it.
-- **Plain words, active voice, direct verbs.** "The compiler validates queries"; "decided", not "made a decision". Latinate dress-ups (prohibition, subsequent, corroborated, verbatim, ancillary, myriad) lose to the everyday phrase. Never swap an accurate technical name for a vaguer one: precision wins only when the two truly conflict.
+- **Plain words, active voice, direct verbs.** "The compiler validates queries"; "decided", not "made a decision". Latinate dress-ups (prohibition, subsequent, corroborated, verbatim, ancillary, myriad) lose to the everyday phrase; pattern 31 lists the swaps. Never swap an accurate technical name for a vaguer one: precision wins only when the two truly conflict.
 - **One idea per sentence.** Paragraphs run one to four sentences.
 - **State the rule, skip the flourish.** No aphorism capstones, no justifying self-evident rules.
 - **Don't tour the mechanism.** Say a thing has stages and what the end state buys; walk them only when the reader must choose. One example per claim, only if needed.

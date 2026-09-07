@@ -16,7 +16,7 @@ Exempt: code, symbol/function/API names, error strings, quoted text, file conten
 Coexists with other modes:
 
 - **caveman** compresses; unslop strips tells. Both apply to chat prose. Invoking caveman activates this contract, and the caveman skill carries a copy of the core-tells digest so no separate load is needed.
-- **humanizer** is the on-request deep pass: voice-matching, file rewrites, soul-adding for long-form drafts. Unslop is the always-on floor. For "humanize this in my voice", load humanizer.
+- **writing** is the on-request deep pass: drafting rules, voice-matching, file rewrites for text that leaves the session. Unslop is the always-on floor. For "humanize this in my voice", load writing.
 
 Two condensed copies of the core tells exist outside this file: the "Core tells, banned at write time" section in CLAUDE.md and the "Unslop rides this skill" section in `.claude/skills/caveman/SKILL.md`. They are verbatim duplicates. Changing a core tell here means updating both.
 
@@ -97,7 +97,7 @@ Guardrails: keep behavior unchanged unless fixing a clear bug; minimal focused e
 - Don't drop a fact, caveat, or qualifier to remove a tell. Accuracy beats cleanliness.
 - Don't apply to code, identifiers, error strings, or quoted material.
 - Don't run a visible "cleanup pass" over your own fresh prose; write it clean the first time.
-- Don't replace humanizer for voice-matching or long-form rewrites; that's its job.
+- Don't replace writing for voice-matching or long-form rewrites; that's its job.
 
 ---
 Adapted from the `unslop` skill in [cursor/plugins pstack](https://github.com/cursor/plugins/tree/main/pstack) (MIT, by poteto); code-diff section from cursor-team-kit's `deslop` (MIT).

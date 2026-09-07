@@ -1,69 +1,47 @@
 ---
-description: Swap fancy, Latinate, or insider words for plain phrases in user-visible site copy. Use when the user says /plain-words, asks to de-fancy or simplify copy, before writing or editing guide or page prose, or for a sitewide fancy-word sweep.
+description: Sitewide sweep of shipped site copy for fancy, Latinate, or insider words. Use when the user says /plain-words or asks for a sitewide fancy-word sweep. Carries the word test and trap table.
 ---
 
-# Plain words: fancy words lose to plain ones
+# Plain words: the sitewide sweep
 
-Every word a visitor can read follows one test: would a smart reader outside AI
-tooling pause on this word? If yes, and a plain phrase says the same thing, the
-plain phrase ships. This skill is the working procedure and the trap list.
+The rule: fancy words lose to plain ones. This file carries the word test and
+the trap table (the same text as pattern 31 of the `writing` skill, inlined so
+this copy stands alone) plus the sweep procedure for copy that already shipped.
 
-## Step 1: Apply while writing (default path)
+## Word test and trap table
 
-Whenever drafting or editing user-visible copy, check each sentence against the
-trap list below before it lands. This binds even when the skill was not
-explicitly invoked, same as the other copy rules.
-
-## Step 2: The trap list
-
-Real swaps that shipped in the 2026-07-18 sitewide sweep. Same word appearing
-again is a defect:
+Test for any word: would a smart reader outside the domain pause on it? If a plain phrase says the same thing, the plain phrase ships. Swaps a real editor made on shipped copy; the same word appearing again is a defect:
 
 | Fancy | Plain |
 |---|---|
-| ancillary | tooling / works in progress (name the thing) |
+| ancillary | supporting, or name the thing ("tooling", "works in progress") |
 | prohibition | ban |
+| verbatim | word-for-word |
+| corroborated | backed up |
+| subsequent | later, after |
+| interventions | fixes |
+| amend | fix, update |
 | disambiguation | separation |
 | exfiltration | data theft |
-| verbatim | word-for-word |
 | elicitation | nudge (or say the instruction) |
-| corroborated | backed up |
-| subsequent | later / after |
-| interventions | fixes |
 | convergence | shared conclusion |
 | imperatively | as a command |
-| amend | fix / update |
-| disarmingly | surprisingly |
-| load-bearing (figurative) | most important |
+| salient | main |
+| myriad, plethora | many |
 | happy case | when things go right |
-| first-party | the writer's own |
-| data governance | who controls your data |
-| synchronous (in prose) | back-and-forth |
-| thin-kernel discipline | keep-it-thin habit |
 | connectives | connecting words |
-| casualty | say the specific thing (death metaphors banned anyway) |
-| un-undoable | that cannot be undone (coinages banned anyway) |
+| first-party | your own |
+| data governance | who controls your data |
 
-The list is examples, not the boundary. Any Latinate dress-up (utilize,
-leverage, facilitate, commence, myriad, plethora, salient), literary flourish,
-or insider term a smart non-programmer would need a dictionary for gets the
-same treatment.
+Some words have no fixed swap because the plain phrase depends on what was meant: "disarmingly", "load-bearing" as a metaphor, "synchronous" in prose. Say the specific thing the sentence observes ("the assumption everything else rests on", "a back-and-forth call"); do not pick a near-synonym that shifts the meaning.
 
-## Step 3: What never changes
+The list is examples, not the boundary. What never changes: a technical term that is the accurate name of the thing (token, commit, retrieval, deterministic when precision matters, product and model names); code, identifiers, URLs, paths; quoted artifacts; a fancy word with no equally accurate plain substitute, glossed at first use. A sidegrade synonym is not a fix.
 
-- Technical terms that are the accurate name of the thing: token, commit, PR,
-  retrieval, deterministic when precision matters, product and model names.
-- Code, class names, ids, frontmatter keys, URLs, repo names, file paths.
-- Quoted artifacts. `site/src/data/showpieceSkill.ts` and any block labeled as
-  quoted reproduces a real document; rewording it is a misquote.
-- A fancy word with no equally accurate plain substitute stays, glossed at
-  first use if it is not the reader's own vocabulary.
+## Sweep
 
-## Step 4: Full-site sweep (`/plain-words` on its own)
-
-1. Grep `site/src` for the trap-list words first; fix hits.
+1. Grep `site/src` for the trap-table words first; fix hits.
 2. Read every copy-bearing file (pages, layouts, copy components, guide MDX)
-   and flag candidates against the Step 2/Step 3 tests.
+   and flag candidates against the word test and its what-never-changes list.
 3. For each candidate, the replacement must be clearly plainer, grammatical in
    place, identical in meaning, and obey the other copy rules (no em dashes,
    no coinages, headings never end with a period, no death metaphors).
@@ -77,13 +55,14 @@ same treatment.
 ## Known trap
 
 Apostrophes inside `.astro` frontmatter strings: single-quoted JS strings break
-on words like "editor's". Escape as `\'` or the build fails.
+on words like "editor's". Escape as `\x27` or the build fails.
 
 ## Anti-patterns
 
 - Don't swap an accurate technical name for a vaguer word; precision wins over
   plainness when they conflict.
-- Don't trade one fancy word for another or for a sidegrade synonym.
 - Don't edit text a visitor never sees.
 - Don't reword quoted artifacts or attributed quotes.
+  `site/src/data/showpieceSkill.ts` and any block labeled as quoted reproduces
+  a real document; rewording it is a misquote.
 - Don't skip the gates after a sweep.
