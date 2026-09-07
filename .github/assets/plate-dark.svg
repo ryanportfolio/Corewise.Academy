@@ -34,6 +34,7 @@
 <circle cx="575.5" cy="257.5" r="3.2" fill="#e8e4d8" fill-opacity="0.72"/>
 <circle cx="532.2" cy="240.1" r="1.9" fill="#e8e4d8" fill-opacity="0.62"/>
 <circle cx="470.1" cy="193.7" r="2.5" fill="#e8e4d8" fill-opacity="0.8"/>
+<path d="M12 0 L14.88 9.12 L24 12 L14.88 14.88 L12 24 L9.12 14.88 L0 12 L9.12 9.12 Z" transform="translate(495.10 162.70) scale(0.6250)" fill="#96a8ff"/>
 <circle cx="499.9" cy="293.7" r="2.5" fill="#e8e4d8" fill-opacity="0.77"/>
 <circle cx="511.4" cy="206.1" r="1.9" fill="#e8e4d8" fill-opacity="0.82"/>
 <circle cx="603.4" cy="222.8" r="1.9" fill="#e8e4d8" fill-opacity="0.63"/>

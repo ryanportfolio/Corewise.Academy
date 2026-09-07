@@ -63,11 +63,46 @@ which video to ingest.
 
 ## Step 1: Get the transcript
 
-Run `node scripts/transcript.mjs "<youtube-url>"`.
+Run these from the repo root, in this order:
 
-The script tries yt-dlp first (manual subtitles preferred, then auto-generated) and
-falls back to a dependency-free watch-page fetch if yt-dlp is not installed. With
-yt-dlp on PATH this succeeds for nearly any captioned video.
+1. Create the scratch folder; it is gitignored, so a fresh clone or worktree lacks it
+   and the redirect in the next step fails without it: `mkdir -p .tmp` (bash) or
+   `New-Item -ItemType Directory -Force .tmp` (PowerShell).
+2. `node scripts/transcript.mjs "<youtube-url>" > .tmp/<video-id>.txt` (stdout is the
+   transcript, stderr the diagnostics; the first stderr lines say which fetch path won
+   and whether the captions are auto-generated).
+3. Metadata for crediting:
+   `yt-dlp --skip-download --print "%(channel)s | %(title)s | %(upload_date)s | %(duration_string)s" "<youtube-url>"`.
+   If `yt-dlp` alone is not on this shell's PATH, reuse the invocation the script
+   printed on its `# yt-dlp via:` line; it is already quoted for paths with spaces.
+4. Read the saved transcript file in full before synthesizing. A 20-minute video is
+   roughly 700 caption lines.
+
+The script tries yt-dlp first (manual subtitles preferred, then auto-generated). It
+looks for yt-dlp on PATH, then as a Python module (`py -m yt_dlp`, `python -m yt_dlp`),
+then in each `%LOCALAPPDATA%\Programs\Python\Python3*\Scripts` folder, because a
+sandboxed agent shell often carries a shorter PATH than the user's terminal. Only if
+none of those answer does it fall back to a dependency-free watch-page fetch.
+
+HTTP 429 has two sources, and the stderr line names which one you hit:
+
+| stderr says | Cause | What to do |
+|---|---|---|
+| `yt-dlp not found ... trying watch-page fallback` then `HTTP 429` | yt-dlp was not reachable, so the script hit YouTube's watch page directly. YouTube bot-checks plain fetches and answers 429; more network approval does not change that | Make yt-dlp reachable (below) and rerun |
+| `# yt-dlp via: ...` then `HTTP Error 429: Too Many Requests` | YouTube's web caption endpoint throttles per IP after a few pulls of one video (2026-09-07: four pulls of one video in a day triggered it) | The script retries once through the android player client on its own, which got past the throttle when tested. If that also fails, wait an hour or switch network; do not loop on retries |
+
+Making yt-dlp reachable:
+
+- Check: `where.exe yt-dlp` (Windows) or `which yt-dlp`; then `py -0p` to list Python
+  installs and `py -3.13 -m yt_dlp --version` for a module install. On the editor's
+  machine yt-dlp lives in the Python 3.13 Scripts folder, which the script finds on
+  its own even when that folder is not on the shell's PATH.
+- Not installed anywhere: ask the editor before installing
+  (`py -3.13 -m pip install yt-dlp`), per the dependency rule in CLAUDE.md.
+- Sandboxed shell with network off: yt-dlp needs outbound HTTPS to youtube.com. Ask
+  for network access for that one command, then rerun step 2.
+- A yt-dlp warning about a missing JavaScript runtime (deno) or an unavailable
+  impersonation target is harmless for captions; the transcript still downloads.
 
 - If it prints a timestamped transcript, use it. The header line says whether the
   captions were auto-generated — treat auto captions as lossy: verify names, numbers,
