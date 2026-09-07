@@ -24,7 +24,7 @@ LICENSE/NOTICE files in the skill folder.
 | `writing-plans` | obra/superpowers | MIT (in folder) | Stock |
 | `writing-skills` | obra/superpowers | MIT (in folder) | Stock |
 | `caveman` | Community token-compression pattern (viral skill, author attribution unclear) | Reimplemented here | Intensity tiers (lite/full/ultra), output budget, auto-clarity carve-outs, persistence rules |
-| `writing` | [ryanportfolio/Harness-Firmware](https://github.com/ryanportfolio/Harness-Firmware/tree/main/.claude/skills/writing) at 09f6d5b (PR #114); merges Wikipedia Signs of AI writing (CC BY-SA 4.0), cursor/plugins unslop, Hermes purposeful-writing, SlopMonster, no-ai-slop (all MIT) | MIT + CC BY-SA 4.0 (NOTICE.md in folder) | Stock. Replaces `humanizer` here; the plain-words trap table upstream came from this repo |
+| `writing` | [ryanportfolio/Harness-Firmware](https://github.com/ryanportfolio/Harness-Firmware/tree/main/.claude/skills/writing) at 0e863f2 (PR #114); merges Wikipedia Signs of AI writing (CC BY-SA 4.0), cursor/plugins unslop, Hermes purposeful-writing, SlopMonster, no-ai-slop (all MIT) | MIT + CC BY-SA 4.0 (NOTICE.md in folder) | Stock. Replaces `humanizer` here; the plain-words trap table upstream came from this repo |
 
 ## Homegrown (this repo)
 
