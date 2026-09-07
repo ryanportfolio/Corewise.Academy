@@ -1,6 +1,6 @@
 # House voice: CoreWise Academy site and guide prose
 
-> The voice for everything a visitor reads on corewise.academy. The global `writing`
+> The voice for everything a visitor reads on corewise.academy. The repo `writing`
 > skill loads this file on top of its editorial rules; where they conflict, this file
 > wins (the em-dash ban always holds). The *rules* (bans, gates, rulings with dates)
 > stay canonical in `copy-rules.md`; this file is the sound.
@@ -47,6 +47,6 @@ after it.
 
 Every ban and gate (em dashes, heading periods, negation pivots, jargon, walls of
 text, scaffolding cuts) is in `copy-rules.md` with its ruling date. Procedures:
-`/plain-words` (fancy-word sweep), `/stranger-test` (insider-frame fix),
-`/humanizer` (AI-tell catalog). This file only records how the site sounds when
+`/writing` (drafting rules, AI-tell catalog, fancy-word trap table),
+`/plain-words` (sitewide fancy-word sweep), `/stranger-test` (insider-frame fix). This file only records how the site sounds when
 those rules are already obeyed.

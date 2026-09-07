@@ -44,7 +44,7 @@ which video to ingest.
   pivots). Lead with the point; cut wind-ups. No ten-dollar words, no invented
   coinages, no talking down, theme never over clarity. Step 6 runs the full pass;
   canonical ruling in `.claude/reference/copy-rules.md`, deeper procedures in the
-  plain-words, stranger-test, and humanizer skills; house voice in
+  writing, plain-words, and stranger-test skills; house voice in
   `.claude/reference/voice.md`.
 - **Information with a shape gets that shape.** A guide is not done until the Step 6
   layout pass has run. Prose that names a set ("four failure modes", "three checks")
@@ -173,8 +173,8 @@ Run a full editorial pass on the finished draft before the build. The build gate
 catches em dashes and heading length; every other writing defect is caught here or
 ships. This is the step that stops jargon reaching the live site. Apply the canonical
 rules in `.claude/reference/copy-rules.md`, and for anything you are unsure of, run the
-matching skill: plain-words, stranger-test, humanizer, or the global writing skill
-(which also loads the house voice in `.claude/reference/voice.md`).
+matching skill: writing, plain-words, or stranger-test (writing also loads the
+house voice in `.claude/reference/voice.md`).
 
 Go through the draft in this order:
 
