@@ -5,10 +5,14 @@
 //   node scripts/transcript.mjs VIDEO_ID
 //
 // Strategy, most reliable first:
-//   1. yt-dlp, if it is on PATH (manual subtitles preferred, then auto-generated).
+//   1. yt-dlp (manual subtitles preferred, then auto-generated). Looked for on
+//      PATH first, then as a Python module (py/python -m yt_dlp), then in the
+//      per-version Python Scripts folders on Windows, because a sandboxed agent
+//      shell (Codex) often carries a shorter PATH than the user's terminal.
 //   2. Zero-dependency fallback: read the caption track the YouTube watch page
-//      embeds. YouTube often gates these URLs behind a player token, so this
-//      path fails for many videos even when captions exist.
+//      embeds. YouTube bot-checks plain fetches and answers HTTP 429 for most
+//      of them, so this path fails for many videos even when captions exist.
+//      Retrying it does not help; yt-dlp is the fix.
 //   3. Neither worked -> exit non-zero with a clear message, so the ingest
 //      workflow knows to ask the editor to paste a transcript.
 //
@@ -65,8 +69,41 @@ function printLines(lines, sourceNote) {
 
 // ---------------------------------------------------------------- yt-dlp path
 
+// Resolve a working yt-dlp invocation as [command, ...leadingArgs], or null.
+// Cached after the first probe.
+let ytDlpCmd;
+function findYtDlp() {
+  if (ytDlpCmd !== undefined) return ytDlpCmd;
+  const candidates = [
+    ['yt-dlp'],
+    ['py', '-m', 'yt_dlp'],
+    ['python3', '-m', 'yt_dlp'],
+    ['python', '-m', 'yt_dlp'],
+  ];
+  const local = process.env.LOCALAPPDATA;
+  if (local) {
+    const pyRoot = path.join(local, 'Programs', 'Python');
+    if (fs.existsSync(pyRoot)) {
+      for (const d of fs.readdirSync(pyRoot).sort().reverse()) {
+        const exe = path.join(pyRoot, d, 'Scripts', 'yt-dlp.exe');
+        if (fs.existsSync(exe)) candidates.push([exe]);
+      }
+    }
+  }
+  candidates.push([path.join(os.homedir(), '.local', 'bin', 'yt-dlp')]);
+  for (const c of candidates) {
+    const r = spawnSync(c[0], [...c.slice(1), '--version'], { stdio: 'ignore', shell: false });
+    if (r.status === 0) {
+      ytDlpCmd = c;
+      return c;
+    }
+  }
+  ytDlpCmd = null;
+  return null;
+}
+
 function haveYtDlp() {
-  return spawnSync('yt-dlp', ['--version'], { stdio: 'ignore', shell: false }).status === 0;
+  return findYtDlp() !== null;
 }
 
 // Parse YouTube's json3 caption format: { events: [{ tStartMs, segs: [{utf8}] }] }.
@@ -96,34 +133,48 @@ function pickSubFile(dir, base) {
 }
 
 function tryYtDlp() {
-  if (!haveYtDlp()) return null;
+  const cmd = findYtDlp();
+  if (!cmd) return null;
+  // Quote any part with whitespace so the line can be pasted back into a shell.
+  console.error(`# yt-dlp via: ${cmd.map((p) => (/\s/.test(p) ? `"${p}"` : p)).join(' ')}`);
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cw-transcript-'));
   try {
     // Two passes: manual subtitles first, auto-generated only if none exist.
+    // Each pass retries once through the android player client when the web
+    // client's caption endpoint answers HTTP 429 (it throttles per IP after a
+    // few pulls of the same video; the android client is not throttled the
+    // same way, verified 2026-09-07).
     for (const [flag, note] of [
       ['--write-subs', ''],
       ['--write-auto-subs', ' (auto-generated)'],
     ]) {
       const base = flag === '--write-subs' ? 'manual' : 'auto';
-      const run = spawnSync(
-        'yt-dlp',
-        [
-          '--skip-download',
-          flag,
-          '--sub-langs',
-          'en.*',
-          '--sub-format',
-          'json3',
-          '-o',
-          path.join(dir, `${base}.%(ext)s`),
-          watchUrl,
-        ],
-        { encoding: 'utf8', shell: false, timeout: 120_000 },
-      );
-      if (run.status !== 0) {
-        console.error(`yt-dlp exited ${run.status}: ${(run.stderr || '').trim().split('\n').pop()}`);
-        continue;
+      let run;
+      for (const client of [null, 'android']) {
+        run = spawnSync(
+          cmd[0],
+          [
+            ...cmd.slice(1),
+            '--skip-download',
+            flag,
+            '--sub-langs',
+            'en.*',
+            '--sub-format',
+            'json3',
+            ...(client ? ['--extractor-args', `youtube:player_client=${client}`] : []),
+            '-o',
+            path.join(dir, `${base}.%(ext)s`),
+            watchUrl,
+          ],
+          { encoding: 'utf8', shell: false, timeout: 120_000 },
+        );
+        if (run.status === 0) break;
+        const last = (run.stderr || '').trim().split('\n').pop();
+        console.error(`yt-dlp${client ? ` (${client} client)` : ''} exited ${run.status}: ${last}`);
+        if (client || !/429/.test(run.stderr || '')) break;
+        console.error('HTTP 429 from the caption endpoint; retrying through the android player client…');
       }
+      if (run.status !== 0) continue;
       const file = pickSubFile(dir, base);
       if (!file) continue;
       const lines = parseJson3(file);
@@ -152,6 +203,12 @@ function decodeEntities(s) {
 
 async function getText(url) {
   const res = await fetch(url, { headers: { 'user-agent': UA, 'accept-language': 'en' } });
+  if (res.status === 429) {
+    throw new Error(
+      `HTTP 429 from YouTube for ${url}. YouTube bot-checks plain fetches; retrying will not help. ` +
+        'Install yt-dlp (or make it reachable from this shell) and run again.',
+    );
+  }
   if (!res.ok) throw new Error(`HTTP ${res.status} fetching ${url}`);
   return res.text();
 }
@@ -196,7 +253,11 @@ try {
     printLines(viaYtDlp.lines, viaYtDlp.note);
     process.exit(0);
   }
-  console.error(haveYtDlp() ? 'yt-dlp found no caption track; trying watch-page fallback…' : 'yt-dlp not on PATH; trying watch-page fallback…');
+  console.error(
+    haveYtDlp()
+      ? 'yt-dlp found no caption track; trying watch-page fallback…'
+      : 'yt-dlp not found on PATH, as a Python module, or in a Python Scripts folder; trying watch-page fallback (YouTube usually answers it with HTTP 429)…',
+  );
 
   const viaWatch = await tryWatchPage();
   if (viaWatch) {
