@@ -1,0 +1,241 @@
+---
+title: Set up an AI that knows your business
+description: 'An AI operating system is a folder of files your agent reads before every message. The four parts it needs, in build order, and the habits that fill it from your head.'
+track: agents
+level: broad
+number: 51
+minutes: 6
+tags: ['knowledge bases', 'instruction files', 'codex']
+objectives:
+  - 'Sort any fact about your work into one of four parts (context, connections, capabilities, cadence) by how often it changes and what it does.'
+  - 'Diagnose why a skill or automation gives generic output: the two parts that should feed it are still empty.'
+  - 'Build the starting folder: one instruction file that is mostly a map of where things live, plus a context folder of slow-changing facts.'
+  - 'Run the audit, level-up, build loop and read the stored scores to see whether the system is improving.'
+  - 'Choose the cheaper model for everyday questions against the folder and reserve the top model for building.'
+prerequisites: []
+sources:
+  - url: https://www.youtube.com/watch?v=yysILVsfLFM
+    creator: Nate Herk (AI Automation)
+    video: I Turned GPT-6 Astra Into the Ultimate AI Second Brain
+    timestamps: ['2:15', '2:45', '2:53', '3:44', '3:56', '4:12', '4:36', '5:41', '6:16', '7:21', '8:09', '9:26', '10:40', '11:46', '12:10', '13:02', '13:41', '14:04', '14:19', '15:47', '16:47', '17:37', '18:35', '18:58']
+selfCheck:
+  - q: 'You ask your agent to draft a launch email and get something any company could have sent. Which part of the folder is missing, and why does adding a better skill not fix it?'
+    a: 'Context is missing: the slow-changing facts about who you are, what you sell, who buys it, and what you are working toward this quarter. A skill only encodes how to do a task; it still fills in the specifics from whatever the agent knows about you. With an empty context folder, that is nothing, so the output stays generic no matter how good the skill is.'
+  - q: 'Why does Nate keep the rules in his instruction file to a few lines and spend the rest on where things live?'
+    a: 'The agent reads the instruction file before every message, so it is the one thing guaranteed to be in front of the model. In a folder with hundreds of files, the question the agent most often gets wrong is where to look, not how to behave. A map answers that question every time; a long list of rules crowds the map out and gets ignored.'
+  - q: 'The folder has an about-me file, a priorities file, and a voice file, but your agent still cannot answer what a customer said in last month''s meeting. What do you build next?'
+    a: 'A connection. Meeting transcripts, email, and chat are data that changes daily, so they belong in the connections part, pulled in on a schedule or reached live through an API or MCP server, rather than pasted into the context folder. Then the agent finds the answer in the meeting file instead of guessing from your standing description of the business.'
+status: published
+lastUpdated: 2026-09-07
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+import Chalk from '../../components/Chalk.astro';
+import FirmwareCta from '../../components/FirmwareCta.astro';
+
+<Chalk>an AI that knows your business is a folder it reads first</Chalk>
+
+<p class="lede">
+Nate Herk, who runs the AI Automation channel and an AI education community, runs his
+company from one folder on his computer. His business wiki, his meetings, every video he
+has made, his skills and his agents all live in it as files, and Codex reads the folder
+before it answers anything. Ask it for a promo video and it already knows what the
+community is, what it looks like, and where to grab screenshots. This guide distills how
+he builds that folder from nothing, the order the parts go in, and the habits that keep it
+growing.
+</p>
+
+## <span class="sec-no">01</span>Four parts, built in order
+
+Nate sorts everything the folder holds into four parts. The first two make the agent know
+you. The last two make it do things.
+
+| Part | What goes in | How often it changes | Example |
+| --- | --- | --- | --- |
+| Context | Facts about you, the business, your goals | A few times a year | Who buys from you, this year's targets, how you write |
+| Connections | The tools whose data changes every day | Constantly | Email, chat, project board, revenue, calendar |
+| Capabilities | Skills: written procedures the agent can run | When you learn a better way | How to draft a newsletter in your voice |
+| Cadence | Agents and automations that run on a schedule | When a routine changes | A Monday summary of the week's meetings |
+
+The order matters. A skill or a scheduled agent built before the first two parts exist
+produces generic work, because the agent has nothing specific to fill it with. Context
+tells it who you are; connections let it reach for today's data at the moment a question
+needs it. Only then does a skill know whose newsletter it is writing.
+
+The split between the first two parts is the one <a
+href="/guides/keep-a-growing-knowledge-base-accurate/">Keep a growing knowledge base
+accurate</a> calls expertise context and situational context: facts that rarely change stay loaded,
+daily data is looked up when a question needs it.
+
+## <span class="sec-no">02</span>Three tests that it is working
+
+Nate uses three checks to tell whether the folder has reached the point where it changes
+how he works:
+
+- **A teammate asks you a question, and you realize the agent would answer it better and
+  faster, with the sources.** The folder holds more than you can remember on the spot.
+- **You stop opening other tabs.** After the setup, force yourself to do everything from
+  the one chat: reply to messages, check the calendar, look up a contract. Each task you
+  do there is one fewer app to switch into.
+- **Knowledge leaves your head.** You no longer rehearse what you decided last quarter or
+  what a customer said in a meeting, because you trust the agent to find it in the chat
+  thread, the email, or the transcript.
+
+## <span class="sec-no">03</span>Start with a folder and a map
+
+The whole setup begins with an empty folder on the desktop, opened as a project in the
+Codex desktop app. Nate's own starter pack, a set of skills he gives away in his free
+community, then interviews you with seven questions (your name, what the business does,
+what you are working on) and writes the answers into a `context/` folder as three files:
+about the business, about you, and priorities. It also creates the one file that matters
+most.
+
+That file is `AGENTS.md`, the instruction file Codex reads at the start of every session.
+Claude Code reads the same kind of file under the name `CLAUDE.md`, and the two hold
+identical content, so the pack writes both. Moving between the tools is a copy and a
+rename.
+
+<PullQuote
+  quote="Before it even will read your message, it reads this first."
+  creator="Nate Herk"
+  video="I Turned GPT-6 Astra Into the Ultimate AI Second Brain"
+  href="https://www.youtube.com/watch?v=yysILVsfLFM"
+  timestamp="7:21"
+/>
+
+Nate's file is mostly a map. It opens with two lines of identity (you are my operating
+system, here is your job) and a few rules: be concise, use bullet points, no em dashes,
+Oxford comma. Everything after that is routing:
+
+- Business advice or team questions: the wiki
+- Corporate structure and entities: this section of the wiki
+- Nate's voice and style: the voice file
+- Course knowledge: the course folder
+
+His folder holds hundreds of files, and the map is what
+lets an agent find the right one on the first try. <a
+href="/guides/keep-a-growing-knowledge-base-accurate/">Keep a growing knowledge base
+accurate</a> shows how to write the map and test it; <a
+href="/guides/turn-repeated-fixes-into-rules/">Turn repeated fixes into rules</a> covers
+the few behavior rules worth keeping above it.
+
+Connections come next, and the agent can plan them for you. List the apps you open every
+week (Nate's checklist: revenue, customers, calendar, messages, tasks, meetings,
+knowledge), then ask the agent how to connect each one. It will name the API key, the
+MCP server, or the browser automation that reaches it.
+
+## <span class="sec-no">04</span>Interview what is in your head
+
+Once the structure exists, the hard part changes.
+
+<PullQuote
+  quote="The real issue is getting everything from your head into the system."
+  creator="Nate Herk"
+  video="I Turned GPT-6 Astra Into the Ultimate AI Second Brain"
+  href="https://www.youtube.com/watch?v=yysILVsfLFM"
+  timestamp="14:04"
+/>
+
+Automating the small tasks is now easy for the model. What it cannot do is know what you
+have never written down. Nate's fix is a skill he calls grill me, adapted from Matt
+Pocock's skill of the same name (Pocock's version interrogates a coding plan before any
+code is written). Pick a topic, say current priorities, and the skill asks question after
+question until the topic is exhausted. Every interview writes a new file into the folder,
+so each session of 20 or 30 minutes leaves a document the agent can read later.
+
+Run it whenever a topic lives only in your head. The interview is faster than writing
+the document yourself, and the questions surface things you would not have thought to
+include.
+
+## <span class="sec-no">05</span>Let the agent find the links
+
+A pile of interview files and pulled-in transcripts is still a pile. Nate's wiki shows
+how each fact relates to the rest of the business, and which entries have gone stale. He
+gets there with Andrej Karpathy's LLM wiki, a short public note that describes a pattern.
+The agent reads your source documents and writes a linked set of pages, one per person,
+project, or topic. As new sources arrive, it updates the pages instead of starting over.
+
+Using it takes one paste. Start a new chat, say you want a wiki built from everything the agent
+already knows about your business contacts, and paste the note in. The agent reads the
+pattern and applies it to your folder.
+
+Nate keeps one wiki per kind of source: one for his videos, one for business knowledge,
+one for meeting transcripts. A single wiki was enough to start; he split it once each
+pile began growing on its own schedule. <a
+href="/guides/build-a-knowledge-base-your-team-can-ask/">Build a knowledge base your
+team can ask</a> covers the same move for a whole team.
+
+## <span class="sec-no">06</span>Audit, level up, build
+
+Nate keeps the folder improving with a loop of three skills:
+
+1. **Audit.** Scores the folder out of 100 across the four parts, checks that the two
+   instruction files still match, and writes the report into an `audits/` folder. A
+   folder built five minutes ago scored 30.
+2. **Level up.** Reads the latest audit and proposes the next thing to build, tied to the
+   bottleneck you named in the seven setup questions. His demo folder got two candidates: a team action
+   list built from status updates, and a backlog of improvements for his certification
+   program.
+3. **Build.** Set up the connection or automation the level-up proposed. Then audit
+   again.
+
+Because every audit is stored with its date, the scores form a record. Run it every
+Monday or every 2 weeks and you can see whether the system is improving month over
+month, rather than feeling that it is. The audit writes a report and waits for you, the same
+shape <a href="/guides/keep-a-growing-knowledge-base-accurate/">Keep a growing
+knowledge base accurate</a> describes; running it on a schedule is a job for <a
+href="/guides/automate-a-workflow-as-a-claude-routine/">Automate a workflow as a Claude
+routine</a>.
+
+## <span class="sec-no">07</span>The files are the asset
+
+<PullQuote
+  quote="All you're building here is you're building files and folders."
+  creator="Nate Herk"
+  video="I Turned GPT-6 Astra Into the Ultimate AI Second Brain"
+  href="https://www.youtube.com/watch?v=yysILVsfLFM"
+  timestamp="18:35"
+/>
+
+Nothing in the folder belongs to one vendor. Nate built his on Codex, opens the same
+folder in Claude Code, and can point a new agent at it the day that agent ships. When a
+better model arrives, the knowledge moves with him; the tool is the part he swaps. <a
+href="/guides/firmware-not-folklore/">Every new repo starts with your lessons</a> makes
+the same argument for a codebase.
+
+The same logic picks the model for daily use. Nate built his folder with GPT-6 Astra,
+recorded 4 days after OpenAI announced it, and calls it the most capable model he has
+used. He also says that for most of what the folder is for (find this document, make
+this spreadsheet) it is overkill and eats the weekly usage limit faster than GPT-5.6
+Sol, which OpenAI prices at $5 per 1 million input tokens. His advice: build with the top model to learn what it can do, then switch
+everyday questions to GPT-5.6 Sol at a lower effort setting (how hard the model thinks
+per answer), and turn the top model
+back on for the hard builds. <a
+href="/guides/recheck-your-model-choices-each-release/">Recheck your model choices each
+release</a> covers how to make that call each time the lineup changes.
+
+<Exercise>
+1. Make an empty folder and open it in Codex or Claude Code. Write an `AGENTS.md` (or
+   `CLAUDE.md`) with two lines of identity, three rules at most, and a routing section
+   that names where each kind of information will live, even before the folders exist.
+2. Write three files into `context/`: about the business, about you, and this quarter's
+   priorities. Ask the agent "who am I?" in a fresh chat and check that it answers from
+   the files.
+3. List the seven apps you open most in a week. Ask the agent how to connect each one and
+   set up the first connection today.
+4. Have the agent interview you for 20 minutes on one topic that lives only in your head,
+   saving every answer to a new file. Then ask it a question only that interview could
+   answer.
+</Exercise>
+
+<FirmwareCta />
+
+## Further reading
+
+- [Nate Herk · I Turned GPT-6 Astra Into the Ultimate AI Second Brain](https://www.youtube.com/watch?v=yysILVsfLFM), the video this guide distills
+- [Andrej Karpathy · LLM wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f), the note to paste into the agent for the wiki step
+- [Matt Pocock · grill-me skill](https://skillselion.com/skills/mattpocock/skills/grill-me), the interview skill Nate's version adapts
+- [AGENTS.md](https://agents.md), the cross-tool instruction-file convention
+- [Wikipedia · Personal knowledge base](https://en.wikipedia.org/wiki/Personal_knowledge_base), the older idea (a person's own notes, linked and searchable) that the folder in this guide extends to an agent
+- [OpenAI · Previewing GPT-5.6 Sol](https://openai.com/index/previewing-gpt-5-6-sol/), the model Nate recommends for everyday questions against the folder
