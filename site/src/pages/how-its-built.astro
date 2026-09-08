@@ -2,8 +2,7 @@
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Faq from '../components/Faq.astro';
-import SkillShelf from '../components/SkillShelf.astro';
-import { TOOL_SHELF } from '../data/toolShelf';
+import HarnessLoop from '../components/HarnessLoop.astro';
 
 const guides = (await getCollection('guides')).filter((g) => g.data.status === 'published');
 const totalMinutes = guides.reduce((sum, g) => sum + g.data.minutes, 0);
@@ -128,11 +127,12 @@ const faq = [
           rel="noopener">active recall</a> to a guide format.
       </p>
 
-      <h2><span class="no">05</span>Take the tools</h2>
+      <h2><span class="no">05</span>The loop behind every change</h2>
       <p>
-        The skills below are real files from the repo that runs this site.
+        Each change to this site runs through one loop: rules and skills go in, one session
+        plans and audits the work, and a pull request carries the evidence to main.
       </p>
-      <SkillShelf groups={TOOL_SHELF} />
+      <HarnessLoop />
     </div>
 
     <Faq heading="FAQ · The Process" items={faq} />
