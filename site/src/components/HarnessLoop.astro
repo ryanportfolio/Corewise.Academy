@@ -604,10 +604,10 @@ const beginAt = (t: number) => `hl-motion.begin+${t}s`;
         </g>
       </svg>
     </div>
+    <p class="hl-hint">Scroll sideways for the whole figure</p>
     <div class="hl-bar" hidden>
       <button type="button" class="hl-run">Run a round</button>
       <span class="hl-status" aria-live="polite">At rest</span>
-      <span class="hl-hint">Scroll sideways for the whole figure</span>
     </div>
   </div>
 </Plate>
@@ -712,13 +712,23 @@ const beginAt = (t: number) => `hl-motion.begin+${t}s`;
   .hl-run:hover { background: var(--accent-wash); border-color: var(--accent); color: var(--accent-deep); }
   .hl-run:disabled { cursor: default; opacity: 0.55; }
   .hl-run:disabled:hover { background: none; border-color: var(--line); color: var(--ink-soft); }
-  /* scroll hint: the script sets hl-overflow whenever the SVG is wider than the
-     plate body; without script the media query stands in (the SVG is 680 px wide
-     and the plate body is narrower than that below a 1250 px viewport). */
-  .hl-hint { display: none; margin-left: var(--s-2); }
-  .hl.hl-overflow .hl-hint { display: inline; }
+  /* scroll hint: its own line above the control bar, so it can show without
+     script. The script sets hl-overflow whenever the SVG is wider than the plate
+     body; without script the media query stands in (the SVG is 680 px wide and
+     the plate body is narrower than that below a 1250 px viewport). */
+  .hl-hint {
+    display: none;
+    margin: 0;
+    padding: var(--s-1) var(--s-2);
+    border-top: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    letter-spacing: 0.04em;
+    color: var(--ink-mute);
+  }
+  .hl.hl-overflow .hl-hint { display: block; }
   @media (max-width: 1249px) {
-    .hl:not(.hl-js) .hl-hint { display: inline; }
+    .hl:not(.hl-js) .hl-hint { display: block; }
   }
 </style>
 
