@@ -1,0 +1,775 @@
+---
+// HarnessLoop: the figure for section 05 of /how-its-built/. It draws the loop
+// every change to this site runs through: three inputs (rules, skills, checks)
+// feed a five-stage ring (recall, plan, execute, audit, integrate) held by one
+// manager session; a stall watch steps in when work stalls; a candidate pull
+// request passes the checks into an updated main, and the lessons go back into
+// the rules. Every name is a link to the real file in the repo that holds it.
+//
+// Contract (Plate.astro, copy-rules.md): warm paper, hairline rules, mono caps
+// apparatus, tokens only, ultramarine spent on one state at rest (the verified
+// result path: merge arrow, Updated main border, lessons wire) plus the star.
+// The resting frame paints without script. "Run a round" (script only) walks the
+// light once around the ring and out through the gate; under
+// prefers-reduced-motion the halos light all at once instead.
+//
+// Deterministic: every coordinate below comes from the constants in this file.
+// Tag boxes (contract version 2): group at (cx + dx, cy + 48), rect y -18,
+// height 52 + 15 * (rows - 1). Amendment 2 says 50, which leaves the last row
+// 2.9 px clear of the bottom edge by getBBox (Plex Mono descends 3.1 px at
+// 11 px), under the 4 px that F-17 measures; 52 gives 4.9 px. Heights: Recall
+// 67, Plan 82, Execute 67, Audit 112 (bottom 659.3, under the loop panel at
+// 670), Integrate 82. Plan and Integrate boxes end at y 472.7; the ring crosses
+// that edge at 119.4 and 240.6 deg (cos d = -(472.7 - 404) / 140). Arc ends
+// derived from those edges, arrowhead fully visible:
+// - Plan -> Execute: 109 to 132 deg. 109 to 119.4 lies under the Plan box;
+//   30.8 px visible; tip at (366.0, 497.7), 3.2 px outside the Execute circle.
+// - Audit -> Integrate: 228 to 239.5 deg. At 243 (the amendment estimate) the
+//   tip is at y 467.6, 5 px inside the Integrate box; at 239.5 it is at y 475.0,
+//   2.3 px below the edge. Start moved from 230 to 228 (3.3 px outside the
+//   Audit circle). 28.1 px visible, 1.9 px under the 30 px rule: reaching 30
+//   would put the start 0.8 px off the Audit circle, which reads worse.
+// Other measured deviations:
+// - The run path is written relative to the rest position P0 and the light
+//   group carries translate(P0): animateMotion adds its own translation on top
+//   of the element's transform, so an absolute path starting at P0 would place
+//   the light at 2 x P0 while it runs. The light still starts at P0 in figure
+//   coordinates; the segment table and the keyPoints/keyTimes are unchanged.
+// - Manager session title is 12 px, not 13: at 13 px the 600-weight title is about
+//   102 px wide and touches the r 56 dashed circle on both sides (measured in a 3x
+//   capture); 12 px clears it by about 7 px a side and still renders at 11.6 px.
+import Plate from './Plate.astro';
+
+interface Props {
+  plate?: string;
+  fig?: string;
+  caption?: string;
+  scale?: string;
+}
+const {
+  // Plate label is 16 chars, not the spec's 20 ('Plate III · The loop'): at a 390 px
+  // viewport the Plate frame has 250 px inside its padding, and 20 caps mono chars
+  // (181 px) plus 'Fig. 1' (54 px) plus the 18 px gap is 253.5 px, so the label
+  // wrapped to a second line. Any label of 19 chars or fewer fits on one line.
+  plate = 'Plate III · Loop',
+  fig = 'Fig. 1',
+  caption = 'One session holds the goal and walks the ring: recall, plan, execute, audit, integrate. Checks gate the merge, and what merges goes back into the rules.',
+  // The inner span lets the legend wrap on a phone: Plate sets white-space nowrap on
+  // its scale slot, and this legend is wider than a 390 px viewport.
+  scale = '<span style="white-space: normal"><b>✦</b> = the session · solid = every round · dashed = only when needed</span>',
+} = Astro.props;
+
+const TITLE =
+  'Figure: how every change to this site is made. Rules, skills, and checks feed a five-stage loop (recall, plan, execute, audit, integrate) run by one manager session; a stall watch steps in when work stalls; a candidate pull request passes the checks into an updated main, and the lessons go back into the rules. Every name is a link to the real file.';
+
+// ---- links --------------------------------------------------------------
+const CW = 'https://github.com/ryanportfolio/Corewise.Academy';
+const HF = 'https://github.com/ryanportfolio/Harness-Firmware';
+const GH_PR = 'https://cli.github.com/manual/gh_pr';
+// Skills that exist in this repo (.claude/skills/<name>/SKILL.md) link here;
+// the rest link to Harness-Firmware, where they live. check.sh verifies this
+// list against the tree on every run.
+const HERE = new Set([
+  'recall',
+  'brainstorming',
+  'why',
+  'fable-mode',
+  'verify-this',
+  'advocate',
+  'arena',
+  'impartial-review',
+  'handoff-audit',
+  'merge',
+  'babysit-ci',
+  'caveman',
+  'enhance-prompt',
+  'writing',
+]);
+// Full URLs are written out so check.sh can curl each one and resolve it with
+// gh api (F-04, F-05); the build asserts each against HERE so the two cannot drift.
+const SKILLS: Record<string, string> = {
+  'recall': 'https://github.com/ryanportfolio/Corewise.Academy/blob/main/.claude/skills/recall/SKILL.md',
+  'brainstorming': 'https://github.com/ryanportfolio/Corewise.Academy/blob/main/.claude/skills/brainstorming/SKILL.md',
+  'why': 'https://github.com/ryanportfolio/Corewise.Academy/blob/main/.claude/skills/why/SKILL.md',
+  'fable-mode': 'https://github.com/ryanportfolio/Corewise.Academy/blob/main/.claude/skills/fable-mode/SKILL.md',
+  'verify-this': 'https://github.com/ryanportfolio/Corewise.Academy/blob/main/.claude/skills/verify-this/SKILL.md',
+  'advocate': 'https://github.com/ryanportfolio/Corewise.Academy/blob/main/.claude/skills/advocate/SKILL.md',
+  'arena': 'https://github.com/ryanportfolio/Corewise.Academy/blob/main/.claude/skills/arena/SKILL.md',
+  'impartial-review': 'https://github.com/ryanportfolio/Corewise.Academy/blob/main/.claude/skills/impartial-review/SKILL.md',
+  'handoff-audit': 'https://github.com/ryanportfolio/Corewise.Academy/blob/main/.claude/skills/handoff-audit/SKILL.md',
+  'merge': 'https://github.com/ryanportfolio/Corewise.Academy/blob/main/.claude/skills/merge/SKILL.md',
+  'babysit-ci': 'https://github.com/ryanportfolio/Corewise.Academy/blob/main/.claude/skills/babysit-ci/SKILL.md',
+  'caveman': 'https://github.com/ryanportfolio/Corewise.Academy/blob/main/.claude/skills/caveman/SKILL.md',
+  'enhance-prompt': 'https://github.com/ryanportfolio/Corewise.Academy/blob/main/.claude/skills/enhance-prompt/SKILL.md',
+  'writing': 'https://github.com/ryanportfolio/Corewise.Academy/blob/main/.claude/skills/writing/SKILL.md',
+  'long-horizon': 'https://github.com/ryanportfolio/Harness-Firmware/blob/main/.claude/skills/long-horizon/SKILL.md',
+  'codex-review': 'https://github.com/ryanportfolio/Harness-Firmware/blob/main/.claude/skills/codex-review/SKILL.md',
+  'wow-loop': 'https://github.com/ryanportfolio/Harness-Firmware/blob/main/.claude/skills/wow-loop/SKILL.md',
+  'refine': 'https://github.com/ryanportfolio/Harness-Firmware/blob/main/.claude/skills/refine/SKILL.md',
+  'dare': 'https://github.com/ryanportfolio/Harness-Firmware/blob/main/.claude/skills/dare/SKILL.md',
+  'astra-review': 'https://github.com/ryanportfolio/Harness-Firmware/blob/main/.claude/skills/astra-review/SKILL.md',
+  'showpiece': 'https://github.com/ryanportfolio/Harness-Firmware/blob/main/.claude/skills/showpiece/SKILL.md',
+};
+for (const [name, url] of Object.entries(SKILLS)) {
+  if (url.startsWith(CW) !== HERE.has(name)) {
+    throw new Error(`HarnessLoop: skill link for ${name} disagrees with HERE`);
+  }
+}
+const skill = (name: string) => {
+  const url = SKILLS[name];
+  if (!url) throw new Error(`HarnessLoop: no link for skill ${name}`);
+  return url;
+};
+const FILES = {
+  claudeMd: 'https://github.com/ryanportfolio/Corewise.Academy/blob/main/CLAUDE.md',
+  reference: 'https://github.com/ryanportfolio/Corewise.Academy/tree/main/.claude/reference',
+  skills: 'https://github.com/ryanportfolio/Corewise.Academy/tree/main/.claude/skills',
+  agentsSkills: 'https://github.com/ryanportfolio/Corewise.Academy/tree/main/.agents/skills',
+  workflows: 'https://github.com/ryanportfolio/Corewise.Academy/tree/main/.github/workflows',
+  siteScripts: 'https://github.com/ryanportfolio/Corewise.Academy/tree/main/site/scripts',
+  deployment: 'https://github.com/ryanportfolio/Corewise.Academy/blob/main/.claude/reference/deployment.md',
+};
+
+type Part = { t: string; href?: string };
+const L = (t: string, href: string): Part => ({ t, href });
+const P = (t: string): Part => ({ t });
+const SEP: Part = { t: ' · ' };
+const row = (...parts: Part[]) => parts;
+
+// ---- geometry -----------------------------------------------------------
+const W = 720;
+const H = 836;
+const CX = 262;
+const CY = 404;
+const R = 140;
+const f1 = (n: number) => Number(n.toFixed(1));
+const rad = (deg: number) => (deg * Math.PI) / 180;
+const pos = (deg: number): [number, number] => [f1(CX + R * Math.sin(rad(deg))), f1(CY - R * Math.cos(rad(deg)))];
+const arcD = (a: number, b: number) => {
+  const [x1, y1] = pos(a);
+  const [x2, y2] = pos(b);
+  return `M${x1} ${y1}A${R} ${R} 0 0 1 ${x2} ${y2}`;
+};
+
+// Four-point atlas star (PLATE_STAR_D on the homepage), scaled about its centre.
+const STAR_D = 'M12 0 L14.88 9.12 L24 12 L14.88 14.88 L12 24 L9.12 14.88 L0 12 L9.12 9.12 Z';
+const starAt = (x: number, y: number, s: number) =>
+  `translate(${(x - s / 2).toFixed(2)} ${(y - s / 2).toFixed(2)}) scale(${(s / 24).toFixed(4)})`;
+
+const gridX = [60, 120, 180, 240, 300, 360, 420, 480, 540, 600, 660];
+const gridY = [60, 120, 180, 240, 300, 360, 420, 480, 540, 600, 660, 720, 780];
+
+// ---- ring nodes ---------------------------------------------------------
+// Order matters for check.sh (F-03, F-29): node names appear here first.
+type Node = { deg: number; numeral: string; name: string; href: string; w: number; dx: number; rows: Part[][] };
+const NODES: Node[] = [
+  {
+    deg: 0,
+    numeral: 'I',
+    name: 'Recall',
+    href: skill('recall'),
+    w: 140,
+    dx: 0,
+    rows: [row(L('recall', skill('recall'))), row(L('.claude/reference/', FILES.reference))],
+  },
+  {
+    deg: 72,
+    numeral: 'II',
+    name: 'Plan',
+    href: skill('long-horizon'),
+    w: 150,
+    dx: 5,
+    rows: [
+      row(L('long-horizon', skill('long-horizon')), SEP, L('dare', skill('dare'))),
+      row(L('brainstorming', skill('brainstorming')), SEP, L('why', skill('why'))),
+      row(L('enhance-prompt', skill('enhance-prompt'))),
+    ],
+  },
+  {
+    deg: 144,
+    numeral: 'III',
+    name: 'Execute',
+    href: skill('fable-mode'),
+    w: 150,
+    dx: 6,
+    rows: [
+      row(L('fable-mode', skill('fable-mode'))),
+      row(L('wow-loop', skill('wow-loop')), SEP, L('showpiece', skill('showpiece'))),
+    ],
+  },
+  {
+    deg: 216,
+    numeral: 'IV',
+    name: 'Audit',
+    href: skill('codex-review'),
+    w: 196,
+    dx: -6,
+    rows: [
+      row(L('long-horizon', skill('long-horizon')), SEP, L('verify-this', skill('verify-this'))),
+      row(L('advocate', skill('advocate')), SEP, L('codex-review', skill('codex-review'))),
+      row(L('astra-review', skill('astra-review')), SEP, L('arena', skill('arena'))),
+      row(L('wow-loop', skill('wow-loop')), SEP, L('impartial-review', skill('impartial-review'))),
+      row(L('handoff-audit', skill('handoff-audit'))),
+    ],
+  },
+  {
+    deg: 288,
+    numeral: 'V',
+    name: 'Integrate',
+    href: skill('refine'),
+    w: 150,
+    dx: -8,
+    rows: [
+      row(P('record the result')),
+      row(L('refine', skill('refine')), SEP, L('writing', skill('writing'))),
+      row(L('recall save', skill('recall'))),
+    ],
+  },
+];
+const nodes = NODES.map((n) => {
+  const [cx, cy] = pos(n.deg);
+  return { ...n, cx, cy, boxH: 52 + 15 * (n.rows.length - 1) };
+});
+
+// Ring arcs: five wires with an arrowhead, from pos(start) to pos(end).
+const ARCS: [number, number][] = [
+  [14, 58], // Recall -> Plan
+  [109, 132], // Plan -> Execute; 109 to 119.4 lies under the Plan tag box
+  [158, 202], // Execute -> Audit
+  [228, 239.5], // Audit -> Integrate; see the frontmatter note
+  [302, 346], // Integrate -> Recall
+];
+
+// ---- inputs row ---------------------------------------------------------
+type Panel = {
+  x: number;
+  title: string;
+  href: string;
+  copy: [number, string][];
+  refs: [number, Part[]][];
+  rule?: number;
+  caps?: [number, string];
+};
+const INPUTS: Panel[] = [
+  {
+    x: 26,
+    title: 'Rules',
+    href: FILES.claudeMd,
+    copy: [
+      [50, 'CLAUDE.md rules always loaded;'],
+      [67, '7 reference files on demand'],
+    ],
+    refs: [
+      [88, row(L('CLAUDE.md', FILES.claudeMd))],
+      [103, row(L('.claude/reference/', FILES.reference))],
+      [146, row(L('caveman', skill('caveman')))],
+    ],
+    rule: 116,
+    caps: [132, 'FEWER TOKENS'],
+  },
+  {
+    x: 258,
+    title: 'Skills',
+    href: FILES.skills,
+    copy: [
+      [50, '31 skills, one folder each;'],
+      [67, 'repeated failures become'],
+      [84, 'rules for the next session'],
+    ],
+    refs: [
+      [104, row(L('.claude/skills/', FILES.skills))],
+      [119, row(L('.agents/skills/', FILES.agentsSkills), SEP, P('Codex copy'))],
+    ],
+  },
+  {
+    x: 490,
+    title: 'Checks',
+    href: FILES.workflows,
+    copy: [
+      [50, 'CI, tests, audited evidence:'],
+      [67, 'every claim gets checked'],
+    ],
+    refs: [
+      [90, row(L('.github/workflows/', FILES.workflows))],
+      [105, row(L('site/scripts/', FILES.siteScripts), SEP, P('build gates'))],
+      [120, row(L('verify-this', skill('verify-this')))],
+    ],
+  },
+];
+const PANEL_Y = 36;
+const PANEL_W = 220;
+const PANEL_H = 156;
+
+// ---- right column -------------------------------------------------------
+const COL_X = 498;
+const COL_W = 212;
+const STALL = { y: 230, h: 134 };
+const CAND = { y: 400, h: 94 };
+const GATE = { cx: 604, cy: 566, half: 44 };
+const MAIN = { x: 430, y: 700, w: 280, h: 120 };
+const gateD = (half: number) =>
+  `M${GATE.cx} ${GATE.cy - half} L${GATE.cx + half} ${GATE.cy} L${GATE.cx} ${GATE.cy + half} L${GATE.cx - half} ${GATE.cy} Z`;
+
+// ---- the run: one round of the light ------------------------------------
+// Rest position P0 on the Integrate -> Recall arc.
+const P0 = pos(322);
+type Seg = { d: string; len: number; dur: number; dwell: number };
+const arcSeg = (a: number, b: number, dur: number, dwell: number): Seg => {
+  const [x, y] = pos(b);
+  return { d: `A${R} ${R} 0 0 1 ${x} ${y}`, len: rad(b - a) * R, dur, dwell };
+};
+const lineSeg = (from: [number, number], pts: [number, number][], dur: number, dwell: number): Seg => {
+  let len = 0;
+  let prev = from;
+  for (const p of pts) {
+    len += Math.hypot(p[0] - prev[0], p[1] - prev[1]);
+    prev = p;
+  }
+  return { d: pts.map(([x, y]) => `L${x} ${y}`).join(''), len, dur, dwell };
+};
+const PLAN = pos(72);
+const SEGS: Seg[] = [
+  arcSeg(322, 360, 0.5, 0), // 1 to Recall
+  arcSeg(0, 72, 0.8, 0.25), // 2 Plan
+  arcSeg(72, 144, 0.8, 0.25), // 3 Execute
+  arcSeg(144, 216, 0.8, 0.25), // 4 Audit
+  arcSeg(216, 288, 0.8, 0.25), // 5 Integrate
+  arcSeg(288, 360, 0.8, 0.4), // 6 Recall, round complete
+  arcSeg(0, 72, 0.8, 0.25), // 7 Plan, next round says ship
+  lineSeg(PLAN, [[478, 361]], 0.4, 0), // 8 exit leader
+  lineSeg([478, 361], [[488, 361], [488, 447], [604, 447]], 0.8, 0.25), // 9 Candidate
+  lineSeg([604, 447], [[604, 566]], 0.5, 0.5), // 10 gate
+  lineSeg([604, 566], [[604, 700]], 0.5, 0), // 11 Updated main top edge
+  lineSeg([604, 700], [[430, 700], [430, 762]], 0.8, 0.25), // 12 along the panel border
+  lineSeg([430, 762], [[12, 762], [12, 30], [22, 30]], 1.8, 0), // 13 INPUTS
+];
+const totalLen = SEGS.reduce((s, g) => s + g.len, 0);
+const totalDur = SEGS.reduce((s, g) => s + g.dur + g.dwell, 0);
+const keyPoints: number[] = [0];
+const keyTimes: number[] = [0];
+{
+  let len = 0;
+  let t = 0;
+  for (const g of SEGS) {
+    len += g.len;
+    t += g.dur;
+    keyPoints.push(len / totalLen);
+    keyTimes.push(t / totalDur);
+    if (g.dwell) {
+      t += g.dwell;
+      keyPoints.push(len / totalLen);
+      keyTimes.push(t / totalDur);
+    }
+  }
+}
+const f3 = (n: number) => n.toFixed(3);
+const KEY_POINTS = keyPoints.map(f3).join(';');
+const KEY_TIMES = keyTimes.map(f3).join(';');
+const DUR = `${Number(totalDur.toFixed(2))}s`;
+// Run path relative to P0 (see the frontmatter note): absolute figure
+// coordinates shifted by -P0 so the light group's translate(P0) supplies the rest.
+const RUN_D = `M0 0${SEGS.map((g) => g.d).join('')}`
+  .replace(/([AL])([^AL]+)/g, (_m, cmd: string, rest: string) => {
+    const nums = rest.trim().split(/\s+/).map(Number);
+    if (cmd === 'A') return `A${nums[0]} ${nums[1]} ${nums[2]} ${nums[3]} ${nums[4]} ${f1(nums[5] - P0[0])} ${f1(nums[6] - P0[1])}`;
+    return `L${f1(nums[0] - P0[0])} ${f1(nums[1] - P0[1])}`;
+  });
+
+// Halo arrival times (seconds after the run begins).
+const ARRIVE: Record<string, number[]> = {
+  Recall: [0.5, 5.5],
+  Plan: [1.3, 6.7],
+  Execute: [2.35],
+  Audit: [3.4],
+  Integrate: [4.45],
+  candidate: [8.15],
+  gate: [8.9],
+  main: [9.9],
+  inputs: [12.4],
+};
+const beginAt = (t: number) => `hl-motion.begin+${t}s`;
+---
+
+<Plate plate={plate} fig={fig} caption={caption} scale={scale}>
+  <div class="hl">
+    <div class="hl-scroll">
+      <svg viewBox="0 0 720 836" role="group" aria-labelledby="hl-title" aria-label={TITLE}>
+        <title id="hl-title">{TITLE}</title>
+        <defs>
+          <marker id="hl-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M0 0L8 4L0 8Z" fill="var(--ink-mute)"></path>
+          </marker>
+          <marker id="hl-arrow-accent" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M0 0L8 4L0 8Z" fill="var(--accent)"></path>
+          </marker>
+        </defs>
+
+        <!-- graticule -->
+        <g class="hl-grid">
+          {gridX.map((x) => <line x1={x} y1="0" x2={x} y2={H} />)}
+          {gridY.map((y) => <line x1="0" y1={y} x2={W} y2={y} />)}
+        </g>
+
+        <!-- inputs row -->
+        <text class="hl-caps" x="26" y="33">INPUTS</text>
+        <line class="hl-halo" x1="26" y1="36" x2="70" y2="36" opacity="0">
+          {ARRIVE.inputs.map((t) => (
+            <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.15;0.7;1" dur="1s" begin={beginAt(t)} fill="remove" />
+          ))}
+        </line>
+        {
+          INPUTS.map((p) => (
+            <g transform={`translate(${p.x} ${PANEL_Y})`}>
+              <rect class="hl-panel" width={PANEL_W} height={PANEL_H} rx="4" />
+              <path class="hl-bullet" d={STAR_D} transform={starAt(14, 22, 9)} />
+              <a href={p.href} target="_blank" rel="noopener noreferrer" aria-label={`${p.title} (opens on GitHub)`}>
+                <text class="hl-title" x="30" y="27">{p.title}</text>
+              </a>
+              {p.copy.map(([y, t]) => (
+                <text class="hl-copy" x="14" y={y}>{t}</text>
+              ))}
+              {p.refs.map(([y, parts]) => (
+                <text class="hl-ref" x="14" y={y}>
+                  {parts.map((part) =>
+                    part.href ? (
+                      <a href={part.href} target="_blank" rel="noopener noreferrer" aria-label={`${part.t} (opens on GitHub)`}>
+                        <tspan>{part.t}</tspan>
+                      </a>
+                    ) : (
+                      <tspan class="hl-sep">{part.t}</tspan>
+                    ),
+                  )}
+                </text>
+              ))}
+              {p.rule && <line class="hl-rule" x1="14" y1={p.rule} x2="206" y2={p.rule} />}
+              {p.caps && (
+                <text class="hl-caps" x="14" y={p.caps[0]}>
+                  {p.caps[1]}
+                </text>
+              )}
+            </g>
+          ))
+        }
+        <!-- bus from the inputs into the loop -->
+        <g class="hl-wire">
+          <path d="M136 192 V208"></path>
+          <path d="M368 192 V208"></path>
+          <path d="M600 192 V208"></path>
+          <path d="M136 208 H600"></path>
+          <path d="M262 208 V226" marker-end="url(#hl-arrow)"></path>
+        </g>
+
+        <!-- loop panel and ring -->
+        <rect class="hl-panel" x="20" y="230" width="458" height="440" rx="4"></rect>
+        <g class="hl-wire">
+          {ARCS.map(([a, b]) => <path d={arcD(a, b)} marker-end="url(#hl-arrow)" />)}
+        </g>
+        <circle class="hl-manager" cx={CX} cy={CY} r="56"></circle>
+        <text class="hl-mgr-title" x={CX} y="398" text-anchor="middle">Manager session</text>
+        <text class="hl-mgr-sub" x={CX} y="414" text-anchor="middle">one context</text>
+        <text class="hl-mgr-sub" x={CX} y="427" text-anchor="middle">holds the goal</text>
+        <!-- exit leader and exit wire -->
+        <path class="hl-leader" d="M421 361 H478"></path>
+        <path class="hl-wire" d="M478 361 H488 V447 H494" marker-end="url(#hl-arrow)"></path>
+
+        {
+          nodes.map((n) => (
+            <g>
+              <circle class="hl-node" cx={n.cx} cy={n.cy} r="26" />
+              <text class="hl-numeral" x={n.cx} y={n.cy + 4.5} text-anchor="middle">
+                {n.numeral}
+              </text>
+              <g transform={`translate(${f1(n.cx + n.dx)} ${f1(n.cy + 48)})`}>
+                <rect class="hl-tag" x={-n.w / 2} y="-18" width={n.w} height={n.boxH} rx="4" />
+                <a href={n.href} target="_blank" rel="noopener noreferrer" aria-label={`${n.name} (opens on GitHub)`}>
+                  <text class="hl-node-title" y="4" text-anchor="middle">
+                    {n.name}
+                  </text>
+                </a>
+                {n.rows.map((parts, i) => (
+                  <text class="hl-ref" y={26 + 15 * i} text-anchor="middle">
+                    {parts.map((part) =>
+                      part.href ? (
+                        <a href={part.href} target="_blank" rel="noopener noreferrer" aria-label={`${part.t} (opens on GitHub)`}>
+                          <tspan>{part.t}</tspan>
+                        </a>
+                      ) : (
+                        <tspan class="hl-sep">{part.t}</tspan>
+                      ),
+                    )}
+                  </text>
+                ))}
+              </g>
+            </g>
+          ))
+        }
+
+        <!-- stall watch -->
+        <g transform={`translate(${COL_X} ${STALL.y})`}>
+          <rect class="hl-panel" width={COL_W} height={STALL.h} rx="4"></rect>
+          <a href={skill('long-horizon')} target="_blank" rel="noopener noreferrer" aria-label="STALL WATCH (opens on GitHub)">
+            <text class="hl-caps" x="12" y="24">STALL WATCH</text>
+          </a>
+          <text class="hl-copy" x="12" y="46">2 audit fails on one step:</text>
+          <text class="hl-copy" x="12" y="63">change the approach</text>
+          <text class="hl-copy" x="12" y="84">3 rounds, no new verified</text>
+          <text class="hl-copy" x="12" y="101">progress: rewrite the plan</text>
+          <text class="hl-ref" x="12" y="122">
+            <a href={skill('long-horizon')} target="_blank" rel="noopener noreferrer" aria-label="long-horizon (opens on GitHub)"><tspan>long-horizon</tspan></a><tspan class="hl-sep"> · </tspan><a href={skill('codex-review')} target="_blank" rel="noopener noreferrer" aria-label="codex-review (opens on GitHub)"><tspan>codex-review</tspan></a>
+          </text>
+        </g>
+        <path class="hl-wire hl-cond" d="M498 296 L416 343" marker-end="url(#hl-arrow)"></path>
+        <text class="hl-tiny" x="470" y="284" text-anchor="end">when work stalls</text>
+
+        <!-- candidate -->
+        <g transform={`translate(${COL_X} ${CAND.y})`}>
+          <rect class="hl-panel" width={COL_W} height={CAND.h} rx="4"></rect>
+          <a href={skill('merge')} target="_blank" rel="noopener noreferrer" aria-label="Candidate (opens on GitHub)">
+            <text class="hl-title" x="12" y="26">Candidate</text>
+          </a>
+          <text class="hl-copy" x="12" y="46">branch + PR,</text>
+          <text class="hl-copy" x="12" y="62">evidence attached</text>
+          <text class="hl-ref" x="12" y="82">
+            <a href={skill('merge')} target="_blank" rel="noopener noreferrer" aria-label="merge (opens on GitHub)"><tspan>merge</tspan></a><tspan class="hl-sep"> · </tspan><a href={GH_PR} target="_blank" rel="noopener noreferrer" aria-label="gh pr (opens on GitHub)"><tspan>gh pr</tspan></a>
+          </text>
+        </g>
+        <path class="hl-wire" d="M604 494 V518" marker-end="url(#hl-arrow)"></path>
+
+        <!-- gate -->
+        <path class="hl-gate" d={gateD(GATE.half)}></path>
+        <text class="hl-gate-text" x={GATE.cx} y="563" text-anchor="middle">checks</text>
+        <text class="hl-gate-text" x={GATE.cx} y="577" text-anchor="middle">pass?</text>
+        <path class="hl-wire hl-accent" d="M604 610 V698" marker-end="url(#hl-arrow-accent)"></path>
+        <text class="hl-tiny hl-tiny-accent" x="612" y="660">merge</text>
+        <path class="hl-wire hl-cond" d="M560 566 H540 V690 H344 V672" marker-end="url(#hl-arrow)"></path>
+        <text class="hl-tiny" x="442" y="684" text-anchor="middle">
+          repair and retry<tspan class="hl-sep"> · </tspan><a href={skill('babysit-ci')} target="_blank" rel="noopener noreferrer" aria-label="babysit-ci (opens on GitHub)"><tspan>babysit-ci</tspan></a>
+        </text>
+
+        <!-- updated main -->
+        <g transform={`translate(${MAIN.x} ${MAIN.y})`}>
+          <rect class="hl-main" width={MAIN.w} height={MAIN.h} rx="4"></rect>
+          <a href={skill('refine')} target="_blank" rel="noopener noreferrer" aria-label="Updated main (opens on GitHub)">
+            <text class="hl-title" x="12" y="26">Updated main</text>
+          </a>
+          <text class="hl-copy" x="12" y="48">squash-merge to main</text>
+          <text class="hl-copy" x="12" y="65">Vercel publishes the site</text>
+          <text class="hl-copy" x="12" y="82">lessons go to refine and recall save</text>
+          <text class="hl-ref" x="12" y="104">
+            <a href={skill('refine')} target="_blank" rel="noopener noreferrer" aria-label="refine (opens on GitHub)"><tspan>refine</tspan></a><tspan class="hl-sep"> · </tspan><a href={skill('recall')} target="_blank" rel="noopener noreferrer" aria-label="recall save (opens on GitHub)"><tspan>recall save</tspan></a><tspan class="hl-sep"> · </tspan><a href={FILES.deployment} target="_blank" rel="noopener noreferrer" aria-label="deployment.md (opens on GitHub)"><tspan>deployment.md</tspan></a>
+          </text>
+        </g>
+
+        <!-- lessons wire: back up the left gutter into INPUTS -->
+        <path class="hl-wire hl-accent hl-cond" d="M430 762 H12 V30 H22" marker-end="url(#hl-arrow-accent)"></path>
+        <text class="hl-tiny hl-tiny-accent" x="30" y="752">lessons go back into the rules, skills, and reference files</text>
+
+        <!-- the run path (invisible) and the light -->
+        <path id="hl-run" fill="none" stroke="none" d={RUN_D}></path>
+        <g id="hl-light" opacity="1" transform={`translate(${P0[0]} ${P0[1]})`}>
+          <path class="hl-star" d={STAR_D} transform={starAt(0, 0, 18)}></path>
+          <animateMotion id="hl-motion" dur={DUR} begin="indefinite" fill="remove" calcMode="linear" keyPoints={KEY_POINTS} keyTimes={KEY_TIMES}>
+            <mpath href="#hl-run"></mpath>
+          </animateMotion>
+          <animate attributeName="opacity" values="1;1;0" keyTimes="0;0.97;1" dur={DUR} begin="hl-motion.begin" fill="remove"></animate>
+          <animate attributeName="opacity" values="0;1" dur="0.4s" begin="hl-motion.end" fill="remove"></animate>
+        </g>
+
+        <!-- halos: lit for a beat as the light arrives -->
+        <g class="hl-halos">
+          {
+            nodes.map((n) => (
+              <circle class="hl-halo" cx={n.cx} cy={n.cy} r="32" opacity="0">
+                {ARRIVE[n.name].map((t) => (
+                  <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.15;0.7;1" dur="1s" begin={beginAt(t)} fill="remove" />
+                ))}
+              </circle>
+            ))
+          }
+          <rect class="hl-halo" x={COL_X - 4} y={CAND.y - 4} width={COL_W + 8} height={CAND.h + 8} rx="6" opacity="0">
+            {ARRIVE.candidate.map((t) => (
+              <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.15;0.7;1" dur="1s" begin={beginAt(t)} fill="remove" />
+            ))}
+          </rect>
+          <path class="hl-halo" d={gateD(50)} opacity="0">
+            {ARRIVE.gate.map((t) => (
+              <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.15;0.7;1" dur="1s" begin={beginAt(t)} fill="remove" />
+            ))}
+          </path>
+          <rect class="hl-halo" x={MAIN.x - 4} y={MAIN.y - 4} width={MAIN.w + 8} height={MAIN.h + 8} rx="6" opacity="0">
+            {ARRIVE.main.map((t) => (
+              <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.15;0.7;1" dur="1s" begin={beginAt(t)} fill="remove" />
+            ))}
+          </rect>
+        </g>
+      </svg>
+    </div>
+    <p class="hl-hint">Scroll sideways for the whole figure</p>
+    <div class="hl-bar" hidden>
+      <button type="button" class="hl-run">Run a round</button>
+      <span class="hl-status" aria-live="polite">At rest</span>
+    </div>
+  </div>
+</Plate>
+
+<style>
+  .hl-scroll { overflow-x: auto; }
+  .hl-scroll :global(svg) { min-width: 680px; }
+
+  /* type */
+  .hl :global(text) { font-family: var(--font-body); }
+  .hl :global(.hl-caps) {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    fill: var(--ink-mute);
+  }
+  .hl :global(.hl-numeral) { font-family: var(--font-mono); font-size: 13px; fill: var(--ink-mute); }
+  .hl :global(.hl-title) { font-size: 14px; font-weight: 600; fill: var(--ink); }
+  .hl :global(.hl-node-title) { font-size: 13.5px; font-weight: 600; fill: var(--ink); }
+  .hl :global(.hl-copy) { font-size: 13px; fill: var(--ink-soft); }
+  .hl :global(.hl-ref) { font-family: var(--font-mono); font-size: 11px; font-weight: 500; fill: var(--ink-soft); }
+  .hl :global(.hl-sep) { fill: var(--ink-mute); }
+  .hl :global(.hl-tiny) { font-size: 11px; font-style: italic; fill: var(--ink-mute); }
+  .hl :global(.hl-tiny-accent) { fill: var(--accent-deep); }
+  .hl :global(.hl-tiny a tspan) { font-family: var(--font-mono); font-style: normal; font-weight: 500; }
+  .hl :global(.hl-mgr-title) { font-size: 12px; font-weight: 600; fill: var(--ink); }
+  .hl :global(.hl-mgr-sub) { font-size: 10.5px; font-style: italic; fill: var(--ink-soft); }
+  .hl :global(.hl-gate-text) { font-size: 11px; fill: var(--ink); }
+
+  /* links: ink-soft at rest, accent-deep and underlined on hover or focus */
+  .hl :global(svg a) { text-decoration: none; cursor: pointer; }
+  .hl :global(svg a:hover text),
+  .hl :global(svg a:focus-visible text),
+  .hl :global(svg a:hover tspan),
+  .hl :global(svg a:focus-visible tspan) {
+    fill: var(--accent-deep);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+  .hl :global(svg a:focus-visible) { outline: 1.5px solid var(--accent); outline-offset: 2px; }
+
+  /* apparatus */
+  .hl :global(.hl-grid line) { stroke: var(--line-soft); stroke-width: 1; }
+  .hl :global(.hl-panel) { fill: none; stroke: var(--line); stroke-width: 1; }
+  .hl :global(.hl-rule) { stroke: var(--line); stroke-width: 1; }
+  .hl :global(.hl-bullet) { fill: var(--ink-mute); }
+  .hl :global(.hl-tag) { fill: var(--panel); stroke: var(--line); stroke-width: 1; }
+  .hl :global(.hl-node) { fill: var(--panel); stroke: var(--ink); stroke-width: 1.4; }
+  .hl :global(.hl-manager) { fill: none; stroke: var(--ink-mute); stroke-width: 1; stroke-dasharray: 5 5; }
+  .hl :global(.hl-wire),
+  .hl :global(.hl-wire path) { fill: none; stroke: var(--ink-mute); stroke-width: 1.4; stroke-linecap: round; }
+  .hl :global(.hl-cond) { stroke-dasharray: 6 5; }
+  .hl :global(.hl-leader) { fill: none; stroke: var(--line); stroke-width: 1.4; stroke-dasharray: 1 4; stroke-linecap: round; }
+  .hl :global(.hl-accent) { stroke: var(--accent); stroke-width: 1.5; }
+  .hl :global(.hl-main) { fill: none; stroke: var(--accent); stroke-width: 1.5; }
+  .hl :global(.hl-gate) { fill: var(--panel); stroke: var(--ink); stroke-width: 1.2; }
+  .hl :global(.hl-halo) { fill: none; stroke: var(--accent); stroke-width: 1; }
+  .hl.hl-shown :global(.hl-halo) { opacity: 0.6; }
+
+  /* the light: same twinkle as the homepage plate */
+  .hl :global(.hl-star) {
+    fill: var(--star);
+    filter: drop-shadow(0 0 5px var(--glow));
+    animation: hl-twinkle 4.6s var(--ease) infinite alternate;
+  }
+  @keyframes hl-twinkle {
+    from { opacity: 0.62; }
+    to { opacity: 1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hl :global(.hl-star) { animation: none; opacity: 1; }
+  }
+
+  /* control bar: hidden until the script runs. Block layout with inline children
+     so the hint computes to display: inline when shown. */
+  .hl-bar {
+    display: block;
+    line-height: 1.9;
+    padding: var(--s-1) var(--s-2);
+    border-top: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    letter-spacing: 0.04em;
+    color: var(--ink-mute);
+  }
+  .hl-bar[hidden] { display: none; }
+  .hl-status { margin-left: var(--s-2); }
+  .hl-run {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    background: none;
+    border: 1px solid var(--line);
+    padding: 3px 10px;
+    cursor: pointer;
+    transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease), color var(--dur) var(--ease);
+  }
+  .hl-run:hover { background: var(--accent-wash); border-color: var(--accent); color: var(--accent-deep); }
+  .hl-run:disabled { cursor: default; opacity: 0.55; }
+  .hl-run:disabled:hover { background: none; border-color: var(--line); color: var(--ink-soft); }
+  /* scroll hint: its own line above the control bar, so it can show without
+     script. The script sets hl-overflow whenever the SVG is wider than the plate
+     body; without script the media query stands in (the SVG is 680 px wide and
+     the plate body is narrower than that below a 1250 px viewport). */
+  .hl-hint {
+    display: none;
+    margin: 0;
+    padding: var(--s-1) var(--s-2);
+    border-top: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    letter-spacing: 0.04em;
+    color: var(--ink-mute);
+  }
+  .hl.hl-overflow .hl-hint { display: block; }
+  @media (max-width: 1249px) {
+    .hl:not(.hl-js) .hl-hint { display: block; }
+  }
+</style>
+
+<script>
+  // Progressive enhancement. Without this the resting frame is complete: every
+  // station, wire, label, and link is present. With it the bar appears and
+  // "Run a round" walks the light once through the loop. Under
+  // prefers-reduced-motion nothing moves: the halos show all at once instead.
+  document.querySelectorAll<HTMLElement>('.hl').forEach((hl) => {
+    const bar = hl.querySelector<HTMLElement>('.hl-bar');
+    const button = hl.querySelector<HTMLButtonElement>('.hl-run');
+    const status = hl.querySelector<HTMLElement>('.hl-status');
+    const motion = hl.querySelector<SVGAnimateMotionElement & { beginElement: () => void }>('#hl-motion');
+    if (!bar || !button || !status || !motion) return;
+    bar.removeAttribute('hidden');
+    hl.classList.add('hl-js');
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Scroll hint: shown whenever the SVG is wider than the plate body.
+    const scroll = hl.querySelector<HTMLElement>('.hl-scroll');
+    if (scroll) {
+      const measure = () => hl.classList.toggle('hl-overflow', scroll.scrollWidth > scroll.clientWidth);
+      measure();
+      if ('ResizeObserver' in window) new ResizeObserver(measure).observe(scroll);
+      else window.addEventListener('resize', measure);
+    }
+
+    motion.addEventListener('endEvent', () => {
+      button.disabled = false;
+      status.textContent = 'Round complete: checks passed, lessons filed';
+    });
+
+    button.addEventListener('click', () => {
+      if (reduce) {
+        const shown = hl.classList.toggle('hl-shown');
+        status.textContent = shown ? 'Round shown all at once' : 'At rest';
+        return;
+      }
+      button.disabled = true;
+      status.textContent = 'Running one round';
+      motion.beginElement();
+    });
+  });
+</script>
