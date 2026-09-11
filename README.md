@@ -3,7 +3,7 @@
 <!-- catalogue:plate -->
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset=".github/assets/plate-dark.svg">
-  <img alt="Chart of the catalogue: 44 published guides as stars in five constellations, one per curriculum layer, generated from the guides' own frontmatter. One star per guide; larger stars are deeper guides." src=".github/assets/plate-light.svg">
+  <img alt="Chart of the catalogue: 45 published guides as stars in five constellations, one per curriculum layer, generated from the guides' own frontmatter. One star per guide; larger stars are deeper guides." src=".github/assets/plate-light.svg">
 </picture>
 <!-- /catalogue:plate -->
 
@@ -12,7 +12,7 @@ CoreWise Academy is a free library of original guides on working with AI, publis
 ## The catalogue
 
 <!-- catalogue:catalogue -->
-44 guides, 296 minutes of reading, sorted into five layers, each guide at one of three depths (broad, practitioner, deep). 33 of them credit the videos and articles they started from, timestamps included; 11 are original field notes with no outside source.
+45 guides, 301 minutes of reading, sorted into five layers, each guide at one of three depths (broad, practitioner, deep). 34 of them credit the videos and articles they started from, timestamps included; 11 are original field notes with no outside source.
 
 | Layer | Constellation | Guides |
 |---|---|---:|
@@ -20,7 +20,7 @@ CoreWise Academy is a free library of original guides on working with AI, publis
 | II · Prompting & Context | THE LOOM | 8 |
 | III · Agents & Automation | THE COURIER | 24 |
 | IV · Building with AI | THE FORGE | 4 |
-| V · Practice | THE METRONOME | 5 |
+| V · Practice | THE METRONOME | 6 |
 <!-- /catalogue:catalogue -->
 
 The numbers above are not typed by hand. [`scripts/readme-plate.mjs`](scripts/readme-plate.mjs) writes them into this page from the guides themselves, and CI fails if they fall behind.

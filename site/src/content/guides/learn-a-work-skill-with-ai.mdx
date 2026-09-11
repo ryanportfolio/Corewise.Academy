@@ -1,0 +1,150 @@
+---
+title: Learn a work skill with AI
+description: 'Choose a task you need to do, learn from checked sources, then test your understanding by doing the work and explaining your decisions.'
+track: practice
+level: broad
+number: 52
+minutes: 5
+tags: ['career', 'knowledge bases', 'verification']
+objectives:
+  - Define a learning goal with an observable result and a stopping condition.
+  - Check an AI explanation against the source it cites.
+  - Complete a practice task and explain the decisions without reading the AI answer.
+  - Compare a proposed change with how the team works today.
+prerequisites: []
+sources:
+  - url: https://www.youtube.com/watch?v=7DJk83sc5xg
+    creator: Austin Marchese
+    video: The Art of Becoming Self-Educated with Claude
+    timestamps: ['1:17', '2:51', '3:36', '7:52', '10:27', '12:47', '14:23', '15:31', '17:08']
+  - url: https://support.google.com/gemininotebook/answer/16179559?hl=en
+    creator: Google
+    video: Use chat in Gemini Notebook
+    timestamps: []
+  - url: https://www.anthropic.com/news/introducing-claude-for-education
+    creator: Anthropic
+    video: Introducing Claude for Education
+    timestamps: []
+selfCheck:
+  - q: What makes a useful stopping condition for learning a work skill?
+    a: 'A task you can complete and explain, with a result someone can check. Reading every suggested resource gives you no such test.'
+  - q: What should you check when an AI tutor cites a source?
+    a: 'Open the passage and check that it supports the claim and applies to your situation. A citation makes the answer easier to inspect; it does not prove the answer is correct.'
+  - q: You can repeat an explanation but struggle when the example changes. What next?
+    a: 'Name the decision you cannot explain, revisit the relevant source, and try another task that requires that decision. Keep the next learning goal focused on the gap.'
+status: published
+lastUpdated: 2026-09-10
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+
+<p class="lede">
+Set a learning goal you can check: a task you can do and explain. AI can supply
+examples, question your reasoning, and find gaps in an attempt. You still need to
+make the decisions that show you understand the work.
+</p>
+
+Austin Marchese's <a href="https://www.youtube.com/watch?v=7DJk83sc5xg">self-education
+video</a> organizes that work around six questions. The guide below adapts his
+sequence into a practice routine, with source checks and an unaided attempt added
+as tests. It makes no promise about how quickly you will become an expert.
+
+## <span class="sec-no">01</span>Choose the task and the depth
+
+Curiosity is enough reason to learn something. For a work skill, name the task
+that learning should make possible. Marchese starts with the problem holding up
+his business; <a href="/guides/automate-the-bottleneck/">Automate the step that slows you down</a>
+covers finding that problem before choosing a tool.
+
+Use these questions to keep the study tied to the task:
+
+| Question | Write down |
+| --- | --- |
+| Why learn this? | The problem you need to solve |
+| How much must I understand? | A task you can perform and explain |
+| Who has done this before? | A source with relevant experience and evidence |
+| How will I practice? | A small attempt with a checkable result |
+| How does it fit here? | The team's current process and constraints |
+| What should I learn next? | The specific gap the attempt exposed |
+
+For example, replace a goal of learning spreadsheets with producing a weekly
+sales total from an export, checking the total, and explaining how duplicate rows
+affect it. That gives you a stopping condition and a way to choose useful lessons.
+
+## <span class="sec-no">02</span>Give the tutor useful sources
+
+Supply your goal, what you already understand, and an example of the work. Ask
+for a plain explanation, then one applied to your task. The briefing method in
+<a href="/guides/brief-the-model/">Brief the model like a brilliant new hire</a>
+applies to tutoring too. Include the needed context in the session rather than
+assuming the tool already knows your background.
+
+Choose sources you can inspect: current documentation and a practitioner's worked
+example. Ask where the example's conditions differ from yours. Adding documents
+gives the model reference material; it does not train a new expert model.
+
+Marchese uses NotebookLM for this source collection. Google's current
+<a href="https://support.google.com/gemininotebook/answer/16179559?hl=en">help page,
+titled Use chat in Gemini Notebook</a>, documents source selection and citations
+that open the cited passage. It also describes optional capabilities that search
+the web. Ask for answers from your selected sources and inspect the citations
+before adopting a recommendation.
+
+Open the passage supporting a key claim and check both its meaning and its fit
+to your task. For a larger collection, <a href="/guides/build-a-knowledge-base-your-team-can-ask/">Build a knowledge base your team can ask</a>
+covers retrieving relevant material.
+
+## <span class="sec-no">03</span>Attempt, explain, check
+
+Make one small attempt before asking AI to complete the task. Then explain your
+decisions without reading its answer. Marchese suggests speaking the explanation
+aloud and having Claude ask follow-up questions. Typed explanations work for this
+exercise too.
+
+<PullQuote
+  quote="The goal here is to identify any gaps in your knowledge."
+  creator="Austin Marchese"
+  video="The Art of Becoming Self-Educated with Claude"
+  href="https://www.youtube.com/watch?v=7DJk83sc5xg"
+  timestamp="12:39"
+/>
+
+Anthropic's <a href="https://www.anthropic.com/news/introducing-claude-for-education">Learning
+mode announcement</a> describes asking learners to explain their approach and
+support conclusions with evidence. The following original prompt requests that
+questioning style in an ordinary chat; it does not enable a product mode.
+
+```text
+My task: [what I need to do]
+Success check: [how I will check the result]
+Sources: [documents or excerpts]
+My attempt and explanation: [paste both]
+
+Ask one question about a decision in my attempt, then wait for my answer. Let me try before giving a correction. Tie factual corrections to a supplied source and flag anything the sources cannot settle. After we address the gaps, give me a changed example to attempt unaided.
+```
+
+Check the result against the task's success condition as well as the tutor's
+feedback. In the spreadsheet example, calculate a small sample's total both with
+your formula and by hand, then compare them. The model's praise does not verify the total.
+For practice answering another person's questions aloud, see
+<a href="/guides/rehearse-the-interview-with-an-ai-coach/">Rehearse the interview with an AI coach</a>.
+
+## <span class="sec-no">04</span>Check how the work happens now
+
+Before applying the lesson to a shared process, write down its current steps and
+ask the person who does the work to correct them. Marchese recommends a flowchart.
+Mark any step you have assumed so the chart cannot quietly turn a guess into a fact.
+
+Compare the proposed change with that checked process. Name who depends on the
+result and what must stay compatible. If the problem itself is unclear,
+<a href="/guides/take-a-problem-apart-before-ai-solves-it/">Take a problem apart before AI solves it</a>
+covers separating facts from assumptions.
+
+<Exercise>
+1. Choose one work task. Write its success check and the decisions you need to explain.
+2. Gather a relevant source and a worked example. Check one AI explanation against the original passage.
+3. Make a small attempt, then use the prompt above to question your explanation. Check the output yourself.
+4. Try the changed example without assistance. Record the first decision you cannot explain.
+5. Check the team's current process before proposing a change. Use the gap from your attempt as the next study topic.
+</Exercise>
