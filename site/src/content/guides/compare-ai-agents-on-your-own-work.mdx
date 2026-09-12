@@ -1,0 +1,124 @@
+---
+title: Compare AI agents on your own work
+description: 'Compare agents on one repeatable task, check the tools each can use, and keep your skills usable when you switch.'
+track: agents
+level: practitioner
+number: 53
+minutes: 5
+tags: ['model choice', 'skills', 'verification', 'instruction files']
+objectives:
+  - Separate a missing tool from a model error when an agent fails a task.
+  - Compare two agent setups using the same input and completion checks.
+  - Identify the paths, tools, and permissions a skill needs before moving it.
+prerequisites:
+  - slug: expertise-you-can-install
+    note: Know how a skill packages instructions and supporting files.
+sources:
+  - url: https://www.youtube.com/watch?v=6LNlCpQPYFc
+    creator: Nate Herk, with Mark Kashef
+    video: How to Actually Choose the Right AI Agent
+    timestamps: ['2:06', '7:54', '11:13', '17:26', '22:41', '24:54', '31:14']
+  - url: https://code.claude.com/docs/en/how-claude-code-works
+    creator: Anthropic
+    video: How Claude Code works
+  - url: https://agentskills.io/specification
+    creator: Agent Skills
+    video: Specification
+  - url: https://code.claude.com/docs/en/memory
+    creator: Anthropic
+    video: How Claude remembers your project
+  - url: https://github.com/ryanportfolio/Harness-Firmware
+    creator: Ryan Allen
+    video: Harness Firmware
+selfCheck:
+  - q: An agent writes valid HTML but cannot start a local server. What should you check first?
+    a: Check whether that session has a command tool, access to the project, and permission to start a server. A missing capability does not establish a model failure.
+  - q: Why can a valid SKILL.md fail after you move it to another agent?
+    a: The new agent may discover skills differently or lack a named tool, script runtime, file path, or permission. Check those requirements and run the skill on a known task.
+  - q: What does a comparison between two agents with different models tell you?
+    a: It compares the complete setups for that task. It cannot isolate how much of the difference came from the model, tools, or instructions.
+status: published
+lastUpdated: 2026-09-12
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+
+<p class="lede">Choose an AI agent by running a job you can check. Record what it produced, what you had to fix, and which tools it could use. Nate Herk's conversation with Mark Kashef makes a useful distinction: the model reasons about the task, while the software around it determines how that reasoning can become work.</p>
+
+## <span class="sec-no">01</span>Check what the agent can do
+
+That surrounding software is the **harness**: tools, context management, and the environment where actions run. Anthropic's [Claude Code documentation](https://code.claude.com/docs/en/how-claude-code-works) describes a loop of gathering context, taking action, and checking results. Tool results give the model evidence for its next step.
+
+In the video's example at 7:54, Kashef asks a local model to create a landing page and start it on his computer. Writing HTML and starting a server require different capabilities. The example concerns that session's setup; it does not establish a limit for every local model application.
+
+Before replacing a model after a failure, locate the failure:
+
+| What happened | What to check |
+| --- | --- |
+| It described an action but never attempted it | Is the needed tool available in this session? |
+| A tool returned access denied | Does the task require access the session lacks? |
+| It read the wrong instructions | Which project and personal instruction files loaded? |
+| It used the right inputs and tools but produced a wrong result | Repeat the task and compare model performance |
+
+## <span class="sec-no">02</span>Compare complete runs
+
+Use the same starting files, request, and completion checks in separate workspaces. Record the app version, model, settings, loaded instructions, and available tools. If two apps use different models, the result compares the complete setups. It cannot tell you which individual part caused the difference.
+
+For the landing-page job, decide in advance what counts as done: the page exists, the local server responds, and the page displays the requested content. Inspect the result yourself. The agent's final message is only a claim about completion.
+
+Keep a row for each run:
+
+| Agent and model | Checks passed | Time | Cost, if shown | Manual fixes |
+| --- | --- | --- | --- | --- |
+| First setup | Record results | Record elapsed time | Record or mark unavailable | Describe corrections |
+| Second setup | Record results | Record elapsed time | Record or mark unavailable | Describe corrections |
+
+Repeat before choosing; one successful run gives little evidence about consistency. For a larger set of tasks with expected results, use [Score your agent on known good answers](/guides/score-your-agent-on-known-good-answers/). Revisit the comparison after releases, as in [Recheck your model choices each release](/guides/recheck-your-model-choices-each-release/).
+
+## <span class="sec-no">03</span>Test skills when you move them
+
+Kashef describes adapting skills across agents at 17:26. The [Agent Skills specification](https://agentskills.io/specification) gives compatible tools a shared file format: a `SKILL.md` with a name, description, and instructions, plus optional scripts and reference files. A shared format still leaves execution requirements to check.
+
+Keep the task instructions and reference material together. Record anything that depends on the app or machine:
+
+- Where the agent discovers the skill and when it should use it.
+- Which tools the instructions name and whether the new agent exposes them.
+- Which script runtimes, packages, and relative file paths must exist.
+- Which permissions the task needs and how the result will be checked.
+
+The specification supports a `compatibility` field for environment requirements. Use a small example with a known result to verify the move. A readable file alone does not prove that the new agent can run the procedure. [One skills library for your whole team](/guides/one-skills-library-for-your-whole-team/) covers maintaining the shared files once they work.
+
+## <span class="sec-no">04</span>Keep changes local first
+
+At 31:14, Kashef describes keeping instructions specific to a project until broader use earns them a place in his personal defaults. That makes a failure easier to investigate: a new instruction in the consulting project has fewer places to affect.
+
+Claude Code supports this distinction through [project and user instruction files](https://code.claude.com/docs/en/memory). Its documentation also distinguishes written guidance from enforced controls. Preserve permission limits when experimenting with shorter instructions.
+
+Kashef reviews different parts of his setup at different intervals. For your own setup, record when an instruction last helped and retest it when the model or workflow changes.
+
+<PullQuote
+  quote="you want to make sure that your skill is actually adding value"
+  creator="Mark Kashef"
+  video="How to Actually Choose the Right AI Agent"
+  href="https://www.youtube.com/watch?v=6LNlCpQPYFc"
+  timestamp="24:54"
+/>
+
+Compare a procedure with and without its extra instructions while keeping the same access limits and completion checks. [Trim the instructions your model outgrew](/guides/trim-the-instructions-your-model-outgrew/) covers that review. Archive a removed procedure with its test results so you can restore it if a later run needs it.
+
+## <span class="sec-no">05</span>How we use Harness Firmware
+
+Our [Harness Firmware](https://github.com/ryanportfolio/Harness-Firmware) template puts this approach into repository files. It stores reusable skills, project lessons, and verification rules alongside the work. This is our implementation, separate from the tools discussed in Herk's video.
+
+Claude Code and Codex get their own instruction files and skill entry points. Shared project knowledge stays in committed reference files, while each agent's workflow accounts for its available tools and permissions. Moving the files still requires the checks above.
+
+A confirmed lesson stays in its project first. After review, a reusable improvement can move back to the template for future projects. [Every new repo starts with your lessons](/guides/firmware-not-folklore/) explains the structure; the [current repository](https://github.com/ryanportfolio/Harness-Firmware) has setup instructions. Use the same sample task to compare your existing setup with a project using Harness Firmware, and record whether it reduces the corrections you need to make.
+
+<Exercise>
+1. Choose a repeatable task using sample data. Write the completion checks before running either agent.
+2. Give two agents separate copies of the same inputs and the same request. Record their models, settings, tools, and instructions.
+3. Run each setup more than once. Check the outputs and record time, visible cost, and manual fixes in the table above.
+4. Move one relevant skill to the other setup. Check its requirements, rerun the task, and record which steps worked or failed.
+5. Choose the setup that meets your completion checks with an acceptable cost and amount of correction. Save the inputs and results for the next comparison.
+</Exercise>
