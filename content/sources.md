@@ -68,3 +68,8 @@ why it qualified.
 
 <!-- Append new rows at the bottom as videos are ingested. -->
 
+| 2026-09-12 (transcript read) | Nate Herk / AI Automation, with Mark Kashef | [How to Actually Choose the Right AI Agent](https://www.youtube.com/watch?v=6LNlCpQPYFc) | Requested by the editor; auto-generated captions read through the last returned segment at 34:06, ending mid-sentence. Footage not watched. Guide No. 53 draws on the model/tools distinction, portable skills, and project scope to build an original comparison exercise. Sponsor, forecasts, and unverified skill-deletion advice excluded. [Structured notes](notes/2026-09-12-6LNlCpQPYFc.md). |
+| 2026-09-12 (documentation read) | Anthropic | [How Claude Code works](https://code.claude.com/docs/en/how-claude-code-works) and [How Claude remembers your project](https://code.claude.com/docs/en/memory) | Supplemental sources for guide No. 53: tools and execution environment, the action/check loop, project and user scopes, and the distinction between instructions and enforced controls. |
+| 2026-09-12 (documentation read) | Agent Skills | [Specification](https://agentskills.io/specification) | Supplemental source for guide No. 53: shared skill format, supporting files, compatibility requirements, and implementation-dependent script support. |
+| 2026-09-12 (repository read) | Ryan Allen | [Harness Firmware](https://github.com/ryanportfolio/Harness-Firmware) | First-party example added to guide No. 53 at the editor's request. Current README confirms separate runtime entry points, committed project references, and reviewed template improvements. Clearly separated from the video's recommendations; no performance gain claimed. |
+
