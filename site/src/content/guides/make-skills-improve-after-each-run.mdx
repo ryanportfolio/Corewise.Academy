@@ -1,0 +1,126 @@
+---
+title: Make skills improve after each run
+description: 'Use failed runs to repair skill descriptions, scripts, and checks. Test each change before keeping it, with Harness Firmware as a working example.'
+track: agents
+level: practitioner
+number: 54
+minutes: 5
+tags: ['skills', 'verification', 'instruction files']
+objectives:
+  - Locate a skill failure in its description, instructions, reference files, or code.
+  - Test whether a revised skill activates for the right requests and produces a checked result.
+  - Save a verified improvement in its project before considering wider reuse.
+prerequisites:
+  - slug: expertise-you-can-install
+    note: Understand how a skill packages instructions and supporting files.
+sources:
+  - url: https://www.youtube.com/watch?v=HIRDzMtuWFk
+    creator: Nate Herk
+    video: 'Anthropic Engineer Explains: What to Build Instead of AI Agents'
+    timestamps: ['1:26', '2:40', '3:17', '4:36', '4:55', '6:14', '6:24', '6:46', '7:59']
+  - url: https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills
+    creator: Anthropic
+    video: Equipping agents for the real world with Agent Skills
+  - url: https://code.claude.com/docs/en/skills
+    creator: Anthropic
+    video: Extend Claude with skills
+  - url: https://agentskills.io/specification
+    creator: Agent Skills
+    video: Specification
+  - url: https://github.com/ryanportfolio/Harness-Firmware
+    creator: Ryan Allen
+    video: Harness Firmware
+selfCheck:
+  - q: A skill works when named directly but is missed in ordinary requests. What should you investigate?
+    a: Check its description and whether the agent lists it among available skills. Test an explicit task request, a paraphrase, and a similar request that should use another workflow.
+  - q: What would show that saving a renderer improved the workflow?
+    a: A later run calls the saved file, and the rendered output passes the same checks. Merely adding the file proves neither reuse nor correctness.
+  - q: When should a correction become a shared template change?
+    a: After it fixes the observed failure without breaking another known case, and review establishes that the lesson applies beyond the original project.
+status: published
+lastUpdated: 2026-09-13
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+
+<p class="lede">A correction should change how the next task runs. Save the working code, repair the instruction that caused the mistake, and test the revised skill on the same input. Nate Herk's video connects these habits into a way to maintain skills. Our Harness Firmware gives the resulting changes a home in the repository.</p>
+
+## <span class="sec-no">01</span>Find what failed
+
+A **skill** packages a procedure and its supporting files for an agent to use. Anthropic's [engineering article](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills) describes specializing a general-purpose agent this way. Start by running a typical task and observing where the agent struggles.
+
+Keep the failed input and output. Then locate the cause:
+
+| What happened | What to change | What to check next |
+| --- | --- | --- |
+| The agent missed the skill | Description or skill discovery | The right skill loads for an ordinary request |
+| It repeated the wrong steps | Procedure in `SKILL.md` | The rerun follows the corrected sequence |
+| It lacked a required example | A linked reference file | The agent reads and applies that example |
+| It rewrote working code | Saved script and its invocation | The run calls the saved file |
+| It returned a defective result | Completion checks | The check detects the original defect |
+
+Change the file that caused the failure. [Turn repeated fixes into rules](/guides/turn-repeated-fixes-into-rules/) covers when an automated check can enforce a correction.
+
+## <span class="sec-no">02</span>Reuse code, check skill choice
+
+At 1:26, Herk describes saving code used to style slides. Reusing a tested renderer removes one part the model would otherwise write again. New content can still overflow a slide, so inspect the rendered result on later runs.
+
+The [Agent Skills specification](https://agentskills.io/specification) supports scripts, references, and assets beside `SKILL.md`. Document the script's inputs and dependencies, and tell the agent when to execute it. Verify the actual command used in the run log.
+
+Check whether the agent finds the skill without being told its name. Claude Code's [skills documentation](https://code.claude.com/docs/en/skills) says descriptions help it choose skills; full instructions normally load when invoked. A description should name the task and the words someone would use to request it. Large skill collections can also shorten the descriptions available to the model.
+
+For a slide-making skill, try:
+
+- "Create slides from this outline."
+- "Turn these notes into a presentation."
+- "Summarize these notes as an email."
+
+The first two should select the skill; the third should leave it unused. Run these in fresh sessions and inspect which skill loaded. Naming the skill directly tests execution but bypasses this selection test.
+
+## <span class="sec-no">03</span>Define the evidence for done
+
+At 6:46, Herk turns to checking outputs before handing them over. Choose checks before generation so a plausible draft cannot quietly become the standard for passing.
+
+| Output | Evidence to inspect |
+| --- | --- |
+| Slide deck | Rendered slides with readable text and no clipped content |
+| Research report | Sources that support each factual claim |
+| Script | Results on known inputs, including the case that failed |
+
+An agent's opinion can flag confusing copy. A screenshot, source, or test result lets you examine the underlying defect. For automated retries, [Loop the agent until the work passes](/guides/loop-the-agent-until-the-work-passes/) explains how to use a pass or fail result.
+
+Set a limit on repair attempts before starting. Stop earlier if the checks pass or a missing tool or inaccessible source blocks the next check. Report the remaining gap. Repeating a review without new evidence can keep spending time on the same defect.
+
+## <span class="sec-no">04</span>Keep the verified change
+
+Our [Harness Firmware](https://github.com/ryanportfolio/Harness-Firmware) template stores instructions, reusable skills, project notes, and verification rules alongside the work. This is our implementation of the maintenance approach, separate from the systems Herk discusses.
+
+Its `recall` skill consults project knowledge before unfamiliar work. `refine` turns observed friction into a small, reviewable change. Project facts live in committed reference files; a reusable procedure belongs in a skill. After human review, `sync-starter` can carry a generic improvement back to the template for future repositories.
+
+[Every new repo starts with your lessons](/guides/firmware-not-folklore/) explains the layered structure. The current template provides separate entry points for Claude Code and Codex. A shared file format still requires testing each agent's tools, paths, and permissions, as in [Compare AI agents on your own work](/guides/compare-ai-agents-on-your-own-work/).
+
+<PullQuote
+  quote="your process can be portable"
+  creator="Nate Herk"
+  video="Anthropic Engineer Explains: What to Build Instead of AI Agents"
+  href="https://www.youtube.com/watch?v=HIRDzMtuWFk"
+  timestamp="6:24"
+/>
+
+Keep an edit when it fixes the observed failure and still passes another known case. A successful run may require no change. Retain the earlier version and comparison evidence so an unsuccessful revision can be undone.
+
+This original prompt applies that review to an existing skill:
+
+```text
+Review this skill's latest run. Use the input, output, tool log, and my correction to identify the cause. Make the smallest supported change to the description, procedure, reference file, script, or completion check. Preserve the earlier version for comparison.
+
+Rerun the failed case and one previously successful case. If the description changed, also test an explicit task request, a paraphrase, and a similar request that should not activate this skill. Stop after two repair attempts or sooner if a required check cannot run. Report the cause, files changed, checks passed, and anything still unverified. Keep the change local for review.
+```
+
+<Exercise>
+1. Pick a skill that recently needed a correction. Save the request, output, and the exact defect you found.
+2. Choose the matching row in section 01. Write a check that would catch that defect, then use the prompt above on a copy of the skill to test a repair.
+3. Review the edit and run both saved cases. Compare the outputs and inspect the tool log for the expected file reads or script calls.
+4. Keep the revision only if the evidence supports it. Save the comparison with the project; propose wider reuse only when the lesson applies elsewhere.
+</Exercise>
