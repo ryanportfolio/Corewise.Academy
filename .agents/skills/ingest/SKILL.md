@@ -8,13 +8,13 @@ description: Use when the user asks to turn a YouTube video into a CoreWise Acad
 Own the work from actual video words to a verified editorial review draft. This is the
 hand-authored Codex workflow. Claude's separate ingest skill is not a prerequisite.
 Share the site's schema and editorial references; keep execution instructions here.
-Repository paths below are relative to the repo root; run build commands in `site/`.
+Repository paths below are relative to the repo root; run copy checks in `site/`.
 
 ## 1. Establish scope and readiness
 
 Use the video URL in the request. If the user replaces it, use the replacement and
 exclude the old source unless asked to combine them. Inspect the checkout, catalogue,
-exposed tools, and installed site dependencies early. Report missing prerequisites and
+and exposed tools early. Site dependencies are not required for content-only ingest. Report missing prerequisites and
 continue work that does not depend on them.
 
 Follow repository authorization rules for installing dependencies and shipping. Keep
@@ -117,21 +117,24 @@ rewrites and deliberately retained terms for the editor. Do not call self-review
 
 ## 6. Verify and prepare the review PR
 
-When installation is authorized, use the lockfile with `npm ci` in `site/`. Run:
+For content-only ingest, run the dependency-free checks below. Do not run `npm ci` or
+`npm run build`, or block the draft or publication because site dependencies are absent.
+This also applies when Writing or clarity-pass mentions a build. If the task includes
+application code or build configuration changes, validate those changes separately.
+Run:
 
 ```text
 site/: npm run lint:copy
-site/: npm run build
 repo root: node scripts/readme-plate.mjs
 repo root: node scripts/readme-plate.mjs --check
 repo root: git diff --check
 ```
 
-Fix new failures. Distinguish missing dependencies from filesystem sandbox denials;
-retry with scoped escalation when justified instead of changing packages. Read layout
-advisories and identify whether they concern this draft. Confirm internal links and
-prerequisites resolve. A copy-only pass is not a successful build. Review-status guides
-are excluded from the published catalogue, so generated assets may legitimately be unchanged.
+Fix new failures. Read layout advisories and identify whether they concern this draft.
+Check frontmatter against the live schema; confirm internal links and prerequisites
+resolve. Report these as content checks, without claiming a local build passed.
+Review-status guides are excluded from the published catalogue, so generated assets
+may legitimately be unchanged.
 
 When commit/push/PR are authorized, use a fresh branch from current main, preserve
 unrelated work, and stage explicit paths. Include changed catalogue assets if generated.
@@ -140,5 +143,5 @@ status. Use a body file for multiline CLI text. Await editorial review; never tu
 ordinary ingest into automatic publication. Report the PR link and actual CI state.
 
 If a later user request explicitly authorizes publication, update status to published,
-regenerate assets, rebuild, verify the updated commit's CI, merge, and follow
+regenerate assets, rerun the content checks, verify the updated commit's CI, merge, and follow
 `.claude/reference/deployment.md` to confirm both deployment success and the live page.
