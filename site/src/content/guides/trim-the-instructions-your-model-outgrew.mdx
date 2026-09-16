@@ -1,163 +1,131 @@
 ---
 title: Trim the instructions your model outgrew
-description: 'Anthropic removed over 80 percent of Claude Code''s system prompt for the Claude 5 models and measured no loss on its coding evaluations. How to give your own instruction files the same trim: goals instead of rule lists, context loaded on demand, and a /doctor audit.'
+description: 'Audit Claude Code instructions, preserve project requirements, and test a smaller setup against the work you already trust.'
 track: prompting
 level: practitioner
 number: 30
 minutes: 6
-tags: ['instruction files', 'claude code']
+tags: ['instruction files', 'claude code', 'verification']
 objectives:
-  - 'Diagnose conflicting or outdated instructions across your CLAUDE.md, skills, and system prompts, and delete the ones a current model no longer needs.'
-  - Restructure a heavyweight CLAUDE.md into a short index that points at detail files loaded only when a task needs them.
-  - 'Rewrite a list of do-this and never-that rules as a stated goal the model can apply with judgment.'
-  - Audit a Claude Code setup with /doctor and act on its report of unused skills and startup context weight.
+  - Separate fixed project requirements from habits worth testing without.
+  - Move task-specific instructions into files loaded when needed.
+  - Compare an existing setup with a smaller version using the same task and checks.
 prerequisites:
   - slug: stop-shouting-at-the-model
-    note: 'Assumes you know the newest models over-obey forceful instructions; this guide extends that finding from single prompts to the instruction files that load before you type.'
+    note: Understand how overly forceful instructions can distort a response.
 sources:
   - url: https://www.youtube.com/watch?v=UBFHTHUs1wA
     creator: Duncan Rogoff
     video: Anthropic Engineers Just Fixed Claude Code and Nobody's Talking About it!
     timestamps: ['1:37', '3:44', '5:05', '6:52', '7:32', '8:19', '8:36']
+  - url: https://www.youtube.com/watch?v=kCUZqM8-Z-4
+    creator: Austin Marchese
+    video: The REAL Reason The Creator of Claude Code Told You To Delete Everything
+    timestamps: ['0:50', '5:20', '5:45', '7:09', '8:16', '9:09', '10:44', '11:42']
+  - url: https://claude.com/blog/the-new-rules-of-context-engineering-for-claude-5-generation-models
+    creator: Thariq Shihipar, Anthropic
+    video: The new rules of context engineering for Claude 5 generation models
+  - url: https://code.claude.com/docs/en/memory
+    creator: Anthropic
+    video: How Claude remembers your project
+  - url: https://code.claude.com/docs/en/cli-reference
+    creator: Anthropic
+    video: CLI reference
+  - url: https://code.claude.com/docs/en/best-practices
+    creator: Anthropic
+    video: Best practices for Claude Code
 selfCheck:
-  - q: 'Anthropic cut over 80 percent of Claude Code''s system prompt and measured no loss on its coding evaluations. Why did the deleted rules stop paying their way?'
-    a: 'They were guardrails for weaker models: worst-case protections and detailed procedures a less capable model needed spelled out. Current models read the surrounding context and handle those cases with their own judgment, so the rules added cost without adding behavior. Worse, rules written at different times contradicted each other (one said to leave documentation in place, another said never to add comments), and the model burns effort reconciling a conflict on every pass.'
-  - q: What does loading context on demand look like in practice, and what does it buy over loading everything up front?
-    a: 'Three moves: keep CLAUDE.md as a short index that names where detail lives, put procedures in skills the model opens only when the task calls for them, and expose tools as short descriptions the model searches before fetching a full definition. Up-front loading makes every session pay for every instruction whether or not it is used; on-demand loading spends context only on what the task touches, so sessions run cheaper and the instructions that do load stand out.'
-  - q: Your CLAUDE.md documents the directory layout, the tech stack, and the build commands. What would a /doctor audit say about those lines?
-    a: 'Cut them. They restate what a session can discover by reading the repository, and CLAUDE.md loads at the start of every session, so you pay for the restatement every time. The audit reserves that always-loaded space for what the model cannot figure out alone: the gotchas, the house rules, and pointers to detail files.'
+  - q: Which instructions should survive a cleanup even without a recorded failure?
+    a: Fixed requirements such as approval before sending, confidentiality limits, and required output formats. A missing failure record does not make a requirement optional.
+  - q: Does moving text into a file imported with @path reduce startup context?
+    a: No. Claude Code expands imports at startup. Use a task-specific file with a clear instruction about when to read it, then check that the relevant task loads it.
+  - q: Why is a safe-mode run an imperfect test of shorter instructions?
+    a: Safe mode also disables custom tools, skills, hooks, and memory. A changed result may come from losing those capabilities. Compare the old and revised instructions with the same tools to test the edit itself.
 status: published
-lastUpdated: 2026-07-28
+lastUpdated: 2026-09-15
 ---
 
 import PullQuote from '../../components/PullQuote.astro';
 import Exercise from '../../components/Exercise.astro';
-import Chalk from '../../components/Chalk.astro';
 
-<Chalk>the rules were written for a weaker model</Chalk>
+<p class="lede">Keep the instructions that describe your project and test whether the rest still help. Austin Marchese's response to Boris Cherny's advice to delete old customizations adds a useful limit: preserve intentional boundaries. Back up the setup, change one part, and compare the results before keeping the edit.</p>
 
-<p class="lede">
-Anthropic removed more than 80 percent of Claude Code's system prompt (the standing instructions
-the tool sends with every request) for the Claude 5 models, and measured no loss on its coding
-evaluations. The deleted rules were written for weaker models that needed every case spelled
-out, and the models quietly outgrew them. Your own instruction files grew the
-same way, rule by rule, and this guide is the trim: what to delete, how to restructure what
-stays, and the built-in audit that finds the bloat for you.
-</p>
+## <span class="sec-no">01</span>Keep the fixed requirements
 
-## <span class="sec-no">01</span>Delete the outgrown rules
+Anthropic [reported removing more than 80 percent of Claude Code's system prompt](https://claude.com/blog/the-new-rules-of-context-engineering-for-claude-5-generation-models) for Claude 5 models without measurable loss on its coding evaluations. That result concerns Anthropic's tasks. Your approval rules and client requirements need their own assessment.
 
-What the model reads is far more than your message. Claude Code assembles each request from the
-system prompt, your CLAUDE.md files (instructions loaded at the start of every session), any
-skills you have installed, and saved memory. Arranging that material is what this track calls
-context engineering, and the arrangement most people run today was tuned for models two
-generations back.
+Duncan Rogoff's walkthrough introduced this guide's pruning method. Marchese's later video supplies the distinction to apply before removing a line:
 
-Thariq Shihipar, on the Claude Code team at Anthropic, wrote up what the team found when they
-reread that accumulated material: they had been over-constraining the model. Rules written at
-different times contradicted each other. One instruction said to leave documentation in place;
-another said never to add comments. The model handles a conflict like that, but it spends
-reasoning on the reconciliation every time, and the rule pair adds nothing a current model would
-not do on its own. So the team deleted the guardrails, kept the goals, and got the same results
-faster and cheaper.
+| Instruction describes | What to do |
+| --- | --- |
+| A fixed requirement, such as approval before sending a report | Keep it; preserve the permission controls that enforce it |
+| A project fact the model cannot infer, such as why a dependency stays pinned | Keep it near the work that needs it |
+| A style preference expressed as an absolute, such as never using lists | State the reader's need and when the preference applies |
+| A workaround for an old model error | Test the task without that workaround |
+| Two conflicting directions | Resolve which applies, then remove or narrow the other |
 
 <PullQuote
-  quote="All you have to do is give Claude judgment."
-  creator="Duncan Rogoff"
-  video="Anthropic Engineers Just Fixed Claude Code and Nobody's Talking About it!"
-  href="https://www.youtube.com/watch?v=UBFHTHUs1wA"
-  timestamp="6:52"
+  quote="Do not delete intentional boundaries."
+  creator="Austin Marchese"
+  video="The REAL Reason The Creator of Claude Code Told You To Delete Everything"
+  href="https://www.youtube.com/watch?v=kCUZqM8-Z-4"
+  timestamp="10:44"
 />
 
-The write-up pairs each old habit with what works on the current models:
+[Stop shouting at the model](/guides/stop-shouting-at-the-model/) covers overly forceful wording. Keep instructions backed by recurring failures, as described in [Turn repeated fixes into rules](/guides/turn-repeated-fixes-into-rules/). For actions with consequences, [Assume your agent uses every tool it has](/guides/assume-your-agent-uses-every-tool-it-has/) explains why written limits need tool restrictions too.
 
-| Old habit | What works now |
-|---|---|
-| Long lists of do-this and never-that rules | State the goal and let the model judge each case |
-| An example for every wanted output | Tool and parameter names that show their intended use |
-| Everything loaded up front | Context loaded when the task calls for it |
-| The same instruction repeated across files | Said once, in the one place it belongs |
-| Hand-written memory notes in CLAUDE.md | Memory the model saves on its own |
-| A prose spec | A test suite, mockup, or scoring rubric the model can check work against |
+## <span class="sec-no">02</span>Keep examples with a purpose
 
-The first row is the same correction <a href="/guides/stop-shouting-at-the-model/">Stop shouting
-at the model</a> makes for single prompts: the newest models follow instructions hard, so
-over-specifying backfires. This guide applies it to everything that loads before you type.
+At 7:09, Marchese suggests replacing rigid examples with a description of the result needed. He also keeps examples for work that must follow an established format. A monthly report may need the same columns because another system imports them.
 
-One caution: a rule that encodes a real, recurring failure in your
-project still earns its place; <a href="/guides/turn-repeated-fixes-into-rules/">Turn repeated
-fixes into rules</a> covers when to write one. The trim targets the other kind: guesses,
-worst-case guardrails, and instructions nobody can trace to an actual failure.
+For an open-ended report, state the decision it should support, the source data, and how claims should be checked. For a fixed report, include its approved template. Label which parts of an example are required and which the model may change.
 
-## <span class="sec-no">02</span>Load context on demand
+The following is an original prompt for reviewing instructions, not a prompt transcribed from the video:
 
-CLAUDE.md loads at the start of every session, so every line in it is a line you pay for every
-time, used or not. The fix is to load detail on demand instead of up front, and the write-up
-names three ways Claude Code now does this.
+```text
+Review this report-writing skill without editing it. Separate fixed requirements, project facts, preferences, repeated instructions, and possible outdated workarounds. Cite the file and line for each finding. Preserve required fields and approval boundaries. For each proposed change, name a task and a check that would reveal whether the change made the result worse. Return a proposed diff for review.
+```
 
-**An index, not an encyclopedia.** Keep CLAUDE.md short: what the repository is, the gotchas a
-fresh session cannot discover, and pointers to detail files for specific tasks. The model opens
-a detail file when a task needs it and skips it otherwise. Lines that restate what the model can
-read from the repository itself (directory layout, tech stack, build commands) get cut.
+Use [Brief the model like a brilliant new hire](/guides/brief-the-model/) when the missing information is the task itself. Instruction cleanup cannot supply a goal nobody has stated.
 
-**Procedures as skills.** Anthropic moved Claude Code's code-review and verification
-instructions out of the always-loaded system prompt into skills the model opens only when it is
-reviewing or verifying. Any multi-step procedure you run sometimes but not always belongs in one;
-<a href="/guides/expertise-you-can-install/">Expertise you can install</a> covers how skills
-work.
+## <span class="sec-no">03</span>Load detail when work needs it
 
-**Tools found by search.** Instead of loading every tool's full definition into every session,
-Claude Code keeps short descriptions and has the model search for the right tool, fetching the
-full definition only when it is about to use it.
+Keep frequently needed project facts in `CLAUDE.md`. Put occasional procedures in a skill or a separate reference file with a clear condition for reading it. [Expertise you can install](/guides/expertise-you-can-install/) covers how those procedures are packaged.
 
-Memory follows the same direction. Hand-written notes in CLAUDE.md were the old way to carry
-facts across sessions; the current models save memory on their own, and
-<a href="/guides/give-your-agent-a-memory/">Give your agent a memory</a> shows what that store
-looks like. And every line this restructuring removes is context budget returned to the session,
-the budget <a href="/guides/stop-hitting-your-token-limit/">Stop hitting your token limit</a>
-teaches you to spend deliberately.
+For example, the standing file can say: "Before writing customer-facing copy, read `docs/writing-style.md`." Test a writing request afterward to confirm the agent opens the file.
 
-## <span class="sec-no">03</span>Run the built-in audit
+An `@path` import behaves differently: [Claude Code expands imports at startup](https://code.claude.com/docs/en/memory). Splitting one large instruction file into several imported files organizes the text but still loads it. [Stop hitting your token limit](/guides/stop-hitting-your-token-limit/) covers budgeting that context.
 
-Claude Code ships a `/doctor` command that finds the bloat for you by auditing
-your whole setup. It is read-only first: it scans, reports what it found, and asks before
-changing anything. The report covers your install's health, your instruction files, and your
-startup context weight (what loads before you type anything), including:
+Auto memory is another source of context. Use `/memory` to inspect its settings and saved notes. Keep deliberate project instructions under review even when automatic note-taking is enabled; [Audit what your agent saved to memory](/guides/audit-what-your-agent-saved-to-memory/) covers duplicate and stale notes.
 
-- Skills, plugins, and connected tool servers (MCP) you never use, found by reading your own
-  usage counters and recent session transcripts.
-- Instructions repeated across CLAUDE.md, skills, and settings, and CLAUDE.md lines a session
-  could figure out itself.
-- Always-loaded guidance that would do better as a detail file or a skill.
-- Automation scripts (hooks) set to run on every tool call and pause the session each time,
-  broken settings files, an outdated version, and permission settings that interrupt you more
-  than they protect you.
+## <span class="sec-no">04</span>Name the check that proves done
 
-The numbers can be large. Duncan Rogoff, whose walkthrough this guide draws on, ran the audit
-on his own machine: 113 personal skills costing about 10,000 tokens (the units context is
-measured and billed in) every session just to list, 25 of which had never been used once.
+At 9:45, Marchese argues that a generic instruction to verify may repeat behavior the model already attempts. His practical recommendation is to specify how this particular output should be verified.
 
-<PullQuote
-  quote="This all boils down to just simplify everything."
-  creator="Duncan Rogoff"
-  video="Anthropic Engineers Just Fixed Claude Code and Nobody's Talking About it!"
-  href="https://www.youtube.com/watch?v=UBFHTHUs1wA"
-  timestamp="8:19"
-/>
+For a report, name the source totals that must match. For code, name the relevant test command and expected result. Anthropic's [best practices](https://code.claude.com/docs/en/best-practices) still recommend giving Claude runnable checks and asking for evidence. An agent saying it verified something leaves the result unproven until you can inspect that evidence.
+
+Keep a check that catches an observed failure. Remove repeated checking only after establishing that both checks cover the same requirement. [Make skills improve after each run](/guides/make-skills-improve-after-each-run/) covers testing those edits against earlier failures.
+
+## <span class="sec-no">05</span>Compare before keeping the edit
+
+Marchese proposes comparing an old setup, a revised setup, and a run without customizations. He later says he usually skips measurement. Our recommendation is to keep a small comparison: a shorter file alone cannot show that the work improved.
+
+Use fresh sessions, the same model, identical input files, and the same completion checks. Record correctness, manual repairs, elapsed time, and cost when available. Repeat a close or inconsistent result before drawing a conclusion. [Compare AI agents on your own work](/guides/compare-ai-agents-on-your-own-work/) develops this method.
+
+The documented terminal command is:
+
+```sh
+claude --safe-mode
+```
+
+[Safe mode disables customizations](https://code.claude.com/docs/en/cli-reference), including instruction files, skills, hooks, MCP servers, and auto memory. Normal permissions still apply. Because custom hooks and tools disappear too, use a disposable copy and a task that needs no external actions. Treat this run as a configuration diagnostic; it changes more than the instructions.
+
+For the old-versus-revised comparison, keep tools and permission controls unchanged. Anthropic also [recommends `/doctor` for instruction and skill cleanup](https://claude.com/blog/the-new-rules-of-context-engineering-for-claude-5-generation-models). Read its findings as candidates to test; the report cannot decide which client requirements still apply.
 
 <Exercise>
-1. Run `/doctor` in Claude Code and read the report before approving any change. Note your
-   startup context weight and how many installed skills have never been used.
-2. Search your CLAUDE.md and skills for "MUST", "NEVER", and "ALWAYS", and for pairs of
-   instructions that pull in opposite directions. Delete every rule you cannot trace to a real
-   failure, and rewrite the survivors as goals.
-3. Restructure your largest CLAUDE.md into an index: keep the overview, the gotchas, and
-   pointers to detail files; move everything else into those files or into a skill. Rerun
-   `/doctor` and compare the startup context weight.
+1. Save a local backup of the instruction files, skills, and relevant settings, including personal files outside the repository. Check that you can find and restore the originals.
+2. Choose one repeated task and write its pass criteria before editing. Run the existing setup and save the output and check results.
+3. Propose one narrow change using the review prompt above. Preserve fixed requirements, verification criteria, and permission controls.
+4. Run the same task in a fresh session with the revised instructions. Confirm any moved reference file was loaded when needed.
+5. Compare both outputs against the original criteria. Keep the edit only if the result still passes and the change has a concrete benefit. Restore it if a required behavior was lost.
 </Exercise>
-
-## Further reading
-
-- [Anthropic · The new rules of context engineering for Claude 5 generation models](https://claude.com/blog/the-new-rules-of-context-engineering-for-claude-5-generation-models), the primary source this guide distills
-- [Anthropic · Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents), the earlier foundations these new rules revise
-- [Duncan Rogoff · Anthropic Engineers Just Fixed Claude Code and Nobody's Talking About it!](https://www.youtube.com/watch?v=UBFHTHUs1wA), the walkthrough and the /doctor demonstration

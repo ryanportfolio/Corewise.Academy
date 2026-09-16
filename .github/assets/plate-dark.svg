@@ -16,7 +16,7 @@
 <circle cx="344.3" cy="262.3" r="2.5" fill="#e8e4d8" fill-opacity="0.8"/>
 <circle cx="366.5" cy="251.5" r="2.5" fill="#e8e4d8" fill-opacity="0.63"/>
 <circle cx="346.3" cy="225.9" r="2.5" fill="#e8e4d8" fill-opacity="0.77"/>
-<circle cx="339.4" cy="211.5" r="2.5" fill="#e8e4d8" fill-opacity="0.8"/>
+<path d="M12 0 L14.88 9.12 L24 12 L14.88 14.88 L12 24 L9.12 14.88 L0 12 L9.12 9.12 Z" transform="translate(331.90 204.00) scale(0.6250)" fill="#96a8ff"/>
 <text x="330" y="382" text-anchor="middle" font-size="11.5" letter-spacing="1.5" fill="#a9a496">II · THE LOOM</text>
 <text x="330" y="399" text-anchor="middle" font-size="10" letter-spacing="1" fill="#a9a496">8 GUIDES</text>
 <circle cx="575.3" cy="276.2" r="2.5" fill="#e8e4d8" fill-opacity="0.76"/>
@@ -37,7 +37,7 @@
 <circle cx="470.1" cy="193.7" r="2.5" fill="#e8e4d8" fill-opacity="0.8"/>
 <circle cx="502.6" cy="170.2" r="2.5" fill="#e8e4d8" fill-opacity="0.8"/>
 <circle cx="499.9" cy="293.7" r="2.5" fill="#e8e4d8" fill-opacity="0.77"/>
-<path d="M12 0 L14.88 9.12 L24 12 L14.88 14.88 L12 24 L9.12 14.88 L0 12 L9.12 9.12 Z" transform="translate(500.90 302.00) scale(0.6250)" fill="#96a8ff"/>
+<circle cx="508.4" cy="309.5" r="2.5" fill="#e8e4d8" fill-opacity="0.86"/>
 <circle cx="511.4" cy="206.1" r="1.9" fill="#e8e4d8" fill-opacity="0.82"/>
 <circle cx="603.4" cy="222.8" r="1.9" fill="#e8e4d8" fill-opacity="0.63"/>
 <circle cx="502.8" cy="250.8" r="2.5" fill="#e8e4d8" fill-opacity="0.94"/>
@@ -61,8 +61,8 @@
 <circle cx="834.3" cy="87.3" r="1.9" fill="#e8e4d8" fill-opacity="0.93"/>
 <text x="880" y="382" text-anchor="middle" font-size="11.5" letter-spacing="1.5" fill="#a9a496">V · THE METRONOME</text>
 <text x="880" y="399" text-anchor="middle" font-size="10" letter-spacing="1" fill="#a9a496">6 GUIDES</text>
-<path d="M 514.4 303.5 L 522.4 295.5" stroke="#e8e4d8" stroke-opacity="0.55" stroke-width="0.7" fill="none"/>
-<text x="526.4" y="298.5" font-size="10.5" letter-spacing="1" fill="#96a8ff">Nº 054 · NEWEST</text>
+<path d="M 345.4 205.5 L 353.4 197.5" stroke="#e8e4d8" stroke-opacity="0.55" stroke-width="0.7" fill="none"/>
+<text x="357.4" y="200.5" font-size="10.5" letter-spacing="1" fill="#96a8ff">Nº 030 · NEWEST</text>
 <text x="34" y="46" font-size="15" letter-spacing="2.8" fill="#e8e4d8" font-weight="600">COREWISE ACADEMY</text>
 <text x="34" y="68" font-size="10.5" letter-spacing="2" fill="#a9a496" font-weight="400">PLATE OF THE CATALOGUE</text>
 <text x="34" y="83" font-size="11.5" letter-spacing="1.2" fill="#e8e4d8" font-weight="600">47 GUIDES · 311 MINUTES OF READING</text>
