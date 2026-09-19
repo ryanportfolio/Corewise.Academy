@@ -103,6 +103,20 @@ Add each source to `content/sources.md` with access/watch provenance stated hone
 creator, linked title, and why the material qualified. Link every genuine catalogue
 intersection inline, using the existing guide's exact title as link text.
 
+### Introduce the lesson and its sources
+
+Write the opening for someone who has never seen the video. The lede should name
+the reader's concrete problem or decision and what the guide helps them do. Use an
+example when it makes that purpose clearer; avoid generic promises or a video recap.
+
+Before the first creator reference, introduce the creator and link the source title
+in a sentence explaining its contribution. Frontmatter and the sources list do not
+replace this introduction. For multiple sources, introduce each where it first matters.
+
+Lead paragraphs with the lesson. Put timecodes in descriptive source links when
+useful, rather than opening with "At 1:57, Nate recommends...". After introducing
+the source, state the action first, then link the relevant explanation in the video.
+
 ## 5. Review the writing
 
 Apply the full copy rules. Check title specificity, unexplained terms, literal claims,
@@ -111,6 +125,9 @@ dashes or substitute separator tricks. Keep paragraphs short; put named sets in 
 lists, or bold-led blocks rather than burying them in prose.
 
 Then cold-read the entire draft, including frontmatter, as someone new to the topic.
+Read the lede and first section without consulting the sources list: can the reader
+identify the problem, the intended result, and who any named creator is? Revise any
+opening that needs the video or private context to make sense.
 Apply the clarity-pass procedure if available. Rewrite sentences that require private
 context or a second reading without weakening their claims. Record the before/after
 rewrites and deliberately retained terms for the editor. Do not call self-review independent.
