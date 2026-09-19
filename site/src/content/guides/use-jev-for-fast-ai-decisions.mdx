@@ -1,0 +1,194 @@
+---
+title: Use Jev for fast AI decisions
+description: 'Define the choices, scores, and yes-or-no questions Jev can answer, then use the results to route work. Compare examples from three creators and test accuracy, cost, and speed before automating.'
+track: building
+level: practitioner
+number: 56
+minutes: 8
+tags: ['automation', 'model choice', 'cost control', 'verification']
+objectives:
+  - Choose Choice, Score, or Noul for a specific decision.
+  - Write focused questions and define what each possible answer means.
+  - Separate a predicted probability, a rating, and confidence when routing work.
+  - Compare Jev with an existing workflow using known answers, total cost, and elapsed time.
+prerequisites:
+  - slug: four-shapes-an-ai-workflow-can-take
+    note: Know where a workflow branches and which steps can run together.
+sources:
+  - url: https://www.youtube.com/watch?v=ymgH8jS6Wb8
+    creator: Nate Herk
+    video: I Tested Jev on 12 Real Use Cases. My Honest Thoughts.
+    timestamps: ['3:49', '5:29', '6:30', '10:16', '10:57', '11:58', '12:52', '14:13', '15:17']
+  - url: https://www.youtube.com/watch?v=4mTLpuQpB80
+    creator: Greg Isenberg with Ryan Vogel
+    video: Jev is HERE. How to use it
+    timestamps: ['4:31', '6:49', '10:10', '17:02', '18:03', '20:59', '21:29', '22:54', '24:02', '25:38', '26:23']
+  - url: https://www.youtube.com/watch?v=2z-7pIj57f8
+    creator: Matthew Berman
+    video: We need to talk about Jev...
+    timestamps: ['3:35', '4:52', '6:24', '7:08', '9:25', '10:28', '11:18']
+  - url: https://docs.typesafe.ai/introduction
+    creator: TypeSafe AI
+    video: Introduction
+  - url: https://docs.typesafe.ai/primitives
+    creator: TypeSafe AI
+    video: Primitives (Questions)
+  - url: https://docs.typesafe.ai/primitives/choice
+    creator: TypeSafe AI
+    video: Choice
+  - url: https://docs.typesafe.ai/primitives/score
+    creator: TypeSafe AI
+    video: Score
+  - url: https://docs.typesafe.ai/primitives/noul
+    creator: TypeSafe AI
+    video: Noul
+  - url: https://docs.typesafe.ai/confidence
+    creator: TypeSafe AI
+    video: Confidence
+  - url: https://docs.typesafe.ai/introduction/quickstart
+    creator: TypeSafe AI
+    video: Quick start
+  - url: https://typesafe.ai/blog/introducing-system-one-models-and-jev
+    creator: Diogo Almeida / TypeSafe AI
+    video: Introducing System One Models & Jev
+  - url: https://vercel.com/ai-gateway/models/jev
+    creator: Vercel
+    video: Jev
+selfCheck:
+  - q: 'A lead receives a Noul value of 0.5 for "Does this request fit our service?" Is that a medium-quality lead?'
+    a: 'It means yes and no have equal predicted probability. To measure quality, define ordered levels and use Score. Uncertainty about fit should send the lead for review or more information.'
+  - q: Can the urgency question use the department answer from the same request?
+    a: 'No. Each question sees the supplied state independently. Ask both against the original message, then combine their answers in code. Use a second request if the department answer is needed to fetch new information or construct the next question.'
+  - q: What would justify replacing your current classifier with Jev?
+    a: 'A comparison on representative inputs with human-approved answers, including ambiguous cases. Measure costly mistakes, review volume, total cost, and elapsed time under matched settings. Valid output structure alone does not establish accuracy.'
+status: published
+lastUpdated: 2026-09-19
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+
+<p class="lede">
+An incoming support message needs a destination, a priority, and someone to handle it. Jev evaluates information against questions and possible answers you define, so it can help sort that queue. Define those decisions, use their probabilities to route work, and check the results before automating.
+</p>
+
+## <span class="sec-no">01</span>Choose the answer type
+
+TypeSafe calls Jev a System One model: a model built for fast, focused judgments that software can use directly. You supply the **state**, meaning the information to evaluate, and a **schema**, meaning the structure of the questions and answers. Jev returns values for code to use. A separate generative model writes replies or summaries. [TypeSafe introduction](https://docs.typesafe.ai/introduction).
+
+| Type | Use it for | Read the result as |
+| --- | --- | --- |
+| **Choice** | Which team should handle this message? | One of your named options, with probabilities and confidence |
+| **Score** | How much does this issue disrupt the customer's work? | A position on ordered levels you describe, with probabilities and confidence |
+| **Noul** | Does this message request a refund? | The predicted probability of yes, from 0 to 1 |
+
+A [Choice](https://docs.typesafe.ai/primitives/choice) needs options that separate the possible answers. Add `other` when the list might miss a case. A [Score](https://docs.typesafe.ai/primitives/score) needs descriptions for each level. Three levels are numbered 0, 1, and 2; the returned score can fall between them.
+
+With [Noul](https://docs.typesafe.ai/primitives/noul), 0.5 means yes and no have equal probability. It does not mean medium urgency or medium lead quality. Define a scale with Score when you want to measure degree.
+
+## <span class="sec-no">02</span>Make the questions precise
+
+Give each question one judgment to make. Automation creator Nate Herk's [I Tested Jev on 12 Real Use Cases. My Honest Thoughts.](https://www.youtube.com/watch?v=ymgH8jS6Wb8) demonstrates this with separate questions for billing messages, sponsorship inquiries, urgency, and sponsor fit. Each answer becomes a usable column; a broad request to analyze an inbox leaves the desired output undefined.
+
+Write the full question in `instructions`; the question ID is only for your code. Questions in one request run independently against the same state. Combine the answers afterward. If one answer is needed to fetch new information, make a second request with that information. [Question design](https://docs.typesafe.ai/primitives).
+
+This original request follows the [direct API's documented format](https://docs.typesafe.ai/introduction/quickstart); it has not been tested against the live service. Send it to `POST https://api.typesafe.ai/v1/systemone` with `Authorization: Bearer YOUR_API_KEY` and `Content-Type: application/json` headers, or recreate the questions in TypeSafe's playground.
+
+```json
+{
+  "model": "jev-latest",
+  "state": "The dashboard stopped loading this morning. Our team cannot process orders, and we have no workaround.",
+  "questions": {
+    "department": {
+      "type": "choice",
+      "instructions": "Which team should handle the main issue in this message?",
+      "criteria": {
+        "billing": "Charges, invoices, or payment collection",
+        "technical": "Broken features, outages, or integration failures",
+        "other": "A request outside billing and technical support"
+      }
+    },
+    "impact": {
+      "type": "score",
+      "instructions": "How much does the reported issue disrupt work?",
+      "criteria": [
+        "Work continues normally",
+        "Work is disrupted but a workaround exists",
+        "Work is blocked and no workaround is available"
+      ]
+    },
+    "refund_requested": {
+      "type": "noul",
+      "instructions": "Does the message explicitly request money back?"
+    }
+  }
+}
+```
+
+As of September 19, Vercel also offers Jev through [AI Gateway](https://vercel.com/ai-gateway/models/jev), using `experimental_evaluate` and model ID `typesafe-ai/jev`. Its example uses `boolean` for a yes-or-no question. Follow the documentation for the interface you choose; the request above is for TypeSafe's direct API.
+
+## <span class="sec-no">03</span>Keep decisions and actions apart
+
+Separate how well a request fits your service from how certain the model is about that judgment. In [Jev is HERE. How to use it](https://www.youtube.com/watch?v=4mTLpuQpB80), podcast host Greg Isenberg and guest Ryan Vogel explore business routing through a design agency's contact-form leads. An uncertain lead may need clarification. Quietly discarding it could lose a customer.
+
+Choice and Score return `confidence`, derived from how their probabilities are distributed. It is a separate field from the winning option's probability. Noul has no separate confidence field. [Confidence documentation](https://docs.typesafe.ai/confidence).
+
+Our routing recommendation:
+
+| Result | Next step |
+| --- | --- |
+| Clear fit for a tested category | Route to the corresponding queue |
+| Ambiguous fit or missing information | Keep the item visible for review or clarification |
+| A reply or detailed explanation is needed | Pass the source material to a person or generative model |
+
+Choose thresholds from errors on your own examples. Keep permissions and execution in code: selecting a refund category must not itself issue a refund. [Assume your agent uses every tool it has](/guides/assume-your-agent-uses-every-tool-it-has/) covers that boundary.
+
+Herk applies the same division to YouTube comments: classify the pile, then send selected comments to a model that can write responses. [Build an agent that finds your customers](/guides/build-an-agent-that-finds-your-customers/) uses the same rule: call a model at the steps that need judgment.
+
+## <span class="sec-no">04</span>What the different demos teach
+
+Fast decisions also fit inside interactive software. AI creator Matthew Berman's [We need to talk about Jev...](https://www.youtube.com/watch?v=2z-7pIj57f8) contributes a simulated town where Jev chooses character reactions. Alongside the business examples, it shows several ways to divide the work:
+
+| Source and example | What to take from it |
+| --- | --- |
+| [Herk, meeting analysis, 10:57](https://www.youtube.com/watch?v=ymgH8jS6Wb8&t=657s) | Ask whether a call names next steps, owners, and deadlines. Count the answers to find a recurring process problem. Your questions determine what the analysis can reveal. |
+| [Vogel with Isenberg, old leads, 18:03](https://www.youtube.com/watch?v=4mTLpuQpB80&t=1083s) | Apply the same classification to historical inbox records to find overlooked inquiries. A useful workflow can start with the backlog. |
+| [Vogel with Isenberg, service matching, 21:29](https://www.youtube.com/watch?v=4mTLpuQpB80&t=1289s) | Their proposed local-services business matches a request against supplied providers. Our implementation advice: fetch current coverage and availability first; calculate any quote from actual pricing rules. |
+| [Vogel, clips, 24:02](https://www.youtube.com/watch?v=4mTLpuQpB80&t=1442s), and [Herk, 11:58](https://www.youtube.com/watch?v=ymgH8jS6Wb8&t=718s) | Give Jev text passages prepared by transcription and candidate-selection tools. Judge whether each passage makes sense by itself and has a useful opening, then let editing software cut the clips. |
+| [Berman, simulated town, 6:24](https://www.youtube.com/watch?v=2z-7pIj57f8&t=384s) | His coding model builds the world; Jev selects character reactions. A short response time lets decisions happen during interaction, while application code moves the characters. |
+
+Herk's browser extension labels posts as they enter view. Berman also discusses routing a prompt to another model. Both put a small decision before a larger action. [Four shapes an AI workflow can take](/guides/four-shapes-an-ai-workflow-can-take/) explains how those branches fit alongside steps that run in parallel.
+
+## <span class="sec-no">05</span>Check speed and accuracy
+
+Herk reports that grouping more work into requests and running requests in parallel cut one email run from about 70 seconds to 6 seconds. That change is part of the application. Compare models with the same inputs, questions, parallel request count, and retry settings before attributing the whole difference to Jev.
+
+TypeSafe's launch post lists $0.042 per million input tokens and free output. The service still charges for input. Its largest speed and cost ratios come from its own workflow evaluations, and the company says those gains are toward the high end. [Launch evidence and caveats](https://typesafe.ai/blog/introducing-system-one-models-and-jev).
+
+The same post explains that its zero-hallucination figure means the output always matches the defined structure. **A valid category can still be the wrong category.** Berman's broader reliability language should be read with that limit.
+
+The demonstrations also expose limits. Vogel says his Bitcoin experiment performs poorly; Herk calls his trading demo unvetted paper trading. Berman describes a chess win caused by the opponent running out of time despite stronger play. These examples support testing speed under a deadline, not assuming that quick decisions are good decisions.
+
+## <span class="sec-no">06</span>Test one queue before routing it
+
+<PullQuote
+  quote="don't just plug in Jev and trust what it says automatically."
+  creator="Nate Herk"
+  video="I Tested Jev on 12 Real Use Cases. My Honest Thoughts."
+  href="https://www.youtube.com/watch?v=ymgH8jS6Wb8"
+  timestamp="12:52"
+/>
+
+Use the method in [Score your agent on known good answers](/guides/score-your-agent-on-known-good-answers/). Track wrong routes, missed urgent items, and review volume separately. A system that sends everything to review may avoid automatic mistakes while saving no work. Include review and fallback costs in the comparison.
+
+This original exercise turns the three videos into a testable workflow:
+
+<Exercise>
+1. Pick one queue, such as support messages. Collect 100 representative examples with human-approved categories, including ambiguous and out-of-scope cases. Reserve part of the set for a final check after tuning.
+2. Define one Choice, one Score, and one Noul question. Write each category and score level plainly. Decide where uncertain answers will go.
+3. Run Jev and your current method on the same inputs under matched settings. Record wrong routes, missed urgent cases, review volume, total cost, and elapsed time.
+4. Adjust criteria and thresholds on the tuning examples. Evaluate the reserved examples once the rules are fixed. Inspect confident mistakes as well as uncertain answers.
+5. Process new items alongside the existing workflow without changing their routes. Enable automatic routing only for categories whose measured errors meet your team's agreed limits.
+</Exercise>
+
+Repeat the comparison after changing criteria or models. [Recheck your model choices each release](/guides/recheck-your-model-choices-each-release/) makes that maintenance routine.
