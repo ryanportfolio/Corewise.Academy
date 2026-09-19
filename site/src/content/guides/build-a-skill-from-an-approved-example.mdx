@@ -35,11 +35,13 @@ lastUpdated: 2026-09-19
 import PullQuote from '../../components/PullQuote.astro';
 import Exercise from '../../components/Exercise.astro';
 
-<p class="lede">Start a skill with a result you have already approved. Give the agent that example, the inputs behind it, and the rules you used to judge it. Then test whether the saved instructions produce another acceptable result from fresh input.</p>
+<p class="lede">A request like "build me a weekly report skill" leaves the agent to guess what a good report looks like. Start with a report you already approve of. Use its source data, calculations, and layout to explain what the skill should produce, then test it on another week's data.</p>
+
+In his video [How to Build Codex Skills Better than 99% of People](https://www.youtube.com/watch?v=9KOtMsZ9I28), Nate Herk shows how he turns work he has already done into reusable skills. This guide applies that approach to a weekly report, with checks for the decisions an example alone cannot explain.
 
 ## <span class="sec-no">01</span>Explain the approved result
 
-At 1:57, Nate recommends working backward from the output. His example is a weekly spreadsheet report: show the columns and calculations you want before asking the agent to write a reusable procedure.
+Give the agent the approved report and the data used to create it. Point out which columns, calculations, and formatting it should preserve. Nate calls this [working backward from the output](https://www.youtube.com/watch?v=9KOtMsZ9I28&t=117s).
 
 The finished report reveals only part of the job. Ask its author to fill in the missing decisions:
 
@@ -71,13 +73,13 @@ For a repository skill, save the instructions under `.agents/skills/weekly-sales
 
 ## <span class="sec-no">03</span>Separate rules from judgment
 
-At 6:28, Nate distinguishes tasks with exact rules from tasks that need judgment. Apply that distinction within a skill too.
+Decide which parts of the task must follow exact rules and which need judgment. Nate describes this as choosing the skill's [freedom level](https://www.youtube.com/watch?v=9KOtMsZ9I28&t=388s). A single report needs both.
 
 **Fixed rules:** name the date boundaries, formulas, and required columns. Use a saved script for repeatable calculations when that removes a demonstrated source of error.
 
 **Judgment:** explain what makes a change worth discussing and show an accepted explanation. Let the agent choose wording that fits the new data.
 
-In Nate's article example, images need to explain the adjacent text. Fixed screenshot timestamps would miss that purpose as videos change. His later feedback, at 25:17, is more useful: reject frames with missing context or unfinished animations, and place each image beside the passage it supports.
+In Nate's article example, images need to explain the adjacent text. Fixed screenshot timestamps would miss that purpose as videos change. His [feedback on the images](https://www.youtube.com/watch?v=9KOtMsZ9I28&t=1517s) gives usable criteria: reject frames with missing context or unfinished animations, and place each image beside the passage it supports.
 
 ## <span class="sec-no">04</span>Check the result yourself
 
@@ -87,7 +89,7 @@ Nate's demonstration includes agents reporting completed checks while he still f
 
 Try the skill on a normal new input and a case with missing required data. The second case should expose the gap rather than produce invented values. [Score your agent on known good answers](/guides/score-your-agent-on-known-good-answers/) covers keeping cases whose correct results you can check.
 
-Once the skill passes, compare model and effort settings on the same saved cases. At 23:05, Nate cautions against selecting a model from one example. [Recheck your model choices each release](/guides/recheck-your-model-choices-each-release/) covers repeating that comparison as models change.
+Once the skill passes, compare model and effort settings on the same saved cases. Nate [cautions against selecting a model from one example](https://www.youtube.com/watch?v=9KOtMsZ9I28&t=1385s). [Recheck your model choices each release](/guides/recheck-your-model-choices-each-release/) covers repeating that comparison as models change.
 
 ## <span class="sec-no">05</span>Save the useful correction
 
