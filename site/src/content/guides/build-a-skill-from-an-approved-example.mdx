@@ -1,0 +1,119 @@
+---
+title: Build a skill from an approved example
+description: 'Turn a result you already like into a reusable Codex skill. Define its task, decide where judgment belongs, and test it on fresh input.'
+track: agents
+level: practitioner
+number: 55
+minutes: 5
+tags: ['skills', 'codex', 'verification']
+objectives:
+  - Extract inputs, fixed rules, and review criteria from an approved example.
+  - Write a description that helps Codex choose the skill for the right requests.
+  - Test a skill on fresh input using both exact checks and human review.
+prerequisites:
+  - slug: expertise-you-can-install
+    note: Know how a skill packages instructions and supporting files.
+sources:
+  - url: https://www.youtube.com/watch?v=9KOtMsZ9I28
+    creator: Nate Herk
+    video: How to Build Codex Skills Better than 99% of People
+    timestamps: ['1:57', '3:42', '6:28', '9:07', '12:33', '14:02', '23:05', '24:13', '25:17']
+  - url: https://learn.chatgpt.com/docs/build-skills
+    creator: OpenAI
+    video: Build skills
+selfCheck:
+  - q: What can an approved report tell you, and what must you still ask its author?
+    a: It shows the desired structure and wording. Ask which inputs, calculations, exclusions, and decisions produced it; the finished report alone cannot establish the method.
+  - q: Which parts of a weekly report should allow judgment?
+    a: Selecting and explaining the changes worth attention may need judgment. Required columns, date ranges, and formulas should follow explicit rules and checks.
+  - q: A skill reproduces its example and says all checks passed. What would you test next?
+    a: Run it on fresh input, inspect the actual output and check evidence, and test a nearby request that should leave the skill unused. A self-reported pass does not establish correctness.
+status: published
+lastUpdated: 2026-09-19
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+
+<p class="lede">Start a skill with a result you have already approved. Give the agent that example, the inputs behind it, and the rules you used to judge it. Then test whether the saved instructions produce another acceptable result from fresh input.</p>
+
+## <span class="sec-no">01</span>Explain the approved result
+
+At 1:57, Nate recommends working backward from the output. His example is a weekly spreadsheet report: show the columns and calculations you want before asking the agent to write a reusable procedure.
+
+The finished report reveals only part of the job. Ask its author to fill in the missing decisions:
+
+| Detail | What to record |
+| --- | --- |
+| Inputs | Source files, reporting period, and required fields |
+| Fixed rules | Formulas, exclusions, and output columns |
+| Judgment | Which changes deserve an explanation and why |
+| Approval | What the reviewer checks before accepting the report |
+
+Ask the author to confirm how the agent thinks the report was made. A correct-looking total does not reveal which rows were excluded. Check the proposed method against the original inputs before saving it. [Capture the model's discipline](/guides/rent-the-model-own-the-method/) covers preserving a useful working method from an earlier session.
+
+## <span class="sec-no">02</span>Name one task clearly
+
+A **skill** stores instructions and optional supporting files for an agent. OpenAI's [Build skills](https://learn.chatgpt.com/docs/build-skills) documentation requires a `SKILL.md` file with a name and description. Codex uses the description to help decide when to load the full instructions.
+
+Describe a request the skill should handle. Here is an original example for a report skill:
+
+```yaml
+---
+name: weekly-sales-report
+description: Create a weekly sales report from supplied sales exports. Use for weekly totals and changes; exclude forecasting and customer outreach.
+---
+```
+
+Keep the first version focused on producing that report. Forecasting future sales and emailing customers introduce different inputs, checks, and permissions.
+
+For a repository skill, save the instructions under `.agents/skills/weekly-sales-report/SKILL.md`. Ask Codex to confirm the loaded file's full path when testing, especially if multiple checkouts contain the same skill. Test both an ordinary report request and a nearby request, such as writing a sales email, that should leave this skill unused.
+
+## <span class="sec-no">03</span>Separate rules from judgment
+
+At 6:28, Nate distinguishes tasks with exact rules from tasks that need judgment. Apply that distinction within a skill too.
+
+**Fixed rules:** name the date boundaries, formulas, and required columns. Use a saved script for repeatable calculations when that removes a demonstrated source of error.
+
+**Judgment:** explain what makes a change worth discussing and show an accepted explanation. Let the agent choose wording that fits the new data.
+
+In Nate's article example, images need to explain the adjacent text. Fixed screenshot timestamps would miss that purpose as videos change. His later feedback, at 25:17, is more useful: reject frames with missing context or unfinished animations, and place each image beside the passage it supports.
+
+## <span class="sec-no">04</span>Check the result yourself
+
+Choose the checks before running the skill. For a weekly report, recalculate totals from the source data and confirm the reporting period. Separately review whether the explanation identifies the changes a reader needs to act on.
+
+Nate's demonstration includes agents reporting completed checks while he still finds misplaced images. Inspect the artifact and supporting evidence. A list of checks marked complete can contain mistakes.
+
+Try the skill on a normal new input and a case with missing required data. The second case should expose the gap rather than produce invented values. [Score your agent on known good answers](/guides/score-your-agent-on-known-good-answers/) covers keeping cases whose correct results you can check.
+
+Once the skill passes, compare model and effort settings on the same saved cases. At 23:05, Nate cautions against selecting a model from one example. [Recheck your model choices each release](/guides/recheck-your-model-choices-each-release/) covers repeating that comparison as models change.
+
+## <span class="sec-no">05</span>Save the useful correction
+
+<PullQuote
+  quote="Here's what I really liked. Here's what I didn't like."
+  creator="Nate Herk"
+  video="How to Build Codex Skills Better than 99% of People"
+  href="https://www.youtube.com/watch?v=9KOtMsZ9I28"
+  timestamp="14:14"
+/>
+
+Name the defect, revise the relevant instruction, and rerun the case that exposed it. Also check that the revision preserves what already worked. [Make skills improve after each run](/guides/make-skills-improve-after-each-run/) gives the maintenance procedure, including checking an earlier successful case before keeping an edit.
+
+This original prompt starts the process from an approved example:
+
+```text
+Use this approved result and its source inputs to draft a skill for producing the same kind of deliverable. Ask about any formulas, exclusions, or decisions the example does not establish.
+
+Give the skill one clear task and describe when it should activate. Separate exact rules from decisions that need judgment. Include checks tied to the output and explain what to report when required data or tools are missing. Confirm the full path where the skill will be saved.
+
+Test the draft on fresh input. Show the output, the evidence for each check, and any remaining defects. Keep the skill and result local for review.
+```
+
+<Exercise>
+1. Choose an approved deliverable and collect the inputs used to make it. Fill in the four rows from section 01.
+2. Use the prompt above to draft a skill. Confirm any inferred rules before accepting the file.
+3. Run a fresh input and a copy with one required field removed. Inspect the results and the reported checks.
+4. Try a nearby task that should not use the skill. Save the test requests and one precise correction for the next revision.
+</Exercise>
