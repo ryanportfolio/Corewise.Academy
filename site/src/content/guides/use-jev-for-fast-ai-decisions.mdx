@@ -1,20 +1,34 @@
 ---
 title: Use Jev for fast AI decisions
-description: 'Define the choices, scores, and yes-or-no questions Jev can answer, then use the results to route work. Compare examples from three creators and test accuracy, cost, and speed before automating.'
+description: 'Define the choices, scores, and yes-or-no questions Jev can answer, then use the results to route work. Compare examples from four videos, recognize tasks that need deeper context, and test accuracy, cost, and speed before automating.'
 track: building
 level: practitioner
 number: 56
-minutes: 8
+minutes: 10
 tags: ['automation', 'model choice', 'cost control', 'verification']
 objectives:
   - Choose Choice, Score, or Noul for a specific decision.
   - Write focused questions and define what each possible answer means.
   - Separate a predicted probability, a rating, and confidence when routing work.
   - Compare Jev with an existing workflow using known answers, total cost, and elapsed time.
+  - Distinguish focused classification from code review and conversation summarization.
 prerequisites:
   - slug: four-shapes-an-ai-workflow-can-take
     note: Know where a workflow branches and which steps can run together.
 sources:
+  - url: https://www.youtube.com/watch?v=F3YXg7AaKWE
+    creator: Theo - t3gg
+    video: Jev is incredible
+    timestamps: ['10:38', '12:40', '18:23', '23:03', '25:00', '26:49', '27:38', '28:02']
+  - url: https://docs.typesafe.ai/concepts/state
+    creator: TypeSafe AI
+    video: State
+  - url: https://platform.claude.com/docs/en/build-with-claude/compaction
+    creator: Anthropic
+    video: Compaction
+  - url: https://platform.claude.com/docs/en/build-with-claude/prompt-caching
+    creator: Anthropic
+    video: Prompt caching
   - url: https://www.youtube.com/watch?v=ymgH8jS6Wb8
     creator: Nate Herk
     video: I Tested Jev on 12 Real Use Cases. My Honest Thoughts.
@@ -62,7 +76,7 @@ selfCheck:
   - q: What would justify replacing your current classifier with Jev?
     a: 'A comparison on representative inputs with human-approved answers, including ambiguous cases. Measure costly mistakes, review volume, total cost, and elapsed time under matched settings. Valid output structure alone does not establish accuracy.'
 status: published
-lastUpdated: 2026-09-19
+lastUpdated: 2026-09-20
 ---
 
 import PullQuote from '../../components/PullQuote.astro';
@@ -159,17 +173,37 @@ Fast decisions also fit inside interactive software. AI creator Matthew Berman's
 
 Herk's browser extension labels posts as they enter view. Berman also discusses routing a prompt to another model. Both put a small decision before a larger action. [Four shapes an AI workflow can take](/guides/four-shapes-an-ai-workflow-can-take/) explains how those branches fit alongside steps that run in parallel.
 
-## <span class="sec-no">05</span>Check speed and accuracy
+## <span class="sec-no">05</span>Supply enough context to judge
+
+Choose questions the supplied evidence can answer. Developer creator Theo's [Jev is incredible](https://www.youtube.com/watch?v=F3YXg7AaKWE) adds a useful limit: a quick classifier may lack the context needed to judge a whole implementation or decide which conversation history an agent can afford to lose.
+
+**Keep evaluation narrow.** Checking whether a reply contains a required disclosure is a focused judgment. Choosing the best of several code implementations may require reading dependencies and running tests. Theo challenges that use at [12:40](https://www.youtube.com/watch?v=F3YXg7AaKWE&t=760s). Our recommendation is to validate each judging task separately, using [Score your agent on known good answers](/guides/score-your-agent-on-known-good-answers/). TypeSafe's own [question guidance](https://docs.typesafe.ai/primitives) favors focused judgments and splitting complex ones into smaller questions.
+
+**Carry prior actions forward.** Theo observes repeated left-right turns in a game demo and attributes them to decisions made without the previous action. For a repeated decision, our recommendation is to include the current goal, recent action, and its result in the next state. Jev currently takes text or JSON state, not screenshots; the surrounding program must supply those facts. [State documentation](https://docs.typesafe.ai/concepts/state).
+
+**Treat history deletion as a separate experiment.** Theo's [compaction critique](https://www.youtube.com/watch?v=F3YXg7AaKWE&t=1383s) concerns removing messages without enough evidence about what later work needs. Anthropic's [compaction](https://platform.claude.com/docs/en/build-with-claude/compaction) instead summarizes older context for continuing the task. A keep-or-drop classifier alone does not produce that summary. Keep the agent's supported context management unless your replacement passes tests of whether work resumes correctly.
+
+History edits can also change the bill. Anthropic's [prompt caching](https://platform.claude.com/docs/en/build-with-claude/prompt-caching) reuses matching prefixes: changing an early message prevents reuse of cached prefixes that include it. Measure cache misses and recovery work alongside tokens removed. [Stop hitting your token limit](/guides/stop-hitting-your-token-limit/) covers the broader budget choices.
+
+## <span class="sec-no">06</span>Keep probabilities for later use
+
+Store the probabilities with the original record, question definitions, and model version. Theo's [chat-history analysis](https://www.youtube.com/watch?v=F3YXg7AaKWE&t=1609s) classifies past coding conversations, then changes category thresholds in a dashboard. With the same questions and saved results, changing a threshold needs no new model call.
+
+The threshold changes what gets counted. Report it beside any category total, and inspect examples that cross the boundary. A stricter threshold can shrink a category without changing the underlying conversations.
+
+Broad judgments still need checking. Theo reports that attempts to identify conversations worth making into videos kept selecting roughly half his threads despite prompt revisions. That limits how much to infer from the earlier clip-scoring demos: a passage can be self-contained without being worth publishing.
+
+## <span class="sec-no">07</span>Check speed and accuracy
 
 Herk reports that grouping more work into requests and running requests in parallel cut one email run from about 70 seconds to 6 seconds. That change is part of the application. Compare models with the same inputs, questions, parallel request count, and retry settings before attributing the whole difference to Jev.
 
 TypeSafe's launch post lists $0.042 per million input tokens and free output. The service still charges for input. Its largest speed and cost ratios come from its own workflow evaluations, and the company says those gains are toward the high end. [Launch evidence and caveats](https://typesafe.ai/blog/introducing-system-one-models-and-jev).
 
-The same post explains that its zero-hallucination figure means the output always matches the defined structure. **A valid category can still be the wrong category.** Berman's broader reliability language should be read with that limit.
+The same post explains that its zero-hallucination figure means the output always matches the defined structure. **A valid category can still be the wrong category.** Berman's broader reliability language should be read with that limit. Theo also distinguishes a fixed output shape from fixed content: the format guarantee does not promise identical judgments on repeated calls.
 
 The demonstrations also expose limits. Vogel says his Bitcoin experiment performs poorly; Herk calls his trading demo unvetted paper trading. Berman describes a chess win caused by the opponent running out of time despite stronger play. These examples support testing speed under a deadline, not assuming that quick decisions are good decisions.
 
-## <span class="sec-no">06</span>Test one queue before routing it
+## <span class="sec-no">08</span>Test one queue before routing it
 
 <PullQuote
   quote="don't just plug in Jev and trust what it says automatically."
@@ -181,13 +215,13 @@ The demonstrations also expose limits. Vogel says his Bitcoin experiment perform
 
 Use the method in [Score your agent on known good answers](/guides/score-your-agent-on-known-good-answers/). Track wrong routes, missed urgent items, and review volume separately. A system that sends everything to review may avoid automatic mistakes while saving no work. Include review and fallback costs in the comparison.
 
-This original exercise turns the three videos into a testable workflow:
+This original exercise turns the four videos into a testable workflow:
 
 <Exercise>
 1. Pick one queue, such as support messages. Collect 100 representative examples with human-approved categories, including ambiguous and out-of-scope cases. Reserve part of the set for a final check after tuning.
 2. Define one Choice, one Score, and one Noul question. Write each category and score level plainly. Decide where uncertain answers will go.
 3. Run Jev and your current method on the same inputs under matched settings. Record wrong routes, missed urgent cases, review volume, total cost, and elapsed time.
-4. Adjust criteria and thresholds on the tuning examples. Evaluate the reserved examples once the rules are fixed. Inspect confident mistakes as well as uncertain answers.
+4. Save probabilities with the inputs, questions, and model version. Compare thresholds on the tuning examples without calling the model again; changed questions require a new run. Evaluate the reserved examples once the rules are fixed. Inspect confident mistakes as well as uncertain answers.
 5. Process new items alongside the existing workflow without changing their routes. Enable automatic routing only for categories whose measured errors meet your team's agreed limits.
 </Exercise>
 
