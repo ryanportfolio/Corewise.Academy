@@ -1,0 +1,99 @@
+---
+title: Give your coding agent a finish line
+description: 'Set a coding agent a result, a check it can run, and a clear stopping point so a long task ends with evidence you can review.'
+track: agents
+level: practitioner
+number: 57
+minutes: 5
+tags: ['delegation', 'verification', 'claude code']
+objectives:
+  - Name the deliverable and the condition that ends a coding agent task.
+  - Choose a check that can detect the failure the task is meant to fix.
+  - Give an agent room to make routine decisions while keeping approval boundaries explicit.
+prerequisites:
+  - slug: delegate-to-your-agent-in-stages
+    note: Start with one job and review the result before granting wider access.
+sources:
+  - url: https://www.youtube.com/watch?v=-XWSJM-Ue-o
+    creator: Theo - t3gg
+    video: I was using Fable wrong, this is how I fixed it
+    timestamps: ['13:52', '16:07', '19:37', '21:00', '25:19', '26:34', '27:05', '31:56']
+  - url: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5-1
+    creator: Anthropic
+    video: Prompting Claude Fable 5.1
+  - url: https://code.claude.com/docs/en/best-practices
+    creator: Anthropic
+    video: Best practices for Claude Code
+selfCheck:
+  - q: What should a long coding request say besides the feature or bug to work on?
+    a: Name the result to deliver, a check tied to the behavior, what routine choices the agent may make, and the condition for stopping or reporting a blocker.
+  - q: A staging service stays healthy after a query-engine change. Does that prove its query results are right?
+    a: No. Health and crash signals can miss wrong answers. Compare query results against known expected results or the old engine on the cases that matter.
+  - q: When a prompt says to monitor a PR until checks pass, may the agent merge it?
+    a: Only if the request and the available permissions authorize merging. Otherwise the stop point is a PR ready for review, with evidence of passing checks and any remaining risks.
+status: published
+lastUpdated: 2026-09-22
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+
+<p class="lede">A coding agent can fix a bug and still leave you to chase the tests, review comments, and final result. Give it a clear place to stop: a deliverable, a check that can reveal whether the fix worked, and a report of anything it could not verify. Then one request can cover the full job you meant to assign.</p>
+
+In [I was using Fable wrong, this is how I fixed it](https://www.youtube.com/watch?v=-XWSJM-Ue-o), developer Theo shows coding agents working through bugs, pull requests, and staging checks. He [says where he wants the agent to stop](https://www.youtube.com/watch?v=-XWSJM-Ue-o&t=1594s). Sometimes that means an open PR. Sometimes it means a PR with checks green. He asks for a merge only when that is the result he wants.
+
+## <span class="sec-no">01</span>Name the result
+
+"Fix the preview image" names a problem. It leaves the result open. Say whether you want a local patch, a draft PR, or a PR ready for your review. Give the agent the failing thread, screenshot, or error that lets it find the problem.
+
+Theo's [preview-image request](https://www.youtube.com/watch?v=-XWSJM-Ue-o&t=967s) included a thread ID, the failed behavior, and a request for one PR that addressed the causes. When another contributor's PR appeared, he asked the agent to compare the two approaches and continue with the stronger one. The requested result remained one fix in one PR.
+
+<PullQuote
+  quote="Every prompt should have a pretty clear place where it stops when it's done."
+  creator="Theo - t3gg"
+  video="I was using Fable wrong, this is how I fixed it"
+  href="https://www.youtube.com/watch?v=-XWSJM-Ue-o"
+  timestamp="27:05"
+/>
+
+## <span class="sec-no">02</span>Choose a check that can catch it
+
+Name the evidence that would show the problem is fixed. Anthropic's [Claude Code guidance](https://code.claude.com/docs/en/best-practices) recommends giving the agent a check it can run and asking it to show the result. A passing build checks that the project builds. It cannot prove that a preview image renders or that a query returns the right rows.
+
+Theo's staging example makes the gap concrete. The agent could see crashes, latency, and health signals after a query-engine change. It [could not detect wrong query results](https://www.youtube.com/watch?v=-XWSJM-Ue-o&t=1260s) with those signals alone. A comparison against known results was needed before treating staging as a meaningful check.
+
+| Result you want | Check the agent can show |
+| --- | --- |
+| Preview image renders | Reproduce the failing thread, then show the image in the same view after the fix |
+| Query results stay correct | Compare known queries against expected results or the old engine |
+| PR is ready for review | Show test output, CI status, and the state of new review findings |
+
+If the agent lacks access to a browser, test data, or CI, ask it to name the missing check. A confident summary cannot replace the evidence.
+
+## <span class="sec-no">03</span>Let the agent choose a route
+
+A long task may uncover two plausible fixes, a failing test, or a review comment. Tell the agent which choices it can make and when it should return to you. Anthropic's [Fable 5.1 prompting guidance](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5-1) recommends completing reversible work already covered by the request and reporting any part that remains blocked.
+
+This original prompt sets the job and its stopping point:
+
+```text
+Investigate why the preview image fails in the attached thread. Use its ID, screenshot, and tool results to find the cause. Fix the issue in this repository and open one draft PR.
+
+Reproduce the failure before editing. Run the relevant tests and check the preview in a browser after the fix. If two fixes are plausible, choose the smaller one that passes those checks and explain the choice. Monitor the PR until CI finishes and address review findings that you can confirm from the code. Keep unrelated fixes out of this PR.
+
+Stop with the draft PR ready for my review. Show the failed and working behavior, the test and CI results, and any check you could not run. Ask me before merging, deploying, or changing production settings.
+```
+
+The prompt ends at a draft PR and reserves merging for you. [Delegate to your agent in stages](/guides/delegate-to-your-agent-in-stages/) covers when to grant broader access. [Guardrails for hours-long agent runs](/guides/guardrails-for-long-runs/) covers checks and fresh review when the run lasts much longer.
+
+## <span class="sec-no">04</span>Review the evidence
+
+When the agent stops, compare its report with the check output. CI can pass while the original bug still occurs. If the check does not cover that behavior, the work remains unverified.
+
+Keep unrelated fixes separate. Theo's PR-monitoring skill tells the agent to verify review comments before changing code and to leave unrelated fixes for later. [Trim the instructions your model outgrew](/guides/trim-the-instructions-your-model-outgrew/) helps keep lasting project rules separate from task-specific instructions like this stop point.
+
+<Exercise>
+1. Pick a coding task where an agent stopped too early or reported success without enough evidence. Write down the result you expected and the behavior that would prove it worked.
+2. Rewrite the request with a deliverable, a runnable check, routine choices the agent may make, and a clear stop point. Keep merging and deployment out of the agent's authority for this trial.
+3. Run it on a branch. Compare the agent's final claims with the test output and the behavior you can reproduce. Record any check it could not run.
+</Exercise>
