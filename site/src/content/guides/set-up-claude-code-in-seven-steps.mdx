@@ -1,0 +1,172 @@
+---
+title: Set up Claude Code in seven steps
+description: 'Build a Claude setup in an order where each step builds on the one before: a working folder, shared pages, connected accounts, skills, scheduled runs, and a check before building new tools.'
+track: agents
+level: broad
+number: 58
+minutes: 8
+tags: ['claude code', 'skills', 'automation']
+objectives:
+  - 'Order the seven setup steps so each one uses the files, accounts, and skills from the step before.'
+  - 'Set connector permissions so Claude reads without asking and asks before sending or deleting.'
+  - 'Build a skill from a finished task and extend it with questions, arguments, or subagents.'
+  - 'Test a new tool idea against five questions before building it.'
+sources:
+  - url: https://www.youtube.com/watch?v=g6tmqwTULk8
+    creator: Austin Marchese
+    video: "How I'd Rebuild My Claude Setup From Scratch (80/20 Rule)"
+    timestamps: ['0:57', '1:52', '2:17', '3:38', '4:34', '5:14', '7:52', '8:23', '8:43', '10:20', '11:01', '11:24', '13:03', '14:37', '15:03', '15:38', '17:35', '18:15', '18:43', '19:41']
+  - url: https://code.claude.com/docs/en/desktop
+    creator: Anthropic
+    video: Use Claude Code Desktop
+  - url: https://code.claude.com/docs/en/artifacts
+    creator: Anthropic
+    video: Share session output as artifacts
+  - url: https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities
+    creator: Anthropic
+    video: "Use connectors to extend Claude's capabilities"
+  - url: https://support.claude.com/en/articles/13730515-manage-claude-s-tool-access
+    creator: Anthropic
+    video: "Manage Claude's tool access"
+  - url: https://code.claude.com/docs/en/skills
+    creator: Anthropic
+    video: Extend Claude with skills
+  - url: https://code.claude.com/docs/en/tools-reference
+    creator: Anthropic
+    video: Tools reference
+selfCheck:
+  - q: 'Your skill asks a multiple-choice question. What happens when a scheduled run uses it overnight?'
+    a: 'By default the question stays open until someone answers it, so the run can stall. Give the skill a default or pass the choice as an argument when it runs on a schedule.'
+  - q: 'On a Pro plan, you want bartenders to open a recipe page without an account, and you want the page to show live stock from a connector. Will that work?'
+    a: 'No. Pro and Max plans share artifacts only through a public link, and a page that calls connectors cannot be shared publicly on any plan. Publish the recipes without live stock, or use Team or Enterprise sharing, where viewers sign in.'
+  - q: 'A teammate wants a new app because your project tracker cannot preview video thumbnails. What do you check before building it?'
+    a: 'Whether the fix is a change in how the team works, whether the current tracker can already do it, and whether a tool for it exists. Then whether a small add-on to the tracker would do. Only after that, the smallest version of a new app.'
+status: review
+lastUpdated: 2026-09-22
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+
+<p class="lede">Start with a folder of files Claude reads every session, then add each piece in order: a way to share work, connections to your accounts, reusable skills, scheduled runs, and five questions to answer before you build a new tool. Each step uses what the step before it made, so you never rebuild the setup.</p>
+
+The order comes from [How I'd Rebuild My Claude Setup From Scratch](https://www.youtube.com/watch?v=g6tmqwTULk8), in which Austin Marchese, who trains founders and their teams on Claude, walks through the setup he would build if he started over. The details below are checked against Anthropic's current documentation.
+
+## <span class="sec-no">01</span>Start with one folder
+
+Marchese [skips Claude Projects and Cowork](https://www.youtube.com/watch?v=g6tmqwTULk8&t=57s) and starts in the **Code** tab of the Claude desktop app, because every later step works from a folder of files on your computer. The Code tab handles work that involves no code. He suggests reading the name as "Claude expert mode" if "Code" puts you off.
+
+1. Open the desktop app, click **Code**, and choose a folder. Make one main folder for most of your work.
+2. Run `/init`. It writes a starting `CLAUDE.md`, a file Claude reads at the start of every session.
+3. Ask Claude to interview you about your role, business, and audience, and save the answers in an about file.
+4. Add a `raw` folder for source material you want Claude to use, such as a book or articles, and a `wiki` folder of short index pages that tell Claude where in `raw` to look.
+
+[Set up an AI that knows your business](/guides/set-up-an-ai-that-knows-your-business/) covers the interview and folder layout in depth. [Build a knowledge base your team can ask](/guides/build-a-knowledge-base-your-team-can-ask/) covers the index pages.
+
+## <span class="sec-no">02</span>Share work as a web page
+
+Marchese opens the same folder in [Obsidian](https://obsidian.md), a free notes app, so he can read and hand-edit any file Claude writes. For sharing, he uses artifacts: web pages Claude Code publishes from your session to a link on claude.ai.
+
+His [review loop for email copy](https://www.youtube.com/watch?v=g6tmqwTULk8&t=274s):
+
+1. Draft with Claude until the direction is right.
+2. Edit the wording by hand in Obsidian.
+3. Ask for an artifact that shows the email, lets teammates edit the text on the page, and has a button that copies their changes.
+4. Paste the copied changes back into Claude.
+
+Anthropic's [artifact documentation](https://code.claude.com/docs/en/artifacts) describes the same pattern: an export button whose text you paste back into the session. The page has no server to save a viewer's edits, so the button is how their changes reach you.
+
+An artifact can also be a small tool. One of Marchese's clients runs [five restaurants and keeps cocktail recipes on an artifact](https://www.youtube.com/watch?v=g6tmqwTULk8&t=314s) that bartenders open on their phones, with no login or app. Who can open a shared page depends on your plan:
+
+| Plan | Who can open a shared artifact |
+| --- | --- |
+| Pro, Max | Anyone with the public link, no sign-in needed |
+| Team, Enterprise | Chosen people or the whole organization; public links only after an Owner turns them on |
+
+A page that pulls live data through connectors cannot be shared publicly on any plan.
+
+## <span class="sec-no">03</span>Connect the tools you check
+
+Until you connect your accounts, Claude sees only your folder. In the desktop app, click the **+** button next to the prompt box and choose **Connectors**. Marchese connects four: email, calendar, team chat (Slack, for him), and meeting recordings.
+
+New connectors ask for approval often. Instead of approving each request, [set each connector's permissions](https://www.youtube.com/watch?v=g6tmqwTULk8&t=503s). Anthropic's [connector settings](https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities) group a connector's tools into read-only and write or delete, and each group can be **Always allow**, **Needs approval**, or **Blocked**. A good starting point: Always allow for reading, Needs approval for sending or deleting. Your account's own permissions in each service still apply.
+
+Marchese also [changes Tool access](https://www.youtube.com/watch?v=g6tmqwTULk8&t=523s) so connectors load only when a request needs them. That saves tokens, the units Claude's usage is counted in. Anthropic's [help article](https://support.claude.com/en/articles/13730515-manage-claude-s-tool-access) lists three modes:
+
+- **Auto**, the default: Claude decides which connectors to load.
+- **Always available**: every connector loads at the start.
+- **On demand**: a connector loads only after Claude searches for it.
+
+If a tool you use has no connector, ask Claude whether it offers an MCP server (Model Context Protocol, the standard way AI apps connect to outside tools) that you can add as a custom connector. Emails and web pages can contain hidden instructions that try to redirect Claude. [Defend your agent from prompt injection](/guides/defend-your-agent-from-prompt-injection/) covers limiting what Claude can do after reading them.
+
+## <span class="sec-no">04</span>Save repeated work as skills
+
+A skill is a saved set of instructions Claude follows the same way each time, started by typing a slash and its name. Marchese warns against asking Claude to write a skill from scratch. His loop [starts from finished work](https://www.youtube.com/watch?v=g6tmqwTULk8&t=620s):
+
+1. Do the task with Claude until the output is right.
+2. Ask: "Based on this conversation, build me a skill."
+3. Next time, run the skill, for example `/monthly-report`.
+4. After fixing its output, ask Claude to update the skill from that conversation.
+
+<PullQuote
+  quote="if you do something repeatedly, you should make it a skill."
+  creator="Austin Marchese"
+  video="How I'd Rebuild My Claude Setup From Scratch (80/20 Rule)"
+  href="https://www.youtube.com/watch?v=g6tmqwTULk8"
+  timestamp="11:01"
+/>
+
+[Build a skill from an approved example](/guides/build-a-skill-from-an-approved-example/) and [Make skills improve after each run](/guides/make-skills-improve-after-each-run/) cover that loop in depth. Marchese [adds three features](https://www.youtube.com/watch?v=g6tmqwTULk8&t=684s) where a skill needs them:
+
+| Feature | What it does | In a monthly report skill |
+| --- | --- | --- |
+| Questions | Claude asks multiple-choice questions you answer by picking an option | Pick the month and who the report is for |
+| Arguments | Text typed after the skill name fills a placeholder, `$ARGUMENTS`, in the skill file | `/monthly-report pdf` makes a PDF; `/monthly-report csv` a spreadsheet |
+| Subagents | Separate Claude workers handle parts of the task at the same time and report back | Slack, QuickBooks, and web research run at once |
+
+Subagents finish sooner but use more tokens; [Stop hitting your token limit](/guides/stop-hitting-your-token-limit/) covers the tradeoff. By default, a question waits until someone answers it, so leave questions out of skills that run on a schedule.
+
+He also keeps [two skills that maintain the setup](https://www.youtube.com/watch?v=g6tmqwTULk8&t=783s): one sorts a new link, file, or transcript into `raw` and `wiki`, and one audits the skills and context files and suggests updates. [Keep a growing knowledge base accurate](/guides/keep-a-growing-knowledge-base-accurate/) covers that upkeep.
+
+## <span class="sec-no">05</span>Let routines call your skills
+
+A routine runs a prompt on a schedule. Marchese creates his in the desktop app and picks **Local**, so the run uses his own computer, files, and connections. His rules:
+
+1. The routine's instruction is [a sentence or two that calls a skill](https://www.youtube.com/watch?v=g6tmqwTULk8&t=877s). The skill holds the steps.
+2. Every run [sends a recap with counts](https://www.youtube.com/watch?v=g6tmqwTULk8&t=903s): "Analyzed 41 of 41 emails, drafted two responses" instead of "Email analysis complete."
+3. Every run [checks its connections first](https://www.youtube.com/watch?v=g6tmqwTULk8&t=938s) and stops at once if one fails, instead of breaking twenty minutes in.
+
+[Keep Claude automations working](/guides/keep-claude-automations-working/) covers these rules in detail, including what changes when a run moves to the cloud. [Automate a workflow as a Claude routine](/guides/automate-a-workflow-as-a-claude-routine/) covers what a routine is.
+
+## <span class="sec-no">06</span>Ask five questions first
+
+Once Claude Code can write software for you, every problem starts to look like a reason to build an app. Marchese [asks five questions in order](https://www.youtube.com/watch?v=g6tmqwTULk8&t=1055s) before building anything:
+
+1. What would I do if AI did not exist? The fix may be a change in how the work is done, with no AI at all.
+2. Am I using my current tools well? Ask Claude whether they can already do it.
+3. Does a tool for this already exist?
+4. Can a small add-on improve a tool I already use?
+5. What is the smallest version that delivers the value I need?
+
+His own case: his editors track videos in Notion, which [cannot preview thumbnails](https://www.youtube.com/watch?v=g6tmqwTULk8&t=1095s). He built a small thumbnail viewer and kept Notion. On a team, an add-on to the tool everyone uses is easier to adopt than moving everyone to new software.
+
+<PullQuote
+  quote="Don't rebuild a worse version of something you already use"
+  creator="Austin Marchese"
+  video="How I'd Rebuild My Claude Setup From Scratch (80/20 Rule)"
+  href="https://www.youtube.com/watch?v=g6tmqwTULk8"
+  timestamp="18:43"
+/>
+
+For the fifth question, an artifact is often enough as a first version. For something larger, start in plan mode, where Claude proposes a plan before changing any files, with a prompt such as: "I want to build [product]. Interview me to identify the smallest useful version and make sure its value is clear." [Take a problem apart before AI solves it](/guides/take-a-problem-apart-before-ai-solves-it/) covers the questioning in more depth.
+
+## <span class="sec-no">07</span>Keep every project on one goal
+
+Marchese's closing advice is to [keep new work aimed at the same goal](https://www.youtube.com/watch?v=g6tmqwTULk8&t=1181s), so each project adds to the last instead of starting from scratch. The setup makes new projects cheap to start, which makes it easy to start too many. Before starting one, check whether it uses the folder, skills, and connections you already have.
+
+<Exercise>
+1. In the Code tab, create one main folder, run `/init`, and have Claude interview you for an about file.
+2. Connect one account you check daily. Set its read-only tools to Always allow and its write or delete tools to Needs approval.
+3. Pick a task you did twice this month. Finish it once with Claude, ask for a skill from that conversation, and update the skill after its next run.
+4. Before your next build idea, write an answer to each of the five questions in order.
+</Exercise>
