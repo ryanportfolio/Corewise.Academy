@@ -240,7 +240,6 @@ const minis: Record<string, string> = {
           <span class="num">{t.numeral}</span>
           <div>
             <h3>{t.name}</h3>
-            <span class="constellation">Constellation · {t.constellation}</span>
             <Fragment set:html={minis[t.slug]} />
           </div>
           <p>{t.description}</p>
@@ -690,14 +689,6 @@ const minis: Record<string, string> = {
     .track .num { font-family: var(--font-display); font-size: var(--text-xl); color: var(--accent-deep); }
     .track h3 { font-family: var(--font-display); font-size: var(--text-lg); font-weight: 400; }
     .track :global(.mini) { color: var(--accent-deep); opacity: 0.85; display: block; margin-top: 10px; }
-    .track .constellation {
-      font-family: var(--font-mono);
-      font-size: var(--text-2xs);
-      letter-spacing: var(--tracking-caps);
-      color: var(--ink-mute);
-      display: block;
-      margin-top: 4px;
-    }
     .track p { color: var(--ink-soft); font-size: var(--text-sm); max-width: 46ch; }
     .shelves { display: grid; gap: 6px; font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.06em; }
     .shelf { display: flex; justify-content: space-between; gap: var(--s-2); border-bottom: 1px dashed var(--line); padding-bottom: 4px; color: var(--ink-soft); }
