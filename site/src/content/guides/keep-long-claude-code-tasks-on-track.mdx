@@ -1,0 +1,105 @@
+---
+title: Keep long Claude Code tasks on track
+description: 'Correct a running task, save its progress in a file, and make the final report show what still needs your attention.'
+track: agents
+level: practitioner
+number: 59
+minutes: 4
+tags: ['claude code', 'delegation', 'planning']
+objectives:
+  - Send a correction that preserves the original task and states what changes.
+  - Keep a task file that distinguishes completed work from unchecked work.
+  - Write rules for continuing work that preserve approval boundaries.
+prerequisites:
+  - slug: give-your-coding-agent-a-finish-line
+    note: Define the result and the check before starting the run.
+sources:
+  - url: https://www.youtube.com/watch?v=WKVcnfE_9Kw
+    creator: Duncan Rogoff
+    video: How Anthropic Engineers Actually Use Claude Opus 5.5
+    timestamps: ['0:58', '1:28', '1:52', '3:37', '4:12', '5:40', '6:05', '6:25', '7:07']
+  - url: https://claude.dev/blog/getting-the-most-out-of-opus-5-5/
+    creator: Addy Osmani, Anthropic
+    video: Getting the most out of Opus 5.5 in Claude and Claude Code
+selfCheck:
+  - q: You remember a compatibility requirement while Claude Code is working. What should the follow-up say?
+    a: State the new requirement and whether it changes the original result. Ask Claude to update its task file and the relevant check.
+  - q: Does a checked box in TASKS.md prove the work passed?
+    a: No. Match the completed item to the changed files and check output. Leave unfinished checks visible even if the code is written.
+  - q: Does an instruction to keep going authorize a deployment?
+    a: No. The request and permission controls still determine which actions are allowed. Keep deployment approval explicit.
+status: published
+lastUpdated: 2026-09-23
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+
+<p class="lede">A long coding task can lose a requirement when you add a correction, or end with a summary that leaves the next step undone. Keep the current plan in a file, state which work may continue, and ask for a report that separates finished work from decisions waiting on you.</p>
+
+Claude Code educator Duncan Rogoff demonstrates these habits in [How Anthropic Engineers Actually Use Claude Opus 5.5](https://www.youtube.com/watch?v=WKVcnfE_9Kw). His walkthrough draws on Addy Osmani's [Anthropic playbook](https://claude.dev/blog/getting-the-most-out-of-opus-5-5/). This guide applies their advice to an active coding task. For the initial request, start with [Give your coding agent a finish line](/guides/give-your-coding-agent-a-finish-line/).
+
+## <span class="sec-no">01</span>Correct the active task
+
+In Claude Code, type a follow-up and press Enter while the agent works. The playbook documents this way to [add a requirement mid-run](https://claude.dev/blog/getting-the-most-out-of-opus-5-5/#add-to-a-running-task); Rogoff demonstrates the idea at [3:37](https://www.youtube.com/watch?v=WKVcnfE_9Kw&t=217s).
+
+Make the relationship to the original request explicit. This original follow-up adds a compatibility requirement:
+
+```text
+Continue the client migration. Keep the old endpoint names as aliases because existing callers still use them. Add tests that call those old names and update TASKS.md before continuing. The requested result is still a local patch ready for review.
+```
+
+Check that the next update includes the correction. If the new requirement conflicts with work already done, ask the agent to identify the affected files before proceeding.
+
+## <span class="sec-no">02</span>Save progress with evidence
+
+Rogoff recommends [a task list saved in a file](https://www.youtube.com/watch?v=WKVcnfE_9Kw&t=385s). The playbook names `TASKS.md`: a file remains available when Claude Code summarizes older conversation turns. Ask the agent to update the file as it works and reread it when resuming.
+
+Our recommendation is to record evidence beside each completed item:
+
+| Item | Record in the task file |
+| --- | --- |
+| Code changed | Affected paths and the requirement addressed |
+| Check completed | Command or observed behavior, plus its result |
+| Check blocked | What could not run and what access or input is missing |
+| New requirement | The correction and the work it affects |
+
+A checked box is a progress claim. Compare it with the files and check output. [Guardrails for hours-long agent runs](/guides/guardrails-for-long-runs/) covers saved context and fresh review in more depth.
+
+## <span class="sec-no">03</span>Name the stops you want
+
+The playbook recommends a short `CLAUDE.md` rule to prevent status reports from ending work that can continue. Keep permission prompts enabled for destructive commands. Rogoff also makes the boundary explicit:
+
+<PullQuote
+  quote="stop and ask only when you can't continue without me"
+  creator="Duncan Rogoff"
+  video="How Anthropic Engineers Actually Use Claude Opus 5.5"
+  href="https://www.youtube.com/watch?v=WKVcnfE_9Kw"
+  timestamp="5:40"
+/>
+
+He also names destructive actions and changes outside the repository as reasons to ask. This original rule keeps those limits and specifies the final report:
+
+```text
+Continue reversible work already covered by my request. Give progress updates while taking the next available action. Keep TASKS.md current, including corrections, completed checks, and blocked checks.
+
+Ask when a missing decision prevents progress. Ask before deleting data, force-pushing, changing another repository, merging, or deploying. Preserve existing permission controls.
+
+End with decisions needed from me, changes made, checks and their results, and anything unverified. Link the relevant files or evidence.
+```
+
+Put lasting project rules in `CLAUDE.md` and task-specific requirements in the request or task file. [Trim the instructions your model outgrew](/guides/trim-the-instructions-your-model-outgrew/) explains how to test instruction changes while keeping fixed requirements.
+
+## <span class="sec-no">04</span>Read the unfinished work first
+
+The playbook recommends reading what Claude needs from you before the rest of its final report. Resolve that decision, then compare the claimed result with the checks you requested.
+
+For work split across subagents, inspect each agent's evidence before accepting the combined report. Extra agents do not guarantee lower token use; their work must still be checked. [Split big AI tasks into steps and checks](/guides/split-big-ai-tasks-into-steps-and-checks/) covers that division of work.
+
+<Exercise>
+1. Choose a local coding task with a check you can run. State the requested result, approval boundaries, and instruction to keep `TASKS.md` current.
+2. While the agent works, add one relevant compatibility requirement. Check that the file and planned verification reflect it.
+3. Read the final report's blocked and unverified items first. Compare one completed checklist item against the changed code and check output. Record any mismatch before approving the result.
+</Exercise>
+
+Read Addy Osmani's full Anthropic playbook: [Getting the most out of Opus 5.5 in Claude and Claude Code](https://claude.dev/blog/getting-the-most-out-of-opus-5-5/).
