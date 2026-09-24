@@ -21,6 +21,12 @@ Explicit user choices override all style defaults, including punctuation. Preser
 
 Settle silently: who reads this; what they should understand, decide, or do; what the prompt really asks (a challenge question may want judgment, not chronology); hard constraints; which facts carry the answer. Lead with those facts.
 
+If the piece depends on the author's experience or judgment, use supplied notes first. Ask only for missing material that could change the answer: the relevant event, observation, decision, or result. Do not invent an anecdote or require an interview for routine or reference copy.
+
+For substantive claims and recommendations, check the main claim, its support, and any exception that changes the advice. Reuse supplied evidence and source logs; verify material factual claims against those sources or other reliable evidence within scope. Model agreement is not verification. Narrow claims that exceed their support, retain consequential uncertainty, and flag evidence still needed. A sound recommendation needs no contrarian angle.
+
+Keep these checks proportional and silent for routine drafting. A style-only request stays style-only: do not add research or substantive rewrites, and do not imply factual verification.
+
 Form follows the job. Application answer: answer, one example, what it reveals. Email: purpose, context, next step. Explanation: answer, then how. Proposal: problem, recommendation, why. Memo: decision, then implications. Bio: most relevant work first. Essay: a claim, then earn it. Product copy: the user's outcome, never the product describing itself.
 
 ## Style defaults
@@ -84,6 +90,8 @@ Words naming a real thing in the repo ("harness") are terms, not tells.
 
 Apply only unoverridden defaults; preserve requested voice and quoted or technical material.
 
+For substantive editorial review, first check support, recoverable meaning, essential caveats, and whether each section adds useful information or helps the reader act. Use the evidence already checked above. For a dedicated reader-understanding pass, use the repository's `clarity-pass` skill when available; it owns the restatement procedure.
+
 1. Em dashes and stand-ins: replace every one.
 2. Trailing periods off headings.
 3. Negation pivots, including split-sentence forms.
@@ -95,7 +103,7 @@ Apply only unoverridden defaults; preserve requested voice and quoted or technic
 9. Repeated abstract nouns: rewrite the leaning sentences.
 10. Title says what the reader gets?
 
-For an explicitly requested prose review, give **PASS** when no applicable, unoverridden requirement remains, otherwise **FAIL** with the concrete violations. Label notes **Requirement** or **Suggestion**. Ordinary drafting needs no verdict; a requested style is not a violation.
+For an explicitly requested prose review, give **PASS** when no applicable, unoverridden requirement remains, otherwise **FAIL** with the concrete violations. Include substance and style in an overall verdict; missing required evidence prevents PASS. Label notes **Requirement** or **Suggestion**, and label style-only verdicts as such. Run drafting checks silently; ordinary drafting needs no verdict, and a requested style is not a violation.
 
 ## Anti-patterns
 
