@@ -2,7 +2,7 @@
 description: Cold-re-read a finished guide draft as a first-time reader and rewrite abstract, idiomatic, or two-read passages. Runs at the end of /ingest and /create-guide. Use when the user says /clarity-pass or calls a draft unclear or obtuse.
 ---
 
-# Clarity pass — the fresh-reader re-read
+# Clarity pass
 
 Runs after the rule checklist (ingest Step 6 / create-guide Step 4 / `copy-rules.md`),
 never instead of it. The rule pass catches known defects (em dashes, negation pivots,
@@ -15,13 +15,20 @@ Input: the finished draft(s), after the rule pass, before the PR is called done.
 $ARGUMENTS names a file or slug, use it; otherwise use the guide(s) drafted or edited
 this session.
 
-## Step 1: Cold re-read
+## Step 1: Read and restate
 
 Read the whole file top to bottom in one sitting, frontmatter included (description,
-objectives, prerequisite notes, self-check answers), as a reader who has never seen the
-source video, the transcript, or this conversation. Flag every sentence where the
-answer to "what concrete thing is this saying?" is not instant. Do not skip the
-frontmatter: self-check answers and objectives ship to readers too.
+objectives, prerequisite notes, self-check answers). Before rewriting, record what the
+intended reader can recover from the draft alone: its main claim, next action, and
+essential conditions or caveats. Mark unclear or absent elements without supplying the
+author's missing meaning. Then compare this restatement with the intended message and
+flag mismatches or sentences that require a second reading.
+
+For important prose, a fresh independent reader can help when tools are exposed and
+delegation is authorized. Give that reader the draft and audience first; reveal the
+author's intended interpretation only after the restatement. If reviewing your own
+draft or with prior context, call it self-review. Do not claim a cold or independent
+read, or treat model agreement as evidence of factual accuracy.
 
 ## Step 2: Hunt these classes
 
@@ -44,23 +51,26 @@ from the 2026-08-04 session:
 For each flagged sentence: say what it means, in plain words, as if explaining to a
 smart colleague outside AI. Write down what you said; that is the replacement. The
 technical claim must stay identical, including every caveat. If saying it aloud takes
-two sentences, the replacement is two sentences.
+two sentences, the replacement is two sentences. If the intended meaning remains
+unresolved, flag the gap and preserve the caveat; do not guess it away in a rewrite.
 
 ## Step 4: Verify and hand back
 
 1. Rerun the gates: `npm run lint:copy` in `site/`, and `npm run build` if frontmatter
    changed.
-2. If a review PR is already open for the draft, commit the rewrites to that branch and
-   push. Otherwise leave the edits for the calling pipeline's commit.
-3. List every rewrite (shipped phrase, replacement) in the reply, plus anything flagged
+2. If shipping is already authorized and a review PR is open, commit the rewrites to
+   that branch and push. Otherwise leave the edits for the calling pipeline.
+3. Unless the user specifies another output format, begin the returned response with
+   the review type and reader restatement, before any edited text or proposed
+   replacements. Then list every rewrite (shipped phrase, replacement), plus anything flagged
    and deliberately kept (glossed terms of art, quotes), so the editor can veto by item.
 
 ## Anti-patterns
 
 - Don't re-run the rule checklist here and call it a clarity pass; this pass starts
   where that one ends.
-- Don't declare a draft clean without producing the flag list; a pass that finds
-  nothing on a first draft usually means the reading was warm, not cold.
+- A clean draft may stay unchanged. Report no clarity issues with the restatement
+  that supports that judgment; do not manufacture flags or rewrites.
 - Don't soften or drop a technical claim to make the sentence smoother; accuracy
   outranks smoothness.
 - Don't rewrite source quotes, code, file names, or API strings.
