@@ -78,6 +78,19 @@ or a split; explain the placement in the notes. Use the next available catalogue
 for a new guide, the correct track and level, and course fields only when it belongs to
 an existing course. Check current main before assigning a number for shipping.
 
+Before drafting, add a coverage table to the source notes. Map every substantial
+video topic to its timestamps and one decision: include (where), already covered
+(linked guide or section), or exclude (specific reason). Consider sustained discussion,
+concrete evidence, and relevance to the reader's decisions; airtime alone does not
+require inclusion. When extending a guide, let useful source material broaden its
+outline within the editor's request instead of treating the current headings as a limit.
+
+Uncertainty alone is not a reason to omit a useful insight. First consider an attributed
+observation, a narrower claim, or an explicit caveat. A creator's reported comparison can
+support a bounded lesson without proving a universal rule. Exclude claims that remain
+unsupported or misleading after qualification, repetitive material, and irrelevant topics;
+keep the existing exclusions for sponsors and promotion.
+
 Write an original lesson across sources, rather than retelling the video. Verify current
 product behavior against official documentation and weave those sources into the lesson.
 Credit each source and distinguish the video's claims from our recommendations. Exclude
@@ -118,6 +131,13 @@ useful, rather than opening with "At 1:57, Nate recommends...". After introducin
 the source, state the action first, then link the relevant explanation in the video.
 
 ## 5. Review the writing
+
+Compare the finished draft with the coverage table. Confirm each included topic appears,
+each already-covered topic has a useful reference, and each exclusion still has a sound
+reason. Reconsider major omissions caused only by the old outline or lack of universal
+proof. Record final decisions in the notes and briefly flag any substantial relevant
+topics still omitted, with reasons, in the editorial handoff. Do not turn this check into
+a requirement to recap the whole video.
 
 Apply the full copy rules. Check title specificity, unexplained terms, literal claims,
 negation pivots, repeated abstractions, unclear pronouns, and consistent names. No em

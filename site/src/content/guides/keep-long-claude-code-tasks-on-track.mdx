@@ -1,15 +1,16 @@
 ---
 title: Keep long Claude Code tasks on track
-description: 'Correct a running task, save its progress in a file, and make the final report show what still needs your attention.'
+description: 'Correct a running task, check a remote handoff, and ask for evidence of what could break before accepting the result.'
 track: agents
 level: practitioner
 number: 59
-minutes: 4
+minutes: 6
 tags: ['claude code', 'delegation', 'planning']
 objectives:
   - Send a correction that preserves the original task and states what changes.
   - Keep a task file that distinguishes completed work from unchecked work.
   - Write rules for continuing work that preserve approval boundaries.
+  - Check a remote handoff and request evidence for remaining merge risks.
 prerequisites:
   - slug: give-your-coding-agent-a-finish-line
     note: Define the result and the check before starting the run.
@@ -21,15 +22,22 @@ sources:
   - url: https://claude.dev/blog/getting-the-most-out-of-opus-5-5/
     creator: Addy Osmani, Anthropic
     video: Getting the most out of Opus 5.5 in Claude and Claude Code
+  - url: https://www.youtube.com/watch?v=ejjBbaq9RmY
+    creator: Theo - t3gg
+    video: Getting the most out of Opus 5.5
+    timestamps: ['5:18', '6:18', '7:11', '8:02', '9:24', '12:57', '14:29', '20:42', '21:43', '21:54', '22:30', '24:39']
+  - url: https://code.claude.com/docs/en/best-practices
+    creator: Anthropic
+    video: Best practices for Claude Code
 selfCheck:
   - q: You remember a compatibility requirement while Claude Code is working. What should the follow-up say?
     a: State the new requirement and whether it changes the original result. Ask Claude to update its task file and the relevant check.
-  - q: Does a checked box in TASKS.md prove the work passed?
-    a: No. Match the completed item to the changed files and check output. Leave unfinished checks visible even if the code is written.
+  - q: A remote session is running and TASKS.md has checked boxes. What still needs checking?
+    a: Confirm that the session received the whole task and compare completed items with changed files and check output. Ask what could break if merged and which risks remain unverified.
   - q: Does an instruction to keep going authorize a deployment?
     a: No. The request and permission controls still determine which actions are allowed. Keep deployment approval explicit.
 status: published
-lastUpdated: 2026-09-23
+lastUpdated: 2026-09-24
 ---
 
 import PullQuote from '../../components/PullQuote.astro';
@@ -90,16 +98,58 @@ End with decisions needed from me, changes made, checks and their results, and a
 
 Put lasting project rules in `CLAUDE.md` and task-specific requirements in the request or task file. [Trim the instructions your model outgrew](/guides/trim-the-instructions-your-model-outgrew/) explains how to test instruction changes while keeping fixed requirements.
 
-## <span class="sec-no">04</span>Read the unfinished work first
+## <span class="sec-no">04</span>Check the remote handoff
+
+A remote session needs the task, access, and checks required to finish it. Developer Theo adds a worked example in [Getting the most out of Opus 5.5](https://www.youtube.com/watch?v=ejjBbaq9RmY), his commentary on the same Anthropic playbook. He [moves a coding task to another computer](https://www.youtube.com/watch?v=ejjBbaq9RmY&t=318s) so browser automation can run without interrupting his laptop use.
+
+His request names what the agent may do and when it should ask for help. For your own handoff, specify:
+
+| Handoff detail | What to name |
+| --- | --- |
+| Destination | The machine, repository, branch, and approved connection method |
+| Required access | Which configuration or credentials may be transferred, and where |
+| Working environment | The runtime, test commands, and browser access to verify |
+| Local limits | Whether the agent may open windows or control your current machine |
+| Blocker | Ask if the destination or required tools fail, before choosing a different setup |
+
+Theo [explicitly permits the configuration transfer](https://www.youtube.com/watch?v=ejjBbaq9RmY&t=378s) and [invites questions if the move fails](https://www.youtube.com/watch?v=ejjBbaq9RmY&t=482s). Keep that permission specific to the destination and task. [Assume your agent uses every tool it has](/guides/assume-your-agent-uses-every-tool-it-has/) covers how available tools affect those limits.
+
+Check that implementation continues after setup. Theo discovers that the [new session stopped after phase zero](https://www.youtube.com/watch?v=ejjBbaq9RmY&t=564s), despite receiving a plan with later phases. Our recommendation is to record setup and implementation separately in `TASKS.md`, then confirm that the receiving session has the full finish condition and approval boundaries.
+
+## <span class="sec-no">05</span>Avoid max effort by default
+
+Theo recommends high or xhigh for Opus 5.5 and [warns against max effort](https://www.youtube.com/watch?v=ejjBbaq9RmY&t=777s). In his Skatebench comparison, max used far more tokens and time for a small accuracy gain:
+
+| Reported result | xhigh | max |
+| --- | --- | --- |
+| Average tokens per response | 338 | About 5,000 |
+| Average response time | 6 seconds | 50 seconds |
+| Accuracy | 78% | 79% |
+
+These are Theo's reported results on one benchmark. They support trying high or xhigh first; they do not establish that max is never useful. He [uses either high or xhigh in his own work](https://www.youtube.com/watch?v=ejjBbaq9RmY&t=869s). Compare effort settings on your task using the same completion check, and record quality, time, and token use. [Recheck your model choices each release](/guides/recheck-your-model-choices-each-release/) covers that comparison.
+
+For other ways to reduce token use during long runs, use our [practical token-saving guide at savetokens.tips](https://savetokens.tips/guide). It covers shorter replies, scoped file reads, command-output filtering, and model routing.
+
+## <span class="sec-no">06</span>Ask what could break
 
 The playbook recommends reading what Claude needs from you before the rest of its final report. Resolve that decision, then compare the claimed result with the checks you requested.
 
-For work split across subagents, inspect each agent's evidence before accepting the combined report. Extra agents do not guarantee lower token use; their work must still be checked. [Split big AI tasks into steps and checks](/guides/split-big-ai-tasks-into-steps-and-checks/) covers that division of work.
+Theo adds a useful question when returning to an old task: [what are the risks of merging this code today?](https://www.youtube.com/watch?v=ejjBbaq9RmY&t=1314s) Ask for the failure and its evidence. This original follow-up turns the answer into a review request:
+
+```text
+What could break if we merged this change today? For each risk, name the affected behavior, the evidence, and the check that would confirm or rule it out. Separate confirmed problems from unverified concerns. Say which checks could not run and what they need. This is a review request; do not merge.
+```
+
+Give the reviewer the tools needed to test those concerns. Theo [names missing hardware, environment variables, and subjective judgments](https://www.youtube.com/watch?v=ejjBbaq9RmY&t=1479s) as reasons a claim may remain unverified. Anthropic's [verification guidance](https://code.claude.com/docs/en/best-practices#give-claude-a-way-to-verify-its-work) recommends checks that return observable results, such as tests or screenshots.
+
+For a large audit, request the division of work explicitly. Theo [reports that permission to use subagents can still leave the work unsplit](https://www.youtube.com/watch?v=ejjBbaq9RmY&t=1242s). Name the separate areas to review and require evidence from each. [Split big AI tasks into steps and checks](/guides/split-big-ai-tasks-into-steps-and-checks/) covers that division of work.
+
+A second model can provide another review. Theo [finds value in switching model families](https://www.youtube.com/watch?v=ejjBbaq9RmY&t=1350s), while acknowledging that reviewers also report problems that do not matter. Treat each finding as a claim to verify against the code and a reproducible failure. Extra reviewers do not establish correctness by agreeing.
 
 <Exercise>
 1. Choose a local coding task with a check you can run. State the requested result, approval boundaries, and instruction to keep `TASKS.md` current.
 2. While the agent works, add one relevant compatibility requirement. Check that the file and planned verification reflect it.
-3. Read the final report's blocked and unverified items first. Compare one completed checklist item against the changed code and check output. Record any mismatch before approving the result.
+3. Read the final report's blocked and unverified items first. Ask what could break if merged today, then compare one claimed result or risk against the changed code and check output. Record any mismatch before approving the result.
 </Exercise>
 
 Read Addy Osmani's full Anthropic playbook: [Getting the most out of Opus 5.5 in Claude and Claude Code](https://claude.dev/blog/getting-the-most-out-of-opus-5-5/).
