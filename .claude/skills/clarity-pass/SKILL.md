@@ -1,78 +1,97 @@
 ---
-description: Cold-re-read a finished guide draft as a first-time reader and rewrite abstract, idiomatic, or two-read passages. Runs at the end of /ingest and /create-guide. Use when the user says /clarity-pass or calls a draft unclear or obtuse.
+name: clarity-pass
+description: Use when a guide draft needs editorial review after writing, including required review in /ingest and /create-guide, or when prose sounds unnatural, unclear, or obtuse.
 ---
 
 # Clarity pass
 
-Runs after the rule checklist (ingest Step 6 / create-guide Step 4 / `copy-rules.md`),
-never instead of it. The rule pass catches known defects (em dashes, negation pivots,
-AI tells, layout, jargon). This pass catches what rule checklists miss: sentences that
-pass every rule and still make a smart first-time reader stop and re-read. The editor
-added this skill after a rule-clean draft still needed 13 such rewrites on a manual
-"anything obtuse?" prompt (2026-08-04).
+Review a finished draft with a fresh reader before calling it ready. Knowing the
+writer's intent can hide awkward wording, unnecessary explanation, and a title
+that promises something different from the body. Run after the author's Writing
+sweep and before the calling workflow's final mechanical checks.
 
-Input: the finished draft(s), after the rule pass, before the PR is called done. If
-$ARGUMENTS names a file or slug, use it; otherwise use the guide(s) drafted or edited
-this session.
+The calling agent coordinates and revises; the reviewer is a separate read-only
+subagent. Keep a compact record at `.tmp/editorial-review/<slug>/review.md` (or in
+the existing task notes): audience, brief, draft hashes, reviewer ID, findings,
+revision decisions, verification, and remaining requirements. After compaction,
+read that record and inspect the recorded worker before dispatching a replacement.
 
-## Step 1: Read and restate
+## 1. Dispatch a fresh reader
 
-Read the whole file top to bottom in one sitting, frontmatter included (description,
-objectives, prerequisite notes, self-check answers). Before rewriting, record what the
-intended reader can recover from the draft alone: its main claim, next action, and
-essential conditions or caveats. Mark unclear or absent elements without supplying the
-author's missing meaning. Then compare this restatement with the intended message and
-flag mismatches or sentences that require a second reading.
+The calling agent must invoke an independent reviewer, not merely read this skill.
+This skill explicitly requests delegation for that bounded review. Check actual tool
+exposure first. In Codex, use `spawn_agent` with `fork_turns: "none"`; in Claude,
+use an exposed Agent/Task tool with a new context and no inherited conversation.
+Do not use a fork containing the author's reasoning or a reviewer who wrote the draft.
 
-For important prose, a fresh independent reader can help when tools are exposed and
-delegation is authorized. Give that reader the draft and audience first; reveal the
-author's intended interpretation only after the restatement. If reviewing your own
-draft or with prior context, call it self-review. Do not claim a cold or independent
-read, or treat model agreement as evidence of factual accuracy.
+Give the reviewer only the draft path, intended audience, house voice at
+`.claude/reference/voice.md`, and the reviewer brief below. No previous criticisms,
+desired fixes, source notes, or explanations of what the author meant. Ask it to read
+only those inputs, remain read-only, and not delegate. Record the draft's SHA-256
+and reviewer identity with its returned review in the task's notes or review artifact.
+This record documents a tool call; a written claim of independence cannot replace it.
 
-## Step 2: Hunt these classes
+Save the audience and reviewer brief before dispatch and send it unchanged. Build
+it from section 2 and the house voice, without diagnoses from the author. Once the
+review starts, leave its draft unchanged until the reviewer returns; revise a new
+version afterward. This keeps the findings tied to what the reviewer actually read.
 
-Each class below survived a full rule pass before the editor caught it. Real examples
-from the 2026-08-04 session:
+If fresh context is unavailable, continue preparing and checking the draft but report
+`INCOMPLETE: independent editorial review unavailable`. Self-review may help but
+does not satisfy this gate. Do not call the draft editorially ready or publish it.
+This skill grants no shipping authority.
 
-| Class | Shipped | Became |
-|---|---|---|
-| Abstraction carrying a heading | "The question that finds the risk" | "Ask what it can do on its own" |
-| Idiom carrying the claim | "stays on the table" | "can still happen one day" |
-| Borrowed-register word | "narrow tools bound what a hijacked agent can do" | "narrow tools limit the damage" |
-| Stiff or Latinate phrasing | "tools it legitimately held" | "tools it was given" |
-| Referent fog | "that is the wrong place for it" | "a system that can act differently on every run has not earned that trust" |
-| Unexplained coinage | "the self-grading trap" | "the agent never grades its own work" |
-| Compressed apposition | "an agent that only reads a knowledge store" | "an agent that only looks things up in a database" |
-| Insider shorthand | "applied to a single delegation" | "for a single piece of handed-over work" |
+## 2. Reviewer brief
 
-## Step 3: The say-it-aloud rewrite
+Read the entire draft, including frontmatter, exercises, captions, and answers.
+Before proposing edits, state what a reader can recover from the draft alone:
+its main point, intended next action, and essential conditions or caveats. Do not
+supply missing meaning from assumptions about the author.
 
-For each flagged sentence: say what it means, in plain words, as if explaining to a
-smart colleague outside AI. Write down what you said; that is the replacement. The
-technical claim must stay identical, including every caveat. If saying it aloud takes
-two sentences, the replacement is two sentences. If the intended meaning remains
-unresolved, flag the gap and preserve the caveat; do not guess it away in a rewrite.
+Review these three levels:
 
-## Step 4: Verify and hand back
+| Level | Questions |
+|---|---|
+| Natural phrasing | Would someone addressing this audience actually put these words together? Check headings and compressed phrases even when every word is familiar and the meaning is clear. Flag vague referents, idioms carrying a technical claim, and phrases requiring private context. |
+| Sentence usefulness | Does each sentence help the reader understand, decide, or act? Identify metacommentary that only describes the article, redundant explanations, and unsupported claims. Keep attribution and caveats that establish scope or evidence. |
+| Whole-piece fit | Does the title accurately promise what the body delivers? Check audience, opening, section order, scope drift, repetition, and missing steps. Recommend a narrower title or scope where appropriate; do not invent material to fill a gap. |
 
-1. Rerun the gates: `npm run lint:copy` in `site/`, and `npm run build` if frontmatter
-   changed.
-2. If shipping is already authorized and a review PR is open, commit the rewrites to
-   that branch and push. Otherwise leave the edits for the calling pipeline.
-3. Unless the user specifies another output format, begin the returned response with
-   the review type and reader restatement, before any edited text or proposed
-   replacements. Then list every rewrite (shipped phrase, replacement), plus anything flagged
-   and deliberately kept (glossed terms of art, quotes), so the editor can veto by item.
+Return the restatement, then concrete findings with exact quoted text or locations,
+reader impact, and a proposed edit or question. Distinguish requirements from optional
+preferences. Report broader issues once, with the passages supporting them. Also
+identify anything deliberately retained because precision or voice would suffer.
+No quota: a clean draft can receive no findings. Editorial judgment does not verify
+source facts. Do not rewrite quotations, code, identifiers, or technical caveats.
 
-## Anti-patterns
+## 3. Author revision
 
-- Don't re-run the rule checklist here and call it a clarity pass; this pass starts
-  where that one ends.
-- A clean draft may stay unchanged. Report no clarity issues with the restatement
-  that supports that judgment; do not manufacture flags or rewrites.
-- Don't soften or drop a technical claim to make the sentence smoother; accuracy
-  outranks smoothness.
-- Don't rewrite source quotes, code, file names, or API strings.
-- Don't polish into blandness: the house voice (plain declarative, concrete, a little
-  asymmetry) stays; only the decoding cost goes.
+Evaluate each finding against the source evidence and the writing rules. Accept,
+adapt, or reject it with a short reason in the review record. Check whether an accepted
+finding recurs elsewhere; repair the pattern, not just the cited sentence.
+
+Use the smallest edit that improves the reader's experience. Preserve facts, caveats,
+distinctive voice, and valid terms of art. Natural phrasing is not a ban on particular
+words: a familiar word can sound awkward beside the wrong verb or noun, while a
+technical term can be the most natural and accurate choice. Do not smooth uncertainty
+into certainty or remove attribution just to shorten a paragraph.
+
+## 4. Verify the revision and stop
+
+Send the revised full draft to the same independent reviewer. Ask it to verify the
+changes, check their surrounding passages for regressions, and identify unresolved
+requirements. It should not start another general polish round. Record the revised
+SHA-256, verification response, accepted edits, and deliberately retained wording.
+
+One review, one author revision, one verification is the normal budget. If a material
+issue remains, report `INCOMPLETE` and the specific remaining work; do not silently
+mark it passed or loop indefinitely. A clean initial review still verifies the final
+draft. Any later prose change invalidates the verified version and needs verification
+of the affected passages before readiness can be claimed.
+
+Then run the calling workflow's applicable copy, schema, link, and other mechanical
+checks. Follow its content-only exceptions; this skill does not independently require
+a build or dependency installation. Keep review notes out of published prose.
+
+Hand back `PASS` only when independent review and final verification are recorded
+and no editorial requirement remains. List optional suggestions separately. Report
+mechanical checks separately; passing a linter cannot establish natural writing.

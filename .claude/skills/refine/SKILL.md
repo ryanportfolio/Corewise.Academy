@@ -1,6 +1,6 @@
 ---
 name: refine
-description: "Use for an explicit workflow-improvement review, turning the user's preferences into rules or a skill, or recurring task friction that may justify a narrow change to skills or project references."
+description: "Use to improve workflows, turn preferences into rules or skills, or address recurring task friction."
 ---
 
 # Improve the working process

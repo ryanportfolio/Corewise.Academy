@@ -1,0 +1,146 @@
+---
+title: Improve your Claude Code workflow
+description: 'Find why an AI task needs repeated corrections, change one cause, and compare the results before keeping the new workflow.'
+track: practice
+level: practitioner
+number: 60
+minutes: 7
+tags: ['claude code', 'verification', 'cost control', 'instruction files']
+objectives:
+  - Identify whether repeated corrections come from unclear scope, stale context, or missing checks.
+  - Compare a workflow change using the same inputs and completion criteria.
+  - Prepare a second coding tool to resume a task with verified instructions and access.
+prerequisites:
+  - slug: give-your-coding-agent-a-finish-line
+    note: Define a result and a check the agent can run.
+sources:
+  - url: https://www.youtube.com/watch?v=45K3zHckCnQ
+    creator: Nick Saraev
+    video: I Spent $31,141 & 1,000 Hours On Claude Code To Learn This
+    timestamps: ['0:29', '2:51', '3:22', '4:40', '6:36', '8:12', '10:13', '11:54', '13:01', '14:59', '16:50', '17:52', '19:08', '20:57', '22:16', '23:53', '24:25']
+  - url: https://code.claude.com/docs/en/best-practices
+    creator: Anthropic
+    video: Best practices for Claude Code
+  - url: https://code.claude.com/docs/en/interactive-mode
+    creator: Anthropic
+    video: Interactive mode
+  - url: https://code.claude.com/docs/en/mcp
+    creator: Anthropic
+    video: Connect Claude Code to tools via MCP
+  - url: https://code.claude.com/docs/en/memory
+    creator: Anthropic
+    video: How Claude remembers your project
+  - url: https://code.claude.com/docs/en/sub-agents
+    creator: Anthropic
+    video: Create custom subagents
+selfCheck:
+  - q: A revised prompt passes eight of ten runs instead of seven. What can you conclude?
+    a: It did better in that small sample. Repeat the comparison and test varied inputs before treating the difference as reliable.
+  - q: Does replacing an MCP connector with a skill guarantee lower cost?
+    a: No. Tool search can already defer MCP definitions, and the skill still needs working API or command access. Compare correctness, context, time, and cost for the complete workflow.
+  - q: What proves a backup coding tool is ready?
+    a: It can read the intended instructions, access the required files and tools, and pass a known task using the saved handoff. Copying instruction files alone does not prove readiness.
+status: published
+lastUpdated: 2026-09-25
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+
+<p class="lede">If Claude Code tasks keep needing the same corrections, record where the work goes wrong before adding another instruction. An unwanted rewrite, an outdated project note, and a missing test need different fixes. Change one cause, rerun the task, and count what you still have to repair.</p>
+
+AI educator Nick Saraev describes these recurring problems in [I Spent $31,141 & 1,000 Hours On Claude Code To Learn This](https://www.youtube.com/watch?v=45K3zHckCnQ). The checks below combine those observations with Anthropic's current documentation; reported gains depend on the task and setup.
+
+## <span class="sec-no">01</span>Test more than once
+
+A good first result establishes that the workflow worked once. Saraev recommends [running a prompt ten times](https://www.youtube.com/watch?v=45K3zHckCnQ&t=171s), counting successes, changing the prompt, and comparing. His seven-versus-eight illustration is a small sample. Repeat close results and include different real inputs before choosing a version.
+
+Write the pass criteria first. [Score your agent on known good answers](/guides/score-your-agent-on-known-good-answers/) covers building a set of inputs with expected results. Keep a record of failures and manual corrections alongside time and visible cost.
+
+Give each run a way to detect and repair errors. Anthropic's [verification guidance](https://code.claude.com/docs/en/best-practices#give-claude-a-way-to-verify-its-work) names tests, builds, and screenshot comparisons. Choose a check that can catch this task's failure, and define when to report a blocker if repairs stop helping. [Give your coding agent a finish line](/guides/give-your-coding-agent-a-finish-line/) covers that stop condition.
+
+## <span class="sec-no">02</span>Choose the fixes before editing
+
+Ask for a diagnosis first when the complaint is vague. Saraev's [editing example](https://www.youtube.com/watch?v=45K3zHckCnQ&t=714s) separates a weak opening from a casual tone the author wants to keep. A broad instruction to fix everything would change both.
+
+Use this original prompt:
+
+```text
+Inspect this work without editing it. List each suspected problem, the evidence, and the smallest change that would address it. Separate failures against my requirements from optional style preferences. I will choose which findings to fix.
+```
+
+Once scope is clear, name the result and checks, then let the agent choose routine implementation steps within your permission limits. For a larger unclear request, have it ask questions and draft the prompt with you. [Power start sessions with /enhance-prompt](/guides/power-start-sessions-with-enhance-prompt/) gives you a reusable version. Small, fully specified edits can proceed directly.
+
+## <span class="sec-no">03</span>Keep project facts current
+
+Have the agent inspect current code before relying on an old implementation summary. Saraev [describes code reaching version four while notes still describe version one](https://www.youtube.com/watch?v=45K3zHckCnQ&t=322s). Useful comments explain a nearby decision or constraint; tests capture behavior. Update relevant documentation with the change.
+
+Keep information where the next task can find and verify it:
+
+| Information | Where it belongs |
+| --- | --- |
+| Current implementation | Code and relevant tests |
+| Reason for an unusual implementation | A nearby comment or linked decision record |
+| Project-wide commands and working rules | A concise `CLAUDE.md` |
+| Occasional procedure | A skill or reference read when needed |
+| Current task progress | A handoff with completed checks and open work |
+
+Anthropic [recommends skills for occasional procedures](https://code.claude.com/docs/en/best-practices#write-an-effective-claude-md).
+
+Review saved facts when the project changes. [Trim the instructions your model outgrew](/guides/trim-the-instructions-your-model-outgrew/) covers removing stale guidance while keeping requirements. After a repeated mistake, record the working solution and when to use it, as in [Turn repeated fixes into rules](/guides/turn-repeated-fixes-into-rules/).
+
+<PullQuote
+  quote="How could you have done that faster with fewer tokens?"
+  creator="Nick Saraev"
+  video="I Spent $31,141 & 1,000 Hours On Claude Code To Learn This"
+  href="https://www.youtube.com/watch?v=45K3zHckCnQ"
+  timestamp="24:25"
+/>
+
+Treat the answer as a proposed change. Rerun the task before making that change a standing rule.
+
+## <span class="sec-no">04</span>Check the summary, then restart
+
+Use `/context` to inspect loaded instructions, tools, and conversation history. [Stop hitting your token limit](/guides/stop-hitting-your-token-limit/) covers the wider audit. Measure loaded context in your own session before removing tools or instructions.
+
+When corrections have left conflicting directions, ask for a handoff and check it before starting fresh. Include:
+
+- The current goal and accepted decisions.
+- Changed files, completed checks, and their results.
+- Open problems and the next action.
+- Access requirements and approval boundaries.
+
+Saraev [reviews the summary himself before moving it](https://www.youtube.com/watch?v=45K3zHckCnQ&t=1041s). Check the summary against the changed files and completed checks before using it as the new session's instructions. [Keep long Claude Code tasks on track](/guides/keep-long-claude-code-tasks-on-track/) covers progress records. For the same ongoing task, `/compact` can summarize history; specify which decisions and checks to preserve.
+
+Use [`/btw`](https://code.claude.com/docs/en/interactive-mode#side-questions-with-%2Fbtw) for a question about information already in the session while Claude works. Its question and answer stay out of the main history. It has no tools, so a request for new file inspection or test results belongs in the main task or a subagent.
+
+## <span class="sec-no">05</span>Check what connectors cost
+
+Saraev [starts prototypes with an MCP connector](https://www.youtube.com/watch?v=45K3zHckCnQ&t=781s), then builds a custom skill for the task once it works. MCP, the Model Context Protocol, connects an agent to external tools and data. A custom skill can describe the exact operation, but still needs working tool, API, or command access.
+
+Current Claude Code [defers MCP tool definitions with tool search](https://code.claude.com/docs/en/mcp#scale-with-mcp-tool-search) on supported setups. Tool names and server instructions still load. Measure your actual context and startup time before replacing a connector because of the video's overhead claims.
+
+Compare the connector and proposed replacement on the same inputs. Check output correctness, authentication, errors, and permission boundaries, then compare time and cost. Keep the connector if the custom version adds maintenance without a measured benefit.
+
+## <span class="sec-no">06</span>Split work with clear ownership
+
+Parallel work fits jobs that can finish without each other's output. Saraev [assigns separate website changes](https://www.youtube.com/watch?v=45K3zHckCnQ&t=908s) and combines them afterward. Assign each worker an area to change, an expected result, and a check to run. Then check the combined behavior; separate passing changes can still conflict.
+
+[Split big AI tasks into steps and checks](/guides/split-big-ai-tasks-into-steps-and-checks/) explains dependencies and review. For research, Saraev [uses cheaper workers to gather information before a stronger model decides](https://www.youtube.com/watch?v=45K3zHckCnQ&t=1189s). Require source links and distinguish findings from guesses so the final model can verify the evidence.
+
+Anthropic's [subagent documentation](https://code.claude.com/docs/en/sub-agents) supports separate contexts and model choices. Each worker adds to total usage. Compare total cost and correction effort before making parallel execution the default.
+
+## <span class="sec-no">07</span>Test a backup before you need it
+
+Test another coding tool on a known task before an outage. Saraev [keeps a second tool ready in the same project](https://www.youtube.com/watch?v=45K3zHckCnQ&t=1361s). Give it the checked handoff and confirm its file access, tools, instructions, and completion checks. [Compare AI agents on your own work](/guides/compare-ai-agents-on-your-own-work/) shows how to compare the tools.
+
+Share common project facts, and keep tool-specific instructions separate where behavior differs. Copying or linking two instruction files cannot make their tools or permission systems equivalent.
+
+Claude Code's [native `AGENTS.md` support](https://code.claude.com/docs/en/memory#agents-md) requires version 2.1.277 or later and an enabled feature. By default, a `CLAUDE.md` or `CLAUDE.local.md` in the working directory or above takes precedence. Check which file loaded before relying on a shared setup.
+
+<Exercise>
+1. Choose a recurring task and save its starting inputs. Write the pass criteria, run the current workflow, and record failures and manual corrections.
+2. Pick one observed cause of repeated work from this guide. Change only that part of the workflow while preserving the same requirements and permission limits.
+3. Run both versions several times with the same inputs in fresh sessions. Compare correctness, corrections, time, and visible cost. Test more inputs if the difference is small or inconsistent.
+4. Keep the change if it helps, and save the comparison results.
+</Exercise>

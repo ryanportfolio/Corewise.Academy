@@ -63,6 +63,7 @@ Words naming a real thing in the repo ("harness") are terms, not tells.
 - **Show, do not label.** Cut commentary calling a point important, surprising, or subtle.
 - **Earn every claim.** Never say passionate, innovative, hard-working, strategic, collaborative unless the sentence shows it.
 - **Plain words, active voice, direct verbs.** "The compiler validates queries"; "decided", not "made a decision". Latinate dress-ups (prohibition, subsequent, corroborated, verbatim, ancillary, myriad) lose to the everyday phrase; pattern 31 lists the swaps. Never swap an accurate technical name for a vaguer one: precision wins only when the two truly conflict.
+- **Natural combinations, not just familiar words.** Ask whether someone addressing this audience would actually put these words together. A phrase can be understandable and still sound unnatural. Prefer the direct action; preserve accurate technical terms and distinctive voice.
 - **One idea per sentence.** Paragraphs run one to four sentences.
 - **State the rule, skip the flourish.** No aphorism capstones, no justifying self-evident rules.
 - **Don't tour the mechanism.** Say a thing has stages and what the end state buys; walk them only when the reader must choose. One example per claim, only if needed.

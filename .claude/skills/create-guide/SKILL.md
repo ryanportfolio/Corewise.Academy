@@ -1,5 +1,5 @@
 ---
-description: Research current official AI docs and best practices, then write an ultra-concise doc-grounded CoreWise Academy guide as a review PR. Use when the user says /create-guide or asks for a guide or course from current docs, no video source.
+description: "Use for /create-guide or a CoreWise Academy guide from current official AI docs without a video source."
 ---
 
 # create-guide — from fresh official docs to a reviewed guide
@@ -163,9 +163,15 @@ setting); (12) referent check: read every "it", "they", "that", and bare "do not
 and confirm each points to one nameable thing, or name the thing instead of
 pointing at it.
 
-Then run the clarity-pass skill on the finished draft: a cold fresh-reader re-read that
-catches the abstractions, idioms, and two-read sentences this checklist misses. It is a
-required step, not optional polish, and it reports its rewrites in the reply.
+Run `clarity-pass` on the finished draft as a required independent editorial review.
+Actually dispatch a fresh reviewer with no inherited conversation, following that
+skill's input limits. Review natural phrasing, sentence usefulness, and whole-piece
+fit. Evaluate the findings, revise, and return the final draft to the reviewer for
+verification before the mechanical checks below. Record reviewer identity, draft
+hashes, findings, revision decisions, and verification in the task notes. If fresh
+review is unavailable or requirements remain, report editorial review INCOMPLETE;
+continue other preparation without claiming the draft is ready. Self-review does
+not satisfy this step.
 
 ## Step 5: Verify and open the PR
 

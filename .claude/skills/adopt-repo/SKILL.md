@@ -1,6 +1,6 @@
 ---
 name: adopt-repo
-description: "Mirror an existing external repo privately under the user's account and overlay the firmware: clone upstream, strip template-only files, privacy-sweep, run init-project. Use on /adopt-repo <url> or 'pull this repo into our firmware'."
+description: "Use for /adopt-repo or requests to mirror an external repository privately and apply the starter firmware."
 ---
 
 # adopt-repo: overlay the firmware onto an existing repo

@@ -1,6 +1,6 @@
 ---
 name: astra-review
-description: "Cross-vendor review configured for gpt-6-astra at medium reasoning. Same verified CLI lifecycle as codex-review. Use for /astra-review or 'have Astra review this'."
+description: "Use for /astra-review or requests for Astra to review changes through Codex CLI."
 ---
 
 # Astra review

@@ -74,3 +74,15 @@ reported `CONFLICTING` on a branch whose conflict was already resolved and
 pushed, then `MERGEABLE UNSTABLE` on the next query seconds later. Re-query
 before acting on a mergeability verdict, and read `UNSTABLE` as checks still
 running rather than as a failure.
+
+## Transcript export can fail while the panel works (2026-09-25)
+
+For video `45K3zHckCnQ`, `scripts/transcript.mjs` found English captions but
+received HTTP 429 from both caption clients, then printed `No transcript
+available`. Browser transcript export also reported no transcript. The visible
+YouTube Show transcript panel nevertheless returned the full 0:00-25:54 text.
+The export failure would have blocked ingest unnecessarily. Diagnose the earlier
+HTTP error and check the visible panel once before declaring captions unavailable.
+The in-app browser's generic page export is unsupported; use scoped transcript
+text reads when that panel succeeds. Oversized whole-page snapshots can truncate
+the middle even when the closing segment appears.
