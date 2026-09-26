@@ -144,13 +144,15 @@ negation pivots, repeated abstractions, unclear pronouns, and consistent names. 
 dashes or substitute separator tricks. Keep paragraphs short; put named sets in tables,
 lists, or bold-led blocks rather than burying them in prose.
 
-Then cold-read the entire draft, including frontmatter, as someone new to the topic.
-Read the lede and first section without consulting the sources list: can the reader
-identify the problem, the intended result, and who any named creator is? Revise any
-opening that needs the video or private context to make sense.
-Apply the clarity-pass procedure if available. Rewrite sentences that require private
-context or a second reading without weakening their claims. Record the before/after
-rewrites and deliberately retained terms for the editor. Do not call self-review independent.
+Run `clarity-pass` on the finished draft as a required independent editorial review.
+Actually dispatch a fresh reviewer with no inherited conversation, following that
+skill's input limits. Review natural phrasing, sentence usefulness, and whole-piece
+fit. Evaluate the findings, revise, and return the final draft to the reviewer for
+verification before the mechanical checks below. Record reviewer identity, draft
+hashes, findings, revision decisions, and verification in the task notes. If fresh
+review is unavailable or requirements remain, report editorial review INCOMPLETE;
+continue other preparation without claiming the draft is ready. Self-review does
+not satisfy this step.
 
 ## 6. Verify and prepare the review PR
 

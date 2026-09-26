@@ -1,6 +1,6 @@
 ---
 name: perf-loop
-description: "Run measured optimization rounds with independent review for FPS, loading, latency, throughput, and resource use. Use for /perf-loop or broad performance improvement requests; skip routine isolated fixes."
+description: "Use for /perf-loop or measured performance optimization with independent review. Skip isolated fixes."
 ---
 
 # Performance loop

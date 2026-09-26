@@ -10,13 +10,13 @@
 
 | Status | Skills |
 |---|---|
-| Native | `babysit-ci`, `brainstorming`, `bro`, `caveman`, `enhance-prompt`, `forge-repo-ui-skill`, `handoff-audit`, `plain-words`, `recall`, `unslop`, `verify-this`, `writing`, `writing-plans` |
-| Adapted | `addskill`, `automate-me`, `fable-mode`, `init-project`, `lab`, `optimize-context`, `sync-starter`, `writing-skills` |
-| Capability-gated | `advocate`, `arena`, `design-study`, `impartial-review`, `why` |
-| Dangerous | `clarity-pass`, `create-guide`, `crosslink`, `ingest`, `merge` |
-| Claude-only | None in the starter source set. |
+| Native | `babysit-ci`, `brainstorming`, `bro`, `caveman`, `enhance-prompt`, `forge-repo-ui-skill`, `handoff-audit`, `plain-words`, `recall`, `unslop`, `writing`, `writing-plans` |
+| Adapted | `refine`, `session-hub`,  `addskill`, `fable-mode`, `init-project`, `lab`, `optimize-context`, `sync-starter`, `writing-skills` |
+| Capability-gated | `astra-fullreview`, `astra-review`, `claude-review`, `codex-fullreview`, `codex-review`, `dare`, `long-horizon`, `perf-loop`, `showpiece`, `wow-loop`,  `advocate`, `arena`, `clarity-pass`, `design-study`, `impartial-review`, `why` |
+| Dangerous | `adopt-repo`,  `create-guide`, `crosslink`, `ingest`, `merge` |
+| Claude-only | `long-horizon-workflows` |
 
-`advocate`, `impartial-review`, and `why` require fresh independent context; do not replace them with self-review and call it equivalent. `merge` becomes session-wide only after explicit `$merge` or an unambiguous auto-merge request. Current system, developer, sandbox, approval, and user instructions win. Resolve canonical resources from `.claude/skills/<name>/` and never claim a gated workflow ran unless its tools were used.
+`advocate`, `clarity-pass`, `impartial-review`, and `why` require fresh independent context; do not replace them with self-review and call it equivalent. `merge` becomes session-wide only after explicit `$merge` or an unambiguous auto-merge request. Current system, developer, sandbox, approval, and user instructions win. Resolve canonical resources from `.claude/skills/<name>/` and never claim a gated workflow ran unless its tools were used.
 
 `node .claude/scripts/test-codex-contract.mjs` verifies that every active skill has exactly one classification and that Codex routing metadata stays within its context budget.
 
