@@ -1,0 +1,134 @@
+---
+title: Write smaller Claude skills that work
+description: 'Turn a repeated correction into a focused Claude Code skill. Choose when it runs, test its output, and remove instructions that add no value.'
+track: agents
+level: practitioner
+number: 61
+minutes: 6
+tags: ['skills', 'claude code', 'verification']
+objectives:
+  - Identify a repeated correction that belongs in a skill.
+  - Write a focused skill and choose whether Claude may invoke it automatically.
+  - Compare skill revisions while preserving required behavior.
+prerequisites:
+  - slug: expertise-you-can-install
+    note: Understand how a skill packages instructions and supporting files.
+sources:
+  - url: https://www.youtube.com/watch?v=QsU0f-547rQ
+    creator: Austin Marchese
+    video: How Matt Pocock ACTUALLY Creates Claude Skills
+    timestamps: ['0:53', '1:52', '3:01', '7:06', '7:44', '10:58', '11:17', '12:30', '13:44', '14:47']
+  - url: https://code.claude.com/docs/en/skills
+    creator: Anthropic
+    video: Extend Claude with skills
+  - url: https://github.com/mattpocock/skills/blob/main/skills/productivity/grill-me/SKILL.md
+    creator: Matt Pocock
+    video: grill-me skill
+selfCheck:
+  - q: What should a short skill add beyond a term such as premortem?
+    a: The input to examine, the result to return, and the point where the task ends. The term names a method but cannot supply your project's requirements.
+  - q: How do you make a Claude Code skill available only when you invoke it?
+    a: Set disable-model-invocation to true in its frontmatter. You can still run the skill by name. Setting user-invocable to false does the opposite and leaves Claude able to invoke it.
+  - q: One output looks unchanged after removing an instruction. What does that establish?
+    a: It is limited evidence about that input. Check the saved failure and another known case, repeat an unclear comparison, and preserve fixed requirements regardless of whether a failure has occurred.
+status: published
+lastUpdated: 2026-09-29
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+
+<p class="lede">If you keep asking Claude to redo the same step, save that correction in a skill. Give the skill one job, a clear result, and a stopping point. Then compare its output with the work you kept sending back before adding more instructions.</p>
+
+Austin Marchese's [How Matt Pocock ACTUALLY Creates Claude Skills](https://www.youtube.com/watch?v=QsU0f-547rQ) draws a five-step method from Pocock's videos and skills. Its useful starting point is the correction you repeat. Claude Code's documentation supplies the file format and controls below; the test procedure is our recommendation.
+
+## <span class="sec-no">01</span>Start with a repeated correction
+
+Save a failed request, the result, and the correction you gave. Identify the step that failed. If Claude writes a launch plan before examining what could go wrong, a skill for reviewing launch risks has a clear purpose.
+
+Marchese describes the tendency to [rush toward a finished artifact](https://www.youtube.com/watch?v=QsU0f-547rQ&t=112s). Give the review its own stopping point: return the risks and unresolved questions, then wait for your decision about the plan. Combining review and execution can let the agent act before you have read the findings.
+
+Choose where the correction belongs:
+
+| Repeated problem | Useful place for the fix |
+| --- | --- |
+| A procedure needs the same explanation | A skill with inputs, steps, and a completion check |
+| A code rule can be checked automatically | A lint rule or test, as in [Turn repeated fixes into rules](/guides/turn-repeated-fixes-into-rules/) |
+| The output needs an established format | An accepted example, as in [Build a skill from an approved example](/guides/build-a-skill-from-an-approved-example/) |
+
+Run the task without a new skill first. If the result already meets your criteria, keep the working request. [Expertise you can install](/guides/expertise-you-can-install/) explains what to package when the procedure needs to be reused.
+
+## <span class="sec-no">02</span>Name the method, define the task
+
+An established term can replace a long description of a familiar method. A **premortem** assumes a proposed project has failed and works backward to possible causes. Marchese includes it among his [examples of useful terms](https://www.youtube.com/watch?v=QsU0f-547rQ&t=306s).
+
+The term still needs your task's inputs and output requirements. This original skill applies the method to a supplied launch plan. Save it as `.claude/skills/launch-premortem/SKILL.md` in your project:
+
+```markdown
+---
+name: launch-premortem
+description: Review a supplied launch plan for likely causes of failure before implementation.
+disable-model-invocation: true
+---
+
+Run a premortem on the supplied launch plan. Ask for the plan if it is missing.
+
+For each plausible failure, identify the assumption behind it, an early warning sign, and a practical mitigation. Distinguish evidence in the plan from assumptions that need checking.
+
+Return the risks in priority order and list unresolved decisions. Stop after the review and wait for the user's next instruction.
+```
+
+Short files can still depend on substantial instructions elsewhere. The current [grill-me skill](https://github.com/mattpocock/skills/blob/main/skills/productivity/grill-me/SKILL.md) in Pocock's repository tells Claude to call another skill named `grilling`. Read those dependencies before copying the file. Its length alone does not show how much instruction the complete task uses.
+
+## <span class="sec-no">03</span>Choose who starts the skill
+
+Use manual invocation when you want to choose the moment a workflow begins. In the example above, type `/launch-premortem` and supply the plan. This prevents Claude from choosing that skill during an unrelated conversation.
+
+Anthropic's [invocation controls](https://code.claude.com/docs/en/skills#control-who-invokes-a-skill) distinguish two settings:
+
+| Setting | You can invoke it | Claude can invoke it |
+| --- | --- | --- |
+| Default | Yes | Yes |
+| `disable-model-invocation: true` | Yes | No |
+| `user-invocable: false` | No | Yes |
+
+These controls are specific to Claude Code. Check the runtime's documentation before copying them into another agent's setup.
+
+By default, skill descriptions are available in context so Claude can choose among them; the full instructions load when invoked. With `disable-model-invocation: true`, the description is omitted too. The skill still uses context when you invoke it. [Stop hitting your token limit](/guides/stop-hitting-your-token-limit/) covers the wider context budget.
+
+Automatic invocation remains useful for a routine you want Claude to select on relevant requests. Test that selection with a matching request and a nearby request that should leave the skill unused. Manual invocation trades that convenience for your choice of when to run it. It does not replace tool permissions or approval rules.
+
+## <span class="sec-no">04</span>Check what you still send back
+
+<PullQuote
+  quote="If you don't have to send back the result, the skill is working."
+  creator="Austin Marchese"
+  video="How Matt Pocock ACTUALLY Creates Claude Skills"
+  href="https://www.youtube.com/watch?v=QsU0f-547rQ&t=658s"
+  timestamp="10:58"
+/>
+
+Accepting an output is weaker evidence when errors are hard to see. Check the result against its source material or an expected answer before deciding the correction worked.
+
+Our recommendation is to save the failed input and another case that already worked. Run both with the old and revised skill, keeping the model and available tools the same. Check whether the original defect disappeared and whether the successful case still passes. Repeat a close or inconsistent result before keeping the edit.
+
+Marchese's [examples of skill revisions](https://www.youtube.com/watch?v=QsU0f-547rQ&t=677s) each address a specific complaint, such as conversations dragging or an agent implementing a plan before confirmation. Add the instruction that fixes the observed behavior, then try again. [Make skills improve after each run](/guides/make-skills-improve-after-each-run/) covers locating the cause and checking the repair.
+
+For the premortem, inspect whether each risk follows from the supplied plan, assumptions are labeled, and the agent stops after the review. [Score your agent on known good answers](/guides/score-your-agent-on-known-good-answers/) covers keeping reusable cases when correctness needs more than your immediate reaction.
+
+## <span class="sec-no">05</span>Remove lines that add no value
+
+Test suspected filler by removing one sentence and comparing the same work. Marchese calls instructions that change nothing [no-ops](https://www.youtube.com/watch?v=QsU0f-547rQ&t=750s). A generic line such as "be thorough" is a candidate to test; a required field or approval rule describes an obligation even if the model has never missed it.
+
+[Trim the instructions your model outgrew](/guides/trim-the-instructions-your-model-outgrew/) explains how to distinguish fixed requirements from workarounds you can remove and test. Preserve the old file so you can restore an instruction when a later case needs it.
+
+State the desired action where possible. "Return the risks and wait for the user's next instruction" gives the review a defined endpoint. Keep an explicit restriction when it expresses a real boundary.
+
+Before adding another skill, check whether existing skills already cover the steps you need. Reusing them in sequence may be enough. Inspect their instructions and dependencies, choose where human review belongs, and review the result before approving its use. That is the practical lesson in Marchese's [warning about blindly copied setups](https://www.youtube.com/watch?v=QsU0f-547rQ&t=887s).
+
+<Exercise>
+1. Save a request you corrected more than once, its output, and the exact correction. Write down how you will recognize an acceptable result.
+2. Draft a skill for that step using the example's structure. Choose manual or automatic invocation deliberately, and name the point where the skill stops.
+3. Run the failed input and a previously successful case with and without your new skill, using fresh sessions and the same model and tools. Inspect both outputs. If you chose automatic invocation, also try a matching request and a request that should leave the skill unused.
+4. Remove one sentence you suspect adds no useful instruction. Run both cases again with the original and shortened skill, using fresh sessions and the same model and tools. Preserve fixed requirements, and keep the shorter version only if the required behavior still passes.
+</Exercise>
