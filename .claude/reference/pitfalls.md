@@ -86,3 +86,10 @@ HTTP error and check the visible panel once before declaring captions unavailabl
 The in-app browser's generic page export is unsupported; use scoped transcript
 text reads when that panel succeeds. Oversized whole-page snapshots can truncate
 the middle even when the closing segment appears.
+
+For `QsU0f-547rQ` (2026-09-29), the first browser page also failed to open
+the transcript panel. After the editor reported seeing the transcript, a fresh
+video page's Show transcript control returned all segments, 0:00-15:21 of 15:27.
+When the editor supplies this new evidence, try one fresh page before asking them
+to copy the transcript. This recovered the text without another caption download;
+it does not establish why the earlier panel failed or that the HTTP 429 cleared.
