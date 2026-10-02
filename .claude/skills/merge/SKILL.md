@@ -1,129 +1,91 @@
 ---
-description: Use only when the user explicitly asks to enable session-wide automatic commit, push, PR, and merge; not for one-shot shipping requests.
+name: merge
+description: "Merge PRs through a Codex review loop: /codex-fullreview, fix, then /codex-review reruns (3 max) until clean, then CI and squash-merge. Runs only when the user types /merge; from then on, every PR in the session goes through the same loop and merges."
+disable-model-invocation: true
 ---
 
-# Merge — Auto-Merge Mode (Session-Wide)
+# Merge via Codex review loop
 
-> Note: inside a git worktree this skill may be exposed under a directory-scoped name (e.g. `.claude/worktrees/<name>:merge`). Invoke the scoped name — same skill, same behavior.
+Finished work → merged PR: commit, push, open/reuse PR, Codex loop, CI, squash-merge. Same file at repo `.claude/skills/merge/SKILL.md` + global `~/.claude/skills/merge/SKILL.md`; copies identical.
 
-Invoking `/merge` does NOT do a one-off merge. It **flips on Auto-Merge Mode for the rest of the session**, like `/caveman` persists, and it covers the session in BOTH directions:
+## Merge mode
 
-- **Backward (retroactive sweep):** any work already completed and verified earlier in this session that is not yet on `main` — open PRs, pushed branches, committed-but-unmerged changes — gets the integration cycle immediately on activation.
-- **Forward:** every task completed after activation gets the cycle the moment it is complete and verified — no waiting to be asked, no per-merge confirmation.
+User-only start: user types `/merge`. Never self-start, even if PR looks ready.
 
-Invoking `/merge` IS the user's standing authorization to merge into `main` repeatedly for the session — **everything before it and everything after it**. That includes PRs this session deliberately left for review (e.g. editorial-content PRs under a "the editor merges" convention): activating the mode IS the editor's approval, so merge those too. That is why there is no per-merge confirm gate (see [Why no confirm](#why-no-per-merge-confirm)).
+`/merge` → merge mode ON for rest of session. Announce in plain prose ("Merge mode is on for this session: every PR goes through the Codex loop and merges when clean") so mode survives summaries. While ON:
 
-## Step 0: Activate the mode
+- Immediately: every still-open PR this session opened or pushed to → all steps below, one PR at a time. Finished work w/o PR → Step 1 opens one. PRs session never touched → untouched unless user names them.
+- After: every PR session opens/updates → same steps → merge, no further prompt. Re-read this file before each; post-summary, text may be gone from context.
+- Each PR: own loop, own rerun budget.
 
-On `/merge`, announce activation in **plain prose** (not caveman), so the user can immediately correct a misread of this standing authorization. Say, concisely:
+Mode OFF when: user says so ("stop merging", "stop merge mode", "don't merge this one"), user switches to `/main`, or session ends. Hold on one PR → holds that PR only.
 
-> **Auto-Merge Mode is ON for this session.** I will now merge into `main`, without asking: (1) everything this session already completed that isn't merged yet — including any PRs left open for review — and (2) every task completed from here on: commit the touched files, push, ensure a PR exists, and merge (resolving conflicts where unambiguous). The session branch is kept the whole session. Say "stop merge" to turn this off.
+## Authorization
 
-Then run the **retroactive sweep** before continuing other work: list this session's unmerged output (`gh pr list --author @me --state open`, plus any pushed-but-PR-less or committed-but-unpushed session branches), and run the integration cycle on each item that is complete and verified. Only genuinely unfinished or unverified work is excluded — and say so explicitly if anything is skipped. After the sweep, the cycle fires on every task completion.
+Per PR, mode authorizes:
 
-## The Integration Cycle
+- commit finished work, push, open/reuse PR;
+- 1× `/codex-fullreview` + ≤3 `/codex-review` reruns, each billed to user's Codex sub;
+- in-scope fixes for confirmed findings, committed + pushed to PR branch;
+- squash-merge once review loop + CI both pass at same head.
 
-Run this whenever a task is complete and verified. "Complete" = the requested change is finished and verified to the extent this environment allows (read code / logs / headless rasterize) — NOT mid-task, exploratory, or throwaway work. Never fabricate verification to trigger the cycle.
+Review skills' "review ≠ fix authority" rule lifted for in-scope fixes only. Still NOT authorized: scope growth, design changes PR didn't make, force-push, admin bypass, direct push to target. Cap hit → that PR blocked; mode stays ON for others.
 
-### 1. Identify the branch
-- `git branch --show-current`.
-- If on `main` (should not happen mid-session): create a session branch first, never commit to `main` directly. The one session branch is reused for the whole session.
+## Requirements
 
-### 2. Commit + push the work
-- Stage **only the files this task touched** — never blanket-commit unrelated changes (`git status --short` to see what's there).
-- Commit with a clear message; end with the standard `Co-Authored-By:` trailer.
-- `git push` (set upstream on first push of the branch).
+- `codex-review` + `codex-fullreview` skills, in repo `.claude/skills/` or `~/.claude/skills/`. Either missing → stop, say so.
+- Codex reachable via route review skills accept: `codex login status` = ChatGPT login, or `config.toml` in `$CODEX_HOME` (default `~/.codex`) sets `model_provider` to gateway. Neither → stop before merge, report. Never substitute self-review + call gate passed.
 
-### 3. Ensure a PR exists
-- `gh pr view --json number,title,state,mergeable,mergeStateStatus,headRefName,baseRefName,url`.
-- If no PR, or the prior PR is already `MERGED`/`CLOSED` (a reused branch's old PR closes after each merge), open a fresh one: `gh pr create --base main --fill` (or use the `pr` skill). Confirm `baseRefName` is `main`.
+## Step 1: Integrate
 
-### 4. Sync with main + check conflicts
-- `git fetch origin`.
-- Inspect `mergeable` / `mergeStateStatus`. `main` advances fast (other sessions land work), so expect occasional divergence.
-- If clean (`MERGEABLE`), go to step 6.
+1. Inspect repo, remote, branch, working changes, existing PR. Target = task's or repo default. Keep unrelated work. Detached HEAD / on target → task branch before commit; respect user-chosen branch. Don't touch other checkouts w/o authorization.
+2. Run relevant local checks. Stage explicit paths, inspect staged diff, commit, push. Never bypass hooks. Reuse branch's open PR (`gh pr list --head <branch>`); else create one, description = final behavior + validation. Multiline bodies via file. Verify PR base, head, remote.
+3. Fetch target, check mergeability. Resolve unambiguous conflicts, keep both sides' intent. Semantic conflicts → investigate; ask only if resolution needs user decision not yet made. Reverify affected behavior, push.
 
-### 5. Resolve conflicts (like normal)
-If `mergeable` is `CONFLICTING` or the merge is blocked by divergence:
-- `git merge origin/main` into the session branch.
-- Resolve conflicts the normal way: open each conflicted file, keep both sides' intent, remove markers, `git add`, commit the merge, `git push`.
-- **Auto-clarity carve-out:** resolve only conflicts where the correct resolution is unambiguous. If both sides changed the same logic and the right merge is a real judgment call (risk of silently dropping someone's work), **stop, report the conflicted hunks in plain prose, and ask** before committing. Do not guess on semantic conflicts.
-- Re-check `mergeable`, then proceed.
+Record PR number, target, head SHA.
 
-### 6. Merge into main
-```
-gh pr merge <number> --squash
-```
-- `--squash` → one flat commit per PR on `main` (repo default, editor ruling 2026-07-18; earlier history used merge commits).
-- **No `--delete-branch`** — the one session branch is kept until the session is done.
-- **No `--merge` / `--rebase`** unless the user explicitly asked.
-- **No `--admin`** — do not bypass branch protection or failing required checks. If the merge is blocked by checks/protection, report why and stop (pause the cycle for that task); do not force it.
+## Step 2: Review loop
 
-### 7. Confirm it went live
-Merging is publishing: the cycle is not done until the change is on the live site (or the deploy blocker is reported). Identify the project's deploy platform from `.claude/reference/deployment.md` or auto-memory (this repo: Vercel, root dir `site/`, `main` auto-deploys; other projects may use Railway etc.).
+Each round: `git fetch origin <target>`, scope = full PR branch diff vs `origin/<target>` at current head SHA. Each review skill's contract applies in full: preflight, background launch, own run dir, its 1 auto-retry, verify every finding.
 
-- **Auto-deploy platforms (Vercel/Railway on `main`):** the merge itself triggers the deploy — do not trigger a second one. Verify it: check the platform's commit status on the merge commit (`gh api repos/{owner}/{repo}/commits/<merge-sha>/status`) or the platform CLI, and confirm it reaches success. A cheap live check (e.g. `curl -s https://<site>/ | grep` for the changed copy) is the gold standard when the change is greppable.
-- **Deploy blocked (rate limit, quota, build failure):** report it plainly with the platform's message and when it will clear — never imply the change is live. If the block is a build FAILURE (not a limit), treat it like a failing check: diagnose before merging further UI work.
-- **Manual-deploy platforms:** run the documented deploy command after merge (see `deployment.md`); if credentials/environment make that impossible here, say so and hand the exact command to the user.
+**Round 1: `/codex-fullreview`.** 1 run, full PR diff. Must spawn ≥1 sub-reviewer; 0 = Manager alone = single-context, not full review. Fails after retry, or lacks verified scope identity (per its skill) → doesn't count: keep verified findings, stop, ask.
 
-### 8. Report
-Confirm the merge landed, give the PR URL, note the branch was kept, and state the live-deploy status from step 7 (deployed / queued / blocked-with-reason). If anything blocked it (failing checks, protection, unresolved/ambiguous conflict), report the exact `gh`/`git` output and the reason — never claim success you did not verify.
+**Reruns: `/codex-review`.** After any round that pushed a commit → `/codex-review` alone, full PR diff at new head, not just fix delta. Same rule: failed/incomplete → stop loop, ask.
 
-## Deploy budget: batch the merges
+**Triage, after round finishes.** No edits while review runs: reviewers read working tree too, mid-review fix changes what they see. Then:
 
-This repo deploys on Vercel's free tier: **100 deployments per rolling 24
-hours, previews included** (hit on 2026-07-18; the error is "Deployment rate
-limited — retry in 24 hours" and the live site silently goes stale while
-`main` is correct).
+- Confirmed 🔴/🟡 → fix.
+- Kept w/ caveat → fix if residual risk real; else record why it stays.
+- Confirmed 🟢 → fix if small + in scope, only in round already needing rerun. Round w/o 🔴/🟡 → list 🟢 in report, head unchanged; 🟢 never triggers rerun alone.
+- Refuted → drop, list under "checked and fine".
+- Fix needs user decision (behavior change, tradeoff, scope growth) → ask. User may waive; record waiver.
 
-Two things spend that budget:
+Fix at cause, run relevant local checks, round's fixes = 1 commit naming findings, push. Leave unrelated work alone.
 
-- **Pushes to non-main branches** used to burn a preview deploy each.
-  `site/vercel.json` now sets `git.deploymentEnabled` to `{"**": false,
-  "main": true}`, so only `main` deploys — pushes and PRs are free. Do not
-  remove that block; it is the rate-limit fix. (Branches cut before the block
-  landed still carry the old config and still preview-deploy on push; merge
-  `origin/main` into them to pick it up.)
-- **Every merge to `main`** still triggers one production deploy.
+**Loop end.** Pass = latest round, on current head, confirmed 0 🔴/🟡 (waived excluded). Round 1 passes → no rerun.
 
-So inside Auto-Merge Mode, commit and push continuously but run the
-merge-to-main step on a batch cadence:
+- Cap: 3 `/codex-review` reruns after round 1. Check budget before any fix/review. After 3rd rerun: no more commits, no more reviews; anything still needing fix (🔴, 🟡, real-risk caveat) or head moved → PR `blocked`: stop, report open items, leave unmerged. User can hand-fix, waive, or authorize more reruns.
+- Commits loop didn't make (other session, teammate) → reviewed by next round, counts toward cap.
+- Head moves after passing round → verdict void: another `/codex-review` if budget allows, else `blocked`.
 
-- Merge when a coherent chunk of work is done (a whole editorial ruling applied,
-  a feature finished), not once per micro-task. Several small completed tasks
-  waiting together ride one merge.
-- A direct user request to merge, or the end of the session, always flushes the
-  batch immediately.
-- After each merge, check the deploy landed:
-  `gh api repos/<owner>/<repo>/commits/main/status --jq .state`. On `failure`
-  with a rate-limit message, tell the user live is stale and when it clears; do
-  not keep merging micro-batches into a rate-limited window.
+## Step 3: CI
 
-## Why no per-merge confirm
+Inspect **all PR checks**: `gh pr checks <number> --json name,bucket,state,workflow,link` or current equivalent. Pending → bounded wait. Failed → diagnose, fix in scope; CI fix moves head → back through `/codex-review` round, same budget. Don't trust branch protection or `MERGEABLE` alone. Verify expected workflows actually ran. Absent/skipped/unavailable required check ≠ pass: explain, hold merge unless repo's established verification contract allows. No-CI repo → local verification contract, report that limit. Never admin-bypass checks.
 
-Merging into `main` is outward-facing and hard to fully undo. The single confirmation is **turning the mode on** — that is the explicit, standing authorization for the session. After that, per-merge prompts would defeat the purpose. The safety valves that remain:
-- the mode only fires on genuinely-complete, verified work;
-- ambiguous/semantic conflicts still stop and ask;
-- branch protection / required checks are still respected (no `--admin`);
-- the user can say "stop merge" at any time.
+## Step 4: Merge
 
-## Deactivation
+1. Re-read PR head. ≠ head where loop + CI both passed → back to Step 2; verdict covers only head it saw.
+2. Squash unless user/repo says otherwise: `gh pr merge <number> --squash --match-head-commit <verified-head>`. No head guard available → say so, use guarded API or hold; never merge unreviewed commits.
+3. Confirm PR merged, fetch target, see merge commit. Keep branch unless user asked cleanup. Next change → new task branch from updated target, keep uncommitted work.
 
-Turn the mode OFF when the user says "stop merge", "stop auto-merge", "normal mode for merging", or the session ends. The session branch is **not** deleted on deactivation — clean up manually only when the session's work is truly done.
+Never reset unrelated work, force-push, or push direct to target. Interrupted → inspect real Git + PR state before retry; lost response ≠ failed write. Pause only blocked action, finish independent authorized work, report exact blocker.
 
-## Anti-patterns
+## Report
 
-- Don't merge once per micro-task — each merge burns a production deploy from a
-  100/day budget; batch completed work (see Deploy budget above).
-- Don't skip the retroactive sweep — "the cycle fires on the next completion" is wrong; activation merges the session's existing completed work too.
-- Don't hold back review-gated PRs from this session after activation — `/merge` is the reviewer's/editor's standing approval.
-- Don't merge mid-task, exploratory, or unverified work — "complete + verified" is the gate.
-- Don't fabricate verification just to trigger the cycle.
-- Don't blanket-commit unrelated files — stage only what the task touched.
-- Don't push commits straight to `main` via `git push` — always integrate through `gh pr merge`.
-- Don't delete the branch (`--delete-branch`) — one branch for the whole session.
-- Don't switch merge method (`--merge`/`--rebase`) on your own — squash is the default.
-- Don't bypass protections/checks (`--admin`) without an explicit ask — report the block and stop.
-- Don't guess on semantic merge conflicts — resolve the unambiguous ones, stop and ask on the rest.
-- Don't fabricate success — report the real `gh pr merge` / `git merge` outcome.
-- Don't stop at the merge — a merge whose deploy silently failed or is rate-limited is NOT live; verify or report per step 7.
+Per PR: each round w/ source attribution as review skill presents it, surviving findings, fix commit SHAs, waivers + reasons, CI result. End w/ 1 line: `merged <PR URL> at <head SHA>`, or `blocked` + open items.
+
+After merges land (each time no PR in flight is still pending), close w/ **ELI5 recap**: super-short bullets, plain words a 5-year-old gets, no jargon/SHAs/skill names, not caveman. One bullet per merged PR = what it's for; one bullet = what session did overall. Example:
+
+- PR #12: the save button works again.
+- PR #13: the page loads faster.
+- Overall: fixed two things people kept tripping on.
