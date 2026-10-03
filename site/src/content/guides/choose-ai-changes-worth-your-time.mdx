@@ -1,0 +1,154 @@
+---
+title: Choose AI changes worth your time
+description: Compare a proposed AI workflow change with your current process, including setup, correction, maintenance, and the time you spend checking results.
+track: practice
+level: practitioner
+number: 62
+minutes: 7
+tags: ['automation', 'cost control', 'planning', 'verification']
+objectives:
+  - Compare two AI setups using completion checks, elapsed time, manual corrections, and visible cost.
+  - Decide whether to keep an existing tool, simplify a process, or build an automation for a recurring task.
+  - Separate original source files from derived summaries and check claims against the originals.
+  - Define agent checks and a manual verification plan before testing a workflow change.
+prerequisites:
+  - slug: compare-ai-agents-on-your-own-work
+    note: Provides the comparison method used to test a proposed workflow change.
+sources:
+  - url: https://www.youtube.com/watch?v=hsbr0IoFZJ8
+    creator: Austin Marchese
+    video: The BEST & WORST Advice to Build 10x Faster with Claude
+    timestamps: ['0:33', '2:00', '3:16', '4:09', '7:18', '7:57', '8:52', '10:09', '12:20', '14:09', '15:26', '16:34']
+  - url: https://code.claude.com/docs/en/best-practices
+    creator: Anthropic
+    video: Best practices for Claude Code
+    timestamps: []
+  - url: https://code.claude.com/docs/en/sub-agents
+    creator: Anthropic
+    video: Create custom subagents
+    timestamps: []
+  - url: https://agentskills.io/specification
+    creator: Agent Skills
+    video: Specification
+    timestamps: []
+selfCheck:
+  - q: A free model takes longer but passes all your checks. How do you decide whether to use it?
+    a: Compare the complete task, including waiting, setup, correction, review, and any operating costs. Choose the setup that meets your quality requirements within your budget and time constraints. A free price alone does not settle the choice.
+  - q: What should happen before you automate a recurring report?
+    a: Confirm who uses it and what decision it supports, review which steps are required, remove approved unnecessary steps, and simplify the remaining process. Check that the revised report still meets its requirements, then automate the repeated step that still slows the work.
+  - q: Why does an agent's successful structure check leave work for you to verify?
+    a: A document can have every required heading while its facts or conclusions are wrong. Check claims against original sources or known results, inspect evidence from the agent's checks, and manually review the parts those checks cannot establish.
+status: published
+lastUpdated: 2026-10-03
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+
+<p class="lede">Test a proposed AI workflow change on a job you already do. A cheaper model, a custom app, or another agent can add setup and review work even when it produces an answer faster. Compare the finished result and the work it took to get there before changing your routine.</p>
+
+Austin Marchese's [The BEST & WORST Advice to Build 10x Faster with Claude](https://www.youtube.com/watch?v=hsbr0IoFZJ8) ranks ten common recommendations. His examples show why a comparison needs to include setup, corrections, and maintenance. Test proposed changes on your own tasks; a tenfold speed gain is unproven.
+
+## <span class="sec-no">01</span>Count the whole cost
+
+Choose a model after checking whether it can finish the job at an acceptable cost. Free, local, and paid setups can each fit a task. Marchese's [cost discussion](https://www.youtube.com/watch?v=hsbr0IoFZJ8&t=33s) warns that a lower bill can come with more waiting or correction. Whether that happens in your work needs a comparison.
+
+Record the same measures for the current setup and the proposed change:
+
+| Measure | What to record |
+| --- | --- |
+| Result | Which completion checks passed and which failed |
+| Elapsed time | Time from starting the task to an accepted result, including retries |
+| Your time | Setup, corrections, coordination, and review |
+| Money | Visible usage charges, subscriptions, or operating costs; mark unavailable figures |
+| Ongoing work | Who maintains the setup and what updates it will need |
+
+Keep one-time setup separate from each run. A large setup cost may be reasonable for a frequent job; the same cost can rule out a one-off use. [Compare AI agents on your own work](/guides/compare-ai-agents-on-your-own-work/) explains how to hold the inputs and checks steady across setups.
+
+## <span class="sec-no">02</span>Check the need before building
+
+List the required functions before replacing software you already use. Check whether its settings or an existing simpler tool can meet the need. A custom replacement creates work after the first working version: fixing faults, handling exceptions, and updating it when the surrounding systems change.
+
+Marchese [reports spending about ten hours rebuilding his CRM](https://www.youtube.com/watch?v=hsbr0IoFZJ8&t=477s), a customer relationship management tool. He says he never used the replacement, which lacked the features he needed, and chose Google Sheets. That is one person's outcome. Test whether your proposed replacement solves a specific unmet need.
+
+For an uncertain build, ask for a plan that names required behavior, existing alternatives, unresolved questions, and a way to check the result. Read the plan and settle decisions that could change the approach. Try the smallest version that can answer the main uncertainty before expanding the scope.
+
+Anthropic's [Claude Code best practices](https://code.claude.com/docs/en/best-practices) recommend planning when the approach is uncertain or the change is substantial. Small, clearly specified edits can go directly to execution. Decide what evidence you need from a trial so planning ends with something you can test.
+
+## <span class="sec-no">03</span>Simplify before automating
+
+Review what a workflow is for before encoding its steps. Marchese's [sequence for automation](https://www.youtube.com/watch?v=hsbr0IoFZJ8&t=609s) starts with questioning requirements and simplifying the work. Apply that sequence with the people who depend on the result:
+
+1. Name the output, who uses it, and the decision it supports.
+2. Confirm which steps are required. Remove unnecessary steps after checking with their owners.
+3. Simplify the remaining process and verify that the output still meets its requirements.
+4. Speed up the repeated step that still holds up the work.
+5. Automate the repeated step once its inputs, steps, and checks are clear.
+
+[Automate the step that slows you down](/guides/automate-the-bottleneck/) covers finding that constraint and checking an automation's results. Save the current procedure and any files you will change so you can restore them. Check that the revised process meets its requirements even if nobody complains.
+
+When repeated corrections concern how the task is done, save the working procedure as a skill: instructions and supporting files the agent can reuse. Do the task, capture the approved approach, run the skill, and revise it from observed failures. [Build a skill from an approved example](/guides/build-a-skill-from-an-approved-example/) and [Make skills improve after each run](/guides/make-skills-improve-after-each-run/) cover those steps.
+
+The [Agent Skills specification](https://agentskills.io/specification) gives compatible tools a shared file format. After moving a skill, check that the new tool can find the skill and has the required tools, files, and permissions, then run a known example. Identical files can behave differently in different setups.
+
+## <span class="sec-no">04</span>Link summaries to their sources
+
+Give the agent current material relevant to the job. When two instructions conflict, establish which one applies before the run. [Trim the instructions your model outgrew](/guides/trim-the-instructions-your-model-outgrew/) covers reviewing old workarounds and testing a shorter setup.
+
+Marchese's [knowledge-base layout](https://www.youtube.com/watch?v=hsbr0IoFZJ8&t=249s) separates original material from a wiki derived from it. The wiki helps the agent find relevant information; originals remain available for checking details. A small version can use three places:
+
+| Place | Contents |
+| --- | --- |
+| `raw/` | Original documents, notes, or transcripts with source dates |
+| `wiki/` | Summaries and reusable findings, linked to their original files |
+| Index | Where topics live and which files to consult |
+
+Ask the agent to use the summary to locate the source, then open the original when a claim needs checking. Date summaries and refresh them when their sources change. [Keep a growing knowledge base accurate](/guides/keep-a-growing-knowledge-base-accurate/) covers checking whether an index and its summaries still match the files.
+
+## <span class="sec-no">05</span>Budget your attention
+
+Separate agent work only when the tasks can proceed independently. Several chats can still leave you switching between questions, reconciling decisions, and reviewing overlapping edits. Include that coordination in the comparison.
+
+For research, one coordinating agent can assign distinct questions and combine the findings. Anthropic's [subagent documentation](https://code.claude.com/docs/en/sub-agents) describes workers with separate context and their own tool access. For implementation, specify each worker's files or feature, how their parts must work together, and completion checks. Someone must check the combined result.
+
+Work that depends on your judgment may benefit from finishing one task before opening another. [Improve your Claude Code workflow](/guides/improve-your-claude-code-workflow/) covers task ownership and measured comparisons when splitting work.
+
+Apply the same attention budget to new tools. Name the recurring problem a candidate tool could solve, then test it against your current setup. Include configuration, moving files or instructions, relearning controls, and support after the switch. Keep your working setup available until the candidate has passed the trial.
+
+## <span class="sec-no">06</span>Define checks before the trial
+
+Write the completion checks before either setup runs. Give the agent checks it can perform and ask for the observed results. Anthropic's [verification guidance](https://code.claude.com/docs/en/best-practices) recommends runnable checks and evidence of what happened. [Give your coding agent a finish line](/guides/give-your-coding-agent-a-finish-line/) covers specifying when a task is complete.
+
+For a document, required headings and length can be checked automatically. Facts and conclusions need checks against sources or known answers. For software, successful compilation still leaves the requested behavior to verify. Match each check to the claim it can establish.
+
+Ask the agent to help with your own review as well. Marchese uses this question after a substantial change:
+
+<PullQuote
+  quote="How can I manually verify this?"
+  creator="Austin Marchese"
+  video="The BEST & WORST Advice to Build 10x Faster with Claude"
+  href="https://www.youtube.com/watch?v=hsbr0IoFZJ8"
+  timestamp="16:34"
+/>
+
+A manual check plan should say what to open or run, what result to expect, and which failures to look for. Inspect that evidence yourself. A plausible plan and a confident completion message cannot establish that the output passed.
+
+Use this original prompt to design a trial. Replace the brackets with a task and a proposed change:
+
+```text
+I currently complete [recurring task] using [current process]. I am considering [one proposed change]. Help me compare them before changing my routine.
+
+Ask about missing requirements that could change the choice. Identify the required output, available inputs, and checks that establish whether the result is correct. Consider keeping the current tool or simplifying the process first.
+
+Propose a small comparison using the same starting inputs and completion checks. Record elapsed time, my correction and review time, visible cost, and setup or maintenance work separately. Explain what the trial can establish and what remains unknown.
+
+List the checks you can run and the evidence you will report. Give me a manual verification plan with steps and expected results for the parts I need to inspect. Stop after the trial plan; wait for my approval before making changes or spending money.
+```
+
+<Exercise>
+1. Choose one recurring job and one proposed change. Save a representative set of inputs and record the required output.
+2. Write completion checks and decide what amount of time, correction, and cost you can accept. Include a manual check for any result the agent cannot establish.
+3. Run your current process and the candidate on separate copies of the same inputs. Record the measures in section 01 and inspect each output yourself.
+4. Repeat with another representative input. Record whether the improvement holds and which failures recur. Keep setup work separate from each run's cost.
+5. Decide whether to keep, revise, or reject the change. Save the inputs, results, unresolved limitations, and reason for your decision so you can retest after the task or tool changes.
+</Exercise>
