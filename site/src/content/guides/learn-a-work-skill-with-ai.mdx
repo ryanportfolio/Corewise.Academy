@@ -1,22 +1,28 @@
 ---
 title: Learn a work skill with AI
-description: 'Choose a task you need to do, learn from checked sources, then test your understanding by doing the work and explaining your decisions.'
+description: 'Choose a task, give AI a specific tutoring job, and check what you can do without help. Use recurring mistakes to plan practice and spaced review.'
 track: practice
 level: broad
 number: 52
-minutes: 5
+minutes: 8
 tags: ['career', 'knowledge bases', 'verification']
 objectives:
   - Define a learning goal with an observable result and a stopping condition.
   - Check an AI explanation against the source it cites.
   - Complete a practice task and explain the decisions without reading the AI answer.
-  - Compare a proposed change with how the team works today.
+  - Choose a tutoring role for the gap your attempt reveals.
+  - Find a recurring misunderstanding and turn a checked correction into a review card.
+  - Compare a proposed change to a shared process with how the team works today.
 prerequisites: []
 sources:
   - url: https://www.youtube.com/watch?v=7DJk83sc5xg
     creator: Austin Marchese
     video: The Art of Becoming Self-Educated with Claude
     timestamps: ['1:17', '2:51', '3:36', '7:52', '10:27', '12:47', '14:23', '15:31', '17:08']
+  - url: https://www.youtube.com/watch?v=FSXHk4hMrY8
+    creator: Nick Saraev
+    video: How To Learn Hard Things Faster With AI
+    timestamps: ['1:14', '3:46', '6:06', '7:56', '10:12', '11:45', '13:28', '15:29', '15:43', '17:54', '18:47', '19:59', '22:10', '23:43', '24:20', '25:37', '27:07']
   - url: https://support.google.com/gemininotebook/answer/16179559?hl=en
     creator: Google
     video: Use chat in Gemini Notebook
@@ -25,15 +31,23 @@ sources:
     creator: Anthropic
     video: Introducing Claude for Education
     timestamps: []
+  - url: https://pubmed.ncbi.nlm.nih.gov/16507066/
+    creator: Henry L. Roediger III and Jeffrey D. Karpicke
+    video: 'Test-enhanced learning: taking memory tests improves long-term retention'
+    timestamps: []
+  - url: https://docs.ankiweb.net/background.html
+    creator: Anki
+    video: Background
+    timestamps: []
 selfCheck:
   - q: What makes a useful stopping condition for learning a work skill?
     a: 'A task you can complete and explain, with a result someone can check. Reading every suggested resource gives you no such test.'
   - q: What should you check when an AI tutor cites a source?
     a: 'Open the passage and check that it supports the claim and applies to your situation. A citation makes the answer easier to inspect; it does not prove the answer is correct.'
-  - q: You can repeat an explanation but struggle when the example changes. What next?
-    a: 'Name the decision you cannot explain, revisit the relevant source, and try another task that requires that decision. Keep the next learning goal focused on the gap.'
+  - q: The same error appears in several attempts. How should that change your practice?
+    a: 'Give the tutor the attempts and checked corrections. Ask it to propose a shared misunderstanding, point to evidence, and test the explanation with a new question. Practice that missing concept, make a checked review card, and repeat a changed task without help after a gap.'
 status: published
-lastUpdated: 2026-09-10
+lastUpdated: 2026-10-03
 ---
 
 import PullQuote from '../../components/PullQuote.astro';
@@ -45,12 +59,14 @@ examples, question your reasoning, and find gaps in an attempt. You still need t
 make the decisions that show you understand the work.
 </p>
 
-Austin Marchese's <a href="https://www.youtube.com/watch?v=7DJk83sc5xg">self-education
-video</a> organizes that work around six questions. The guide below adapts his
-sequence into a practice routine, with source checks and an unaided attempt added
-as tests. It makes no promise about how quickly you will become an expert.
+Austin Marchese's <a href="https://www.youtube.com/watch?v=7DJk83sc5xg">The Art of
+Becoming Self-Educated with Claude</a> starts with the task you need to do.
+Nick Saraev's <a href="https://www.youtube.com/watch?v=FSXHk4hMrY8">How
+To Learn Hard Things Faster With AI</a> adds ten tutoring roles and repeated
+practice. The original prompts below combine those ideas with source checks and
+unaided attempts.
 
-## <span class="sec-no">01</span>Choose the task and the depth
+## <span class="sec-no">01</span>Choose a task you can check
 
 Curiosity is enough reason to learn something. For a work skill, name the task
 that learning should make possible. Marchese starts with the problem holding up
@@ -72,6 +88,18 @@ For example, replace a goal of learning spreadsheets with producing a weekly
 sales total from an export, checking the total, and explaining how duplicate rows
 affect it. That gives you a stopping condition and a way to choose useful lessons.
 
+Have AI ask about your goal before it writes a curriculum. Then test what you
+already know with a small task. Use the result to put needed basics first in your
+plan, with something to attempt after each concept. Saraev's
+<a href="https://www.youtube.com/watch?v=FSXHk4hMrY8&t=476s">interviewer and mapmaker
+examples</a> use that sequence to turn a broad subject into a plan.
+
+```text
+I want to learn [skill] so I can [task] by [deadline]. Ask one question at a time about my goal, current knowledge, available study time, and the conditions in which I must perform. Wait for each answer.
+
+Then give me a small task to assess my starting point. After I attempt it, propose a plan that puts needed basics first. For each part, name a source to check, a task to attempt, and a result that would show I can move on. Base my starting level on the attempt and flag uncertain judgments.
+```
+
 ## <span class="sec-no">02</span>Give the tutor useful sources
 
 Supply your goal, what you already understand, and an example of the work. Ask
@@ -87,26 +115,55 @@ gives the model reference material; it does not train a new expert model.
 Marchese uses NotebookLM for this source collection. Google's current
 <a href="https://support.google.com/gemininotebook/answer/16179559?hl=en">help page,
 titled Use chat in Gemini Notebook</a>, documents source selection and citations
-that open the cited passage. It also describes optional capabilities that search
-the web. Ask for answers from your selected sources and inspect the citations
-before adopting a recommendation.
+that open the cited passage. Ask for answers from your selected sources and
+inspect the citations before adopting a recommendation.
 
 Open the passage supporting a key claim and check both its meaning and its fit
 to your task. For a larger collection, <a href="/guides/build-a-knowledge-base-your-team-can-ask/">Build a knowledge base your team can ask</a>
 covers retrieving relevant material.
 
-## <span class="sec-no">03</span>Attempt, explain, check
+Ask AI to find human explanations that match a demonstrated gap. Say what you can
+already do and where your attempt failed, then ask which resource addresses that
+missing step and why. Saraev recommends this
+<a href="https://www.youtube.com/watch?v=FSXHk4hMrY8&t=1460s">search for explanations
+at your level</a>. Open the suggested links and check their examples before using
+them; a generated resource list can contain invented titles or links.
 
-Make one small attempt before asking AI to complete the task. Then explain your
-decisions without reading its answer. Marchese suggests speaking the explanation
-aloud and having Claude ask follow-up questions. Typed explanations work for this
-exercise too.
+## <span class="sec-no">03</span>Choose the next tutoring job
+
+Choose the tutor's job from the problem in your latest attempt. Saraev names ten
+roles; these instructions keep each role tied to something you must do.
+
+| Role | Use it when | Ask AI to do |
+| --- | --- | --- |
+| Interviewer | Your goal is vague | Ask about the task, deadline, and performance conditions |
+| Mapmaker | You need a learning plan | Put needed basics first, with a task after each concept |
+| Explainer | One step blocks you | Explain that step or give a hint, then let you retry |
+| Socratic questioner | Your reasoning is uncertain | Ask why a decision works and what would change it |
+| Examiner | You need to check your level | Ask one question at a time, increasing difficulty |
+| Checker | You have work to inspect | Check intermediate steps and the result against a source |
+| Listener | You can explain the idea yourself | Compare your explanation with the source and name gaps |
+| Diagnostician | The same mistake returns | Propose a shared misunderstanding and a way to test it |
+| Sparring partner | You must perform under pressure | Play the other person with realistic constraints |
+| Clerk | Your own notes need organizing | Make an outline or cards while preserving uncertainties |
+
+Attempt a small task yourself, then explain your decisions before reading AI's
+feedback. If you get stuck, ask for help with that step.
+After receiving help, restart the task without hints. Saraev emphasizes that
+<a href="https://www.youtube.com/watch?v=FSXHk4hMrY8&t=705s">unaided restart</a>;
+follow it with a changed example to check whether you can apply the idea elsewhere.
+
+Recall practice can also strengthen memory. In
+<a href="https://pubmed.ncbi.nlm.nih.gov/16507066/">Roediger and Karpicke's study of
+prose passages</a>, prior recall tests improved delayed retention compared with
+restudying. That finding supports testing yourself after a gap. It does not
+establish how fast an AI tutor will teach a work skill.
 
 <PullQuote
   quote="The goal here is to identify any gaps in your knowledge."
   creator="Austin Marchese"
   video="The Art of Becoming Self-Educated with Claude"
-  href="https://www.youtube.com/watch?v=7DJk83sc5xg"
+  href="https://www.youtube.com/watch?v=7DJk83sc5xg&t=759s"
   timestamp="12:39"
 />
 
@@ -119,18 +176,87 @@ questioning style in an ordinary chat; it does not enable a product mode.
 My task: [what I need to do]
 Success check: [how I will check the result]
 Sources: [documents or excerpts]
-My attempt and explanation: [paste both]
+My attempt, intermediate steps, and explanation: [paste them]
 
-Ask one question about a decision in my attempt, then wait for my answer. Let me try before giving a correction. Tie factual corrections to a supplied source and flag anything the sources cannot settle. After we address the gaps, give me a changed example to attempt unaided.
+Ask one question about a decision in my attempt, then wait for my answer. Let me try before giving a correction. If I am stuck, give one hint about that step and let me retry. Check my intermediate steps as well as the result; keep the work mine. Tie factual corrections to a supplied source and flag anything the sources cannot settle.
+
+After we address the gap, have me restart without hints. Then give me a changed example, one question at a time. Increase difficulty when I can explain my answer. If I start guessing, name the missing concept and give me a smaller task that tests it.
 ```
 
 Check the result against the task's success condition as well as the tutor's
 feedback. In the spreadsheet example, calculate a small sample's total both with
-your formula and by hand, then compare them. The model's praise does not verify the total.
-For practice answering another person's questions aloud, see
-<a href="/guides/rehearse-the-interview-with-an-ai-coach/">Rehearse the interview with an AI coach</a>.
+your formula and by hand, then compare them. Treat the model's grade as feedback to
+check. If the tutor disputes your answer, ask it to identify the step and the source
+supporting its correction. Praise does not verify the total.
 
-## <span class="sec-no">04</span>Check how the work happens now
+## <span class="sec-no">04</span>Find the misunderstanding
+
+Keep your attempts and checked corrections. When the same error returns, ask AI
+to look for a shared misunderstanding across that evidence. A proposed cause is a
+guess to test with another task. Saraev's
+<a href="https://www.youtube.com/watch?v=FSXHk4hMrY8&t=1127s">diagnostician role</a>
+uses this approach to redirect study toward a missing concept.
+
+Supply the relevant attempts in the session. A tutor may lack access to earlier
+chats, and a remembered summary may omit the work that exposed the error.
+
+```text
+Here are my attempts, corrections checked against sources, and the source passages: [paste them].
+
+Identify a misunderstanding that could explain repeated errors. Point to the attempts that support your guess and any that contradict it. Ask one new question that would test your explanation, then wait. If there is too little evidence, say what is missing.
+```
+
+You can also compare your own spoken explanation, written summary, or sketch with
+the same source. Saraev describes
+<a href="https://www.youtube.com/watch?v=FSXHk4hMrY8&t=1074s">making these different
+versions himself</a>. Ask where each version misrepresents the source or leaves
+out an important connection. If the
+tool accepts only text, paste a speech transcript or describe the sketch. Have AI
+check your explanation before it supplies a replacement.
+
+## <span class="sec-no">05</span>Review mistakes over time
+
+Turn checked mistakes into questions to answer again later. Ask the clerk to
+organize your notes and draft cards, then inspect each answer against its source.
+Keep unresolved questions labeled as unresolved.
+
+```text
+Organize these notes without adding facts: [paste notes]. Keep my uncertainties visible.
+
+From the checked corrections, draft review cards. Each card needs one question, a short answer, and the source passage supporting it. Put uncertain answers in a separate list for me to check. Show the question before the answer during review and wait for my attempt.
+```
+
+Attempt the answer before revealing it. The
+<a href="https://docs.ankiweb.net/background.html">Anki manual</a> describes this
+recall method and scheduling reviews farther apart as recall becomes easier.
+Use a review app or a calendar to bring you back after a gap. A chat's proposed
+schedule still needs to be saved somewhere that will remind you.
+
+Check performance with another changed task as well as cards. Remembering what a
+formula means and using it correctly on an unfamiliar export are separate checks.
+
+## <span class="sec-no">06</span>Practice under real conditions
+
+Match practice to the setting where you must perform. For a live conversation,
+ask AI to play the other person, challenge vague answers, and give feedback after
+the round. Use your own timer when response time matters. For a full interview
+routine, see <a href="/guides/rehearse-the-interview-with-an-ai-coach/">Rehearse the
+interview with an AI coach</a>.
+
+For practical work, have AI generate realistic inputs while you produce the
+output. In the spreadsheet task, ask AI to present a synthetic export with
+duplicate rows and wait until you have calculated the total before showing its
+answer key. Check your total and its key against a hand calculation. Increase difficulty by changing the
+data or constraints after you can explain the result.
+
+Saraev also suggests
+<a href="https://www.youtube.com/watch?v=FSXHk4hMrY8&t=1579s">building practice
+apps</a>. If repeated setup is getting in the way, ask a coding agent for a small
+app that presents a task, waits for your attempt, and records errors. Check its
+tasks and answer key against your sources before trusting its scores. A
+simulation gives you practice; real work is the next check.
+
+## <span class="sec-no">07</span>Check the team's current process
 
 Before applying the lesson to a shared process, write down its current steps and
 ask the person who does the work to correct them. Marchese recommends a flowchart.
@@ -143,8 +269,10 @@ covers separating facts from assumptions.
 
 <Exercise>
 1. Choose one work task. Write its success check and the decisions you need to explain.
-2. Gather a relevant source and a worked example. Check one AI explanation against the original passage.
-3. Make a small attempt, then use the prompt above to question your explanation. Check the output yourself.
-4. Try the changed example without assistance. Record the first decision you cannot explain.
-5. Check the team's current process before proposing a change. Use the gap from your attempt as the next study topic.
+2. Gather a relevant source and a worked example. Use the interview-and-plan prompt to assess your starting point and choose the first task.
+3. Make an attempt, including your intermediate steps. Choose a tutoring role from the table and check its feedback against the source.
+4. After a question, hint, or explanation, restart without help. Then attempt a changed example and check the output yourself.
+5. Save errors and checked corrections. If an error repeats, use the diagnosis prompt and test its proposed cause with a new question.
+6. Make checked review cards. Save a later review in your calendar or review app, then attempt both the cards and another changed task without hints when that review is due.
+7. If you plan to change a shared process, check its current steps with the person who does the work. Record any remaining learning gap as your next study topic.
 </Exercise>
