@@ -1,0 +1,192 @@
+---
+title: Build an AI setup for one work task
+description: 'Choose one recurring task, give an existing agent your files and procedures, and check the result. Use Harness Firmware to keep the verified setup with your project.'
+track: agents
+level: practitioner
+number: 63
+minutes: 8
+tags: ['claude code', 'skills', 'knowledge bases', 'instruction files', 'verification']
+objectives:
+  - Choose a recurring task with source material and a result you can check.
+  - Distinguish the agent's built-in tools from the work-specific files and procedures you add.
+  - Test a document-answering workflow for supported answers, missing facts, conflicts, and source updates.
+  - Verify that an interface runs the intended procedure and records useful feedback.
+prerequisites:
+  - slug: set-up-claude-code-in-seven-steps
+    note: Have a coding agent installed and a project folder it can read.
+sources:
+  - url: https://www.youtube.com/watch?v=bIYWxYm5cOY
+    creator: Austin Marchese
+    video: Stop Prompting Claude. Start Harness Engineering.
+    timestamps: ['1:38', '2:21', '3:16', '4:22', '4:39', '7:05', '7:28', '9:14', '9:53', '10:22', '11:17', '12:29', '13:33', '14:11', '15:00', '15:50']
+  - url: https://code.claude.com/docs/en/how-claude-code-works
+    creator: Anthropic
+    video: How Claude Code works
+  - url: https://code.claude.com/docs/en/memory
+    creator: Anthropic
+    video: How Claude remembers your project
+  - url: https://code.claude.com/docs/en/skills
+    creator: Anthropic
+    video: Extend Claude with skills
+  - url: https://code.claude.com/docs/en/mcp
+    creator: Anthropic
+    video: Connect Claude Code to tools via MCP
+  - url: https://code.claude.com/docs/en/hooks
+    creator: Anthropic
+    video: Hooks reference
+  - url: https://code.claude.com/docs/en/headless
+    creator: Anthropic
+    video: Run Claude Code programmatically
+  - url: https://code.claude.com/docs/en/authentication
+    creator: Anthropic
+    video: Authentication
+  - url: https://harnessfirmware.com
+    creator: Ryan Allen
+    video: Harness Firmware
+  - url: https://github.com/ryanportfolio/Harness-Firmware
+    creator: Ryan Allen
+    video: Harness Firmware repository
+selfCheck:
+  - q: Your agent answers an onboarding question confidently, but the source files never mention that step. Did the workflow pass?
+    a: No. An answer must be supported by the approved files. Check each claim against its cited passage; when the files lack an answer, the agent should report the missing information.
+  - q: What does Harness Firmware supply for this task, and what must you add?
+    a: It supplies repository instructions, reusable workflows, project-memory conventions, and review procedures. You still need your source documents, an answer procedure, any required connections, and evidence that the complete task works.
+  - q: Does hosting the interface on your computer guarantee subscription billing?
+    a: No. The process that calls the model and its authentication determine billing. Check whether the app uses a supported signed-in Claude Code session, an API key, or another service before running it.
+status: published
+lastUpdated: 2026-10-09
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+
+<p class="lede">Build an AI setup around a job you already know how to judge. For client onboarding questions, give the agent your approved procedure, require supporting passages, and check what happens when a fact is missing. Keep the working files and corrections so the next session can use them.</p>
+
+Austin Marchese's [Stop Prompting Claude. Start Harness Engineering.](https://www.youtube.com/watch?v=bIYWxYm5cOY) describes extending an existing agent with your own knowledge, procedures, and interface. His internal-knowledge example provides a concrete starting task. Our [Harness Firmware](https://harnessfirmware.com) provides repository workflows and project memory for maintaining that setup; it is our implementation, separate from his demo.
+
+## <span class="sec-no">01</span>Extend the agent you have
+
+A **harness** is the software around a model that supplies tools, manages context, and runs actions. Anthropic's [Claude Code architecture](https://code.claude.com/docs/en/how-claude-code-works) describes a loop of gathering context, acting, and checking results. Claude Code already supplies that loop.
+
+Marchese calls the instructions, files, and procedures specific to your work a **domain harness**. You can add those to an existing agent. Rebuilding file access, tool execution, and session handling would give you more software to maintain before the work-specific task runs.
+
+<PullQuote
+  quote="the highest and best use of your time is extending what's already there"
+  creator="Austin Marchese"
+  video="Stop Prompting Claude. Start Harness Engineering."
+  href="https://www.youtube.com/watch?v=bIYWxYm5cOY&t=425s"
+  timestamp="7:05"
+/>
+
+Check the tools available in your actual session before choosing how to extend it. [Compare AI agents on your own work](/guides/compare-ai-agents-on-your-own-work/) separates missing capabilities from model errors.
+
+## <span class="sec-no">02</span>Choose one task you can judge
+
+Pick a recurring task where you have the inputs and can recognize a wrong result. Marchese's [domain-selection advice](https://www.youtube.com/watch?v=bIYWxYm5cOY&t=262s) starts with work you already understand. A personal setup can use your exact procedure and preferences because you can specify them.
+
+He distinguishes people who build models, use existing products, and customize them. Customize a tool when it repeatedly fails to do something you need. A standard tool may already handle the task well enough.
+
+Write down:
+
+- The question or request that starts the task.
+- The files or tools needed to complete it.
+- The required output and how you will check it.
+- The repeated correction you want to remove.
+
+For onboarding questions, the output is an answer supported by the current onboarding procedure. The correction might be removing steps the agent invented. [Choose AI changes worth your time](/guides/choose-ai-changes-worth-your-time/) covers comparing setup, review, and maintenance effort before keeping a custom tool.
+
+## <span class="sec-no">03</span>Give each part a purpose
+
+Marchese [lists eight parts](https://www.youtube.com/watch?v=bIYWxYm5cOY&t=448s). Use them as a checklist when a task needs them:
+
+| Part | Job in a document-answering setup |
+| --- | --- |
+| Rules | Require approved sources, supporting passages, and an explicit missing-answer response |
+| Skills | Package separate procedures for answering questions and refreshing documents |
+| Connections | Fetch approved documents from their source when local copies need updating |
+| Context | Supply the actual procedures and reference documents |
+| Hooks | Run a specific check when a named event occurs |
+| Subagents | Handle a separate task with its own inputs and completion check |
+| Interface | Let you ask, inspect sources, refresh files, and report a defect |
+| Feedback | Keep the failed question and correction so you can repair and rerun it |
+
+Claude Code documents [skills](https://code.claude.com/docs/en/skills), external connections through [MCP, the Model Context Protocol](https://code.claude.com/docs/en/mcp), and event scripts through [hooks](https://code.claude.com/docs/en/hooks). A folder of approved documents and an answer procedure may be enough for the first version. Add a connection when manual updates become a problem; give any hook or extra worker a specific job before adding it.
+
+[Set up an AI that knows your business](/guides/set-up-an-ai-that-knows-your-business/) covers organizing context and linked knowledge. [Write smaller Claude skills that work](/guides/write-smaller-claude-skills-that-work/) covers packaging a procedure without loading every instruction into every task.
+
+## <span class="sec-no">04</span>Check answers against the files
+
+Marchese's [knowledge example](https://www.youtube.com/watch?v=bIYWxYm5cOY&t=554s) separates `KB answer`, which answers from local context, from `KB sync`, which brings in source material. Keep that separation so a question does not silently change the documents used to answer it.
+
+Require a path and supporting passage for each answer. If the files disagree, show the conflict; if they lack the fact, say what is missing. Anthropic's [instruction-file documentation](https://code.claude.com/docs/en/memory) distinguishes written guidance from enforced controls. A source-only instruction can still be disobeyed, so inspect the evidence.
+
+Use a small set of questions with known outcomes:
+
+| Case | Passing behavior |
+| --- | --- |
+| Answer appears in an approved file | Answer matches the cited passage |
+| Files lack the answer | Agent reports the missing fact without inventing it |
+| Two files disagree | Agent identifies both passages and leaves the conflict visible |
+| An approved source changes | After refresh, the answer uses the new version and cites it |
+
+Keep the source path and retrieval date with refreshed documents. [Keep a growing knowledge base accurate](/guides/keep-a-growing-knowledge-base-accurate/) covers stale files, broken routes, and repairs after a failed search. [Score your agent on known good answers](/guides/score-your-agent-on-known-good-answers/) covers maintaining repeatable checks.
+
+Record feedback as the question, answer, cited files, defect, and accepted correction. A later run must use the repaired data or procedure and pass the same check. Saving feedback alone does not train the model's weights.
+
+## <span class="sec-no">05</span>Start with Harness Firmware
+
+Our [Harness Firmware website](https://harnessfirmware.com) links to the template, [project-memory structure](https://harnessfirmware.com/memory), and [skill catalogue](https://harnessfirmware.com/skills). The [repository](https://github.com/ryanportfolio/Harness-Firmware) contains the files you can inspect and adapt.
+
+**New project.** Use the full template. It includes the committed memory structure and separate Claude Code and Codex workflows.
+
+**Existing Claude Code repository.** The [quickstart](https://github.com/ryanportfolio/Harness-Firmware#quickstart) provides a skills-only plugin. That installation adds skills to the repository you already use.
+
+Keep your domain documents and answer procedure in your project. You still have to supply the knowledge and test the finished task.
+
+| Need | Harness Firmware procedure |
+| --- | --- |
+| Consult saved project facts | `recall` reads the relevant committed project notes |
+| Save a confirmed mistake | The pitfalls convention keeps a dated lesson the next session can find |
+| Repair a recurring workflow problem | `refine` turns evidence into a small change for review |
+| Check substantial work independently | Review skills use fresh reviewers or another vendor when the required tools are available |
+| Reuse a general improvement | After human review, `sync-starter` can carry a selected fix to the template |
+
+Claude Code and Codex get separate instruction files and skill entry points, while sharing committed project knowledge. Check the destination agent's tools and permissions when moving a procedure. [Every new repo starts with your lessons](/guides/firmware-not-folklore/) explains the repository structure; [Make skills improve after each run](/guides/make-skills-improve-after-each-run/) covers checking a repair before retaining it.
+
+## <span class="sec-no">06</span>Make the interface do the work
+
+Keep the existing chat or terminal while the answer procedure is still changing. Marchese [prefers a local web interface](https://www.youtube.com/watch?v=bIYWxYm5cOY&t=805s) for quick edits and visible controls. Build one when it makes your task easier to run or check.
+
+His demo has Send, Sync, and feedback controls. Verify what each control does:
+
+- **Send** calls the answer procedure and displays the answer with its sources.
+- **Sync** runs the approved refresh procedure and reports which files changed or failed.
+- **Feedback** saves the failed case and correction for later review.
+
+A page that displays a plausible answer without calling the agent has not passed. Inspect the run record and test the same question through the interface and directly in the agent. Claude Code's [programmatic interface](https://code.claude.com/docs/en/headless) supports noninteractive calls and structured output; the local app needs a working process that invokes it.
+
+Check authentication and usage before relying on Marchese's subscription-cost claim. Claude Code supports [subscription and API authentication](https://code.claude.com/docs/en/authentication), and some programmatic modes use different credentials. Hosting the page locally does not determine how model calls are billed.
+
+Before giving the tool to a team, define who can read each source, refresh it, and accept a correction. [Build a knowledge base your team can ask](/guides/build-a-knowledge-base-your-team-can-ask/) covers the larger system. Marchese leaves team deployment outside this demo.
+
+His closing ["Karpathy curve" discussion](https://www.youtube.com/watch?v=bIYWxYm5cOY&t=900s) puts future value in choosing data, breaking down tasks, and adapting work around models. Treat that as his interpretation. For this setup, you can check the narrower claim: whether your files and procedures reduce unsupported answers and repeated corrections.
+
+Use this original prompt to plan your first version:
+
+```text
+I want an AI setup for [one recurring task] using [approved source folder]. Ask for any missing requirement that would change the plan. Inspect the existing agent's tools and instructions first.
+
+Define the required output and evidence for correctness. Propose the smallest addition to the existing agent that would meet those requirements. For document questions, separate answering from source refresh, require file paths and supporting passages, report missing facts, and expose conflicting sources.
+
+List checks for a supported answer, an absent answer, conflicting files, and an approved source update. Explain which parts I must inspect myself. Record failed cases for review; preserve permission limits.
+
+Keep the first version in the existing chat or terminal. Add a web interface only if it helps the task, and specify how each control will invoke the real procedure and report failures. State the execution and billing method. Return the plan for my review before building or connecting services.
+```
+
+<Exercise>
+1. Choose a recurring question task and collect approved sample documents. Write the required answer and its supporting passage for one question.
+2. For this exercise, create a separate sample project using the full template linked at [harnessfirmware.com](https://harnessfirmware.com). If you already have a Firmware project, use sample documents there. Use the prompt above to plan the answer procedure, review the plan, then build the approved version in your agent.
+3. Run the four cases in section 04 and inspect every answer against the files. Save failures and repair one observed cause. Repeat the cases after the change.
+4. If you add an interface, verify the Send, Sync, and feedback behavior against the actual run record. Check the authentication and billing method.
+5. Compare the accepted results and correction effort with your previous process. Keep the setup if it helps; save the checked procedure and project lessons for the next session.
+</Exercise>
