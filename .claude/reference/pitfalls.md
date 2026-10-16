@@ -93,3 +93,8 @@ video page's Show transcript control returned all segments, 0:00-15:21 of 15:27.
 When the editor supplies this new evidence, try one fresh page before asking them
 to copy the transcript. This recovered the text without another caption download;
 it does not establish why the earlier panel failed or that the HTTP 429 cleared.
+
+For `Z8lf5oWKfj0` (2026-10-16), source rechecking hit `No transcript is available`
+from browser export twice. After dismissing a promotion and opening Show transcript,
+the panel supplied the needed 20:55-21:47 passage. Export failure still did not mean
+captions were unavailable; do not infer that the overlay caused the export failure.

@@ -10,6 +10,10 @@ writer's intent can hide awkward wording, unnecessary explanation, and a title
 that promises something different from the body. Run after the author's Writing
 sweep and before the calling workflow's final mechanical checks.
 
+Understandable prose can still be stiff, vague, or padded. Publication requires
+natural phrasing as well as recoverable meaning. Use the fixed
+[phrasing examples](references/phrasing.md) to establish that standard.
+
 The calling agent coordinates and revises; the reviewer is a separate read-only
 subagent. Keep a compact record at `.tmp/editorial-review/<slug>/review.md` (or in
 the existing task notes): audience, brief, draft hashes, reviewer ID, findings,
@@ -25,8 +29,9 @@ use an exposed Agent/Task tool with a new context and no inherited conversation.
 Do not use a fork containing the author's reasoning or a reviewer who wrote the draft.
 
 Give the reviewer only the draft path, intended audience, house voice at
-`.claude/reference/voice.md`, and the reviewer brief below. No previous criticisms,
-desired fixes, source notes, or explanations of what the author meant. Ask it to read
+`.claude/reference/voice.md`, the fixed phrasing examples, and the reviewer brief below.
+Do not add draft-specific criticisms, desired fixes, source notes, or explanations
+of what the author meant. Ask it to read
 only those inputs, remain read-only, and not delegate. Record the draft's SHA-256
 and reviewer identity with its returned review in the task's notes or review artifact.
 This record documents a tool call; a written claim of independence cannot replace it.
@@ -48,26 +53,51 @@ Before proposing edits, state what a reader can recover from the draft alone:
 its main point, intended next action, and essential conditions or caveats. Do not
 supply missing meaning from assumptions about the author.
 
-Review these three levels:
+Make two reads of the full draft:
 
-| Level | Questions |
-|---|---|
-| Natural phrasing | Would someone addressing this audience actually put these words together? Check headings and compressed phrases even when every word is familiar and the meaning is clear. Flag vague referents, idioms carrying a technical claim, and phrases requiring private context. |
-| Sentence usefulness | Does each sentence help the reader understand, decide, or act? Identify metacommentary that only describes the article, redundant explanations, and unsupported claims. Keep attribution and caveats that establish scope or evidence. |
-| Whole-piece fit | Does the title accurately promise what the body delivers? Check audience, opening, section order, scope drift, repetition, and missing steps. Recommend a narrower title or scope where appropriate; do not invent material to fill a gap. |
+1. **Meaning and fit.** Check whether the title promises what the body delivers,
+   the audience can recover the point and next action, and the sections add useful
+   information. Flag scope drift, repetition, missing steps, unsupported claims,
+   and unclear references. Preserve attribution and consequential caveats.
+2. **Sentences only.** Read the fixed phrasing examples, then examine every authored
+   sentence and heading for natural wording. Ask what thing, action, or result it
+   names; whether someone addressing this audience would say it that way; and
+   whether a plainer version or deletion would keep the meaning. Flag abstract
+   instructions the reader must translate, awkward verb/noun combinations,
+   metacommentary that merely praises or restates advice, and empty recaps. Do not
+   let sound facts, good structure, or a recoverable meaning excuse weak phrasing.
+   Check whether generic advice gives a usable choice or criterion; simpler
+   synonyms alone do not repair an instruction that leaves the reader to supply
+   the advice. Apply the same test to your proposed replacement.
 
-Return the restatement, then concrete findings with exact quoted text or locations,
-reader impact, and a proposed edit or question. Distinguish requirements from optional
-preferences. Report broader issues once, with the passages supporting them. Also
-identify anything deliberately retained because precision or voice would suffer.
-No quota: a clean draft can receive no findings. Editorial judgment does not verify
-source facts. Do not rewrite quotations, code, identifiers, or technical caveats.
+A useful general statement need not contain an example. Do not replace defined
+technical terms with vague words, turn every sentence into a command, or flatten
+the writer's voice. Preserve the meaning of caveats and fix their authored wording
+when needed. Exact quotations, code, and identifiers stay unchanged. Editorial
+judgment does not verify source facts; leave source, schema,
+link, and mechanical verification to the calling workflow.
+
+Return the restatement and concrete findings with exact quotations or locations,
+reader impact, and a direct edit, deletion, or question. Stiff, vague, or redundant
+prose that fails the house voice is a **Requirement**, even when its meaning can
+be inferred. Reserve **Suggestion** for equally clear stylistic alternatives.
+Report a recurring issue once with supporting passages, then check its full extent.
+
+Before a PASS, quote the passages you judged weakest and explain why each needs
+an edit or is acceptable. Select them for editorial weakness, not ease of defense;
+one or two may be enough. A generic assurance about clarity is insufficient.
+No findings quota: a clean draft may pass with its weakest passages deliberately
+retained for stated reasons. More findings do not establish a better review.
 
 ## 3. Author revision
 
 Evaluate each finding against the source evidence and the writing rules. Accept,
 adapt, or reject it with a short reason in the review record. Check whether an accepted
 finding recurs elsewhere; repair the pattern, not just the cited sentence.
+
+The author owns the final judgment. Inspect the weakest passages yourself and
+record whether the proposed edits improve them. A reviewer PASS, agreement between
+models, or successful mechanical checks cannot replace that judgment.
 
 Use the smallest edit that improves the reader's experience. Preserve facts, caveats,
 distinctive voice, and valid terms of art. Natural phrasing is not a ban on particular

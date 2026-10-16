@@ -35,6 +35,7 @@ This is the Codex boundary for repositories using the AI Operating System starte
 ## Shared Assets
 
 - For repository deliverables, use `.agents/skills/writing/SKILL.md` as the Writing skill. It applies the shared house voice and copy rules for site prose.
+- Use `clarity-pass` for guide editorial review. Understandable but stiff, vague, or padded prose still needs revision. Before accepting PASS, inspect the quoted weakest passages and the reasons for changing or retaining them; mechanical checks cannot establish writing quality.
 
 - `.claude/skills/` remains Claude's library. Codex uses standalone native skills under `.agents/skills/`, registered in `.agents/skill-modes.json` as `native` or `disabled` (Claude-only). Read them directly and resolve resources from their Codex skill directory. `ingest` and `writing` are hand-authored Codex versions; sync never rewrites a native skill. Treat `$ARGUMENTS` as invocation input.
 - Read relevant `.claude/reference/` material before unfamiliar work and `.agents/CODEX-SKILL-COMPATIBILITY.md` before adapted, gated, or dangerous skills.
