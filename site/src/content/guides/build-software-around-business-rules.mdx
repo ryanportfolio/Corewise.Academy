@@ -1,16 +1,16 @@
 ---
 title: Build software around business rules
-description: 'Turn business requirements into shared terms, behavior checks, and code your agent can keep changing. Use a local prototype to expose missing decisions.'
+description: 'Define what the app should do, agree on the names used in the business, and check the agent''s work with sample data.'
 track: building
 level: practitioner
 number: 64
 minutes: 8
 tags: ['planning', 'writing prompts', 'verification', 'teams', 'model choice']
 objectives:
-  - Identify unanswered business questions before asking an agent to implement a feature.
-  - Define a shared business term and use it consistently in requirements, code, and the interface.
-  - Distinguish an agreed specification from evidence that the implementation works and remains easy to change.
-  - Compare an agent's results using observed behavior, correction effort, and the checks it could run.
+  - Resolve unanswered business questions before asking an agent to build a feature.
+  - Write a glossary for the people using and building the app.
+  - Check whether the app follows the specification and still works after a requirement changes.
+  - Compare model settings using the same task and checks, including time spent correcting mistakes.
 prerequisites:
   - slug: brief-the-model
     note: State the task, relevant context, and the reasons behind important constraints.
@@ -29,12 +29,12 @@ sources:
     creator: Anthropic
     video: Model configuration
 selfCheck:
-  - q: Sales and fulfillment use the word order for different events. What should you settle before the agent builds an order dashboard?
-    a: Define which event the dashboard counts, who owns that definition, and how to distinguish the other event. Use those agreed terms in the requirements, interface, and code. Separate business areas may need different definitions.
-  - q: Does Pocock's failed spec-driven workflow establish that you should stop writing specifications?
-    a: No. He describes one sustained attempt in his own video editor. A specification records intent; you still need to inspect the implementation, run behavior checks, and keep the code easy to change as requirements develop.
+  - q: Sales counts orders when customers place them; fulfillment counts orders when they ship. What must you decide before building a dashboard?
+    a: Which count the dashboard should show. Name it clearly, confirm the definition with the person responsible for that work, and record how each department counts orders.
+  - q: Does Pocock's experience mean you should stop writing specifications?
+    a: No. He describes his own experience building a video editor. Keep the specification, but also check the running app and review the code when requirements change.
   - q: An agent says the app works but could not start a required service or use the browser. What remains unverified?
-    a: The behavior that depends on that service and the actual interface. Record the missing access, then run those checks in a working environment before accepting the claim. Raising model effort does not supply the missing evidence.
+    a: Any feature that depends on the unavailable service, plus what the user sees and can do in the interface. Record which checks were blocked and run them once the service and browser are available. A higher effort setting does not perform those checks.
 status: published
 lastUpdated: 2026-10-16
 ---
@@ -42,51 +42,47 @@ lastUpdated: 2026-10-16
 import PullQuote from '../../components/PullQuote.astro';
 import Exercise from '../../components/Exercise.astro';
 
-<p class="lede">An order dashboard can look finished while counting the wrong event. Settle what the business means by an order, give the agent a way to check that rule, and inspect what happens when the rule changes. Each step checks a different part of the software you are asking it to build.</p>
+<p class="lede">A dashboard can run without errors and still count draft orders as accepted orders. Tell the coding agent which orders to count, then check the total against sample records.</p>
 
-In Nate Herk's interview [Matt Pocock: What to Learn Instead of AI Automation in 2027](https://www.youtube.com/watch?v=Z8lf5oWKfj0), developer and educator Matt Pocock connects clear requirements with the code and tools an agent works with. His account of a failed spec-driven workflow gives a useful limit: a detailed description of the desired software can coexist with code that gets harder to change.
+Developer Matt Pocock found that detailed specifications were not enough to keep his video editor easy to change. In Nate Herk's interview [Matt Pocock: What to Learn Instead of AI Automation in 2027](https://www.youtube.com/watch?v=Z8lf5oWKfj0), he describes improving the code and giving the agent ways to test it.
 
-Choose an initial task with a result you can inspect and mistakes you can correct. Pocock [recommends ordinary, measurable work](https://www.youtube.com/watch?v=Z8lf5oWKfj0&t=2413s), including drafts of routine replies. For a software trial, a local dashboard using sample records gives you behavior to observe without changing real customer records.
+## <span class="sec-no">01</span>Answer the business questions
 
-## <span class="sec-no">01</span>Ask for the missing decisions
+Ask the agent to interview you before it builds the feature. Tell it what you want the app to do and why, as described in [Brief the model like a brilliant new hire](/guides/brief-the-model/).
 
-Tell the agent which outcome matters and why. [Brief the model like a brilliant new hire](/guides/brief-the-model/) covers that starting point. For an unfamiliar feature, ask the agent to interview you about decisions you have left unstated.
+Pocock [recommends follow-up questions to find missing requirements](https://www.youtube.com/watch?v=Z8lf5oWKfj0&t=1021s). Anthropic also [recommends an interview before larger features](https://code.claude.com/docs/en/best-practices#let-claude-interview-you). Ask the person responsible for the work about decisions you cannot make yourself.
 
-Pocock's [Grill Me discussion](https://www.youtube.com/watch?v=Z8lf5oWKfj0&t=1021s) describes repeated questions that expose missing requirements. Anthropic also [recommends an interview before larger features](https://code.claude.com/docs/en/best-practices#let-claude-interview-you). A useful answer may be that a decision needs another person's input.
+For the order dashboard, answer:
 
-For the order dashboard, settle:
+- Which orders should the total include?
+- Who may see customer details?
+- What should the user see when a record is incomplete?
+- Will this run locally or on a server?
+- Which sample orders will we use, and what total should they produce?
 
-| Question | Decision to record |
-| --- | --- |
-| When does an order count? | The event that makes it an accepted order |
-| Who may see the record? | The roles allowed to read customer details |
-| What happens when a record is incomplete? | The visible error or review step |
-| Where will this run? | A local trial or a specified deployment environment |
-| What would prove it works? | Sample records with expected dashboard results |
+You will [discover more requirements while building](https://www.youtube.com/watch?v=Z8lf5oWKfj0&t=1107s). Write down unanswered questions and update the plan as you resolve them. [Power start sessions with /enhance-prompt](/guides/power-start-sessions-with-enhance-prompt/) covers having the agent read back the request before starting work.
 
-Questions can expose omissions; [building can expose more](https://www.youtube.com/watch?v=Z8lf5oWKfj0&t=1107s). Keep unresolved decisions visible and revise the requirements when a trial reveals one. [Power start sessions with /enhance-prompt](/guides/power-start-sessions-with-enhance-prompt/) covers reading back the request before execution.
-
-Use the agent to explain an unfamiliar term, then inspect the cited documentation. Pocock [uses teaching sessions to prepare for reading primary sources](https://www.youtube.com/watch?v=Z8lf5oWKfj0&t=457s). [Learn a work skill with AI](/guides/learn-a-work-skill-with-ai/) covers checking whether you can apply the explanation yourself.
+If the agent uses an unfamiliar term, ask it to explain the term and cite the documentation. Read that source yourself. Pocock [uses teaching sessions to prepare for reading primary sources](https://www.youtube.com/watch?v=Z8lf5oWKfj0&t=457s); [Learn a work skill with AI](/guides/learn-a-work-skill-with-ai/) covers checking what you learned.
 
 ## <span class="sec-no">02</span>Use the business's own terms
 
-Give a business concept the same name in the conversation, requirements, interface, and code. Pocock [borrows this practice from domain-driven design](https://www.youtube.com/watch?v=Z8lf5oWKfj0&t=1439s), an approach to designing software around the business it serves.
+If the people handling orders call an order "accepted," use that name in the app and code. Switching between "accepted," "approved," and "confirmed" makes it hard to tell whether those words describe the same state.
 
-The practice is called **ubiquitous language**, meaning a vocabulary agreed by the people who know the work and the people building the software. Microsoft's [domain-analysis guidance](https://learn.microsoft.com/en-us/azure/architecture/microservices/model/domain-analysis) limits that agreement to a defined part of the business. The same word can mean something different in another department. You can use this practice in a small application without adopting the microservices architecture discussed in that documentation.
+Pocock [borrows this practice from domain-driven design](https://www.youtube.com/watch?v=Z8lf5oWKfj0&t=1439s), where it is called **ubiquitous language**. The people using and building the software agree on what its terms mean. Microsoft's [domain-analysis guidance](https://learn.microsoft.com/en-us/azure/architecture/microservices/model/domain-analysis) notes that the same word may mean something different in another part of the business. Using a shared vocabulary does not require the microservices architecture discussed in that documentation.
 
 A glossary for the dashboard might be:
 
-| Term | Agreed meaning | Boundary case |
+| Term | Agreed meaning | How the dashboard treats it |
 | --- | --- | --- |
 | Draft order | A saved request awaiting acceptance | Appears in the review queue, excluded from accepted-order totals |
 | Accepted order | A request the business has agreed to fulfill | Counted once when accepted, even if payment is pending |
-| Paid order | An accepted order whose payment has cleared | A separate payment status, rather than a replacement definition of accepted |
+| Paid order | An accepted order whose payment has cleared | Included in accepted-order totals; payment shown as a separate status |
 
-Ask the owner of the process to correct those definitions before using them. Then ask the agent to find places where the code or interface uses the terms differently. If departments use the same word differently, record which meaning applies in each department and agree how to translate between them.
+Confirm the glossary with the person responsible for orders. Then ask the agent to find any names in the code or interface that conflict with those definitions. Record separate definitions for departments that use the same word differently, and agree which definition the dashboard uses for each department's records.
 
 ## <span class="sec-no">03</span>Keep the code easy to change
 
-Pocock [describes trying spec-driven development for months](https://www.youtube.com/watch?v=Z8lf5oWKfj0&t=1654s) in his custom video editor. In his account, he kept and refined detailed specifications while agents produced code from them. He saw the code and subsequent results getting worse. He changed his focus to the implementation and how easily it could be modified.
+Pocock [tried spec-driven development for months](https://www.youtube.com/watch?v=Z8lf5oWKfj0&t=1654s) in his custom video editor. He kept updating detailed specifications and asking agents to produce code from them, but reports that the code got worse. He then focused on making the code easier to change.
 
 <PullQuote
   quote="a good code base is a code base that's easy to make changes in."
@@ -96,57 +92,57 @@ Pocock [describes trying spec-driven development for months](https://www.youtube
   timestamp="28:54"
 />
 
-That is one developer's experience with one sustained workflow. Anthropic's interview guidance still recommends writing a specification. Keep a record of agreed behavior, then check the implementation as it changes.
+Pocock is describing his own workflow. Anthropic's interview guidance still recommends writing a specification. Keep the agreed requirements, and check that the app follows them after each change.
 
-For the dashboard, ask the agent to show where the acceptance rule lives and which views depend on it. When the business changes that rule, have it explain the affected code and check both the changed behavior and nearby behavior that must stay the same. A small rule change requiring edits in many unrelated places is a reason to inspect the design.
+For the dashboard, ask the agent to show the code that decides whether an order counts as accepted. When that rule changes, check the new count and rerun the existing checks for drafts and paid orders. If a small rule change requires edits in many unrelated files, ask the agent to explain why each file must change.
 
-[Improve your Claude Code workflow](/guides/improve-your-claude-code-workflow/) covers checking current code against stale project notes. Update the relevant requirement, glossary, and behavior checks together when an accepted decision changes.
+[Improve your Claude Code workflow](/guides/improve-your-claude-code-workflow/) covers checking code against stale project notes. When a business rule changes, update its definition and the checks that use it alongside the code.
 
 ## <span class="sec-no">04</span>Let the agent run the app
 
-Give the agent access to the application and the evidence needed to judge its work. Pocock [reports better results after making his video editor runnable by the agent](https://www.youtube.com/watch?v=Z8lf5oWKfj0&t=1991s). Dependencies, including a local recording application, had made browser interaction difficult. Once he resolved that setup, the agent could click through the editor and capture screenshots.
+Make sure the agent can start the app and use the interface. Pocock [reports better results after making his video editor runnable by the agent](https://www.youtube.com/watch?v=Z8lf5oWKfj0&t=1991s). Dependencies, including a local recording application, had made browser access difficult. Once he resolved those problems, the agent could click through the editor and take screenshots.
 
-Anthropic's [verification guidance](https://code.claude.com/docs/en/best-practices#give-claude-a-way-to-verify-its-work) names runnable tests, builds, and screenshot comparisons. Choose evidence that covers the particular requirement:
+Anthropic's [verification guidance](https://code.claude.com/docs/en/best-practices#give-claude-a-way-to-verify-its-work) recommends tests, builds, and screenshot comparisons. Match the check to what the app should do:
 
 | Requirement | Evidence to inspect |
 | --- | --- |
 | Drafts stay out of accepted-order totals | Known draft and accepted records, with the expected count |
 | An invalid record gets a useful error | The invalid input and the message shown in the running interface |
-| A rule change preserves other behavior | Checks for the new rule and the unaffected cases |
-| The trial ran in the intended environment | The services used and any dependency or access failure |
+| A rule change leaves other features working | Checks for the new rule and existing checks for the other order states |
+| The agent can run the app locally | Required services started; any blocked checks recorded |
 
-[Give your coding agent a finish line](/guides/give-your-coding-agent-a-finish-line/) covers tying those checks to completion. Record checks the agent could not run.
+Decide which checks must pass before accepting the work, as described in [Give your coding agent a finish line](/guides/give-your-coding-agent-a-finish-line/). Record any check the agent could not run.
 
-Pocock [uses Opus 5.5 at medium effort](https://www.youtube.com/watch?v=Z8lf5oWKfj0&t=1925s) and reports faster replies and lower token use in his setup. He connects that preference to an environment with useful checks. This establishes his preference, without measuring the best setting for your task.
+Pocock [uses Opus 5.5 at medium effort](https://www.youtube.com/watch?v=Z8lf5oWKfj0&t=1925s). He reports faster replies and lower token use in his setup, where the agent has checks it can run. His results do not establish which setting will work best for your task.
 
-Anthropic's [effort documentation](https://code.claude.com/docs/en/model-config#choose-an-effort-level) describes a tradeoff between token use and capability; effort scales differ by model. Compare settings on the same task and checks, including your correction time. [Recheck your model choices each release](/guides/recheck-your-model-choices-each-release/) covers that comparison. A higher effort setting still leaves missing browser evidence unverified.
+Anthropic's [effort documentation](https://code.claude.com/docs/en/model-config#choose-an-effort-level) describes a tradeoff between token use and capability. Each model has its own effort scale, so the same level name can behave differently. Compare settings on the same task, run the same checks, and include the time you spend correcting mistakes. [Recheck your model choices each release](/guides/recheck-your-model-choices-each-release/) covers that comparison.
 
-## <span class="sec-no">05</span>Show you understand the work
+## <span class="sec-no">05</span>Show the business rule working
 
-A prototype should demonstrate a requirement the stakeholder recognizes. Pocock [suggests building something that reflects the client's business](https://www.youtube.com/watch?v=Z8lf5oWKfj0&t=1268s), while acknowledging that his existing audience limits what he can claim about competing for client contracts. Treat the prototype as evidence of understanding; production readiness needs its own checks.
+Build a prototype around a rule the client cares about. Pocock [suggests building something that reflects the client's business](https://www.youtube.com/watch?v=Z8lf5oWKfj0&t=1268s). He already had a large audience when he freelanced and says he has not competed for contracts. His experience does not establish how to win contracts against other bidders.
 
-For this dashboard, show how the agreed order definitions change the totals. Report the behavior implemented, the checks completed, and what remains unresolved. That gives the stakeholder something specific to correct.
+For the dashboard, show the client which orders appear in the total and which are left out. Explain what you checked and which questions still need answers. Before customers use the app, check access permissions and rerun the checks with the required services in the environment where it will run.
 
-## <span class="sec-no">06</span>Run a small trial
+## <span class="sec-no">06</span>Try one feature locally
 
-Learn how to interrupt the agent and inspect its changes before broadening the task. [Delegate to your agent in stages](/guides/delegate-to-your-agent-in-stages/) covers adding tools and unattended work after checked results.
+Build the first version with sample orders before connecting it to customer data. Pocock [recommends starting with ordinary, measurable work](https://www.youtube.com/watch?v=Z8lf5oWKfj0&t=2413s). Watch the agent work, inspect its changes, and learn how to stop it before allowing larger tasks or unattended runs. [Delegate to your agent in stages](/guides/delegate-to-your-agent-in-stages/) covers expanding that access.
 
 Use this original prompt for the first trial:
 
 ```text
-I want a local prototype of [one business task] using sample data. Before editing, inspect the existing project and ask about missing decisions that would change the design. Include the user's goal, key business terms, access rules, failure cases, and how we will check the result. Wait for my answers where needed.
+I want a local prototype of [one business task] using sample data. Read the existing code before editing. Ask me what the user needs to do, what the business terms mean, who may use the feature, and what should happen when something goes wrong. Wait for any answers you need before building.
 
-Write a short glossary with definitions and boundary cases. Show unresolved decisions separately. Propose one behavior we can implement and inspect, with sample inputs and expected outputs. Return the plan for review.
+Write a short glossary. List unanswered questions separately. Propose one feature, with sample inputs and expected results. Return the plan for review.
 
-After I approve implementation, build that version. Show where the business rule lives, run the relevant checks, and demonstrate the behavior in the running app. Report any check you could not run. When I change a requirement, update the affected code, glossary, and checks, then verify the changed and unchanged cases.
+After I approve the plan, build that version and demonstrate it in the running app. Show the code that implements the business rule. Run the agreed checks and report any you could not run. When I change a requirement, update the affected code, glossary, and checks, then check the new result and rerun the existing checks.
 
-Keep this trial local, preserve unrelated files, and use sample records. Stop with the prototype and evidence ready for my review. Ask before connecting accounts, changing real records, or deploying.
+Keep this trial local, preserve unrelated files, and use sample records. Stop with the prototype and check results ready for my review. Ask before connecting accounts, changing real records, or deploying.
 ```
 
 <Exercise>
-1. Choose a small application or a feature you want to build. Name one business rule and who can confirm it. For the dashboard example, decide when an order becomes accepted.
-2. Use the prompt above. Answer the interview questions and correct the glossary. Specify one accepted case, one excluded case, and their expected results before approving the local implementation.
-3. Inspect the result in the running app. Compare the displayed behavior with your expected results and the agent's check output. Record any missing access or unverified claim.
-4. Change one requirement. Ask the agent to identify the affected code, implement the change, and rerun the changed and unaffected cases. Review whether the explanation and results agree.
-5. Save the accepted definitions, checks, and remaining decisions with the project. Record corrections the next run should avoid.
+1. Use the prompt above to plan a local order dashboard. Decide when an order becomes accepted and who can confirm that definition.
+2. Correct the glossary and supply three sample orders: one draft, one accepted but unpaid, and one paid. The accepted-order total should be two. Approve the plan once the agent has the same answer.
+3. Open the running app and check that it counts those orders correctly. Read the agent's check results and note any checks it could not run.
+4. Ask for a paid-order total instead. Check that the label changes, the total becomes one, and the draft remains excluded. Review the code changes with the agent.
+5. Save the definitions, checks, and unanswered questions with the project.
 </Exercise>

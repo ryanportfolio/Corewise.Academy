@@ -93,3 +93,17 @@ video page's Show transcript control returned all segments, 0:00-15:21 of 15:27.
 When the editor supplies this new evidence, try one fresh page before asking them
 to copy the transcript. This recovered the text without another caption download;
 it does not establish why the earlier panel failed or that the HTTP 429 cleared.
+
+For `Z8lf5oWKfj0` (2026-10-16), source rechecking hit `No transcript is available`
+from browser export twice. After dismissing a promotion and opening Show transcript,
+the panel supplied the needed 20:55-21:47 passage. Export failure still did not mean
+captions were unavailable; do not infer that the overlay caused the export failure.
+
+## Byte-preserved evaluation artifacts (2026-10-16)
+
+An audit archive with SHA-256 hashes must preserve the original CRLF bytes across
+Windows and Linux checkouts. A narrow `.gitattributes` rule with `-text` prevents
+normalization, but Git then reports CR characters as trailing whitespace during
+`git diff --check`. Pair that rule with `whitespace=cr-at-eol`; it preserves the
+hashes while retaining checks for other trailing whitespace. Verify the staged
+blob hashes against the archive manifest, not just the files on disk.

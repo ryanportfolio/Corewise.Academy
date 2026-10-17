@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "status": "frozen",
+  "audience": "Practical users of coding agents",
+  "counts": {
+    "rejected": 6,
+    "retained": 4
+  },
+  "scoring_principles": [
+    "Evaluate the excerpt within its stated context, not as an isolated sentence.",
+    "Reject grammatical prose when its advice requires avoidable mental translation, merely names a category, repeats an already clear instruction, or lacks the selection criterion the context calls for.",
+    "Do not require every sentence to be an imperative or a concrete example. Accurate definitions, caveats, and properly qualified source claims can stand.",
+    "A correction must preserve accurate caveats, definitions, source scope, technical behavior, and quoted source wording where protected.",
+    "Accept different clear rewrites when they fix the specified defect without adding unsupported guarantees or changing the user's intended task."
+  ],
+  "cases": [
+    {
+      "id": "H01",
+      "expected_class": "rejected",
+      "rationale": "Both sentences name the idea of checking in proportion to risk but give no usable way to choose checks. The second sentence restates the abstraction through nature, consequences, and considerations.",
+      "acceptable_correction_criteria": [
+        "Give a usable relationship between a kind of edit and an appropriate check, such as checking links after a link edit, reproducing a bug after a bug fix, or checking both allowed and denied paths after a permission change.",
+        "Preserve the principle that the amount and kind of checking depend on the change and its consequences.",
+        "Do not imply every edit requires the same full test suite or that an example list covers every case."
+      ]
+    },
+    {
+      "id": "H02",
+      "expected_class": "retained",
+      "rationale": "The ordinary instructions identify the failing case, a nearby working case, the failure trigger, and the follow-up action. They already give the reader enough to act.",
+      "acceptable_correction_criteria": [
+        "Retain without a substantive rewrite request.",
+        "Optional minor wording edits must preserve checking both empty and nonempty filters and reporting failing steps before broadening the work."
+      ]
+    },
+    {
+      "id": "H03",
+      "expected_class": "rejected",
+      "rationale": "The advice sounds reasonable but areas that may need improvement and remaining concerns supply no review target. The follow-up is circular because it asks the user to address whatever they have identified without helping them identify it.",
+      "acceptable_correction_criteria": [
+        "Identify what to compare or exercise, such as the requested behavior and acceptance criteria, the changed user path, or the diff for unrelated edits.",
+        "Tell the user what evidence makes a useful follow-up, such as expected versus actual behavior and reproduction steps.",
+        "Do not require exhaustive expert code review or introduce a guarantee that these checks prove correctness."
+      ]
+    },
+    {
+      "id": "H04",
+      "expected_class": "rejected",
+      "rationale": "The first sentence is already a clear instruction. The second adds no reason, exception, or mechanism beyond restating that a file-and-change list shows the changes.",
+      "acceptable_correction_criteria": [
+        "Keep the request for changed files and a one-sentence explanation for each.",
+        "Delete the redundant second sentence, or replace it only with genuinely useful next-step advice if the review calls for it.",
+        "Do not rewrite the good first sentence solely to make the paragraph sound more emphatic."
+      ]
+    },
+    {
+      "id": "H05",
+      "expected_class": "retained",
+      "rationale": "The technical term is accurately defined in terms of intended effect, then tied to a concrete retry mechanism. The retention caveat prevents an overbroad promise. The definition need not be replaced just because it is conceptual.",
+      "acceptable_correction_criteria": [
+        "Retain without a substantive rewrite request.",
+        "Preserve the distinction between intended effect and identical responses, the endpoint-specific instruction to reuse the same key, and the key-retention caveat.",
+        "Do not claim all API requests are idempotent or that a key prevents duplicates forever."
+      ]
+    },
+    {
+      "id": "H06",
+      "expected_class": "rejected",
+      "rationale": "Completion state can be established without reliance on broad qualitative interpretation is an indirect way of asking the user to describe what done looks like. The exploratory-work caveat is useful and must survive the rewrite.",
+      "acceptable_correction_criteria": [
+        "Say directly that the task should describe what the agent should deliver and how the user will decide it is done.",
+        "Give a short useful example or criterion if needed, such as a named bug no longer reproducing or an exploratory report answering specified questions.",
+        "Preserve that exploratory work may not have a single pass-or-fail result and can instead name the expected deliverable and questions to address."
+      ]
+    },
+    {
+      "id": "H07",
+      "expected_class": "retained",
+      "rationale": "The claim matches the supplied source, names its denominator and measured outcome, and states the limits relevant to applying it elsewhere. The caveats are useful, not padding or a failure to provide an imperative.",
+      "acceptable_correction_criteria": [
+        "Retain without a substantive rewrite request.",
+        "Preserve 14 of 20, passing repository checks as the outcome, and the limits on generalization and bug detection.",
+        "Do not turn the observation into a general success rate or a claim that passing checks proves a fix correct."
+      ]
+    },
+    {
+      "id": "H08",
+      "expected_class": "rejected",
+      "rationale": "Suitable boundaries, manageable complexity, and confidence give a new user no task-selection rule. Comfort can change without the user learning what kinds of work are easy to verify.",
+      "acceptable_correction_criteria": [
+        "Provide observable first-task criteria, such as a single known bug with reproduction steps, a small change in a familiar area, and a result the reader can check.",
+        "Explain a useful reason to expand scope, such as being able to review and verify the agent's smaller changes, rather than comfort alone.",
+        "Do not prescribe one universal task size, require a bug fix when another verifiable small task fits, or promise every bounded task is easy."
+      ]
+    },
+    {
+      "id": "H09",
+      "expected_class": "retained",
+      "rationale": "The vague phrase is protected source evidence inside a clear criticism, not the writer's own advice. The criticism identifies the defect and supplies a concrete replacement. Flagging the quotation itself as prose to rewrite would erase the evidence being discussed.",
+      "protected_exact_quote": "Exercise appropriate judgment when reviewing agent output.",
+      "acceptable_correction_criteria": [
+        "Retain without a substantive rewrite request.",
+        "Preserve the exact source quotation and the fact that the paragraph criticizes it.",
+        "Do not count the quoted wording as a defect in the author's own instructions or demand that the quotation be silently improved."
+      ]
+    },
+    {
+      "id": "H10",
+      "expected_class": "rejected",
+      "rationale": "The opening uncertainty is warranted. The second sentence uses ownership, evidence, and remedial direction to restate the need for a suitable response without helping the reader distinguish missing information from an implementation error.",
+      "acceptable_correction_criteria": [
+        "Keep the caveat that the cause may not be clear immediately.",
+        "Give a usable next-step distinction, such as supplying a missing requirement when the task was misunderstood, or supplying a failing check or reproduction steps when the implementation is wrong.",
+        "If evidence is insufficient, allow asking the agent to inspect or explain the failure before prescribing a fix.",
+        "Do not imply all failures fall neatly into two categories or that the user can always identify the cause from the first response."
+      ]
+    }
+  ]
+}

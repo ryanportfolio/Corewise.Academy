@@ -1,2 +1,8 @@
 # Shell scripts must stay LF. CRLF breaks bash on Windows (git-bash) checkouts.
 *.sh text eol=lf
+
+# Preserve exact evaluation artifacts so their recorded SHA-256 hashes survive checkout.
+/.claude/reference/evals/clarity-pass/** -text whitespace=cr-at-eol
+# These raw reports retain their original Markdown line break and final blank line.
+/.claude/reference/evals/clarity-pass/baseline-report.md whitespace=cr-at-eol,-blank-at-eol
+/.claude/reference/evals/clarity-pass/round2/report-X.md whitespace=cr-at-eol,-blank-at-eof

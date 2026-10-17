@@ -1,0 +1,196 @@
+{
+  "schema_version": 1,
+  "grading_basis": "Unchanged expectations.json and heldout-key.json; report identities remain X and Y. A catch requires required severity, valid rationale, and a repair or targeted author question satisfying the frozen criterion without meaning loss.",
+  "inputs_read": ["expectations.json", "cases.md", "guide.mdx", "round2/heldout.md", "round2/heldout-key.json", "round2/report-X.md", "round2/report-Y.md"],
+  "thresholds": {
+    "original": "Both known and at least 5/6 unseen valid required catches; all four controls retained.",
+    "heldout": "At least 5/6 valid required catches; at most one disputed required clean edit and no semantic damage, quote change, caveat loss, or technical-term removal.",
+    "guide": "G1-G5 all valid required catches."
+  },
+  "reports": {
+    "X": {
+      "original": {
+        "required_findings": 4,
+        "valid_required_catches": 4,
+        "known_catches": 0,
+        "known_total": 2,
+        "unseen_catches": 4,
+        "unseen_total": 6,
+        "optional_notes": 3,
+        "optional_notes_with_valid_repairs": 2,
+        "controls_retained": 4,
+        "control_regressions": 0,
+        "passes": false,
+        "decisions": [
+          {"id":"P01","expected":"required defect","reported":"Suggestion","valid_required_catch":false,"repair_valid":true,"reason":"Deleting the empty recap satisfies the key, but optional severity does not count as a required catch."},
+          {"id":"P02","expected":"required defect","reported":"retained","valid_required_catch":false,"repair_valid":null,"reason":"Calls the inspectable/correctable phrase an adequate selection rule; misses the empty advice."},
+          {"id":"P03","expected":"required defect","reported":"Requirement","valid_required_catch":true,"repair_valid":true,"reason":"Identifies the abstract heading and replaces it with the specific counted-draft question."},
+          {"id":"P04","expected":"required defect","reported":"Suggestion","valid_required_catch":false,"repair_valid":false,"reason":"Outcome/evaluate/errors/repair becomes result/check/mistakes/fix. It still supplies no task, selection criterion, or author question."},
+          {"id":"P05","expected":"required defect","reported":"Suggestion","valid_required_catch":false,"repair_valid":true,"reason":"Deletion fixes the redundant metacommentary, but severity remains optional."},
+          {"id":"P06","expected":"required defect","reported":"Requirement","valid_required_catch":true,"repair_valid":true,"reason":"Asks which result to show and what the reader should check, rather than substituting synonyms."},
+          {"id":"P07","expected":"required defect","reported":"Requirement","valid_required_catch":true,"repair_valid":true,"reason":"Directly asks the user to record why they chose it and preserves later reconsideration."},
+          {"id":"P08","expected":"required defect","reported":"Requirement","valid_required_catch":true,"repair_valid":true,"reason":"The rewrite alone remains general, but the accompanying mandatory prepublication instruction requires identifying the condition and behavior to preserve. That targeted author request satisfies the missing-example criterion."},
+          {"id":"P09","expected":"control","reported":"retained","control_regression":false,"reason":"Preserves three states and expected total of two."},
+          {"id":"P10","expected":"control","reported":"retained","control_regression":false,"reason":"Preserves idempotency key, explanation, and should qualifier."},
+          {"id":"P11","expected":"control","reported":"retained","control_regression":false,"reason":"Preserves attribution and limit on generalization."},
+          {"id":"P12","expected":"control","reported":"retained","control_regression":false,"reason":"Preserves the exact quotation and its critical framing."}
+        ]
+      },
+      "heldout": {
+        "required_findings": 5,
+        "valid_required_catches": 5,
+        "required_defects_total": 6,
+        "optional_notes": 1,
+        "optional_notes_with_valid_repairs": 1,
+        "controls_retained": 4,
+        "disputed_required_clean_edits": 0,
+        "control_regressions": 0,
+        "passes": true,
+        "decisions": [
+          {"id":"H01","expected":"required defect","reported":"Requirement","valid_required_catch":true,"repair_valid":true,"reason":"Keeps change/consequence coverage and requires the author to name checks for identified edit types. The question is targeted enough to supply the missing edit-to-check relationship; the plain opening alone would not suffice."},
+          {"id":"H02","expected":"control","reported":"retained","control_regression":false,"reason":"Keeps both filter cases, failing steps, and correction before other changes."},
+          {"id":"H03","expected":"required defect","reported":"Requirement","valid_required_catch":true,"repair_valid":true,"reason":"Compares the result with the task's expected outcome and uses the difference as follow-up evidence."},
+          {"id":"H04","expected":"required defect","reported":"Suggestion","valid_required_catch":false,"repair_valid":true,"reason":"Correct deletion of an empty recap, but optional severity earns no required catch."},
+          {"id":"H05","expected":"control","reported":"retained","control_regression":false,"reason":"Explicitly preserves the definition, intended effect, endpoint-specific key reuse, and retention caveat."},
+          {"id":"H06","expected":"required defect","reported":"Requirement","valid_required_catch":true,"repair_valid":true,"reason":"Names deliverable/completion agreement directly and retains exploration's lack of a single pass-or-fail outcome."},
+          {"id":"H07","expected":"control","reported":"retained","control_regression":false,"reason":"Preserves counts, source scope, and limits of passing checks."},
+          {"id":"H08","expected":"required defect","reported":"Requirement","valid_required_catch":true,"repair_valid":true,"reason":"Provides task examples and a checkable result, then bases expansion on ability to inspect and correct changes rather than confidence alone."},
+          {"id":"H09","expected":"control","reported":"retained","control_regression":false,"reason":"Preserves exact source wording within criticism and retains the concrete replacement."},
+          {"id":"H10","expected":"required defect","reported":"Requirement","valid_required_catch":true,"repair_valid":true,"reason":"Keeps uncertainty, asks for failure evidence and missing information, and distinguishes clarifying requirements from correcting implementation."}
+        ]
+      },
+      "guide": {
+        "numbered_findings": 3,
+        "required_findings": 1,
+        "valid_required_findings_total": 1,
+        "valid_required_target_catches": 0,
+        "target_total": 5,
+        "extra_valid_required_findings": 1,
+        "optional_notes": 2,
+        "passes": false,
+        "decisions": [
+          {"id":"G1","target":"Dashboard lede / empty recap","reported":"Suggestion G01","valid_required_catch":false,"repair_valid":true,"reason":"Deleting the recap is valid, but report deliberately keeps it optional."},
+          {"id":"G2","target":"Choose an initial task with a result you can inspect and mistakes you can correct","reported":"no finding","valid_required_catch":false,"repair_valid":null,"reason":"Does not flag the generic first-task sentence or direct the reader to the supplied dashboard task."},
+          {"id":"G3","target":"Questions can expose omissions; building can expose more","reported":"explicitly retained","valid_required_catch":false,"repair_valid":null,"reason":"Accepts the recap because adjacent content supplies context; does not repair the authored abstraction."},
+          {"id":"G4","target":"Give a business concept the same name...","reported":"no finding","valid_required_catch":false,"repair_valid":null,"reason":"Protecting ubiquitous language and its caveat does not address this separate abstract opening instruction."},
+          {"id":"G5","target":"A higher effort setting still leaves missing browser evidence unverified","reported":"retained within optional shortening proposal G03","valid_required_catch":false,"repair_valid":false,"reason":"Recommends keeping the exact target sentence instead of naming the interface behavior the agent could not check."}
+        ],
+        "extra_findings": [
+          {"report_id":"G02","severity":"Requirement","valid":true,"reason":"The preference/setup replacement removes awkward measurement wording and preserves the source-specific limit."},
+          {"report_id":"G03","severity":"Suggestion","valid_as_target_repair":false,"reason":"A scope preference to shorten model-choice discussion is optional and specifically retains the defective G5 wording."}
+        ]
+      },
+      "process_evidence": {
+        "dedicated_sentence_read":"not demonstrated",
+        "dedicated_sentence_read_reason":"Per-excerpt recovery tables and several exact-sentence findings show close reading, but the full-guide report supplies no documented separate sentence-level pass or equivalent broad sentence audit. A heading or general claim that the guide is coherent would not establish that pass.",
+        "reasoned_weakest_passage_assessment":false,
+        "weakest_passage_reason":"Many retained items have reasons, but no weakest-passage choice or comparison is made. The optional scope suggestion does not assess the least clear sentence or paragraph against stronger candidates.",
+        "private_workflow_verifiable":false
+      },
+      "invalid_fixes":["P04 synonym-only repair", "G5 retained in optional model-discussion proposal"],
+      "semantic_damage":[],
+      "quote_changes":[],
+      "caveat_loss":[],
+      "technical_term_removal":[],
+      "overall_pass":false
+    },
+    "Y": {
+      "original": {
+        "required_findings": 8,
+        "valid_required_catches": 7,
+        "known_catches": 2,
+        "known_total": 2,
+        "unseen_catches": 5,
+        "unseen_total": 6,
+        "optional_notes": 0,
+        "controls_retained": 4,
+        "control_regressions": 0,
+        "passes": true,
+        "decisions": [
+          {"id":"P01","expected":"required defect","reported":"Requirement","valid_required_catch":true,"repair_valid":true,"reason":"Required deletion of the empty recap satisfies the key without inventing source claims."},
+          {"id":"P02","expected":"required defect","reported":"Requirement","valid_required_catch":true,"repair_valid":true,"reason":"Asks the author to name the initial task and explicitly retains local/sample-data limits."},
+          {"id":"P03","expected":"required defect","reported":"Requirement","valid_required_catch":true,"repair_valid":true,"reason":"Replaces the abstract heading with the specific draft-order problem."},
+          {"id":"P04","expected":"required defect","reported":"Requirement","valid_required_catch":true,"repair_valid":true,"reason":"Requires a suitable named first feature and an observable completion result."},
+          {"id":"P05","expected":"required defect","reported":"Requirement","valid_required_catch":true,"repair_valid":true,"reason":"Deletes the redundant second sentence and keeps the calculation request."},
+          {"id":"P06","expected":"required defect","reported":"Requirement","valid_required_catch":true,"repair_valid":true,"reason":"Asks which output to show and how to demonstrate it, requiring an actual display instruction."},
+          {"id":"P07","expected":"required defect","reported":"Requirement","valid_required_catch":true,"repair_valid":true,"reason":"Directly records the reason for a choice for later reconsideration."},
+          {"id":"P08","expected":"required defect","reported":"Requirement","valid_required_catch":false,"repair_valid":false,"reason":"The generic regression-check rewrite improves readability but neither names a rule/feature nor asks for the missing example. The frozen key explicitly requires one of those, rather than only a general paraphrase."},
+          {"id":"P09","expected":"control","reported":"retained","control_regression":false,"reason":"Preserves states and expected count."},
+          {"id":"P10","expected":"control","reported":"retained","control_regression":false,"reason":"Retains the technical term and its order-based explanation."},
+          {"id":"P11","expected":"control","reported":"retained","control_regression":false,"reason":"Preserves attribution and generalization limit."},
+          {"id":"P12","expected":"control","reported":"retained","control_regression":false,"reason":"Preserves exact quotation and critical framing."}
+        ]
+      },
+      "heldout": {
+        "required_findings": 6,
+        "valid_required_catches": 5,
+        "required_defects_total": 6,
+        "optional_notes": 0,
+        "controls_retained": 4,
+        "disputed_required_clean_edits": 0,
+        "control_regressions": 0,
+        "passes": true,
+        "decisions": [
+          {"id":"H01","expected":"required defect","reported":"Requirement","valid_required_catch":true,"repair_valid":true,"reason":"Maps bug, calculation, and interface edits to usable checks; includes a nearby regression case rather than assuming one universal check."},
+          {"id":"H02","expected":"control","reported":"retained","control_regression":false,"reason":"Keeps nearby case and failure/correction rule."},
+          {"id":"H03","expected":"required defect","reported":"Requirement","valid_required_catch":true,"repair_valid":true,"reason":"Names acceptance comparison and steps/expected/actual evidence, with an author question if the expected result is undefined."},
+          {"id":"H04","expected":"required defect","reported":"Requirement","valid_required_catch":true,"repair_valid":true,"reason":"Deletes only the empty recap and preserves the useful file-list instruction."},
+          {"id":"H05","expected":"control","reported":"retained","control_regression":false,"reason":"Keeps technical definition, intended effect, key reuse, and retention warning."},
+          {"id":"H06","expected":"required defect","reported":"Requirement","valid_required_catch":true,"repair_valid":true,"reason":"Names deliverable and completion decision, with questions for an exploratory report and no single-right-answer assumption."},
+          {"id":"H07","expected":"control","reported":"retained","control_regression":false,"reason":"Preserves measured outcome, denominator, source scope, and checks' detection limit."},
+          {"id":"H08","expected":"required defect","reported":"Requirement","valid_required_catch":false,"repair_valid":false,"reason":"The concrete examples fix first-task selection, but replacing the whole passage removes the progression criterion instead of grounding expansion in reviewed results. Leave payments/access permissions for later supplies no reason or condition for later. The mandatory single-screen limit is also narrower than the evidence warrants.","borderline":true},
+          {"id":"H09","expected":"control","reported":"retained","control_regression":false,"reason":"Preserves exact quotation inside criticism and explains why the acceptance-criteria instruction is useful."},
+          {"id":"H10","expected":"required defect","reported":"Requirement","valid_required_catch":true,"repair_valid":true,"reason":"Retains initial uncertainty, gathers failure evidence, and distinguishes missing decisions from code failure without an exhaustive taxonomy claim."}
+        ]
+      },
+      "guide": {
+        "numbered_findings": 7,
+        "required_findings": 7,
+        "valid_required_findings_total": 7,
+        "valid_required_target_catches": 5,
+        "target_total": 5,
+        "extra_valid_required_findings": 2,
+        "optional_notes": 0,
+        "passes": true,
+        "decisions": [
+          {"id":"G1","target":"Dashboard lede / empty recap","reported":"Requirement 1","valid_required_catch":true,"repair_valid":true,"reason":"Deletes the empty recap while retaining the dashboard failure and actions."},
+          {"id":"G2","target":"Choose an initial task with a result you can inspect and mistakes you can correct","reported":"Requirement 3","valid_required_catch":true,"repair_valid":true,"reason":"Deletes generic task-selection wording and turns the supplied local/sample-data dashboard example into a direct instruction."},
+          {"id":"G3","target":"Questions can expose omissions; building can expose more","reported":"Requirement 4","valid_required_catch":true,"repair_valid":true,"reason":"Deletes authored abstract recap, retaining the action to revise requirements after trial discoveries and moving the existing source link onto that action."},
+          {"id":"G4","target":"Give a business concept the same name...","reported":"Requirement 5","valid_required_catch":true,"repair_valid":true,"reason":"Uses the supplied accepted-order example to connect the business's spoken term to requirements, app, and code; explicitly keeps the technical definition and departmental caveat."},
+          {"id":"G5","target":"A higher effort setting still leaves missing browser evidence unverified","reported":"Requirement 7","valid_required_catch":true,"repair_valid":true,"reason":"Replaces unverified missing evidence with interface behavior that could not be checked in a browser and retains the instruction to run missing checks in a working environment."}
+        ],
+        "extra_findings": [
+          {"report_id":"Requirement 2","severity":"Requirement","valid":true,"reason":"Replaces editorial scaffolding with the documented experience of detailed specifications alongside code getting harder to change; source-specific limits remain later in the guide."},
+          {"report_id":"Requirement 6","severity":"Requirement","valid":true,"reason":"Replaces awkward preference/measurement phrasing without changing the setup-specific limit."},
+          {"report_id":"Requirement 7 self-check sub-edit","severity":"Requirement","valid":false,"disputed_required_clean_edit":true,"semantic_damage":false,"reason":"Raising model effort does not supply the missing evidence is already clear and accurate in the self-check's context. The report does not justify treating it as the same defect as missing evidence being unverified. Its replacement preserves the limitation, so this is an unnecessary clean edit rather than semantic damage. It is not a frozen P/H control and does not invalidate the separate valid G5 repair."}
+        ]
+      },
+      "process_evidence": {
+        "dedicated_sentence_read":"substantive output evidence; private pass not independently verifiable",
+        "dedicated_sentence_read_reason":"The report quotes and repairs separate sentences in the lede, attribution, first-task paragraph, sections 01, 02, and 04; evaluates specific retained sentences in sections 03 and 05; and addresses metadata, self-checks, prompt, and exercise. This is more than a heading or a catch list and supports a sentence-level audit, though no report can prove its internal reading sequence.",
+        "reasoned_weakest_passage_assessment":true,
+        "weakest_passage_reason":"Identifies the least specific evidence-table entries and explains why their generality is useful in context; separately tests a broad design warning and production-readiness caveat. It makes reasoned judgments about plausible weak candidates instead of relying on the weakest-passages heading.",
+        "private_workflow_verifiable":false
+      },
+      "invalid_fixes":["P08 general paraphrase lacks required named example or author question", "H08 omits evidence-based progression criterion and imposes a single-screen restriction"],
+      "unnecessary_clean_edits":["Full-guide Requirement 7 self-check sub-edit"],
+      "semantic_damage":[],
+      "quote_changes":[],
+      "caveat_loss":[],
+      "technical_term_removal":[],
+      "overall_pass":true
+    }
+  },
+  "uncertainties": [
+    "Y/H08 is the closest scoring call. Its concrete first-task examples are useful, but the frozen key also requires a useful basis for expanding scope. Conservatively scored invalid because that meaning is dropped. Scoring it valid would raise Y heldout from 5/6 to 6/6 without changing acceptance.",
+    "X/H01 earns credit for the targeted author question and requirement to name edit-specific checks, not for its generic replacement opening alone. Removing that query would make the repair insufficient.",
+    "A documented private dedicated reading pass cannot be verified from outputs alone. Y supplies broad substantive sentence-level and weakest-candidate evidence; X does not demonstrate the dedicated full-guide pass or weakest-passage assessment."
+  ],
+  "comparison": {
+    "original_required_catches":{"X":4,"Y":7},
+    "heldout_required_catches":{"X":5,"Y":5},
+    "guide_target_required_catches":{"X":0,"Y":5},
+    "controls_regressed":{"X":0,"Y":0},
+    "conclusion":"Y meets the stated content thresholds, with one conservative heldout miss and one unnecessary but meaning-preserving guide sub-edit. X passes heldout only; it fails original known/unseen thresholds and all five required guide targets. No report versions inferred."
+  }
+}
