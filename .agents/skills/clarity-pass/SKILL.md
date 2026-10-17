@@ -36,6 +36,10 @@ only those inputs, remain read-only, and not delegate. Record the draft's SHA-25
 and reviewer identity with its returned review in the task's notes or review artifact.
 This record documents a tool call; a written claim of independence cannot replace it.
 
+If the draft supplied a calibration example, record the overlap and have the author
+inspect those passages. Agreement with their supplied replacements is not independent
+confirmation of those edits; do not present it as such.
+
 Save the audience and reviewer brief before dispatch and send it unchanged. Build
 it from section 2 and the house voice, without diagnoses from the author. Once the
 review starts, leave its draft unchanged until the reviewer returns; revise a new
@@ -69,6 +73,8 @@ Make two reads of the full draft:
    Check whether generic advice gives a usable choice or criterion; simpler
    synonyms alone do not repair an instruction that leaves the reader to supply
    the advice. Apply the same test to your proposed replacement.
+   When the context lacks the example or criterion, ask the author rather than
+   inventing material to fill the gap.
 
 A useful general statement need not contain an example. Do not replace defined
 technical terms with vague words, turn every sentence into a command, or flatten

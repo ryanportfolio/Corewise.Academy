@@ -50,7 +50,7 @@ Developer Matt Pocock found that detailed specifications were not enough to keep
 
 Ask the agent to interview you before it builds the feature. Tell it what you want the app to do and why, as described in [Brief the model like a brilliant new hire](/guides/brief-the-model/).
 
-Pocock [uses follow-up questions to find requirements you forgot to mention](https://www.youtube.com/watch?v=Z8lf5oWKfj0&t=1021s). Anthropic also [recommends an interview before larger features](https://code.claude.com/docs/en/best-practices#let-claude-interview-you). Ask the person responsible for the work about decisions you cannot make yourself.
+Pocock [recommends follow-up questions to find missing requirements](https://www.youtube.com/watch?v=Z8lf5oWKfj0&t=1021s). Anthropic also [recommends an interview before larger features](https://code.claude.com/docs/en/best-practices#let-claude-interview-you). Ask the person responsible for the work about decisions you cannot make yourself.
 
 For the order dashboard, answer:
 
@@ -78,7 +78,7 @@ A glossary for the dashboard might be:
 | Accepted order | A request the business has agreed to fulfill | Counted once when accepted, even if payment is pending |
 | Paid order | An accepted order whose payment has cleared | Included in accepted-order totals; payment shown as a separate status |
 
-Confirm the glossary with the person responsible for orders. Then ask the agent to find any names in the code or interface that conflict with those definitions. Record separate definitions for departments that use the same word differently.
+Confirm the glossary with the person responsible for orders. Then ask the agent to find any names in the code or interface that conflict with those definitions. Record separate definitions for departments that use the same word differently, and agree which definition the dashboard uses for each department's records.
 
 ## <span class="sec-no">03</span>Keep the code easy to change
 
@@ -115,11 +115,11 @@ Decide which checks must pass before accepting the work, as described in [Give y
 
 Pocock [uses Opus 5.5 at medium effort](https://www.youtube.com/watch?v=Z8lf5oWKfj0&t=1925s). He reports faster replies and lower token use in his setup, where the agent has checks it can run. His results do not establish which setting will work best for your task.
 
-Anthropic's [effort documentation](https://code.claude.com/docs/en/model-config#choose-an-effort-level) describes a tradeoff between token use and capability. Available effort levels differ by model. Compare settings on the same task, run the same checks, and include the time you spend correcting mistakes. [Recheck your model choices each release](/guides/recheck-your-model-choices-each-release/) covers that comparison.
+Anthropic's [effort documentation](https://code.claude.com/docs/en/model-config#choose-an-effort-level) describes a tradeoff between token use and capability. Each model has its own effort scale, so the same level name can behave differently. Compare settings on the same task, run the same checks, and include the time you spend correcting mistakes. [Recheck your model choices each release](/guides/recheck-your-model-choices-each-release/) covers that comparison.
 
 ## <span class="sec-no">05</span>Show the business rule working
 
-Build a prototype around a rule the client cares about. Pocock [suggests building something that reflects the client's business](https://www.youtube.com/watch?v=Z8lf5oWKfj0&t=1268s). He already had a large audience when he freelanced and says he has not competed for contracts.
+Build a prototype around a rule the client cares about. Pocock [suggests building something that reflects the client's business](https://www.youtube.com/watch?v=Z8lf5oWKfj0&t=1268s). He already had a large audience when he freelanced and says he has not competed for contracts. His experience does not establish how to win contracts against other bidders.
 
 For the dashboard, show the client which orders appear in the total and which are left out. Explain what you checked and which questions still need answers. Before customers use the app, check access permissions and rerun the checks with the required services in the environment where it will run.
 

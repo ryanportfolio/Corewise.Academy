@@ -1,0 +1,60 @@
+{
+  "hash_algorithm": "SHA-256 over original artifact bytes",
+  "baseline": {
+    "skill": "baseline/SKILL.md",
+    "skill_sha256": "5558f146ebc5bd8c9ff983593bbf400466f3446b54663241f1270c7a2f0c49c8"
+  },
+  "failed_candidate": {
+    "skill": "candidate-v1/SKILL.md",
+    "calibration": "candidate-v1/references/phrasing.md",
+    "skill_sha256": "f150814ac95dfb97b77c378ccb37cda2035c85aeb61096bfb6de60d63707bb50",
+    "calibration_sha256": "7ff39300d6e29a607f732c0fd181fa3a4ece52d8df7bb7b1cef8f32da893586a"
+  },
+  "tested_candidate": {
+    "skill": "tested-candidate/SKILL.md",
+    "calibration": "tested-candidate/references/phrasing.md",
+    "skill_sha256": "eb92261eaaaa2adddbf2abdccd444b7487847b7390410ff3ef1b1c1030922d15",
+    "calibration_sha256": "2ccea5624fd3486c0bc68ba87727913db74124b0297075b99c8fca5aff370a4e"
+  },
+  "publication_changes": {
+    "paired_comparison_rerun": false,
+    "changes": [
+      "Disclose calibration overlap and author inspection",
+      "Ask the author when needed context is missing"
+    ],
+    "validation": "Bounded scenario check passed: coordinator records overlap and author inspection, missing-context reader asks for criteria without inventing an example. This is guard behavior, not an editorial PASS for the incomplete fixture. Static contract/resource validation is separate; later revisions do not inherit measured rates.",
+    "guard_report": "publication-guards.md",
+    "guard_fixture": "missing-context.md",
+    "published_skills": {
+      "codex": "5ac003889a5e7ea1ac9bd2ef972267e71b8229187c922968f6de253678d676f5",
+      "claude": "bfa6b6a4ea8eb0f05ec5d3f875bef2a4d093fd264f9c4992a3f67c15292b4d18"
+    }
+  },
+  "frozen_snapshots_verified": true,
+  "guide_source": {
+    "commit": "768460e6b2b0692ac1f4a2475db849ec217166fb",
+    "path": "site/src/content/guides/build-software-around-business-rules.mdx"
+  },
+  "artifacts": {
+    "baseline/SKILL.md": "5558f146ebc5bd8c9ff983593bbf400466f3446b54663241f1270c7a2f0c49c8",
+    "baseline-report.md": "1fbe55155b39c15d149f9a2faf645f33e8375b8646beb948a0bb6e277954fd99",
+    "benchmark.json": "e22b00bccb88610a54698b9b715ffaa4a77f48634235e2c689b16b633e18891c",
+    "candidate-report.md": "7f8626a9d73356183975836f71b0de019d27700009184da43e48d5a4e34668bd",
+    "candidate-v1/references/phrasing.md": "7ff39300d6e29a607f732c0fd181fa3a4ece52d8df7bb7b1cef8f32da893586a",
+    "candidate-v1/SKILL.md": "f150814ac95dfb97b77c378ccb37cda2035c85aeb61096bfb6de60d63707bb50",
+    "cases.md": "800f3e6d7fd61cdc2c1744fe65b9101c7a33c23da81a444b9452197575a38fc6",
+    "evaluation.md": "85b6bd05c9b8cdb33545d22843884224b1585c9ca1af1d9eb4ff3017c2d548f6",
+    "expectations.json": "009cf7a49985dff9286d3306a735197d4871c628ba920f4ef7946f292156a356",
+    "guide.mdx": "84aa481f092b0d191f8b1f7612e1fc6a453c129f1bf037daddd2700d0530118b",
+    "missing-context.md": "9f187e82d5aa8f00a09be9c1569a562239512843b55d20810093d89d17ab6734",
+    "publication-guards.md": "e0cbb5c70c40cb2db16eb49897501c6aa7ec3edd1e9e1284c19dd9ce71e217f1",
+    "round2/grades.json": "601261e166f39dc7b7ac099082321973a3784540f4efe64d696a68df6d108b54",
+    "round2/grading.md": "c1c1667c976180f6a2627179855cb254425872663dd48de509fa183f29bfaf7f",
+    "round2/heldout-key.json": "cf0173754c98a9900e349790b462f649260ff06f89881998f1cfaad616c75be3",
+    "round2/heldout.md": "c69cd4a161fcd4d767f2cbfb58e484708b062fddd64ecede4a3b003923089df6",
+    "round2/report-X.md": "46e2fcd98dbce3f32334427b5d65a4f5993536348a3d9bee916ff974d71ef154",
+    "round2/report-Y.md": "36d8b87a9d4f4aa8d854781a38e1f19dcf112b04d925f0b2f4efd97cec51cd16",
+    "tested-candidate/references/phrasing.md": "2ccea5624fd3486c0bc68ba87727913db74124b0297075b99c8fca5aff370a4e",
+    "tested-candidate/SKILL.md": "eb92261eaaaa2adddbf2abdccd444b7487847b7390410ff3ef1b1c1030922d15"
+  }
+}
