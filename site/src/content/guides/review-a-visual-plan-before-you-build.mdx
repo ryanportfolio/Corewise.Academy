@@ -1,0 +1,139 @@
+---
+title: Review a visual plan before you build
+description: Use a visual brief to compare options, settle missing decisions, and check what Claude needs before it starts a larger build.
+track: prompting
+level: practitioner
+number: 65
+minutes: 7
+tags: ['planning', 'claude code', 'writing prompts', 'verification']
+objectives:
+  - Turn a prescribed solution into a goal with constraints and a success check.
+  - Choose between a chat reply, a mockup, and a workflow diagram for reviewing a plan.
+  - Identify missing access, decision context, and feedback before implementation.
+  - Compare a proposed workflow with its actual execution record.
+prerequisites:
+  - slug: sharpen-the-prompt-or-brainstorm-first
+    note: Decide which questions need settling before implementation.
+sources:
+  - url: https://www.youtube.com/watch?v=_NzakzRXzLI
+    creator: Austin Marchese
+    video: The ONLY 4 Things You Need To Prompt Like An Anthropic Engineer
+    timestamps: ['0:53', '2:12', '2:53', '3:31', '4:34', '5:50', '9:27', '9:35', '11:34', '12:44', '14:58', '15:28', '16:07', '17:28']
+  - url: https://code.claude.com/docs/en/best-practices
+    creator: Anthropic
+    video: Best practices for Claude Code
+  - url: https://code.claude.com/docs/en/permissions
+    creator: Anthropic
+    video: Configure permissions
+  - url: https://code.claude.com/docs/en/memory
+    creator: Anthropic
+    video: How Claude remembers your project
+  - url: https://code.claude.com/docs/en/sub-agents
+    creator: Anthropic
+    video: Create custom subagents
+  - url: https://github.com/kunchenguid/lavish-axi
+    creator: kunchenguid
+    video: Lavish Editor
+selfCheck:
+  - q: You asked Claude to make a signup button blue. How can you leave room for a better solution?
+    a: State the signup problem, supply available evidence, and ask for options within your constraints. Keep the blue button as one candidate. If its color is already a fixed requirement, give the exact task.
+  - q: Does an HTML plan with input fields prove Claude will receive your answers?
+    a: No. The page needs a working connection to the agent or a way to copy the answers back into chat. Confirm the saved decisions before implementation.
+  - q: A diagram shows three reviewers and one combined report. What evidence shows all three reviewers ran?
+    a: A run record with a result or explicit failure for each assigned review, plus a final report that accounts for each one. The diagram only describes the intended workflow.
+status: published
+lastUpdated: 2026-10-21
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+
+<p class="lede">A long chat plan can hide the choices that will change a build. Ask Claude for a page you can inspect: show the alternatives, put questions beside the relevant mockup, and record your decisions before implementation. Use a diagram when the uncertainty is how work passes between steps.</p>
+
+Austin Marchese's [The ONLY 4 Things You Need To Prompt Like An Anthropic Engineer](https://www.youtube.com/watch?v=_NzakzRXzLI) combines clips of the Claude Code team with his own examples. He connects goals, visual planning, access and feedback, and custom agent workflows. The useful test is whether those changes make your own work easier to review; the video's tenfold speed claim is not established here.
+
+## <span class="sec-no">01</span>Leave room for another solution
+
+State the outcome before choosing the implementation. "Improve newsletter signups" leaves several approaches open. Add the current page, available evidence about where readers stop, and constraints such as required consent text. Your proposed button change can remain one candidate.
+
+Marchese's [goal-setting example](https://www.youtube.com/watch?v=_NzakzRXzLI&t=53s) gives Claude room to suggest an approach the user had not considered. He also [keeps exact tasks](https://www.youtube.com/watch?v=_NzakzRXzLI&t=173s) for decisions already made. A required brand color does not need another brainstorming session.
+
+For an open choice, ask for alternatives and the evidence needed to choose. For a settled choice, give the specific edit. [Sharpen the prompt or brainstorm first](/guides/sharpen-the-prompt-or-brainstorm-first/) covers that choice. [Give your coding agent a finish line](/guides/give-your-coding-agent-a-finish-line/) covers the deliverable, completion check, and stopping point that either request needs.
+
+## <span class="sec-no">02</span>Choose the review format
+
+Use a visual brief when seeing the proposed result helps you decide. A simple question can stay in chat.
+
+| Unresolved choice | Useful review format |
+| --- | --- |
+| One fact or a small wording change | A short reply in chat |
+| Where a signup form belongs and what readers see | A page with competing mockups and questions beside them |
+| Which task waits for another task | A diagram with inputs, dependencies, and outputs |
+| Several linked product decisions | One review page with options, assumptions, and a decision record |
+
+<PullQuote
+  quote="If you could answer in one quick message, just stay in the chat."
+  creator="Austin Marchese"
+  video="The ONLY 4 Things You Need To Prompt Like An Anthropic Engineer"
+  href="https://www.youtube.com/watch?v=_NzakzRXzLI&t=350s"
+  timestamp="5:50"
+/>
+
+Ask questions beside the part they affect. "Does this form need a company name?" belongs next to the proposed fields. Record the answer and its consequence for the build.
+
+Marchese [uses Lavish for comments on plans](https://www.youtube.com/watch?v=_NzakzRXzLI&t=274s). The current [Lavish Editor](https://github.com/kunchenguid/lavish-axi) opens local HTML artifacts, supports comments on elements or selected text, and sends feedback to an agent. A plain HTML page can also work, but input fields alone do not send your answers anywhere. Include a way to copy decisions back into chat, or verify that the page's agent connection works.
+
+## <span class="sec-no">03</span>Show what the build needs
+
+Put missing access and missing decisions in the plan. Marchese's [three-part review](https://www.youtube.com/watch?v=_NzakzRXzLI&t=567s) asks what Claude can do, what it knows, and what feedback it receives.
+
+| Part | What to settle before building |
+| --- | --- |
+| Access | Which files, services, and checks the task needs; which actions require approval |
+| Context | Who uses the result, what constraints apply, and how to choose between competing priorities |
+| Feedback | Which checks catch defects and whose experience will show whether the result is useful |
+
+Give Claude decision rules as well as facts. For an internal tool with one user, you might prefer a simpler implementation over capacity for thousands of users. For a client proposal, you might put clear pricing above decorative presentation. State when the priority changes.
+
+Anthropic's [project-memory documentation](https://code.claude.com/docs/en/memory) describes how written instructions carry project context. Its [permission controls](https://code.claude.com/docs/en/permissions) govern tool use separately. Grant access for the chosen task and keep approval boundaries explicit. [Build an AI setup for one work task](/guides/build-an-ai-setup-for-one-work-task/) covers assembling and checking that setup.
+
+Anthropic's [Claude Code best practices](https://code.claude.com/docs/en/best-practices) recommend separating exploration and planning from implementation when the approach is uncertain. This original prompt requests a visual brief. Replace the brackets with your own material:
+
+```text
+My goal is [observable outcome] for [audience]. Use [approved files, screenshots, or data]. Keep [fixed requirements]. My current idea is [candidate approach], but compare alternatives if they could better meet the goal.
+
+Create one local HTML review page at [draft path]. You may write that draft only. Do not change application files or connect new services. Show the proposed result with simple mockups or a workflow diagram, whichever helps me decide. Put unresolved questions beside the parts they affect. Separate known facts from assumptions, and explain what evidence would settle each important uncertainty.
+
+List the access, decision context, and feedback the build would need. Include a completion check and mark what that check cannot establish. Provide a copyable decision record so I can return my answers to this chat.
+
+Stop after the review page. Once I supply answers, update the plan and summarize the agreed decisions and remaining unknowns. Wait for approval before implementation.
+```
+
+Writing the HTML file requires file-write permission. If Claude Code is in read-only Plan mode, review the proposal there first, then allow the draft-file step in an appropriate permission mode.
+
+## <span class="sec-no">04</span>Plan for feedback after release
+
+A working form can still confuse readers. Separate checks that the form submits from evidence that people understand and use it. Marchese's [feedback discussion](https://www.youtube.com/watch?v=_NzakzRXzLI&t=764s) includes product metrics, messages, and issue reports alongside code review.
+
+Choose the feedback source before building. For the signup page, that could be observed form errors and comments from people trying it. Record the problem, its source, and the proposed response; review the response before changing the product.
+
+## <span class="sec-no">05</span>Compare the diagram with the run
+
+For a workflow with several agents, show each assignment, its input, and where its result goes. Marchese's [review example](https://www.youtube.com/watch?v=_NzakzRXzLI&t=928s) separates functionality, security, and performance before combining the findings. [Four shapes an AI workflow can take](/guides/four-shapes-an-ai-workflow-can-take/) covers choosing which steps can run together.
+
+Anthropic documents [subagents with separate contexts and tool permissions](https://code.claude.com/docs/en/sub-agents). Each also uses the account's usage allowance. Compare the workflow with and without the extra worker. Count its usage and the time spent checking its findings.
+
+A diagram shows intended coverage. Check the run record for a result or explicit failure from every assigned worker. Check each finding against the work, and make sure the final report accounts for every worker's result or failure. A missing review must stay visible. [Choose AI changes worth your time](/guides/choose-ai-changes-worth-your-time/) covers measuring correction, review, and maintenance effort.
+
+## <span class="sec-no">06</span>Revise the plan after a trial
+
+After a trial, return to the review page. Put each failed check or user complaint beside the decision it challenges. Ask Claude which choices need revisiting, and review the proposed changes before another build.
+
+Marchese [warns against keeping old work solely because it took effort](https://www.youtube.com/watch?v=_NzakzRXzLI&t=1048s). Keep the earlier plan so you can compare decisions, but change a choice when the trial shows it failed. If a recurring instruction caused the failure, [Trim the instructions your model outgrew](/guides/trim-the-instructions-your-model-outgrew/) covers testing its removal while preserving project requirements.
+
+<Exercise>
+1. Take one previous request where you prescribed an implementation. Write the intended outcome, fixed constraints, and what would count as success.
+2. Choose one unresolved decision that affects the result. Use the prompt above to request a review page with a mockup or diagram that helps you make that decision.
+3. Inspect the page, answer its questions, and send the decision record back to Claude. Check that the revised plan reflects your answers and names missing inputs.
+4. Approve one small implementation step. Compare its result with the plan and its check output. Record any mismatch or unanswered question before expanding the work.
+</Exercise>
