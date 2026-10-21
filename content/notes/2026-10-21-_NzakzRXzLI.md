@@ -80,3 +80,10 @@ Final coverage differs from the initial table in these places:
 ### Publication authorization
 
 The editor explicitly requested "merge and publish" on October 21, 2026. Set status to `published`; guide body is unchanged from the independently verified revision. Regenerate catalogue assets and rerun content checks before opening the PR. Cross-vendor Opus review, passing PR checks, production deployment success and a live-page check remain required before reporting publication complete.
+
+### Cross-vendor publication review
+
+- PR: https://github.com/ryanportfolio/Corewise.Academy/pull/302. Opus 5.5, high effort, one restricted read-only invocation on base `0ae5ec86c40881b53424112bea0552d2f0f0490b` through head `7c65cb1ae7e3d9ab5cd53bbdc53fc71f6e1a3e09`, six changed files. Launcher evidence PASS: exact model, eligible Max subscription response attribution, scope packet read, no permission denials, no changed tracked files and unchanged persistent configuration.
+- No blocking defects. Verified and fixed all three minor observations: removed stale "review guide" wording in the source log; added the three inline citation timestamps missing from frontmatter; moved the pull-quote link from 5:57 to 5:50 so it includes the opening "If" in the previous caption segment.
+- Checked the observations against the source registry, source-list renderer and caption segments at 2:53, 5:50, 5:57, 9:27 and 15:28. Unlinked frontmatter timestamps remain because they identify supporting passages used in the lesson. No guide prose or quoted wording changed. No second review invocation.
+- Reviewer could not independently verify external docs or run builds. Those source checks and the content-only validation are recorded above; no application build claim is made. The earlier independent editorial verdict still applies to the unchanged prose.
