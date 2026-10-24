@@ -1,6 +1,6 @@
 ---
 name: "optimize-context"
-description: "Use when the user asks to reduce per-turn context or token load, trim kernels, skills, or connectors, or propagate a generic context optimization to the starter."
+description: "Cut per-turn context or token load: trim kernels, skills, connectors; push generic context optimization to starter."
 ---
 
 # Reduce measured context load
@@ -28,7 +28,7 @@ node .claude/scripts/sync-codex-skills.mjs --check
 node .claude/scripts/test-codex-contract.mjs
 ```
 
-`--check` fails on an unregistered skill or a Claude skill changed since its Codex port was last baselined. `test-codex-contract.mjs` checks that Codex routing metadata stays within its context budget. Include the `.agents/skills/` and `.agents/skill-sources.json` changes with the edit.
+`--check` warns about an unregistered skill or a Claude skill changed since its Codex port was last baselined. `test-codex-contract.mjs` checks that Codex routing metadata stays within its context budget. Include the `.agents/skills/` and `.agents/skill-sources.json` changes with the edit.
 
 ## Verify and report
 

@@ -1,6 +1,6 @@
 ---
 name: brainstorming
-description: "Use to design products, interfaces, workflows, or behavior with unresolved goals or material tradeoffs. Skip fully specified work."
+description: "Brainstorm or design product, interface, workflow, architecture, or behavior change with unresolved goals or material tradeoffs. Skip routine or fully specified work."
 ---
 
 # Brainstorming
