@@ -72,8 +72,8 @@
 <circle cx="834.3" cy="87.3" r="1.9" fill="#1c1914" fill-opacity="0.88"/>
 <text x="880" y="382" text-anchor="middle" font-size="11.5" letter-spacing="1.5" fill="#574f43">V · THE METRONOME</text>
 <text x="880" y="399" text-anchor="middle" font-size="10" letter-spacing="1" fill="#574f43">8 GUIDES</text>
-<path d="M 489.6 205.1 L 497.6 197.1" stroke="#1c1914" stroke-opacity="0.55" stroke-width="0.7" fill="none"/>
-<text x="501.6" y="200.1" font-size="10.5" letter-spacing="1" fill="#1c31a4">Nº 038 · NEWEST</text>
+<path d="M 489.6 205.1 L 497.6 149.1" stroke="#1c1914" stroke-opacity="0.55" stroke-width="0.7" fill="none"/>
+<text x="501.6" y="152.1" font-size="10.5" letter-spacing="1" fill="#1c31a4">Nº 038 · NEWEST</text>
 <text x="34" y="46" font-size="15" letter-spacing="2.8" fill="#1c1914" font-weight="600">COREWISE ACADEMY</text>
 <text x="34" y="68" font-size="10.5" letter-spacing="2" fill="#574f43" font-weight="400">PLATE OF THE CATALOGUE</text>
 <text x="34" y="83" font-size="11.5" letter-spacing="1.2" fill="#1c1914" font-weight="600">58 GUIDES · 394 MINUTES OF READING</text>

@@ -16,7 +16,7 @@ sources:
   - url: https://www.youtube.com/watch?v=TL8V41Ea6oM
     creator: Sandeep Swadia
     video: 4 AI Agents To Automate 99% Of Your Life
-    timestamps: ['1:05', '2:36', '2:51', '3:10', '3:24', '4:20', '5:15', '6:05', '6:08', '6:36', '9:50']
+    timestamps: ['6:36']
   - url: https://www.youtube.com/watch?v=42Y6z9KKRKc
     creator: Austin Marchese, with Nate Herk
     video: 'Nate Herk: The Most Valuable AI Skill to Learn In 2027'
@@ -70,9 +70,9 @@ Record how long the task takes you now. During the trial, record the time you sp
 
 ## <span class="sec-no">02</span>Limit the tools it can use
 
-A job description tells the agent what you want. Permissions control which actions it can take. In [Herk's email incident](https://www.youtube.com/watch?v=42Y6z9KKRKc&t=203s), an agent picked up an unassigned task and sent an email intended for human review. He reports that it reached almost 200,000 people. The account illustrates two things to check: which tasks the agent can act on and whether it has permission to send.
+A job description tells the agent what you want. Permissions control which actions it can take. In [Herk's email incident](https://www.youtube.com/watch?v=42Y6z9KKRKc&t=203s), an agent picked up an unassigned task and sent an email intended for human review. The account illustrates two things to check: which tasks the agent can act on and whether it has permission to send.
 
-For the inbox example, remove sending access while keeping the access needed to read and draft. Check other routes too: blocking one send tool leaves a gap if the agent can use a command-line tool with the same account credentials. [Assume your agent uses every tool it has](/guides/assume-your-agent-uses-every-tool-it-has/) covers the access audit.
+When connecting the inbox, review the access requested on the provider's permission screen. Keep only the access needed to read and draft. Check other routes too: blocking one send tool leaves a gap if the agent can use a command-line tool with the same account credentials. [Assume your agent uses every tool it has](/guides/assume-your-agent-uses-every-tool-it-has/) covers the access audit.
 
 In Claude Code, [permission rules](https://code.claude.com/docs/en/permissions#manage-permissions) are enforced by the application. Instructions in a prompt or skill do not change those permissions. Service-side restrictions also matter when the agent can reach an account through several tools.
 
