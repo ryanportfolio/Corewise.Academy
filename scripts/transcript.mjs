@@ -17,7 +17,7 @@
 //      of them, so this path fails for many videos even when captions exist.
 //      Retrying it does not help; yt-dlp is the fix.
 //   3. Neither worked -> exit non-zero with a clear message, so the ingest
-//      workflow knows to ask the editor to paste a transcript.
+//      workflow can try the browser transcript panel before asking the editor.
 //
 // Output format either way: one line per caption, "[m:ss] text" on stdout;
 // diagnostics on stderr.
@@ -103,7 +103,7 @@ async function tryTranscriptIo(key) {
   const item = Array.isArray(body) ? body.find((video) => video?.id === id) : null;
   const tracks = Array.isArray(item?.tracks) ? item.tracks : [];
   const usable = tracks.filter((track) => Array.isArray(track.transcript) && track.transcript.length);
-  const track = usable.find((entry) => /^en(?:\b|[-_])/i.test(String(entry.language))) || usable[0];
+  const track = usable.find((entry) => /^(?:en(?:\b|[-_])|english\b)/i.test(String(entry.language))) || usable[0];
   if (!track) return null;
   const lines = track.transcript.map((segment) => ({
     t: Number(segment.start),
@@ -348,9 +348,10 @@ if (!apiConfigured) try {
   }
 
   console.error(`No transcript available for video ${id}.`);
-  console.error('Ask the editor to paste a transcript, or pick a video that has captions.');
+  console.error('Next step: read the browser transcript panel; ask the editor only if that fails.');
   process.exit(1);
 } catch (err) {
   console.error(`Failed to fetch transcript: ${err.message}`);
+  console.error('Next step: read the browser transcript panel; ask the editor only if that fails.');
   process.exit(1);
 }

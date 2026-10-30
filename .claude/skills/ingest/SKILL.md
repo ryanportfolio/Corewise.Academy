@@ -69,12 +69,15 @@ Run these from the repo root, in this order:
    and the redirect in the next step fails without it: `mkdir -p .tmp` (bash) or
    `New-Item -ItemType Directory -Force .tmp` (PowerShell).
 2. `node scripts/transcript.mjs "<youtube-url>" > .tmp/<video-id>.txt` (stdout is the
-   transcript, stderr the diagnostics; the first stderr lines say which fetch path won
-   and whether the captions are auto-generated).
-3. Use the API's metadata for crediting. If it is missing, read the video page or run:
+   transcript, stderr the diagnostics). The API path prints title, channel, publication
+   date, duration, and language; it does not report whether captions are auto-generated.
+   The no-key paths report caption type when known.
+3. Use the API's metadata for crediting. If it is missing, read the video page.
+   Without a key, an installed yt-dlp can also provide metadata:
    `yt-dlp --skip-download --print "%(channel)s | %(title)s | %(upload_date)s | %(duration_string)s" "<youtube-url>"`.
-   If `yt-dlp` alone is not on this shell's PATH, reuse the invocation the script
-   printed on its `# yt-dlp via:` line; it is already quoted for paths with spaces.
+   On that no-key path, if `yt-dlp` alone is not on this shell's PATH, reuse the
+   invocation the script printed on its `# yt-dlp via:` line; it is already quoted
+   for paths with spaces.
 4. Read the saved transcript file in full before synthesizing. A 20-minute video is
    roughly 700 caption lines.
 
