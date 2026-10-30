@@ -12,9 +12,9 @@
 <circle cx="337.5" cy="188.5" r="1.9" fill="#1c1914" fill-opacity="0.75"/>
 <circle cx="381" cy="211.7" r="3.2" fill="#1c1914" fill-opacity="0.58"/>
 <circle cx="301.4" cy="184.5" r="2.5" fill="#1c1914" fill-opacity="0.6"/>
-<path d="M12 0 L14.88 9.12 L24 12 L14.88 14.88 L12 24 L9.12 14.88 L0 12 L9.12 9.12 Z" transform="translate(343.70 249.30) scale(0.6250)" fill="#1c31a4"/>
+<circle cx="349.3" cy="258.4" r="2.5" fill="#1c1914" fill-opacity="0.7"/>
 <circle cx="338.6" cy="165.3" r="2.5" fill="#1c1914" fill-opacity="0.84"/>
-<circle cx="342.3" cy="264" r="2.5" fill="#1c1914" fill-opacity="0.75"/>
+<circle cx="344.3" cy="262.4" r="2.5" fill="#1c1914" fill-opacity="0.75"/>
 <circle cx="366.5" cy="251.5" r="2.5" fill="#1c1914" fill-opacity="0.58"/>
 <circle cx="346.3" cy="225.9" r="2.5" fill="#1c1914" fill-opacity="0.72"/>
 <circle cx="339.4" cy="211.5" r="2.5" fill="#1c1914" fill-opacity="0.75"/>
@@ -30,10 +30,10 @@
 <circle cx="552.5" cy="240.7" r="1.9" fill="#1c1914" fill-opacity="0.79"/>
 <circle cx="505.4" cy="209.9" r="2.5" fill="#1c1914" fill-opacity="0.83"/>
 <circle cx="517.2" cy="274.4" r="2.5" fill="#1c1914" fill-opacity="0.67"/>
-<circle cx="483.7" cy="211.2" r="1.9" fill="#1c1914" fill-opacity="0.71"/>
+<path d="M12 0 L14.88 9.12 L24 12 L14.88 14.88 L12 24 L9.12 14.88 L0 12 L9.12 9.12 Z" transform="translate(476.10 203.60) scale(0.6250)" fill="#1c31a4"/>
 <circle cx="533.1" cy="177.1" r="1.9" fill="#1c1914" fill-opacity="0.68"/>
 <circle cx="571.8" cy="252.1" r="1.9" fill="#1c1914" fill-opacity="0.64"/>
-<circle cx="494.4" cy="214.2" r="2.5" fill="#1c1914" fill-opacity="0.64"/>
+<circle cx="494.5" cy="214.2" r="2.5" fill="#1c1914" fill-opacity="0.64"/>
 <circle cx="520.5" cy="196.6" r="1.9" fill="#1c1914" fill-opacity="0.55"/>
 <circle cx="575.5" cy="257.5" r="3.2" fill="#1c1914" fill-opacity="0.67"/>
 <circle cx="453.9" cy="214.4" r="2.5" fill="#1c1914" fill-opacity="0.59"/>
@@ -72,11 +72,11 @@
 <circle cx="834.3" cy="87.3" r="1.9" fill="#1c1914" fill-opacity="0.88"/>
 <text x="880" y="382" text-anchor="middle" font-size="11.5" letter-spacing="1.5" fill="#574f43">V · THE METRONOME</text>
 <text x="880" y="399" text-anchor="middle" font-size="10" letter-spacing="1" fill="#574f43">8 GUIDES</text>
-<path d="M 357.2 250.8 L 365.2 242.8" stroke="#1c1914" stroke-opacity="0.55" stroke-width="0.7" fill="none"/>
-<text x="369.2" y="245.8" font-size="10.5" letter-spacing="1" fill="#1c31a4">Nº 065 · NEWEST</text>
+<path d="M 489.6 205.1 L 497.6 197.1" stroke="#1c1914" stroke-opacity="0.55" stroke-width="0.7" fill="none"/>
+<text x="501.6" y="200.1" font-size="10.5" letter-spacing="1" fill="#1c31a4">Nº 038 · NEWEST</text>
 <text x="34" y="46" font-size="15" letter-spacing="2.8" fill="#1c1914" font-weight="600">COREWISE ACADEMY</text>
 <text x="34" y="68" font-size="10.5" letter-spacing="2" fill="#574f43" font-weight="400">PLATE OF THE CATALOGUE</text>
-<text x="34" y="83" font-size="11.5" letter-spacing="1.2" fill="#1c1914" font-weight="600">58 GUIDES · 391 MINUTES OF READING</text>
+<text x="34" y="83" font-size="11.5" letter-spacing="1.2" fill="#1c1914" font-weight="600">58 GUIDES · 394 MINUTES OF READING</text>
 <text x="34" y="101" font-size="9.5" letter-spacing="1" fill="#6f6656" font-weight="400">SURVEYED FROM GUIDE FRONTMATTER</text>
 <text x="34" y="116" font-size="9.5" letter-spacing="1" fill="#6f6656" font-weight="400">ENGRAVED BY scripts/readme-plate.mjs · CORRECTED TO OCTOBER 2026</text>
 <text x="34" y="135" font-size="10" letter-spacing="1" fill="#574f43">ONE STAR = ONE PUBLISHED GUIDE · LARGER = DEEPER</text>
