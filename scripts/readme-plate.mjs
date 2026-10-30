@@ -130,6 +130,7 @@ const impression = ({ paper, ink, soft, mute, accent, lineO, starO }) => {
 
   // Stars: one per published guide, hashed into its layer's cluster.
   let newestStar = null;
+  const allStars = [];
   for (const c of CLUSTERS) {
     const members = guides.filter((g) => g.track === c.slug);
     const stars = members.map((g) => {
@@ -143,6 +144,7 @@ const impression = ({ paper, ink, soft, mute, accent, lineO, starO }) => {
       };
     });
     separate(stars);
+    allStars.push(...stars);
     for (const s of stars) {
       const o = +(starO + noise(s.g.number, 3) * 0.35).toFixed(2);
       if (s.g === newest) {
@@ -160,7 +162,16 @@ const impression = ({ paper, ink, soft, mute, accent, lineO, starO }) => {
   // Leader to the newest star: the one label the plate calls out.
   if (newestStar) {
     const lx = newestStar.x + 14;
-    const ly = newestStar.y - 14;
+    let ly = newestStar.y - 14;
+    // Keep the label clear of nearby stars. The width includes letter spacing.
+    const labelWidth = 130;
+    while (ly > 30 && allStars.some((s) =>
+      s.g !== newest &&
+      s.x + s.r >= lx + 1 && s.x - s.r <= lx + 4 + labelWidth &&
+      s.y + s.r >= ly - 11 && s.y - s.r <= ly + 6
+    )) {
+      ly -= 16;
+    }
     el.push(`<path d="M ${newestStar.x + 6} ${newestStar.y - 6} L ${lx} ${ly}" stroke="${ink}" stroke-opacity="0.55" stroke-width="0.7" fill="none"/>`);
     el.push(`<text x="${lx + 4}" y="${ly + 3}" font-size="10.5" letter-spacing="1" fill="${accent}">Nº ${String(newest.number).padStart(3, '0')} · NEWEST</text>`);
   }

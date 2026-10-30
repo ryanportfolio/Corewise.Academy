@@ -107,3 +107,11 @@ normalization, but Git then reports CR characters as trailing whitespace during
 `git diff --check`. Pair that rule with `whitespace=cr-at-eol`; it preserves the
 hashes while retaining checks for other trailing whitespace. Verify the staged
 blob hashes against the archive manifest, not just the files on disk.
+
+## Recall audit helper is absent (2026-10-30)
+
+The recall skill requests `node .claude/scripts/memory-audit.mjs --diff origin/main`,
+but the helper is absent from main at `d81186be`; the command fails with
+`MODULE_NOT_FOUND`. No replacement was found under `.claude/` or `.agents/`.
+Until the helper is added, inspect `.claude/reference/` references to changed
+paths with `rg` and review the relevant entries manually before opening a PR.

@@ -1,31 +1,47 @@
 ---
 title: Delegate to your agent in stages
-description: 'A new agent should not run your inbox on day one. Give it one job with read-and-draft access only, check its work until your corrections stop, then add the next tool, and let it run unattended only after it has earned that.'
+description: 'Give an agent one job, limit its tools, and check its work before granting more independence. Keep a human owner responsible for each automation.'
 track: agents
 level: broad
 number: 38
-minutes: 5
-tags: ['delegation', 'agent safety']
+minutes: 8
+tags: ['delegation', 'agent safety', 'verification', 'automation']
 objectives:
-  - 'Write a one-sentence job prompt for an agent that contains all five parts: the job, the tool, the categories, the output, and the boundary.'
-  - 'Sequence a new agent''s responsibilities in the order that keeps mistakes cheap: visible first, then efficient, then automatic, then delegated.'
-  - 'Connect an email or calendar account with read-and-draft access only, and state why sending stays with you at the start.'
-  - 'Decide when an agent has earned a scheduled, unattended run, and name the evidence behind that decision.'
+  - Write an agent job description with inputs, output, success criteria, and limits.
+  - Distinguish written instructions from enforced tool permissions.
+  - Choose checks for factual, functional, and subjective work.
+  - Decide when to expand an agent's job using recorded results and a named human owner.
 prerequisites: []
 sources:
   - url: https://www.youtube.com/watch?v=TL8V41Ea6oM
     creator: Sandeep Swadia
     video: 4 AI Agents To Automate 99% Of Your Life
-    timestamps: ['1:05', '2:36', '2:51', '3:10', '3:24', '4:20', '5:15', '6:05', '6:08', '6:36', '9:50']
+    timestamps: ['6:36']
+  - url: https://www.youtube.com/watch?v=42Y6z9KKRKc
+    creator: Austin Marchese, with Nate Herk
+    video: 'Nate Herk: The Most Valuable AI Skill to Learn In 2027'
+    timestamps: ['1:09', '1:47', '2:37', '3:23', '5:04', '6:22', '9:09', '10:18', '10:50', '11:11', '12:21', '13:34', '14:11', '15:22', '16:09', '16:38', '17:31', '18:07']
+  - url: https://code.claude.com/docs/en/permissions
+    creator: Anthropic
+    video: Configure permissions
+  - url: https://code.claude.com/docs/en/best-practices
+    creator: Anthropic
+    video: Best practices for Claude Code
+  - url: https://code.claude.com/docs/en/skills
+    creator: Anthropic
+    video: Extend Claude with skills
+  - url: https://www.anthropic.com/research/demystifying-evals-for-ai-agents
+    creator: Anthropic
+    video: Demystifying evals for AI agents
 selfCheck:
-  - q: What are the five parts of an agent's job prompt, and where do they appear in "Review my unread Gmail from the last 24 hours, sort it into urgent, informational, and ignore, draft replies for anything urgent, and don't send anything without my approval"?
-    a: 'The job (review unread email), the tool (Gmail), the categories (urgent, informational, ignore), the output (drafted replies), and the boundary (nothing sends without approval). One sentence can carry all five; what matters is that none of them is missing.'
-  - q: Why does the first version of the agent draft replies instead of sending them?
-    a: 'Because at that point you have no evidence it does the work the way you would. Draft-only keeps every mistake cheap: a bad draft costs you a deletion, a bad sent email costs you an apology. You review its output until your corrections stop, and only then consider giving it more reach.'
-  - q: When has an agent earned a scheduled run with nobody watching?
-    a: 'After you have run the same job by hand for days or weeks and stopped needing to correct it. The evidence is your own corrections trending to zero. Until then, an unattended run automates work you have not yet verified, and anything touching sensitive data or acting on your behalf deserves extra hesitation.'
+  - q: An agent's job description says to draft emails only. What makes that boundary enforceable?
+    a: Remove its ability to send through every available route, using tool permissions and service-side access limits. Check whether another tool or credential can still send. The written instruction alone does not block the action.
+  - q: A judging model agrees with your ratings on every example used to tune it. What should you check next?
+    a: Compare its ratings with yours on examples held back from tuning, especially unacceptable outputs it might pass. Agreement on the examples it learned from does not establish how it handles new work.
+  - q: An agent reliably finds missing meeting notes. Can it start rewriting the team wiki?
+    a: That is a new responsibility with different consequences. Keep it reporting missing notes until a human owner defines the permitted changes, checks representative cases, and explicitly grants the required access. Continue reviewing its results after that change.
 status: published
-lastUpdated: 2026-08-04
+lastUpdated: 2026-10-30
 ---
 
 import PullQuote from '../../components/PullQuote.astro';
@@ -34,122 +50,125 @@ import Chalk from '../../components/Chalk.astro';
 
 <Chalk>agents earn promotions one job at a time</Chalk>
 
-<p class="lede">
-Sandeep Swadia, who spent twenty years as a tech CEO, board member, and investor, builds
-four everyday agents in one walkthrough: one that sorts email, one that drafts documents,
-one that digests contracts, one that runs interview rehearsals. The tools are the easy
-part. The lesson worth keeping is the order in which he hands them power: a new agent
-starts with one job it cannot mess up, and every increase in reach has to be earned.
-</p>
+<p class="lede">Start an agent with one job whose mistakes you can catch before they reach anyone else. Define the result, restrict what the agent can change, and review its work. Add responsibilities only after you have evidence that it handles the current task well.</p>
 
-## <span class="sec-no">01</span>Start with a reading job
+Sandeep Swadia's [4 AI Agents To Automate 99% Of Your Life](https://www.youtube.com/watch?v=TL8V41Ea6oM) demonstrates this sequence with everyday tasks such as sorting email and checking calendars. Austin Marchese's interview with Nate Herk, [Nate Herk: The Most Valuable AI Skill to Learn In 2027](https://www.youtube.com/watch?v=42Y6z9KKRKc), adds checks, feedback, and human ownership to that progression.
 
-The chore he starts with is email, and the numbers explain why. He cites a Microsoft
-study finding the average worker gets 117 emails a day and is interrupted roughly every
-two minutes, 275 times a day, by an email, a meeting, or a message.
+## <span class="sec-no">01</span>Write down one job
 
-The first agent's job is to read that pile, not to answer it. Connecting your inbox is
-the step that turns a chatbot into an agent: instead of you pasting emails into a chat
-window, the agent reaches into the account itself. Every chat tool does this through
-connectors, the menu where you link an outside account to the chat, and when you link
-one, the account's provider shows you exactly what permissions you are granting. Read
-that screen instead of clicking through it.
+Do the task yourself before handing it over. You need to know which inputs matter, what decisions occur, and what a wrong answer looks like. Herk's [advice on defining a role](https://www.youtube.com/watch?v=42Y6z9KKRKc&t=69s) starts with the steps inside the job. A title such as "AI receptionist" leaves those steps unspecified.
 
-<PullQuote
-  quote="if you're a little uneasy about letting AI into your inbox, that's a good sign"
-  creator="Sandeep Swadia"
-  video="4 AI Agents To Automate 99% Of Your Life"
-  href="https://www.youtube.com/watch?v=TL8V41Ea6oM"
-  timestamp="2:51"
-/>
+Swadia starts with reading email and drafting replies. His job prompt names the work, the tool, the categories, the output, and the boundary. This original example uses the same structure:
 
-His answer to that unease is the boundary: the agent may read and draft, never send.
-<a href="/guides/assume-your-agent-uses-every-tool-it-has/">Assume your agent uses every
-tool it has</a> explains why the strongest version of that rule lives in the account's
-permissions rather than in the prompt; here, at the start, the point is simpler. Keep
-the agent's worst possible action cheap while you find out how good it is.
+```text
+Review unread messages from the last 24 hours in the approved inbox. Sort them into urgent, informational, and no action needed. Draft replies for urgent messages using the supplied reply examples. Flag missing facts instead of inventing them. Leave every reply for my review; do not send or change messages.
+```
 
-## <span class="sec-no">02</span>Five parts of a job prompt
+Write the pass condition beside the prompt: which messages count as urgent, which facts every reply needs, and what must be referred to you. Use approved and rejected examples where judgment matters. [Brief the model like a brilliant new hire](/guides/brief-the-model/) covers choosing that context.
 
-The prompt that assigns the job is plain English, the same words you would type in any
-chat. The difference is what it has to contain. Swadia's version: "Review my unread
-Gmail from the last 24 hours. Sort it into three buckets: urgent, informational, and
-ignore. For anything urgent, draft a reply that sounds like me. Don't send anything
-without my approval." Four short sentences carrying five parts:
+Record how long the task takes you now. During the trial, record the time you spend setting up, running, reviewing, and correcting the agent's work. Compare the totals to judge whether the automation saves work. [Automate the step that slows you down](/guides/automate-the-bottleneck/) covers choosing a worthwhile first task.
 
-- **The job.** What the agent is to do: review unread email.
-- **The tool.** Where it does the work: the connected Gmail account.
-- **The categories.** The buckets the output sorts into: urgent, informational, ignore.
-- **The output.** What comes back to you: drafted replies in your voice.
-- **The boundary.** What it may not do: send anything without approval.
+## <span class="sec-no">02</span>Limit the tools it can use
 
-When a run disappoints, check which of the five was missing. The job
-without categories returns mush; the output without a boundary returns surprises.
-<a href="/guides/brief-the-model/">Brief the model like a brilliant new hire</a> is the
-longer version of the same craft.
+A job description tells the agent what you want. Permissions control which actions it can take. In [Herk's email incident](https://www.youtube.com/watch?v=42Y6z9KKRKc&t=203s), an agent picked up an unassigned task and sent an email intended for human review. The account illustrates two things to check: which tasks the agent can act on and whether it has permission to send.
 
-## <span class="sec-no">03</span>Let the agent earn the next step
+When connecting the inbox, review the access requested on the provider's permission screen. Keep only the access needed to read and draft. Check other routes too: blocking one send tool leaves a gap if the agent can use a command-line tool with the same account credentials. [Assume your agent uses every tool it has](/guides/assume-your-agent-uses-every-tool-it-has/) covers the access audit.
 
-After the email agent has run for a few days and its drafts stop needing corrections,
-Swadia adds the second tool, the calendar, with the same restraint: no moving meetings
-without approval. Now the two jobs combine. His prompt: look at today and tomorrow,
-compare the calendar against the urgent emails you found, and tell me what conflicts,
-what needs prep before a meeting, and what can wait.
+In Claude Code, [permission rules](https://code.claude.com/docs/en/permissions#manage-permissions) are enforced by the application. Instructions in a prompt or skill do not change those permissions. Service-side restrictions also matter when the agent can reach an account through several tools.
 
-Only after he trusts both outputs does he schedule the combined run to happen every
-morning, unattended. <a href="/guides/automate-a-workflow-as-a-claude-routine/">Automate
-a workflow as a Claude routine</a> covers what a scheduled run needs, and his caution
-belongs next to it: be slow to schedule anything that touches sensitive data or acts
-on your behalf.
+Herk also recommends [using code for fixed rules](https://www.youtube.com/watch?v=42Y6z9KKRKc&t=304s). A date comparison or a required-field check can run as ordinary code. Reserve model judgment for steps such as interpreting a request. [Four shapes an AI workflow can take](/guides/four-shapes-an-ai-workflow-can-take/) helps choose how much of the process needs an agent.
 
-Behind the whole sequence is a ladder he states outright. First make the work visible,
-then make it efficient, then make it automatic, and only then delegate the decision.
+Match review to the consequence of an error:
+
+| Action | Boundary to consider |
+| --- | --- |
+| Create a private draft | Let the agent finish, then review before use. |
+| Send to customers | Require approval before the send, including the recipient list. |
+| Change shared records | Limit the records it can edit and preserve a way to restore them. |
+| Publish or deploy | Require the relevant checks and a separate approval for release. |
+
+Use the table as a starting point. Set limits according to who an error could affect and whether you can undo the action.
+
+## <span class="sec-no">03</span>Check before handing work over
+
+Require the agent to check its output before presenting it. A website needs working controls and readable pages. A report needs supported claims. Ask for the check results as well as the artifact, so you can see what passed and what remains untested. [Give your coding agent a finish line](/guides/give-your-coding-agent-a-finish-line/) covers defining completion.
+
+Use a fresh reviewer when the check calls for judgment. [Anthropic's best practices](https://code.claude.com/docs/en/best-practices#give-claude-a-check-to-run) describe a reviewer that has not seen the conversation that produced the code. Give that reviewer the task, criteria, and output, without the author's explanation of why the output is good.
+
+For subjective work, first find out whether the reviewer agrees with you. Marchese describes [Herk's support-email example](https://www.youtube.com/watch?v=42Y6z9KKRKc&t=618s): a person marks 50 replies pass or fail, then the judging model is adjusted against those ratings. Recording yourself explaining each decision can help turn your preferences into usable criteria.
+
+Our recommendation is to keep some examples out of that adjustment process. Compare the judge's ratings with yours on those unseen examples, and inspect the bad replies it passes. Agreement on the examples used for tuning can overstate how well it handles new work. [Score your agent on known good answers](/guides/score-your-agent-on-known-good-answers/) covers repeatable evaluation.
+
+[Anthropic's evaluation guide](https://www.anthropic.com/research/demystifying-evals-for-ai-agents) distinguishes checks run by code, models, and people. It recommends checking model graders against human judgments and inspecting the actual result of an action. A plausible completion message does not prove that the intended change happened.
+
+Herk's [review councils](https://www.youtube.com/watch?v=42Y6z9KKRKc&t=671s) give separate agents different audience perspectives. Use those perspectives to find questions you missed. Simulated viewers cannot establish how real viewers will respond, and agreement among models does not replace checking the work.
+
+## <span class="sec-no">04</span>Check before expanding the job
+
+Swadia adds calendar access after reviewing the email agent's work, then schedules the combined task after checking both outputs. Keep each expansion small enough to identify what caused a new failure.
 
 <PullQuote
   quote="we don't get promoted easily, neither should your agent"
   creator="Sandeep Swadia"
   video="4 AI Agents To Automate 99% Of Your Life"
-  href="https://www.youtube.com/watch?v=TL8V41Ea6oM"
+  href="https://www.youtube.com/watch?v=TL8V41Ea6oM&t=396s"
   timestamp="6:36"
 />
 
-Each rung is a promotion, and the evidence for granting it is boring: you ran the job,
-you checked the output, your corrections trended to zero. Skipping rungs only makes
-the agent's first big mistake more expensive.
+Trust applies to the task you checked. An agent that sorts email accurately has not yet demonstrated that it can cancel meetings. Before adding a responsibility, write its pass conditions and test representative cases, including missing inputs and tool failures.
 
-## <span class="sec-no">04</span>One ladder, every agent
+For the inbox agent, review every draft through a trial covering routine requests, missing facts, and tool failures. Before sampling routine drafts instead, confirm that the agent meets the written pass conditions on those cases and reports failures correctly. Keep approval before sending, and resume full review when you find an unacceptable draft or change the model, instructions, tools, or source data. [Keep Claude automations working](/guides/keep-claude-automations-working/) covers testing the actual scheduled run, including its access and failure reports.
 
-The other agents in his walkthrough climb the same ladder from different starting
-points. A document agent drafts a pitch deck you edit before anyone sees it. A research
-agent compiles a briefing you verify before you act on it. In every case the agent's
-early work products are drafts, visible to you and nobody else, and the agent gets more
-reach only as your corrections get rarer.
+## <span class="sec-no">05</span>Keep an owner and a run record
+
+Give each automation a named human owner who reads its results and decides when it needs repair. Herk's [feedback advice](https://www.youtube.com/watch?v=42Y6z9KKRKc&t=814s) is to save recurring corrections in a skill. [Turn repeated fixes into rules](/guides/turn-repeated-fixes-into-rules/) explains that process; Claude Code's [skills documentation](https://code.claude.com/docs/en/skills) describes reusable instructions and supporting files.
+
+Save the failed example and the expected behavior with the correction. Run it again after the change, along with earlier cases that should still pass. A new instruction that fixes one reply can make another worse.
+
+Keep a small record for each automation:
+
+| Field | What to record |
+| --- | --- |
+| Owner | Person responsible for checking results and approving changes |
+| Job and access | Task, permitted inputs, allowed changes, and approval points |
+| Latest reviewed run | Date, output location, and what the person checked |
+| Run history | Inputs, tool actions, results, and failed checks needed to investigate an error |
+| Failure notification | Where a failed or incomplete run reaches the owner |
+
+Record the last human review separately from the last successful run. They answer different questions. If nobody reads an automation's output or responds to its failures, reconsider whether it should keep running.
+
+## <span class="sec-no">06</span>Start proactive work narrowly
+
+Choose a recurring problem with a clear sign that something needs attention. Herk's [examples](https://www.youtube.com/watch?v=42Y6z9KKRKc&t=969s) include new meeting notes missing from a wiki, conflicting information, and tasks nearing a deadline. He reports better results with these small maintenance jobs than with broad strategic "co-founder" agents. That is his experience, not proof that every strategic use will fail.
+
+Separate finding a problem from changing something. A wiki checker can report a conflict with links to both passages. Rewriting the wiki requires another decision about authority and evidence. [Make your agents proactive](/guides/make-your-agents-proactive/) covers triggers; [Keep a growing knowledge base accurate](/guides/keep-a-growing-knowledge-base-accurate/) covers conflicting sources.
 
 <PullQuote
-  quote="if you come in clear, AI will multiply your clarity"
-  creator="Sandeep Swadia"
-  video="4 AI Agents To Automate 99% Of Your Life"
-  href="https://www.youtube.com/watch?v=TL8V41Ea6oM"
-  timestamp="9:50"
+  quote="I still think there needs to be a human in charge of every automation."
+  creator="Nate Herk"
+  video="Nate Herk: The Most Valuable AI Skill to Learn In 2027"
+  href="https://www.youtube.com/watch?v=42Y6z9KKRKc&t=1051s"
+  timestamp="17:31"
 />
 
-The multiplication cuts both ways: come in confused and the agent multiplies the
-confusion. The ladder is how you find out which one is happening while the stakes are
-still small. If you are choosing which chore to hand over first,
-<a href="/guides/automate-the-bottleneck/">Automate the step that slows you down</a>
-makes that pick for you.
+Herk [predicts more interaction between team members' agents](https://www.youtube.com/watch?v=42Y6z9KKRKc&t=1087s). Treat that as a forecast. For agents you connect today, name the human responsible at each handoff and state what the receiving agent may do with a request. A suggestion from another agent should not grant new access or permission to act.
+
+Use this original job card to make those decisions explicit:
+
+```text
+Interview me about one recurring task I already do. Ask for missing facts before drafting the job card.
+
+Record the owner, trigger, approved inputs, required output, pass conditions, allowed actions, actions needing approval, and what to do when information or access is missing.
+
+Propose the smallest first run using private drafts or sample data. Separate written instructions from permissions someone must configure. List the checks to run and the evidence the owner should inspect before expanding the job.
+
+Do not connect accounts, change permissions, enable a schedule, or act on external systems while preparing this card.
+```
 
 <Exercise>
-1. Pick one chore an agent could do from your accounts, and write its job prompt with
-   all five parts: the job, the tool, the categories, the output, and the boundary.
-   Set the boundary to draft-only.
-2. Connect the one account the job needs, reading the permission screen as you do.
-   Run the job by hand each day for a week, and note every correction you make.
-3. When a week passes with no corrections, grant one promotion: add the second tool,
-   or schedule the run. One rung, then back to watching.
+1. Pick one recurring task you already perform. Fill in the job card, including one good output and one unacceptable output.
+2. Inspect the agent's actual tools and account access. Remove routes to actions outside the job before running it.
+3. Run a small sample. Have the agent check the result, then review the output yourself. Record corrections and anything the checks missed.
+4. Save one recurring correction and test it on the failed example and another case. Record the owner and the date of this review.
+5. Choose one possible expansion. Write the additional checks and access it would require before deciding whether to grant it.
 </Exercise>
-
-## Further reading
-
-- [Sandeep Swadia · 4 AI Agents To Automate 99% Of Your Life](https://www.youtube.com/watch?v=TL8V41Ea6oM), the walkthrough this guide draws on
-- [Microsoft WorkLab · Work Trend Index](https://www.microsoft.com/en-us/worklab/work-trend-index), the research behind the interruption numbers he cites
