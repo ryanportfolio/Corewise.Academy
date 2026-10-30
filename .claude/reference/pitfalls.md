@@ -115,3 +115,16 @@ but the helper is absent from main at `d81186be`; the command fails with
 `MODULE_NOT_FOUND`. No replacement was found under `.claude/` or `.agents/`.
 Until the helper is added, inspect `.claude/reference/` references to changed
 paths with `rg` and review the relevant entries manually before opening a PR.
+
+## Ingest and personal extract use different transcript helpers (2026-10-30)
+
+At main `8a075433`, `.agents/skills/ingest/SKILL.md` calls the repository's
+`scripts/transcript.mjs`, which starts with yt-dlp and has no youtube-transcript.io
+integration. The personal Codex `extract/scripts/transcript.mjs` uses that API
+first when a key is configured. A failed repository helper and browser recovery
+for `tcb5q_6jwvY` led to an unnecessary request for a supplied transcript before
+the editor pointed out the configured API. The repository helper now uses the
+API first when a key is configured and goes to browser recovery after API failure.
+The same video's API retrieval succeeded, returning English captions through
+21:37 of 21:39. Never print the key. When retrieval behavior differs between
+skills, inspect the helper each skill actually calls.

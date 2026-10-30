@@ -1,0 +1,238 @@
+---
+title: Choose the right Claude feature
+description: 'Choose where Claude should work, what it should make, which instructions to save, and when to use a goal or scheduled task.'
+track: foundations
+level: broad
+number: 66
+minutes: 10
+tags: ['claude code', 'model choice', 'skills', 'memory', 'automation', 'agent safety']
+objectives:
+  - Distinguish model choice, effort, context capacity, and usage limits.
+  - Choose a Claude app and output format for a task using local files or connected data.
+  - Separate saved instructions, skills, connectors, plugins, and mods by what they do.
+  - Choose between a subagent, a project, a goal, and a scheduled task.
+prerequisites: []
+sources:
+  - url: https://www.youtube.com/watch?v=tcb5q_6jwvY
+    creator: Nate Herk
+    video: Every Claude 2.0 Concept Explained for Non-Coders
+    timestamps: ['0:16', '0:34', '1:22', '2:24', '2:34', '3:21', '4:37', '5:45', '6:16', '7:07', '7:45', '8:28', '8:53', '9:33', '10:08', '10:55', '11:25', '12:16', '13:02', '13:44', '15:21', '16:02', '16:41', '17:45', '18:30', '19:10', '19:52', '20:22', '20:58']
+  - url: https://support.claude.com/en/articles/8664678-change-the-model-effort-and-thinking-settings
+    creator: Anthropic
+    video: Change the model, effort, and thinking settings
+  - url: https://academy.claude.com/tutorials/choosing-the-right-effort-level-in-claude-code
+    creator: Anthropic
+    video: Choosing the right effort level in Claude Code
+  - url: https://code.claude.com/docs/en/advisor
+    creator: Anthropic
+    video: Escalate hard decisions with the advisor tool
+  - url: https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work
+    creator: Anthropic
+    video: How do usage and length limits work?
+  - url: https://support.claude.com/en/articles/12429409-manage-usage-credits-for-paid-claude-plans
+    creator: Anthropic
+    video: Manage usage credits for paid Claude plans
+  - url: https://claude.com/blog/cowork-is-now-claude
+    creator: Anthropic
+    video: Claude Cowork and chat are now one Claude
+  - url: https://code.claude.com/docs/en/desktop
+    creator: Anthropic
+    video: Desktop application
+  - url: https://support.claude.com/en/articles/17631495-get-started-with-claude-duet
+    creator: Anthropic
+    video: Get started with Claude Duet
+  - url: https://claude.com/resources/articles/dashboards-and-motion
+    creator: Anthropic
+    video: Build live dashboards and animate explainers with Claude
+  - url: https://support.claude.com/en/articles/17440474-move-from-standalone-claude-design-to-claude
+    creator: Anthropic
+    video: Move from standalone Claude Design to Claude
+  - url: https://code.claude.com/docs/en/memory
+    creator: Anthropic
+    video: How Claude remembers your project
+  - url: https://code.claude.com/docs/en/skills
+    creator: Anthropic
+    video: Extend Claude with skills
+  - url: https://code.claude.com/docs/en/features-overview
+    creator: Anthropic
+    video: Extend Claude Code
+  - url: https://code.claude.com/docs/en/plugins/mods/overview
+    creator: Anthropic
+    video: Mods overview
+  - url: https://code.claude.com/docs/en/permissions
+    creator: Anthropic
+    video: Configure permissions
+  - url: https://code.claude.com/docs/en/sub-agents
+    creator: Anthropic
+    video: Create custom subagents
+  - url: https://code.claude.com/docs/en/claude-projects
+    creator: Anthropic
+    video: Let Claude coordinate ongoing work with Projects
+  - url: https://code.claude.com/docs/en/goal
+    creator: Anthropic
+    video: Keep Claude working toward a goal
+  - url: https://code.claude.com/docs/en/desktop-scheduled-tasks
+    creator: Anthropic
+    video: Schedule recurring tasks in Claude Code Desktop
+  - url: https://code.claude.com/docs/en/routines
+    creator: Anthropic
+    video: Automate work with scheduled tasks
+selfCheck:
+  - q: Claude knows how to write your weekly report but cannot read the sales system. Do you need another skill?
+    a: 'First check access. A skill supplies the procedure; a connector supplies tools for reaching the sales system. An exported sample file may be enough for the first run.'
+  - q: A subagent returns only a short summary. Does that mean its research used no tokens?
+    a: 'No. Its separate context keeps the research out of the main conversation, but the subagent makes its own model requests and consumes usage.'
+  - q: You want a report every Monday while your laptop is off. Is a local /goal enough?
+    a: 'No. A goal keeps one session working toward a finish condition; it does not schedule next Monday or move the session to the cloud. Use a cloud scheduled task and verify its access to the inputs.'
+status: published
+lastUpdated: 2026-10-30
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+
+<p class="lede">To turn weekly sales exports into a report, Claude needs the files, instructions for calculating the totals, and an output you can review. Each feature handles a different part of that job. Choose the feature by what is missing.</p>
+
+Nate Herk's [Every Claude 2.0 Concept Explained for Non-Coders](https://www.youtube.com/watch?v=tcb5q_6jwvY) groups Claude's features by models, apps, outputs, saved context, and independent work. "Claude 2.0" is his nickname for recent changes, not a model name. The distinctions below follow that grouping, with product details checked on October 30, 2026.
+
+## <span class="sec-no">01</span>Separate the settings
+
+Model choice and effort answer different questions. Haiku, Sonnet, Opus, and Fable are model names; effort controls how much work the chosen model spends on a response. Anthropic's [model settings](https://support.claude.com/en/articles/8664678-change-the-model-effort-and-thinking-settings) let you change them separately.
+
+| Term | What it controls | What to check |
+| --- | --- | --- |
+| Model | Which model performs the task | Whether it can produce an acceptable result on your actual work |
+| Effort | How much work that model spends responding | Whether more effort improves the result enough to justify the time and usage |
+| Token | A unit of text processed by the model | Input as well as output contributes to usage |
+| Context window | How much information a model can work with at once | Files, instructions, conversation, and room for the response |
+| Usage limit | How much work your plan permits over time | Your current allowance and reset time |
+
+Herk's [seven-workflow comparison](https://www.youtube.com/watch?v=tcb5q_6jwvY&t=82s) favored Sonnet for clearly specified tasks and Opus for vague planning work. Treat that as a reason to compare models on your own tasks, rather than assuming a more expensive model will win.
+
+Herk also [reports a comparison on one task](https://www.youtube.com/watch?v=tcb5q_6jwvY&t=223s) where extra-high effort beat max: roughly 90 minutes and $26 versus 150 minutes and $50, with bugs remaining at max. Those are his reported results for that task. They do not establish the best setting for yours.
+
+Anthropic's [effort guidance](https://academy.claude.com/tutorials/choosing-the-right-effort-level-in-claude-code) starts at the model's default and adjusts based on results. Ultracode also coordinates work across agents; it is a separate setting, not another effort level.
+
+For a hard decision within a larger task, Claude Code's [advisor tool](https://code.claude.com/docs/en/advisor) lets the main model consult a stronger model. [Recheck your model choices each release](/guides/recheck-your-model-choices-each-release/) covers comparing settings on work you can judge.
+
+A large context window does not give unlimited usage. Anthropic's [limits documentation](https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work) distinguishes context capacity from shared usage across Claude products. Most paid plans have five-hour and weekly limits; verified Ultra accounts are exempt from the five-hour limit. Context capacity varies by model and product.
+
+Check **Settings > Usage** before buying more capacity. [Usage credits](https://support.claude.com/en/articles/12429409-manage-usage-credits-for-paid-claude-plans) pay for work beyond included limits. The monthly API credits included with Max and Ultra are separate and do not pay for extra usage inside Claude or Claude Code. [Stop hitting your token limit](/guides/stop-hitting-your-token-limit/) covers reducing unnecessary input.
+
+## <span class="sec-no">02</span>Choose where the work runs
+
+| Place | Use it for | Check first |
+| --- | --- | --- |
+| Claude chat | Questions, research, and documents using supplied or connected material | Whether the needed files and tools are available |
+| Claude Code | Work in a project folder, including reading files, editing them, and running commands | Which folder and actions the session can access |
+| Cowork | Delegated work across files and tools | Your current interface: Cowork and chat are merging |
+| Duet | Ongoing help through connected apps, such as an email and calendar brief | Waitlist access, connected accounts, and background usage |
+
+Anthropic [announced the Cowork and chat merger](https://claude.com/blog/cowork-is-now-claude) on September 16, 2026. The video's separate categories may not match the tabs on your screen. Choose by available capabilities. A local Code session is useful for the sales report when the exports already live in a folder on your computer.
+
+A **session** is one conversation and its working context. Several sessions can work in parallel. Give them distinct outputs or coordinate edits so two sessions do not overwrite the same file. [The desktop documentation](https://code.claude.com/docs/en/desktop) covers parallel sessions and communication between them. Remote Control lets you reach work on your computer from another device; the work still needs that computer running.
+
+A **side chat** asks about the current session without adding its question and answer to the main conversation. In the Windows desktop app, use `Ctrl+;` or `/btw`. Side chats are not saved to disk, so move any decision the main task needs into the main conversation. [Improve your Claude Code workflow](/guides/improve-your-claude-code-workflow/) covers when a side question belongs there.
+
+[Duet](https://support.claude.com/en/articles/17631495-get-started-with-claude-duet) is a US research preview accessed through a waitlist on Pro, Max, and Ultra. It works on its own cloud computer and is designed to ask before consequential actions. Its background work consumes your plan's usage. Review drafts and approval requests; access to an app does not prove the result is correct.
+
+## <span class="sec-no">03</span>Choose the output
+
+An **artifact** is an output you can open and work on beside a conversation. It is different from the model or app that made it.
+
+| Output | Choose it when you need |
+| --- | --- |
+| Docs | A written report that people can read and edit |
+| Slides | A presentation you can deliver or export |
+| Design | A visual layout, screen, or mockup |
+| Dashboards | Charts connected to data that changes |
+| Motion | An animated explanation you can export as video |
+
+Anthropic's [October 8 announcement](https://claude.com/resources/articles/dashboards-and-motion) puts Docs, Slides, and Design on every plan, including Free. Dashboards are a paid-plan beta; Motion is a Team and Enterprise beta. Organization settings can affect access.
+
+For a weekly sales report, choose a document if someone needs to read commentary and a dashboard if they need to explore refreshed figures. A dashboard's query is the instruction that selects and totals its source data. Ask Claude to explain which rows, dates, and refund rules produce a total. Check that explanation against your exports, and check when the dashboard data last refreshed.
+
+Motion animates text, charts, shapes, and images with code and exports MP4; it does not generate video footage.
+
+Design now works inside Claude conversations. The standalone Design site is due to close on **December 14, 2026**. Follow Anthropic's [Move from standalone Claude Design to Claude](https://support.claude.com/en/articles/17440474-move-from-standalone-claude-design-to-claude) for existing work. The older [Move design work into Claude Design](/guides/move-design-work-into-claude-design/) guide describes the earlier interface and the design workflow.
+
+## <span class="sec-no">04</span>Save the right thing
+
+Instructions, procedures, and access solve different problems. Herk's [skills explanation](https://www.youtube.com/watch?v=tcb5q_6jwvY&t=822s) starts with a repeated request that becomes a saved procedure.
+
+<PullQuote
+  quote="A skill is a saved set of instructions for one specific job"
+  creator="Nate Herk"
+  video="Every Claude 2.0 Concept Explained for Non-Coders"
+  href="https://www.youtube.com/watch?v=tcb5q_6jwvY&t=824s"
+  timestamp="13:44"
+/>
+
+| Feature | What it saves or adds | Sales-report example |
+| --- | --- | --- |
+| Auto memory | Notes Claude writes for later sessions | A correction about how your team names a region |
+| `CLAUDE.md` | Standing project instructions | Where exports live and which definition of revenue to use |
+| Skill | A reusable procedure in `SKILL.md` | Calculate the weekly totals, compare periods, and draft commentary |
+| Connector | Tools for a connected service, often using MCP, the Model Context Protocol | Read the approved sales data |
+| Plugin | A package of extensions | Distribute the reporting skill and related tools to a team |
+| Mod | Code that changes Claude Code's tools or interface | Add a panel showing report progress |
+
+[Claude Code memory](https://code.claude.com/docs/en/memory) carries notes across sessions by reading saved files. It does not retrain the model. Keep `CLAUDE.md` short and put detailed procedures in [skills](https://code.claude.com/docs/en/skills), whose full instructions load when needed. Review saved notes when a correction stops applying. [Audit what your agent saved to memory](/guides/audit-what-your-agent-saved-to-memory/) covers that check.
+
+A connector provides access; a skill explains how to use that access for your task. A plugin packages extensions for reuse. Anthropic's [extension overview](https://code.claude.com/docs/en/features-overview) explains those boundaries. [Write smaller Claude skills that work](/guides/write-smaller-claude-skills-that-work/) covers saving repeated instructions, and [One skills library for your whole team](/guides/one-skills-library-for-your-whole-team/) covers sharing them.
+
+Install a [mod](https://code.claude.com/docs/en/plugins/mods/overview) with the same care as other software. It runs with your account's permissions and can read files, start programs, and make network requests. A friendly panel does not limit what its code can do. Use an existing skill or connector when that already meets the need.
+
+## <span class="sec-no">05</span>Control independent work
+
+Permission modes determine how Claude Code approves actions. [Current documentation](https://code.claude.com/docs/en/permissions) lists these modes:
+
+| Mode | Approval behavior |
+| --- | --- |
+| Manual | Prompts for actions that need approval |
+| Accept edits | Allows file edits and common file commands in permitted directories |
+| Plan | Explores and proposes work without editing source files |
+| Auto | Uses a background classifier for actions that would otherwise need routine approval |
+| Don't ask | Denies actions that would require a prompt, subject to documented exceptions |
+| Bypass permissions | Skips most permission prompts |
+
+Auto is not a guarantee that every action is safe. Use permission rules to control access, and inspect the work. Writing "never send email" in `CLAUDE.md` does not remove a sending tool. [Assume your agent uses every tool it has](/guides/assume-your-agent-uses-every-tool-it-has/) explains that distinction.
+
+The features that organize independent work also differ:
+
+| Feature | Job | Limit to remember |
+| --- | --- | --- |
+| Subagent | Handle a bounded task in separate context and return results | Its requests still consume usage |
+| Code project | Coordinate ongoing work through separate task threads | Cloud threads need their own available files and tools |
+| `/goal` | Keep a session working toward a completion condition | Completion depends on the evidence in the conversation |
+| Scheduled task | Start work at a later time or on a supported trigger | Local and cloud runs have different access and runtime requirements |
+
+[Subagents](https://code.claude.com/docs/en/sub-agents) keep research out of the main context; they do not make it free. Give a report-checking subagent the draft report and the totals you calculated from the exports. Ask it to identify any differences. [Delegate to your agent in stages](/guides/delegate-to-your-agent-in-stages/) covers reviewing work before expanding responsibility.
+
+[Code projects](https://code.claude.com/docs/en/claude-projects) coordinate a stream of tasks, usually through cloud sessions. That is different from the classic chat project that groups conversations with shared instructions and files. A cloud project does not automatically inherit your local skills, settings, or tools. Check its configuration before moving a working process there.
+
+With [`/goal`](https://code.claude.com/docs/en/goal), specify a result and the evidence for it. The evaluator reads what the session reports; it does not independently inspect your files. A goal can end as impossible or stop on an error requiring your action. [Give your coding agent a finish line](/guides/give-your-coding-agent-a-finish-line/) covers defining the evidence Claude must report before calling a task complete.
+
+[Scheduled tasks](https://code.claude.com/docs/en/desktop-scheduled-tasks) start a new run. Local tasks need the computer awake and the app open. [Cloud scheduled tasks](https://code.claude.com/docs/en/routines), formerly called routines, can run while your computer is off. They need access to their inputs in the cloud. Test the scheduled run itself, as described in [Keep Claude automations working](/guides/keep-claude-automations-working/).
+
+## <span class="sec-no">06</span>Try one complete report
+
+Herk's [starting advice](https://www.youtube.com/watch?v=tcb5q_6jwvY&t=1258s) is a project instruction file, one useful skill, and a clear goal. Start with sample exports and a report you can check before connecting live accounts or adding a schedule. [Set up Claude Code in seven steps](/guides/set-up-claude-code-in-seven-steps/) covers the broader setup.
+
+Use this original prompt in a local Code session:
+
+```text
+Read the sample sales exports in this folder. Ask me how revenue, refunds, and the reporting week should be defined if the files do not make those rules clear.
+
+Create a draft weekly report showing the source files, reporting dates, revenue total, and any missing or conflicting data. Show the calculation behind the total. Keep the source files unchanged. Do not connect accounts, send the report, or create a schedule.
+
+Finish when the draft and calculation are saved and you have compared the reported total with the source rows. If a missing definition prevents a reliable total, stop and ask me.
+```
+
+<Exercise>
+1. Choose sample exports and calculate a total yourself. Decide whether the reader needs a document, slides, or a dashboard.
+2. Run the prompt above, adding whether you want a document, slides, or a dashboard. Compare the output with the source rows and your total, including the treatment of refunds and dates.
+3. Save stable definitions and file locations in `CLAUDE.md`. Turn the checked reporting procedure into one skill, then try it on a different export.
+4. Decide whether the next run needs a connector or whether exported files suffice. Configure only the required access.
+5. If the report should recur, choose local or cloud scheduling and test one run in that environment. Check the saved output and failure reporting before relying on it.
+</Exercise>

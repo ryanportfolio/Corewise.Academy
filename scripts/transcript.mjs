@@ -5,6 +5,9 @@
 //   node scripts/transcript.mjs VIDEO_ID
 //
 // Strategy, most reliable first:
+//   0. youtube-transcript.io when YOUTUBE_TRANSCRIPT_IO_KEY is set, or from
+//      ~/.claude/secrets/youtube-transcript-io.key. An API failure exits 3 so
+//      the caller can use the browser transcript panel without retrying yt-dlp.
 //   1. yt-dlp (manual subtitles preferred, then auto-generated). Looked for on
 //      PATH first, then as a Python module (py/python -m yt_dlp), then in the
 //      per-version Python Scripts folders on Windows, because a sandboxed agent
@@ -65,6 +68,57 @@ function stamp(seconds) {
 function printLines(lines, sourceNote) {
   console.error(`# Transcript for ${watchUrl} ${sourceNote}`);
   for (const l of lines) if (l.text) console.log(`[${stamp(l.t)}] ${l.text}`);
+}
+
+// ------------------------------------------------- youtube-transcript.io path
+
+class TranscriptApiError extends Error {}
+
+function transcriptIoKey() {
+  const configured = (process.env.YOUTUBE_TRANSCRIPT_IO_KEY || '').trim();
+  if (configured) return configured;
+  try {
+    return fs.readFileSync(
+      path.join(os.homedir(), '.claude', 'secrets', 'youtube-transcript-io.key'),
+      'utf8',
+    ).trim() || null;
+  } catch (error) {
+    if (error.code === 'ENOENT') return null;
+    throw new TranscriptApiError('Could not read the configured transcript API key file.');
+  }
+}
+
+async function tryTranscriptIo(key) {
+  const response = await fetch('https://www.youtube-transcript.io/api/transcripts', {
+    method: 'POST',
+    headers: { Authorization: `Basic ${key}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ ids: [id] }),
+    signal: AbortSignal.timeout(30_000),
+  });
+  if (!response.ok) {
+    const retryAfter = response.headers.get('retry-after');
+    throw new TranscriptApiError(`HTTP ${response.status}${retryAfter ? ` (Retry-After: ${retryAfter})` : ''}`);
+  }
+  const body = await response.json();
+  const item = Array.isArray(body) ? body.find((video) => video?.id === id) : null;
+  const tracks = Array.isArray(item?.tracks) ? item.tracks : [];
+  const usable = tracks.filter((track) => Array.isArray(track.transcript) && track.transcript.length);
+  const track = usable.find((entry) => /^en(?:\b|[-_])/i.test(String(entry.language))) || usable[0];
+  if (!track) return null;
+  const lines = track.transcript.map((segment) => ({
+    t: Number(segment.start),
+    text: decodeEntities(String(segment.text || '')).replace(/\s+/g, ' ').trim(),
+  }));
+  if (lines.some((line) => !Number.isFinite(line.t) || line.t < 0)) {
+    throw new TranscriptApiError('Transcript API returned an invalid timestamp.');
+  }
+  if (!lines.some((line) => line.text)) return null;
+  const metadata = item.microformat?.playerMicroformatRenderer || {};
+  console.error(
+    `# ${item.title || '(no title)'} | ${metadata.ownerChannelName || '?'} | published ${metadata.publishDate || '?'}` +
+    ` | ${metadata.lengthSeconds ? stamp(Number(metadata.lengthSeconds)) : '?'} long`,
+  );
+  return { lines, note: `[youtube-transcript.io, ${track.language || 'unknown language'}]` };
 }
 
 // ---------------------------------------------------------------- yt-dlp path
@@ -247,7 +301,35 @@ async function tryWatchPage() {
 
 // -------------------------------------------------------------------- main
 
+// Let pending HTTP connections close normally on Windows after an API request.
+let apiConfigured = false;
 try {
+  const key = transcriptIoKey();
+  if (key) {
+    apiConfigured = true;
+    process.exitCode = 3;
+    const transcript = await tryTranscriptIo(key);
+    if (transcript) {
+      printLines(transcript.lines, transcript.note);
+      process.exitCode = 0;
+    } else {
+      console.error(`youtube-transcript.io returned no transcript track for ${id}.`);
+    }
+  }
+} catch (error) {
+  apiConfigured = true;
+  process.exitCode = 3;
+  // Do not print response bodies, request headers, or credential values.
+  const message = error instanceof TranscriptApiError
+    ? error.message
+    : error.name === 'TimeoutError' ? 'Request timed out.' : 'Request failed or response was invalid.';
+  console.error(`youtube-transcript.io failed: ${message}`);
+}
+if (apiConfigured && process.exitCode) {
+  console.error('Next step: read the browser transcript panel. The configured API failed; yt-dlp is skipped.');
+}
+
+if (!apiConfigured) try {
   const viaYtDlp = tryYtDlp();
   if (viaYtDlp) {
     printLines(viaYtDlp.lines, viaYtDlp.note);
