@@ -15,7 +15,7 @@
 //   2. Zero-dependency fallback: read the caption track the YouTube watch page
 //      embeds. YouTube bot-checks plain fetches and answers HTTP 429 for most
 //      of them, so this path fails for many videos even when captions exist.
-//      Retrying it does not help; yt-dlp is the fix.
+//      Retrying it does not help; use the browser transcript panel next.
 //   3. Neither worked -> exit non-zero with a clear message, so the ingest
 //      workflow can try the browser transcript panel before asking the editor.
 //
@@ -260,7 +260,7 @@ async function getText(url) {
   if (res.status === 429) {
     throw new Error(
       `HTTP 429 from YouTube for ${url}. YouTube bot-checks plain fetches; retrying will not help. ` +
-        'Install yt-dlp (or make it reachable from this shell) and run again.',
+        'Use the browser transcript panel next.',
     );
   }
   if (!res.ok) throw new Error(`HTTP ${res.status} fetching ${url}`);
@@ -320,8 +320,14 @@ try {
   apiConfigured = true;
   process.exitCode = 3;
   // Do not print response bodies, request headers, or credential values.
+  const networkCode = error?.cause?.code || error?.code;
+  const safeNetworkCodes = new Set([
+    'EACCES', 'EPERM', 'ENETUNREACH', 'ECONNREFUSED', 'ENOTFOUND',
+    'ETIMEDOUT', 'ECONNRESET', 'UND_ERR_CONNECT_TIMEOUT',
+  ]);
   const message = error instanceof TranscriptApiError
     ? error.message
+    : safeNetworkCodes.has(networkCode) ? `Network error (${networkCode}).`
     : error.name === 'TimeoutError' ? 'Request timed out.' : 'Request failed or response was invalid.';
   console.error(`youtube-transcript.io failed: ${message}`);
 }

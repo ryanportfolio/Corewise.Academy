@@ -84,8 +84,12 @@ Run these from the repo root, in this order:
 The script tries youtube-transcript.io first when `YOUTUBE_TRANSCRIPT_IO_KEY` is
 set, otherwise using `~/.claude/secrets/youtube-transcript-io.key` if present.
 Never print the key. A successful response supplies the transcript and video
-metadata. An API failure exits 3 and goes straight to browser recovery; respect
-any `Retry-After` and do not retry through yt-dlp.
+metadata. An API failure exits 3 and goes to browser recovery, except for a
+confirmed sandbox denial that can be resolved with scoped permission. Respect
+any `Retry-After` and do not retry through yt-dlp. Confirm and record the reported
+language. For non-English captions, obtain an English track or explicitly
+translate them before drafting; do not present a translated quote as the
+speaker's exact English words.
 
 Without a key, the script tries yt-dlp (manual subtitles preferred, then
 auto-generated). It looks on PATH, as a Python module, and in Windows Python
@@ -94,6 +98,7 @@ to retrieve captions.
 
 | Evidence | What to do |
 |---|---|
+| API exits 3 with a network error code | Diagnose the code; a network error alone does not prove sandbox denial. For a confirmed sandbox denial, use an available scoped permission mechanism and rerun once. Otherwise use browser recovery. |
 | API exits 3 (no track, quota, authentication, timeout, or service error) | Try browser recovery. Do not infer that the visible transcript is missing. |
 | yt-dlp cannot be found | Check `where.exe yt-dlp`, `py -0p`, and installed Python module paths. |
 | yt-dlp caption request returns HTTP 429 | Let the helper's bounded client retry finish, then try browser recovery. |
