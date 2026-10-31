@@ -33,16 +33,29 @@ New-Item -ItemType Directory -Force .tmp | Out-Null
 node scripts/transcript.mjs "<youtube-url>" > .tmp/<video-id>.txt
 ```
 
+The helper tries youtube-transcript.io first when `YOUTUBE_TRANSCRIPT_IO_KEY` is
+set, otherwise using `~/.claude/secrets/youtube-transcript-io.key` if present.
+Never print the key. A successful API response provides the transcript and video
+metadata. API failure exits 3 and goes to browser recovery, except for a confirmed
+sandbox denial that can be resolved with scoped permission. Respect any
+`Retry-After` and do not retry through yt-dlp. Without a key, the helper uses
+yt-dlp, then the watch-page fallback. Do not install dependencies to retrieve captions.
+
 Read the saved transcript in full, including its final segment. Capture video title,
 creator/channel, URL, and publication date from the video page or metadata. A metadata
 command succeeding does not prove captions downloaded. Record retrieval method and
 caption type if available; never claim to have watched footage when only text was read.
+Confirm and record the reported language. For non-English captions, obtain an
+English track or explicitly translate them before drafting; do not present a
+translated quote as the speaker's exact English words.
 
 Diagnose failures from the actual output:
 
 | Evidence | Next action |
 | --- | --- |
-| yt-dlp cannot be found | Inspect the script's discovered invocation and installed executable/module paths. Avoid unnecessary installation. |
+| API exits 3 with a network error code | Diagnose the code; a network error alone does not prove sandbox denial. For a confirmed sandbox denial, use an available scoped permission mechanism and rerun once. Otherwise use browser recovery. |
+| API exits 3 (no track, quota, authentication, timeout, or service error) | Try browser recovery below. Do not infer that the visible transcript is missing. |
+| yt-dlp cannot be found | Inspect the script's discovered invocation and installed executable/module paths. Use browser recovery if none works; do not install dependencies. |
 | Socket or filesystem access denied by sandbox | Use scoped escalation for the needed authorized command. |
 | yt-dlp returns caption HTTP 429 | yt-dlp was found. Let the script's built-in client retry finish; Android is not guaranteed to succeed. |
 | Script returns no transcript or all caption clients fail | Try browser recovery below if browser control is exposed. |
