@@ -1,0 +1,155 @@
+---
+title: Build a personal tool with Claude
+description: 'Turn a frustrating task into a small tool: filter the data, check model judgments, and keep the files needed to rebuild it.'
+track: building
+level: practitioner
+number: 67
+minutes: 7
+tags: ['claude code', 'delegation', 'model choice', 'verification']
+objectives:
+  - Write a build request with a specific use, data source, and completion check.
+  - Separate fixed filtering rules from decisions that need model judgment.
+  - Check a sample of model decisions against the original records.
+  - Prepare data and instructions that another person can use to build their own version.
+prerequisites:
+  - slug: brief-the-model
+    note: State the task and the context the agent cannot infer.
+sources:
+  - url: https://www.youtube.com/watch?v=3wCkFtIz88g
+    creator: Nick Saraev
+    video: 'How The #1 AI Engineer in The World Actually Uses AI'
+    timestamps: ['0:22', '0:43', '0:56', '1:12', '1:32', '1:55', '2:28', '3:02', '3:28', '3:50', '3:59', '4:35']
+  - url: https://karpathy.bearblog.dev/hacker-tube/
+    creator: Andrej Karpathy
+    video: HackerTube
+  - url: https://x.com/karpathy/status/2105819303471976479
+    creator: Andrej Karpathy
+    video: "We'll be spending a lot more time trying to understand the outputs of language models."
+  - url: https://x.com/karpathy/status/2105909609487872075
+    creator: Andrej Karpathy
+    video: Cool eval.
+  - url: https://x.com/karpathy/status/2056753169888334312
+    creator: Andrej Karpathy
+    video: "Personal update: I've joined Anthropic."
+  - url: https://epoch.ai/data/eci-documentation
+    creator: Epoch AI
+    video: ECI documentation
+  - url: https://epoch.ai/data/eci-documentation/faq
+    creator: Epoch AI
+    video: ECI documentation FAQ
+  - url: https://code.claude.com/docs/en/best-practices
+    creator: Anthropic
+    video: Best practices for Claude Code
+  - url: https://code.claude.com/docs/en/sub-agents
+    creator: Anthropic
+    video: Create custom subagents
+  - url: https://code.claude.com/docs/en/model-config
+    creator: Anthropic
+    video: Model configuration
+selfCheck:
+  - q: Which parts of a reading-list tool should run before model judgment?
+    a: Fixed rules such as removing duplicate URLs or selecting a date range can run in code. A decision about whether a comment genuinely recommends a resource needs a stated criterion and checked examples.
+  - q: Does a recognizable land-or-water map establish that a model will classify your records correctly?
+    a: No. It demonstrates performance on that question and set of coordinates. Check your own records against known answers, including ambiguous cases and items the model rejects.
+  - q: What should accompany the data when someone rebuilds your tool?
+    a: Include source and reuse information, field definitions, filtering rules, model instructions, checked examples, and rebuild steps. A prompt alone cannot recover missing data or explain undocumented decisions.
+status: published
+lastUpdated: 2026-11-05
+---
+
+import Exercise from '../../components/Exercise.astro';
+
+<p class="lede">A useful personal tool can start with a complaint: the recommendations are poor, the list is hard to search, or the same sorting job keeps coming back. Give Claude the data and the rule you want to apply, then check whether the result fixes that problem.</p>
+
+AI educator Nick Saraev's [How The #1 AI Engineer in The World Actually Uses AI](https://www.youtube.com/watch?v=3wCkFtIz88g) collects Andrej Karpathy's recent accounts of working with agents. Karpathy [works at Anthropic](https://x.com/karpathy/status/2056753169888334312), the company behind Claude. His own [HackerTube post](https://karpathy.bearblog.dev/hacker-tube/) supplies a concrete example: he wanted better video recommendations, so he had Claude build a site from videos recommended in Hacker News comments.
+
+## <span class="sec-no">01</span>Give the tool one job
+
+Describe what you want to do with the finished tool. For a personal reading list, that might be finding articles that people recommended for a particular topic, with the original comments available to read. [Choose AI changes worth your time](/guides/choose-ai-changes-worth-your-time/) covers deciding whether a custom tool is worth maintaining.
+
+Saraev [describes Karpathy's increasingly short prompts](https://www.youtube.com/watch?v=3wCkFtIz88g&t=56s). Shorten instructions by removing repetition and resolving conflicts. Keep the data source, required behavior, and access limits. [Brief the model like a brilliant new hire](/guides/brief-the-model/) covers the missing context; [Trim the instructions your model outgrew](/guides/trim-the-instructions-your-model-outgrew/) covers the cleanup.
+
+Karpathy reports using Claude Code's Mac desktop app with Opus 5.5 at medium effort and delegating the code and terminal work. He still created a metadata API key, a server, and a domain himself. You can delegate code and terminal work while still inspecting what Claude does.
+
+[Anthropic documents effort as a tradeoff](https://code.claude.com/docs/en/model-config#choose-an-effort-level) between capability and token use, the amount of text processed and generated. Compare settings on your task using [Recheck your model choices each release](/guides/recheck-your-model-choices-each-release/).
+
+For a first version, keep the tool local. Tell Claude to check search, source links, and duplicate handling before you accept it. Keep publishing and external accounts outside this trial.
+
+Saraev [describes a polite request that also asks Claude to avoid mistakes](https://www.youtube.com/watch?v=3wCkFtIz88g&t=275s). Courteous wording is fine; that request still needs [a check the agent can run](https://code.claude.com/docs/en/best-practices#give-claude-a-check-to-run).
+
+## <span class="sec-no">02</span>Filter before model judgment
+
+Use code for rules you can state exactly, then use a model for decisions that depend on meaning. Karpathy reports filtering the comments before running Sonnet, another Claude model, over the remaining material. This order gives the model less material to judge.
+
+For the reading-list tool, separate the work like this:
+
+| Step | Method | Result to keep |
+| --- | --- | --- |
+| Select records from the right period | Date comparison in code | Record IDs and selected dates |
+| Find links and remove duplicates | URL parsing and comparison | A link back to each original comment |
+| Decide whether a comment recommends the article | Model judgment using a written criterion | Decision, reason, and supporting text |
+| Group useful articles by topic | Model-assisted classification | Topic labels with examples you checked |
+| Let someone search the collection | Interface code | Results linked to the underlying records |
+
+Check rejected records too. A filtering rule can remove a useful recommendation before the model ever sees it. Preserve the original data so you can trace a missing result back through the steps.
+
+A stronger model can coordinate work while a cheaper model handles repeated judgments. Claude Code's [subagent settings](https://code.claude.com/docs/en/sub-agents#choose-a-model) let you choose worker models; their requests count toward usage too. Compare the total usage and correction work before keeping that split. [Split big AI tasks into steps and checks](/guides/split-big-ai-tasks-into-steps-and-checks/) covers how to assign separate jobs.
+
+## <span class="sec-no">03</span>Choose an explanation format
+
+Ask for the format that helps you inspect the work. In [his post on understanding model outputs](https://x.com/karpathy/status/2105819303471976479), Karpathy describes using ASD-STE100-style explanations, diagrams, interactive HTML, and custom explainer videos. ASD-STE100 is a controlled language used for aerospace maintenance documentation; here, it is a request for constrained wording, not proof that the output meets the standard.
+
+| What you need to understand | What to request |
+| --- | --- |
+| Why a record was included | A short explanation quoting the relevant source text |
+| Where records get removed | A diagram of the filtering steps, with counts |
+| How a threshold changes the list | A local HTML page that shows results as you change it |
+| How a longer process unfolds | An animation or narrated walkthrough using the actual steps |
+
+For the reading list, click through from a decision to its original comment. A diagram can explain a faulty rule clearly; checking the source establishes whether the rule was applied correctly. [Learn a work skill with AI](/guides/learn-a-work-skill-with-ai/) covers checking an explanation against its sources.
+
+## <span class="sec-no">04</span>Test the decision you depend on
+
+Check whether the model recognizes genuine recommendations before asking it to classify the whole collection. Save examples with answers you have checked, including ambiguous comments and links that merely criticize an article. Run those examples again when the prompt or model changes. [Score your agent on known good answers](/guides/score-your-agent-on-known-good-answers/) covers that comparison.
+
+Saraev [describes a map made from land-or-water answers](https://www.youtube.com/watch?v=3wCkFtIz88g&t=148s) for latitude and longitude coordinates. [Karpathy pointed to that experiment](https://x.com/karpathy/status/2105909609487872075). A recognizable map is evidence about those answers; it does not establish accuracy on your recommendation task or complete knowledge of geography.
+
+Use benchmark results as broader evidence. The [Epoch Capabilities Index (ECI)](https://epoch.ai/data/eci-documentation) combines scores from multiple benchmarks into a capability scale. Epoch's [FAQ](https://epoch.ai/data/eci-documentation/faq) notes that the measure still inherits benchmark limitations, including models being optimized for the tests. ECI cannot establish whether your filtering prompt works.
+
+After checking the decisions, test the tool itself: search for a known article, open its source comment, and check that removing duplicate article links has not removed their source comments. [Give your coding agent a finish line](/guides/give-your-coding-agent-a-finish-line/) covers defining completion evidence.
+
+## <span class="sec-no">05</span>Keep what makes it rebuildable
+
+Keep the data and the instructions that turn it into the collection. Karpathy's HackerTube post offers a data export so other people can build their own versions. Saraev [draws out the personalization benefit](https://www.youtube.com/watch?v=3wCkFtIz88g&t=239s): the same data can support a different interface.
+
+Prepare a package containing:
+
+- Source locations, collection date, and any limits on reuse or sharing.
+- Original record IDs and an explanation of the data fields.
+- Filtering rules and the prompts used for model decisions.
+- Checked examples, including records that should stay out.
+- Instructions for rebuilding the collection and opening the tool.
+
+Share only data you are allowed to share, and remove credentials from the package. Test the rebuild in a fresh folder before handing it over. Keeping the code can make that rebuild easier even when someone intends to replace the interface.
+
+## <span class="sec-no">06</span>Build a checked reading list
+
+Use this original prompt with a small file of comments and article links you are allowed to use. It is an exercise, not Karpathy's build prompt.
+
+```text
+Build a local reading-list tool from the supplied comments. I want to find articles that people recommend on a topic and open the original comment behind each result. Keep the original data unchanged. Do not publish the tool or connect external accounts.
+
+Inspect the fields first. Ask me to settle any missing decision about what counts as a recommendation. Use code for fixed filters and duplicate detection. Propose a model prompt for judging the remaining comments, with a decision, short reason, and supporting source text for each.
+
+Before processing the full file, show me a sample of accepted, rejected, and uncertain records. After I check the sample and approve the criterion, build the collection and interface. Check search, duplicate handling, source links, and the examples I labeled. Report failed or blocked checks.
+
+Keep a data export, source locations, collection date, reuse limits, original record IDs, field definitions, filtering rules, model prompt, checked examples, and rebuild instructions. Explain the filtering steps with counts and a diagram so I can see where records were removed.
+```
+
+<Exercise>
+1. Supply a small file containing genuine recommendations, criticism, duplicate links, and an ambiguous comment. Decide the expected treatment of each before running the model.
+2. Run the prompt and review its sample decisions against the original comments. Resolve any disagreement about what counts as a recommendation before approving the full run.
+3. Open the tool. Search for a known article, follow its source link, and check that duplicate handling preserves the relevant comments.
+4. Change one classification instruction or worker model, then rerun the checked examples. Record incorrect decisions, manual corrections, and usage if available before choosing which version to keep.
+5. Rebuild from the saved package in a fresh folder. Confirm the checked examples still pass and the source links still work.
+</Exercise>

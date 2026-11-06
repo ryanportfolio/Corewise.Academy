@@ -1,10 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 430" role="img" aria-label="Chart of the CoreWise Academy catalogue: 59 published guides as stars in five constellations, one per curriculum layer.">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 430" role="img" aria-label="Chart of the CoreWise Academy catalogue: 60 published guides as stars in five constellations, one per curriculum layer.">
 <g font-family="ui-monospace, 'IBM Plex Mono', SFMono-Regular, Menlo, monospace">
 <rect x="0" y="0" width="1000" height="430" fill="#f3efe4"/>
 <rect x="8" y="8" width="984" height="414" fill="none" stroke="#1c1914" stroke-width="1.2"/>
 <rect x="14" y="14" width="972" height="402" fill="none" stroke="#1c1914" stroke-opacity="0.16" stroke-width="0.7"/>
 <path d="M 120 258 L 330 218 L 520 240 L 712 150 L 880 112" fill="none" stroke="#1c1914" stroke-opacity="0.16" stroke-width="0.9" stroke-dasharray="1 5"/>
-<path d="M12 0 L14.88 9.12 L24 12 L14.88 14.88 L12 24 L9.12 14.88 L0 12 L9.12 9.12 Z" transform="translate(84.20 245.70) scale(0.6250)" fill="#1c31a4"/>
+<circle cx="91.7" cy="253.2" r="1.9" fill="#1c1914" fill-opacity="0.59"/>
 <circle cx="129.8" cy="242.3" r="1.9" fill="#1c1914" fill-opacity="0.86"/>
 <circle cx="149.6" cy="282.2" r="1.9" fill="#1c1914" fill-opacity="0.58"/>
 <circle cx="152.9" cy="261.7" r="2.5" fill="#1c1914" fill-opacity="0.6"/>
@@ -56,13 +56,14 @@
 <text x="520" y="382" text-anchor="middle" font-size="11.5" letter-spacing="1.5" fill="#574f43">III · THE COURIER</text>
 <text x="520" y="399" text-anchor="middle" font-size="10" letter-spacing="1" fill="#574f43">32 GUIDES</text>
 <circle cx="710.9" cy="132.6" r="1.9" fill="#1c1914" fill-opacity="0.58"/>
+<path d="M12 0 L14.88 9.12 L24 12 L14.88 14.88 L12 24 L9.12 14.88 L0 12 L9.12 9.12 Z" transform="translate(684.00 113.40) scale(0.6250)" fill="#1c31a4"/>
 <circle cx="745.1" cy="143.3" r="2.5" fill="#1c1914" fill-opacity="0.58"/>
 <circle cx="722.2" cy="143.3" r="1.9" fill="#1c1914" fill-opacity="0.78"/>
 <circle cx="697.4" cy="165.1" r="2.5" fill="#1c1914" fill-opacity="0.79"/>
 <circle cx="685.1" cy="134.6" r="2.5" fill="#1c1914" fill-opacity="0.68"/>
 <circle cx="733.9" cy="121.3" r="2.5" fill="#1c1914" fill-opacity="0.79"/>
 <text x="712" y="382" text-anchor="middle" font-size="11.5" letter-spacing="1.5" fill="#574f43">IV · THE FORGE</text>
-<text x="712" y="399" text-anchor="middle" font-size="10" letter-spacing="1" fill="#574f43">6 GUIDES</text>
+<text x="712" y="399" text-anchor="middle" font-size="10" letter-spacing="1" fill="#574f43">7 GUIDES</text>
 <circle cx="846" cy="140.2" r="2.5" fill="#1c1914" fill-opacity="0.81"/>
 <circle cx="852.7" cy="121.2" r="2.5" fill="#1c1914" fill-opacity="0.77"/>
 <circle cx="871.9" cy="121.4" r="1.9" fill="#1c1914" fill-opacity="0.78"/>
@@ -73,11 +74,11 @@
 <circle cx="834.3" cy="87.3" r="1.9" fill="#1c1914" fill-opacity="0.88"/>
 <text x="880" y="382" text-anchor="middle" font-size="11.5" letter-spacing="1.5" fill="#574f43">V · THE METRONOME</text>
 <text x="880" y="399" text-anchor="middle" font-size="10" letter-spacing="1" fill="#574f43">8 GUIDES</text>
-<path d="M 97.7 247.2 L 105.7 223.2" stroke="#1c1914" stroke-opacity="0.55" stroke-width="0.7" fill="none"/>
-<text x="109.7" y="226.2" font-size="10.5" letter-spacing="1" fill="#1c31a4">Nº 066 · NEWEST</text>
+<path d="M 697.5 114.9 L 705.5 74.9" stroke="#1c1914" stroke-opacity="0.55" stroke-width="0.7" fill="none"/>
+<text x="709.5" y="77.9" font-size="10.5" letter-spacing="1" fill="#1c31a4">Nº 067 · NEWEST</text>
 <text x="34" y="46" font-size="15" letter-spacing="2.8" fill="#1c1914" font-weight="600">COREWISE ACADEMY</text>
 <text x="34" y="68" font-size="10.5" letter-spacing="2" fill="#574f43" font-weight="400">PLATE OF THE CATALOGUE</text>
-<text x="34" y="83" font-size="11.5" letter-spacing="1.2" fill="#1c1914" font-weight="600">59 GUIDES · 408 MINUTES OF READING</text>
+<text x="34" y="83" font-size="11.5" letter-spacing="1.2" fill="#1c1914" font-weight="600">60 GUIDES · 415 MINUTES OF READING</text>
 <text x="34" y="101" font-size="9.5" letter-spacing="1" fill="#6f6656" font-weight="400">SURVEYED FROM GUIDE FRONTMATTER</text>
 <text x="34" y="116" font-size="9.5" letter-spacing="1" fill="#6f6656" font-weight="400">ENGRAVED BY scripts/readme-plate.mjs · CORRECTED TO NOVEMBER 2026</text>
 <text x="34" y="135" font-size="10" letter-spacing="1" fill="#574f43">ONE STAR = ONE PUBLISHED GUIDE · LARGER = DEEPER</text>
