@@ -1,22 +1,42 @@
 ---
-title: Choose the right Claude feature
+title: A practical guide to Claude's features
 description: 'Choose where Claude should work, what it should make, which instructions to save, and when to use a goal or scheduled task.'
 track: foundations
 level: broad
 number: 66
-minutes: 10
+minutes: 14
 tags: ['claude code', 'model choice', 'skills', 'memory', 'automation', 'agent safety']
 objectives:
   - Distinguish model choice, effort, context capacity, and usage limits.
   - Choose a Claude app and output format for a task using local files or connected data.
   - Separate saved instructions, skills, connectors, plugins, and mods by what they do.
   - Choose between a subagent, a project, a goal, and a scheduled task.
+  - Check a dashboard calculation, a shared deck, and a remote session before relying on them.
 prerequisites: []
 sources:
   - url: https://www.youtube.com/watch?v=tcb5q_6jwvY
     creator: Nate Herk
     video: Every Claude 2.0 Concept Explained for Non-Coders
     timestamps: ['0:16', '0:34', '1:22', '2:24', '2:34', '3:21', '3:43', '4:37', '5:45', '6:16', '7:07', '7:45', '8:28', '8:53', '9:33', '10:08', '10:55', '11:25', '12:16', '13:02', '13:42', '13:44', '15:21', '16:02', '16:41', '17:45', '18:30', '19:10', '19:52', '20:22', '20:58']
+  - url: https://www.youtube.com/watch?v=BgbJFggbTVE
+    creator: Austin Marchese
+    video: 7 NEW Claude Features To Get You Ahead of 99% of People Using AI
+    timestamps: ['0:00', '0:40', '1:43', '2:30', '3:00', '3:23', '3:46', '6:20', '7:09', '8:48', '10:37', '12:00', '12:50', '13:39', '14:07', '14:24', '14:35', '14:44', '15:24', '15:34']
+  - url: https://claude.com/resources/articles/claude-now-works-in-google-docs-sheets-and-slides
+    creator: Anthropic
+    video: Claude now works with Google Docs, Sheets, and Slides
+  - url: https://support.claude.com/en/articles/16951679-use-claude-in-google-docs-sheets-and-slides
+    creator: Anthropic
+    video: Use Claude in Google Docs, Sheets, and Slides
+  - url: https://platform.claude.com/docs/en/models/haiku-5-5/overview
+    creator: Anthropic
+    video: Claude Haiku 5.5
+  - url: https://support.claude.com/en/articles/9547008-share-artifacts
+    creator: Anthropic
+    video: Share artifacts
+  - url: https://code.claude.com/docs/en/remote-control
+    creator: Anthropic
+    video: Continue local sessions from any device with Remote Control
   - url: https://support.claude.com/en/articles/8664678-change-the-model-effort-and-thinking-settings
     creator: Anthropic
     video: Change the model, effort, and thinking settings
@@ -85,7 +105,7 @@ selfCheck:
   - q: You want a report every Monday while your laptop is off. Is a local /goal enough?
     a: 'No. A goal keeps one session working toward a finish condition; it does not schedule next Monday or move the session to the cloud. Use a cloud scheduled task and verify its access to the inputs.'
 status: published
-lastUpdated: 2026-10-30
+lastUpdated: 2026-11-05
 ---
 
 import PullQuote from '../../components/PullQuote.astro';
@@ -94,6 +114,8 @@ import Exercise from '../../components/Exercise.astro';
 <p class="lede">To turn weekly sales exports into a report, Claude needs the files, instructions for calculating the totals, and an output you can review. Each feature handles a different part of that job. Choose the feature by what is missing.</p>
 
 Nate Herk's [Every Claude 2.0 Concept Explained for Non-Coders](https://www.youtube.com/watch?v=tcb5q_6jwvY) groups Claude's features by models, apps, outputs, saved context, and independent work. "Claude 2.0" is his nickname for recent changes, not a model name. The distinctions below follow that grouping, with product details checked on October 30, 2026.
+
+Austin Marchese's [7 NEW Claude Features To Get You Ahead of 99% of People Using AI](https://www.youtube.com/watch?v=BgbJFggbTVE) adds practical uses for Google Workspace, dashboards, mods, and remote sessions. Those additions were checked against Anthropic's documentation on November 5, 2026.
 
 ## <span class="sec-no">01</span>Separate the settings
 
@@ -115,6 +137,10 @@ Anthropic's [effort guidance](https://academy.claude.com/tutorials/choosing-the-
 
 For a hard decision within a larger task, Claude Code's [advisor tool](https://code.claude.com/docs/en/advisor) lets the main model consult a stronger model. [Recheck your model choices each release](/guides/recheck-your-model-choices-each-release/) covers comparing settings on work you can judge.
 
+Try a cheaper model on a copy of work you have already checked. Marchese [suggests testing Haiku 5.5 on your own task](https://www.youtube.com/watch?v=BgbJFggbTVE&t=720s). For the sales report, compare its totals, missing-data warnings, and drafting time with your current model. Count retries and corrections when comparing cost.
+
+As of November 5, 2026, [Haiku 5.5's standard API rates](https://platform.claude.com/docs/en/models/haiku-5-5/overview) are $0.10 per million input tokens and $0.50 per million output tokens for prompts up to 100,000 tokens. Above that threshold, the rates are $0.50 and $2.50. These rates apply when software sends requests through Claude's API. Your Claude app subscription has a separate allowance.
+
 A large context window does not give unlimited usage. Anthropic's [limits documentation](https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work) distinguishes context capacity from shared usage across Claude products. Most paid plans have five-hour and weekly limits; verified Ultra accounts are exempt from the five-hour limit. Context capacity varies by model and product.
 
 Check **Settings > Usage** before buying more capacity. [Usage credits](https://support.claude.com/en/articles/12429409-manage-usage-credits-for-paid-claude-plans) pay for work beyond included limits. The monthly API credits included with Max and Ultra are separate and do not pay for extra usage inside Claude or Claude Code. [Stop hitting your token limit](/guides/stop-hitting-your-token-limit/) covers reducing unnecessary input.
@@ -128,9 +154,19 @@ Check **Settings > Usage** before buying more capacity. [Usage credits](https://
 | Cowork | Delegated work across files and tools | Your current interface: Cowork and chat are merging |
 | Duet | Ongoing help through connected apps, such as an email and calendar brief | Waitlist access, connected accounts, and background usage |
 
-Anthropic [announced the Cowork and chat merger](https://claude.com/blog/cowork-is-now-claude) on September 16, 2026. The video's separate categories may not match the tabs on your screen. Choose by available capabilities. A local Code session is useful for the sales report when the exports already live in a folder on your computer.
+Anthropic [announced the Cowork and chat merger](https://claude.com/blog/cowork-is-now-claude) on September 16, 2026. Herk's separate categories may not match the tabs on your screen. Choose by available capabilities. A local Code session is useful for the sales report when the exports already live in a folder on your computer.
 
-A **session** is one conversation and its working context. Several sessions can work in parallel. Give them distinct outputs or coordinate edits so two sessions do not overwrite the same file. [The desktop documentation](https://code.claude.com/docs/en/desktop) covers parallel sessions and communication between them. Remote Control lets you reach work on your computer from another device; the work still needs that computer running.
+A **session** is one conversation and its working context. Several sessions can work in parallel. Give them distinct outputs or coordinate edits so two sessions do not overwrite the same file. [The desktop documentation](https://code.claude.com/docs/en/desktop) covers parallel sessions and communication between them.
+
+**Google Workspace.** When the report already lives in Google Docs, Sheets, or Slides, use Claude in the file. The [Workspace add-on](https://claude.com/resources/articles/claude-now-works-in-google-docs-sheets-and-slides) can work on selected text, cells, or slides and use your Claude skills and connectors. Sheets supports native formulas and charts; Slides can use the deck's layouts and themes. This is the practical benefit behind Marchese's [Workspace example](https://www.youtube.com/watch?v=BgbJFggbTVE&t=40s).
+
+Install the add-on from Google Workspace Marketplace, then open a file and choose **Extensions > Claude > Open Claude**, following the [setup guide](https://support.claude.com/en/articles/16951679-use-claude-in-google-docs-sheets-and-slides). It is a paid-plan beta, and your organization may restrict installation. Start with **Ask before edits** so you can inspect proposed changes.
+
+The separate Google Docs, Sheets, and Slides connectors let you create or edit Google files from Claude. Choose that route when starting a new report or combining several files. Choose the add-on when reviewing a file already open in Google Workspace.
+
+**Remote Control.** To continue a local Code session from your phone, enter `/remote-control` in that session and open its link in Claude on the other device. [Remote Control](https://code.claude.com/docs/en/remote-control) needs an eligible paid subscription and may require organization approval. The files, tools, and running process stay on your computer.
+
+Marchese [pairs phone access with keeping the computer awake](https://www.youtube.com/watch?v=BgbJFggbTVE&t=924s). Current [desktop guidance](https://code.claude.com/docs/en/desktop-scheduled-tasks#how-scheduled-tasks-run) places **Keep computer awake** under **Settings > Desktop app** or **Settings > This computer > System**. Keep the app running and the computer online; closing a laptop lid still puts it to sleep. Before leaving a long task, send a harmless message from your phone and confirm that the local session receives it.
 
 A **side chat** asks about the current session without adding its question and answer to the main conversation. In the Windows desktop app, use `Ctrl+;` or `/btw`. Side chats are not saved to disk, so move any decision the main task needs into the main conversation. [Improve your Claude Code workflow](/guides/improve-your-claude-code-workflow/) covers when a side question belongs there.
 
@@ -150,7 +186,21 @@ An **artifact** is an output you can open and work on beside a conversation. It 
 
 Anthropic's [October 8 announcement](https://claude.com/resources/articles/dashboards-and-motion) puts Docs, Slides, and Design on every plan, including Free. Dashboards are a paid-plan beta; Motion is a Team and Enterprise beta. Organization settings can affect access.
 
-For a weekly sales report, choose a document if someone needs to read commentary and a dashboard if they need to explore refreshed figures. A dashboard's query is the instruction that selects and totals its source data. Ask Claude to explain which rows, dates, and refund rules produce a total. Check that explanation against your exports, and check when the dashboard data last refreshed.
+For a weekly sales report, choose a document if someone needs to read commentary and a dashboard if they need to explore refreshed figures. A dashboard's query is the instruction that selects and totals its source data. Marchese's [dashboard demonstration](https://www.youtube.com/watch?v=BgbJFggbTVE&t=429s) shows why access to that calculation helps you check the result.
+
+Click a dashboard number to inspect its query, or ask Claude to explain it. Check:
+
+1. Which source rows, dates, and refund rules produced the total.
+2. Whether your own calculation from those rows matches it.
+3. When the chart last refreshed, and whether newer records are missing.
+
+The query can still use the wrong definition of revenue. Agree on that definition before treating the chart as a business report.
+
+For written commentary, ask for a Docs artifact and select the passage you want changed. Marchese [uses selected-text edits for longer documents](https://www.youtube.com/watch?v=BgbJFggbTVE&t=770s). Check the revised passage and its surrounding text before accepting it. If collaborators already work in a Google Doc, use the Workspace route above.
+
+For a deck, give Claude the claim the audience needs to understand and any brand files or reference slides. Marchese [recommends an original idea, design references, and several versions](https://www.youtube.com/watch?v=BgbJFggbTVE&t=819s). Ask for five opening-slide directions, choose one, then build the deck from it. [Review a visual plan before you build](/guides/review-a-visual-plan-before-you-build/) covers comparing directions before completing the work.
+
+Check delivery before spending time polishing a deck. [Current sharing rules](https://support.claude.com/en/articles/9547008-share-artifacts) depend on the artifact and access method: Docs and email invitations require a Claude account; most artifacts shared with **Anyone with the link** allow viewing without one. Organization rules can restrict sharing, and connected data needs its own access. Test the intended recipient's access, or export to PowerPoint, PDF, or editable Google Slides and inspect the exported file.
 
 Motion animates text, charts, shapes, and images with code and exports MP4; it does not generate video footage.
 
@@ -183,6 +233,10 @@ A connector provides access; a skill explains how to use that access for your ta
 
 Install a [mod](https://code.claude.com/docs/en/plugins/mods/overview) with the same care as other software. It runs with your account's permissions and can read files, start programs, and make network requests. A friendly panel does not limit what its code can do. Use an existing skill or connector when that already meets the need.
 
+Choose a mod for a repeated problem you can name. Marchese's [examples](https://www.youtube.com/watch?v=BgbJFggbTVE&t=180s) are a usage display and a reminder to save corrections. A usage display should help you decide when to shorten a session; compare it with **Settings > Usage** before treating it as a measure of your remaining allowance. A correction reminder should show the proposed rule for review so a one-off request does not become a permanent instruction. [Turn repeated fixes into rules](/guides/turn-repeated-fixes-into-rules/) covers deciding what deserves to persist.
+
+If you keep a mod, install it as a plugin and confirm that it loads in a fresh session. Its availability can differ between the terminal, desktop, and remote interface.
+
 ## <span class="sec-no">05</span>Control independent work
 
 Permission modes determine how Claude Code approves actions. [Current documentation](https://code.claude.com/docs/en/permissions) lists these modes:
@@ -211,6 +265,10 @@ The features that organize independent work also differ:
 
 [Code projects](https://code.claude.com/docs/en/claude-projects) coordinate a stream of tasks, usually through cloud sessions. That is different from the classic chat project that groups conversations with shared instructions and files. A cloud project does not automatically inherit your local skills, settings, or tools. Check its configuration before moving a working process there.
 
+Coordinating projects are a staged public beta on Pro, Max, and Ultra; they are not yet offered on Team or Enterprise. Use a coordinating project when work keeps arriving for the same purpose. For reporting, one thread could investigate a data discrepancy while another drafts commentary from totals you have approved.
+
+Marchese's [project example](https://www.youtube.com/watch?v=BgbJFggbTVE&t=528s) describes a coordinator that starts task threads and reports which need your input. Check the results each thread returns before combining them into the report.
+
 With [`/goal`](https://code.claude.com/docs/en/goal), specify a result and the evidence for it. The evaluator reads what the session reports; it does not independently inspect your files. A goal can end as impossible or stop on an error requiring your action. [Give your coding agent a finish line](/guides/give-your-coding-agent-a-finish-line/) covers defining the evidence Claude must report before calling a task complete.
 
 [Scheduled tasks](https://code.claude.com/docs/en/desktop-scheduled-tasks) start a new run. Local tasks need the computer awake and the app open. [Cloud scheduled tasks](https://code.claude.com/docs/en/routines), formerly called routines, can run while your computer is off. They need access to their inputs in the cloud. Test the scheduled run itself, as described in [Keep Claude automations working](/guides/keep-claude-automations-working/).
@@ -234,5 +292,6 @@ Finish when the draft and calculation are saved and you have compared the report
 2. Run the prompt above, adding whether you want a document, slides, or a dashboard. Compare the output with the source rows and your total, including the treatment of refunds and dates.
 3. Save stable definitions and file locations in `CLAUDE.md`. Turn the checked reporting procedure into one skill, then try it on a different export.
 4. Decide whether the next run needs a connector or whether exported files suffice. Configure only the required access.
-5. If the report should recur, choose local or cloud scheduling and test one run in that environment. Check the saved output and failure reporting before relying on it.
+5. Check delivery: open the saved document and confirm its totals, inspect one dashboard calculation, open the exported deck, or test the report link with its intended recipient. For work you will monitor from your phone, also confirm that Remote Control reaches the running local session.
+6. If the report should recur, choose local or cloud scheduling and test one run in that environment. Check the saved output and failure reporting before relying on it.
 </Exercise>
