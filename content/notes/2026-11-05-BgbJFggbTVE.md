@@ -100,3 +100,5 @@ Source questions left by Opus were checked against the official pages already re
 Publication checks retain 27 sources, three self-checks, 14 exact-title guide links, and 59 published guides. The branch remains subject to current-head CI and deployment verification. No merge or live publication is claimed by these notes.
 
 Same-reader targeted editorial verification after the Opus fixes returned PASS, with no unresolved requirements or regressions. Verified final guide SHA-256: `39DD9188584B456E666E31AE2F52AC8FE2FBE6460C9B932AA2989F3D2E56B9A1`.
+
+Manual Vercel preview of `21d26c45` reached Ready. The new page and Markdown export returned HTTP 200 with the selected title and new source content. All three old URL forms returned 308: the no-slash form first normalizes to the old slash form, then reaches the renamed page; the old slash and Markdown forms redirect directly to their new targets. Both GitHub checks and the Vercel check passed. Production confirmation belongs in the PR handover after merge.
