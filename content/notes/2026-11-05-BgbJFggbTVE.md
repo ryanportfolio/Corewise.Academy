@@ -8,7 +8,7 @@
 - Qualification: editor-selected source for ingest. No personal learning claim inferred.
 - Baseline: clean app-created detached worktree, HEAD and freshly fetched `origin/main` both `b5b1328067329f99c4d68948aeed975af6f33899` before edits. No installation or shipping authorized.
 
-## Placement
+## Initial placement, superseded below
 
 Extend No. 66, **A practical guide to Claude's features**, foundations / broad. Its existing sections already distinguish model settings, local work, artifacts, mods, and projects. Another feature catalogue would repeat that structure. Add the source's practical decisions within those sections; retain original prerequisites and number. Set the local revision to `review` pending publication. Existing live page is untouched because this task does not deploy.
 
@@ -65,7 +65,7 @@ Independent reviewer: `/root/clarity_review`, dispatched through `collaboration.
 
 Final coverage audit: every included row above appears in sections 01-05 or the section 06 exercise. Existing-topic references resolve with exact guide titles. The previous outline did not exclude any substantial practical topic. Major exclusions remain Bird sponsorship, personalization forecasts, blanket automatic-threading and sign-in claims, the undocumented `awake` command, screen-only prompts, and promotion. The generic sign-in and keep-awake statements were replaced with narrower current documentation, rather than discarded entirely.
 
-Content validation:
+Initial review-draft validation, superseded by the publication checks below:
 
 - `site/: npm run lint:copy`: PASS. No em dashes or heading-length failures. All 17 layout advisories concern other, unchanged guides; this draft has none. Manual layout pass retained comparison tables, a numbered calculation check, bold-led app choices, and the ordered exercise.
 - Dependency-free schema and reference check using installed PyYAML: PASS. 27 sources; exactly three self-check questions; 14 internal links resolve with exact guide titles; imports, prerequisites, source URL shapes, current-video timestamps and unique catalogue number checked.
@@ -77,6 +77,26 @@ Content validation:
 
 The editor selected **A practical guide to Claude's features**, then explicitly requested merge and publication. Renamed the guide file to `a-practical-guide-to-claudes-features.mdx`, updated source-log titles, and added Vercel redirects for the previous page and Markdown URLs. No incoming guide links used the old slug. The same independent reviewer confirmed the new title fits the whole guide and returned PASS. Title-only draft hash: `F093270CEA835EC1D30B7AE242DD1868ACD9AB7A29B4D99ECF8E5EB1F8E67EC7`.
 
-Publication candidate sets `status: published`; guide hash: `48ED8D56656893149E256775999699C05C19BCF402F4924D78C5240E1700A538`. Body unchanged from the verified draft. Catalogue regeneration restores 59 published guides and includes the new title and reading time.
+The first publication candidate set `status: published`; guide hash: `48ED8D56656893149E256775999699C05C19BCF402F4924D78C5240E1700A538`. Its body was unchanged from the verified draft. Catalogue regeneration restored 59 published guides and updated the total reading time and newest-guide date.
 
-Required cross-vendor review is blocked. On November 5, the installed Opus review preflight returned `No eligible verified Max subscription. No inference started.` No alternate model, provider, billing route, or native login was used. Prepare the PR and CI evidence, but do not merge or deploy until the required review can run. The independent editorial review does not replace that requirement.
+The first cross-vendor preflight was blocked. On November 5, the installed Opus review preflight returned `No eligible verified Max subscription. No inference started.` No alternate route was used at that stage. PR 309 was prepared as a draft with both CI checks passing.
+
+## Cross-vendor review and fixes
+
+The editor explicitly authorized native Claude Max login. After sign-in, direct preflight verified Max subscription routing. One read-only Opus 5.5 review at high effort completed with exit 0 against `ad11f5dd`, with its report in `.tmp/opus-review-309/report.md`. No second Opus inference was run.
+
+Verified and fixed all seven finding groups:
+
+1. Potential trailing-slash redirect gap: runtime failure was unproven, but an explicit old trailing-slash rule removes reliance on normalization order. Retained no-slash and Markdown rules.
+2. Removed blank lines that split the affected source-log table rows.
+3. Named Herk instead of the ambiguous "the video".
+4. Added the documented staged Pro/Max/Ultra Projects beta and Team/Enterprise exclusion.
+5. Added delivery checking for a saved local document to the exercise.
+6. Moved selected-text and project-coordinator citations to 12:50 and 8:48, matching the transcript.
+7. Marked review-draft status/count records as historical, corrected what catalogue generation changes, and replaced the obsolete review-blocked state with this record.
+
+Source questions left by Opus were checked against the official pages already read: dashboard numbers expose their query, Remote Control supplies a session link, and dated prices, sharing, mod and Workspace claims retain their documented limits. The reviewer did not perform those network checks or run the application.
+
+Publication checks retain 27 sources, three self-checks, 14 exact-title guide links, and 59 published guides. The branch remains subject to current-head CI and deployment verification. No merge or live publication is claimed by these notes.
+
+Same-reader targeted editorial verification after the Opus fixes returned PASS, with no unresolved requirements or regressions. Verified final guide SHA-256: `39DD9188584B456E666E31AE2F52AC8FE2FBE6460C9B932AA2989F3D2E56B9A1`.

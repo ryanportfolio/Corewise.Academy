@@ -12,6 +12,11 @@
       "permanent": true
     },
     {
+      "source": "/guides/choose-the-right-claude-feature/",
+      "destination": "/guides/a-practical-guide-to-claudes-features/",
+      "permanent": true
+    },
+    {
       "source": "/guides/choose-the-right-claude-feature.md",
       "destination": "/guides/a-practical-guide-to-claudes-features.md",
       "permanent": true

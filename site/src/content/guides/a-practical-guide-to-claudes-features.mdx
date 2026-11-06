@@ -21,7 +21,7 @@ sources:
   - url: https://www.youtube.com/watch?v=BgbJFggbTVE
     creator: Austin Marchese
     video: 7 NEW Claude Features To Get You Ahead of 99% of People Using AI
-    timestamps: ['0:00', '0:40', '1:43', '2:30', '3:00', '3:23', '3:46', '6:20', '7:09', '8:17', '10:37', '12:00', '12:34', '13:39', '14:07', '14:24', '14:35', '14:44', '15:24', '15:34']
+    timestamps: ['0:00', '0:40', '1:43', '2:30', '3:00', '3:23', '3:46', '6:20', '7:09', '8:48', '10:37', '12:00', '12:50', '13:39', '14:07', '14:24', '14:35', '14:44', '15:24', '15:34']
   - url: https://claude.com/resources/articles/claude-now-works-in-google-docs-sheets-and-slides
     creator: Anthropic
     video: Claude now works with Google Docs, Sheets, and Slides
@@ -154,7 +154,7 @@ Check **Settings > Usage** before buying more capacity. [Usage credits](https://
 | Cowork | Delegated work across files and tools | Your current interface: Cowork and chat are merging |
 | Duet | Ongoing help through connected apps, such as an email and calendar brief | Waitlist access, connected accounts, and background usage |
 
-Anthropic [announced the Cowork and chat merger](https://claude.com/blog/cowork-is-now-claude) on September 16, 2026. The video's separate categories may not match the tabs on your screen. Choose by available capabilities. A local Code session is useful for the sales report when the exports already live in a folder on your computer.
+Anthropic [announced the Cowork and chat merger](https://claude.com/blog/cowork-is-now-claude) on September 16, 2026. Herk's separate categories may not match the tabs on your screen. Choose by available capabilities. A local Code session is useful for the sales report when the exports already live in a folder on your computer.
 
 A **session** is one conversation and its working context. Several sessions can work in parallel. Give them distinct outputs or coordinate edits so two sessions do not overwrite the same file. [The desktop documentation](https://code.claude.com/docs/en/desktop) covers parallel sessions and communication between them.
 
@@ -196,7 +196,7 @@ Click a dashboard number to inspect its query, or ask Claude to explain it. Chec
 
 The query can still use the wrong definition of revenue. Agree on that definition before treating the chart as a business report.
 
-For written commentary, ask for a Docs artifact and select the passage you want changed. Marchese [uses selected-text edits for longer documents](https://www.youtube.com/watch?v=BgbJFggbTVE&t=754s). Check the revised passage and its surrounding text before accepting it. If collaborators already work in a Google Doc, use the Workspace route above.
+For written commentary, ask for a Docs artifact and select the passage you want changed. Marchese [uses selected-text edits for longer documents](https://www.youtube.com/watch?v=BgbJFggbTVE&t=770s). Check the revised passage and its surrounding text before accepting it. If collaborators already work in a Google Doc, use the Workspace route above.
 
 For a deck, give Claude the claim the audience needs to understand and any brand files or reference slides. Marchese [recommends an original idea, design references, and several versions](https://www.youtube.com/watch?v=BgbJFggbTVE&t=819s). Ask for five opening-slide directions, choose one, then build the deck from it. [Review a visual plan before you build](/guides/review-a-visual-plan-before-you-build/) covers comparing directions before completing the work.
 
@@ -265,7 +265,9 @@ The features that organize independent work also differ:
 
 [Code projects](https://code.claude.com/docs/en/claude-projects) coordinate a stream of tasks, usually through cloud sessions. That is different from the classic chat project that groups conversations with shared instructions and files. A cloud project does not automatically inherit your local skills, settings, or tools. Check its configuration before moving a working process there.
 
-Use a coordinating project when work keeps arriving for the same purpose. For reporting, one thread could investigate a data discrepancy while another drafts commentary from totals you have approved. Marchese's [project example](https://www.youtube.com/watch?v=BgbJFggbTVE&t=497s) describes a coordinator that starts task threads and reports which need your input. Check the results each thread returns before combining them into the report.
+Coordinating projects are a staged public beta on Pro, Max, and Ultra; they are not yet offered on Team or Enterprise. Use a coordinating project when work keeps arriving for the same purpose. For reporting, one thread could investigate a data discrepancy while another drafts commentary from totals you have approved.
+
+Marchese's [project example](https://www.youtube.com/watch?v=BgbJFggbTVE&t=528s) describes a coordinator that starts task threads and reports which need your input. Check the results each thread returns before combining them into the report.
 
 With [`/goal`](https://code.claude.com/docs/en/goal), specify a result and the evidence for it. The evaluator reads what the session reports; it does not independently inspect your files. A goal can end as impossible or stop on an error requiring your action. [Give your coding agent a finish line](/guides/give-your-coding-agent-a-finish-line/) covers defining the evidence Claude must report before calling a task complete.
 
@@ -290,6 +292,6 @@ Finish when the draft and calculation are saved and you have compared the report
 2. Run the prompt above, adding whether you want a document, slides, or a dashboard. Compare the output with the source rows and your total, including the treatment of refunds and dates.
 3. Save stable definitions and file locations in `CLAUDE.md`. Turn the checked reporting procedure into one skill, then try it on a different export.
 4. Decide whether the next run needs a connector or whether exported files suffice. Configure only the required access.
-5. Check delivery: inspect one dashboard calculation, open the exported deck, or test the report link with its intended recipient. For work you will monitor from your phone, also confirm that Remote Control reaches the running local session.
+5. Check delivery: open the saved document and confirm its totals, inspect one dashboard calculation, open the exported deck, or test the report link with its intended recipient. For work you will monitor from your phone, also confirm that Remote Control reaches the running local session.
 6. If the report should recur, choose local or cloud scheduling and test one run in that environment. Check the saved output and failure reporting before relying on it.
 </Exercise>
