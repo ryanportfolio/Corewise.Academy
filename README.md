@@ -12,7 +12,7 @@ CoreWise Academy is a free library of original guides on working with AI, publis
 ## The catalogue
 
 <!-- catalogue:catalogue -->
-59 guides, 404 minutes of reading, sorted into five layers, each guide at one of three depths (broad, practitioner, deep). 48 of them credit the videos and articles they started from, timestamps included; 11 are original field notes with no outside source.
+59 guides, 408 minutes of reading, sorted into five layers, each guide at one of three depths (broad, practitioner, deep). 48 of them credit the videos and articles they started from, timestamps included; 11 are original field notes with no outside source.
 
 | Layer | Constellation | Guides |
 |---|---|---:|
