@@ -6,17 +6,17 @@
      solid = shipped · dashed = killed · phantom = unreleased. */
 
 const NS = 'http://www.w3.org/2000/svg';
-const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+export const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ---------------------------------------------------------------- math -- */
-const v3 = (x, y, z) => ({ x, y, z });
+export const v3 = (x, y, z) => ({ x, y, z });
 const scale3 = (a, s) => v3(a.x * s, a.y * s, a.z * s);
 const sub3 = (a, b) => v3(a.x - b.x, a.y - b.y, a.z - b.z);
 const dot3 = (a, b) => a.x * b.x + a.y * b.y + a.z * b.z;
 const cross3 = (a, b) => v3(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x);
 const norm3 = (a) => { const l = Math.hypot(a.x, a.y, a.z) || 1; return v3(a.x / l, a.y / l, a.z / l); };
-const lerp = (a, b, t) => a + (b - a) * t;
-const fmt = (n) => (Math.round(n * 100) / 100).toString();
+export const lerp = (a, b, t) => a + (b - a) * t;
+export const fmt = (n) => (Math.round(n * 100) / 100).toString();
 
 function camera({ eye, target, up = v3(0, 1, 0), fov = 32, w, h }) {
   const fwd = norm3(sub3(target, eye));
@@ -31,7 +31,7 @@ function camera({ eye, target, up = v3(0, 1, 0), fov = 32, w, h }) {
     },
   };
 }
-function axonometric({ alpha, beta, s = 1, cx, cy }) {
+export function axonometric({ alpha, beta, s = 1, cx, cy }) {
   const a = (alpha * Math.PI) / 180, b = (beta * Math.PI) / 180;
   return {
     project(p) {
@@ -50,9 +50,9 @@ function bez3(p0, c1, c2, p1, steps) {
   }
   return out;
 }
-const pathFrom = (pts, close = false) => pts.length
+export const pathFrom = (pts, close = false) => pts.length
   ? pts.map((p, i) => `${i ? 'L' : 'M'}${fmt(p.x)} ${fmt(p.y)}`).join('') + (close ? 'Z' : '') : '';
-function smoothPathFrom(pts) {
+export function smoothPathFrom(pts) {
   if (pts.length < 3) return pathFrom(pts);
   let d = `M${fmt(pts[0].x)} ${fmt(pts[0].y)}`;
   for (let i = 0; i < pts.length - 2; i++) {
@@ -61,7 +61,7 @@ function smoothPathFrom(pts) {
   }
   return d;
 }
-function rng(seed) {
+export function rng(seed) {
   let a = seed >>> 0;
   return () => {
     a |= 0; a = (a + 0x6D2B79F5) | 0;
@@ -73,13 +73,13 @@ function rng(seed) {
 const fnv = (s) => { let h = 0x811c9dc5; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 0x01000193); } return (h >>> 0).toString(16).padStart(8, '0'); };
 
 /* ------------------------------------------------------------- svg utils - */
-function el(name, attrs = {}, parent) {
+export function el(name, attrs = {}, parent) {
   const n = document.createElementNS(NS, name);
   for (const [k, val] of Object.entries(attrs)) n.setAttribute(k, val);
   if (parent) parent.appendChild(n);
   return n;
 }
-function svgRoot(host, w, h, fixedWidth = false) {
+export function svgRoot(host, w, h, fixedWidth = false) {
   const s = el('svg', { viewBox: `0 0 ${w} ${h}`, class: 'plate-svg' });
   s.setAttribute('role', 'img');
   if (fixedWidth) { s.style.width = `${w}px`; s.style.maxWidth = '100%'; }
@@ -87,10 +87,10 @@ function svgRoot(host, w, h, fixedWidth = false) {
   return s;
 }
 const PHANTOM = '7,3.5,1.5,3.5,1.5,3.5';
-const DASHED = '5,3';
+export const DASHED = '5,3';
 
 /* Draw-in: give every path/line/circle a stroke-draw animation with stagger. */
-function prepDraw(svg, { stagger = 14, dur = 700 } = {}) {
+export function prepDraw(svg, { stagger = 14, dur = 700 } = {}) {
   if (reduced) return () => {};
   const marks = svg.querySelectorAll('path, line, circle, rect');
   marks.forEach((m) => {
@@ -739,7 +739,7 @@ function initHarnessSystem(host) {
   onEnter(host, prepDraw(svg, { stagger: 30, dur: 420 }));
 }
 
-/* ------------------------------------------------------- ptt + githelp --- */
+/* ----------------------------------------------------------------- ptt --- */
 function initPtt(host) {
   const w = 520, h = 96, y = 54;
   const svg = svgRoot(host, w, h);
@@ -752,26 +752,6 @@ function initPtt(host) {
     if (i) el('line', { x1: stages[i - 1][2] + stages[i - 1][1], y1: y, x2: x - hw, y2: y, class: 'st-carbon-thin pulse-path' }, svg);
   });
   onEnter(host, prepDraw(svg, { stagger: 25, dur: 420 }));
-}
-function initGithelp(host) {
-  const w = 520, h = 84, y = 40;
-  const svg = svgRoot(host, w, h);
-  const stages = [['SCOUT', 56], ['RANK', 148], ['READ', 240], ['DRAFT', 332]];
-  stages.forEach(([label, x], i) => {
-    el('rect', { x: x - 36, y: y - 11, width: 72, height: 22, class: 'st-carbon', fill: 'none' }, svg);
-    el('text', { x, y: y + 3.5, class: 'annf', 'text-anchor': 'middle' }, svg).textContent = label;
-    if (i) el('line', { x1: stages[i - 1][1] + 36, y1: y, x2: x - 36, y2: y, class: 'st-carbon-thin' }, svg);
-  });
-  const sx = 412;
-  el('line', { x1: 368, y1: y, x2: sx - 12, y2: y, class: 'st-carbon-thin' }, svg);
-  el('circle', { cx: sx - 9, cy: y, r: 1.8, class: 'nd-solid' }, svg);
-  const arm = el('line', { x1: sx - 9, y1: y, x2: sx + 7, y2: y - 11, class: 'st-human', 'stroke-width': 1.4 }, svg);
-  el('circle', { cx: sx + 9, cy: y, r: 1.8, class: 'nd-solid' }, svg);
-  el('text', { x: sx, y: y + 19, class: 'annf ann-human', 'text-anchor': 'middle' }, svg).textContent = 'EXPLICIT HUMAN GO';
-  el('line', { x1: sx + 9, y1: y, x2: w - 78, y2: y, class: 'st-carbon-thin' }, svg);
-  const post = el('rect', { x: w - 76, y: y - 11, width: 62, height: 22, class: 'st-carbon', fill: 'none' }, svg);
-  el('text', { x: w - 45, y: y + 3.5, class: 'annf', 'text-anchor': 'middle' }, svg).textContent = 'POST';
-  onEnter(host, prepDraw(svg, { stagger: 20, dur: 420 }));
 }
 
 /* ----------------------------------------------------------- pixelswarm -- */
@@ -946,7 +926,7 @@ function initMergeGate(host) {
 }
 
 /* ------------------------------------------------------- shared helpers -- */
-function onEnter(host, fn, threshold = 0.35) {
+export function onEnter(host, fn, threshold = 0.35) {
   new IntersectionObserver((es, io) => {
     es.forEach((e) => { if (e.isIntersecting) { io.unobserve(host); fn(); } });
   }, { threshold }).observe(host);
@@ -1028,7 +1008,6 @@ export function boot() {
   gate('stemma', () => initStemma($('fig-stemma')));
   gate('skills', () => initHarnessSystem($('fig-harness')));
   gate('ptt', () => initPtt($('fig-ptt')));
-  gate('githelp', () => initGithelp($('fig-githelp')));
   gate('pixel', () => initPixelswarm($('fig-pixelswarm')));
   gate('mergegate', () => initMergeGate($('fig-mergegate')));
   gate('counters', () => initCounters());
