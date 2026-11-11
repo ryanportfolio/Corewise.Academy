@@ -1,26 +1,138 @@
 ---
 import Base from '../layouts/Base.astro';
-import Faq from '../components/Faq.astro';
+import { getCollection } from 'astro:content';
+import { TRACKS } from '../data/tracks';
 
+// The Academy plate reads its own catalogue, so its figures cannot go stale.
+const guides = (await getCollection('guides')).filter((g) => g.data.status === 'published');
+const guideCount = guides.length;
+const guideMinutes = guides.reduce((sum, g) => sum + g.data.minutes, 0);
+const trackCounts = TRACKS.map((t) => ({
+  name: t.constellation,
+  count: guides.filter((g) => g.data.track === t.slug).length,
+}));
+
+// The questions render below as designed plates; the same strings feed the
+// FAQPage JSON-LD through Base, so the page and its markup agree.
 const faq = [
   {
     q: 'Who am I?',
-    a: 'Builder who ships end to end\n\nFable, Opus, and Sol as the workforce & audit team\n\nEditor of CoreWise Academy',
+    a: 'I’m Ryan D. Allen, a full stack developer. I design and build websites, brands, and useful software, and I ship end to end. Fable, Opus, and Sol are the workforce and audit team. I edit CoreWise Academy.',
   },
   {
     q: 'How I build',
-    a: 'I work to get the most out of models: the highest quality and accuracy at the lowest cost, tuning thinking budgets and model choice.\nImpact = (Solutions Identified × Solutions Delivered) ÷ Time',
+    a: 'AI helps me build faster. Clear direction and independent verification help me build better. Every change runs one loop: clear plan, agent build, real-world tests, independent review, refine and correct. I tune model choice and thinking budgets for the highest quality and accuracy at the lowest cost.',
   },
   {
     q: 'How I think about design',
-    a: '· Simplicity first: no one should be confused or have to guess\nComplexity does not need to be complicated\n\n· Context and specificity: vague goals produce bad results\nDefine audience, purpose, and brand\n\n· Preferences change with audience and situation\n\n· Never stop after one pass from one model',
+    a: 'Simplicity first: no one should be confused or have to guess, and complexity does not need to be complicated. Context and specificity: vague goals produce bad results, so define audience, purpose, and brand. Preferences change with audience and situation. Never stop after one pass from one model.',
   },
+];
+
+// Schedule of works, second and third rows: the eight details on sheet A-600.
+const more = [
+  { no: 'A-601', id: 'latter', name: 'LATTER DESIGN', big: '3', k: 'EXPORT FORMATS: PNG, VIDEO, HTML · LAYERED SHADER BACKGROUNDS', url: 'latter.design' },
+  { no: 'A-602', id: 'academy', name: 'COREWISE ACADEMY', big: String(guideCount), count: guideCount, k: `GUIDES IN 5 TRACKS · ABOUT ${guideMinutes} MINUTES OF READING`, url: 'corewise.academy' },
+  { no: 'A-603', id: 'maimcoil', name: 'MAIMCOIL', big: '110K+', k: 'LINES OF TYPESCRIPT AND RUST · PIXEL-ART ACTION GAME BUILT FOR STEAM', url: 'steam app 4975550' },
+  { no: 'A-604', id: 'savetokens', name: 'SAVETOKENS.TIPS', big: '45.3%', k: 'OF OUTPUT TOKENS REMOVED, MEASURED · 681.7M TOKENS SAVED', url: 'savetokens.tips' },
+  { no: 'A-605', id: 'harness', name: 'HARNESS FIRMWARE', big: '54', count: 54, k: 'SKILLS FOR CLAUDE CODE, 50 FOR CODEX · PROJECT MEMORY', url: 'harnessfirmware.com' },
+  { no: 'A-606', id: 'securewall', name: 'SECURE WALL', big: '0', k: 'CONNECTIONS WITHOUT A RULE · DEFAULT-DENY WINDOWS FIREWALL', url: 'secwall.org' },
+  { no: 'A-607', id: 'stk', name: 'STK', big: '16 KB', k: 'READ THRESHOLD · LARGER FILES RETURN AN OUTLINE OF 80 LINES AT MOST', url: 'savetokens.tips/stk' },
+  { no: 'A-608', id: 'mavvi', name: 'MAVVI', big: '6', count: 6, k: 'SPARKLING FERMENTED COCKTAILS · PROTOTYPE BRAND SITE', url: 'prototype' },
+];
+
+// Sheet A-600: one drawn detail per featured work. `fig` is the host id the
+// client engine (about-details.js, about-plates.js) draws into.
+const details = [
+  {
+    id: 'latter', no: 'A-601', name: 'Latter Design', href: 'https://latter.design/', fig: 'fig-d-latter',
+    aria: 'Separate animated layers stacking into one composite background',
+    line: 'Give your ideas movement: design in motion',
+    note: 'A browser editor for layered, animated shader backgrounds, with a saved-design library and PNG, video and HTML export.',
+    stack: 'React · Next.js · Tailwind CSS · WebGL 2 · GLSL',
+    facts: [['STATUS', 'LIVE'], ['EXPORTS', 'PNG · VIDEO · HTML']],
+  },
+  {
+    id: 'academy', no: 'A-602', name: 'CoreWise Academy', href: '/', fig: 'fig-d-academy',
+    aria: `${guideCount} guides charted as stars in five constellations, one per track`,
+    line: 'A free library for learning to work with AI',
+    note: 'Original guides on working with AI. An agent drafts each one from its sources, and I read it before it merges.',
+    stack: 'Astro · MDX · TypeScript · Three.js',
+    facts: [['GUIDES', String(guideCount)], ['READING', `${guideMinutes} MIN`], ['TRACKS', '5'], ['SELF-CHECK', '3 QUESTIONS PER GUIDE']],
+    data: JSON.stringify(trackCounts),
+  },
+  {
+    id: 'maimcoil', no: 'A-603', name: 'MAIMCOIL', href: 'https://store.steampowered.com/app/4975550/MAIMCOIL/', fig: 'fig-pixelswarm',
+    aria: 'Maimcoil drawn entirely in phantom line',
+    line: 'A pixel-art action game built for Steam',
+    note: 'A survivors-style action game: Tauri 2 and React with a Rust/Steamworks bridge. A playable prototype is live at <a href="https://corewise.video/play">corewise.video/play ↗</a>.',
+    stack: 'TypeScript · React · Tauri · Steamworks',
+    facts: [['STEAM APP', '4975550'], ['GAME CODE', '110K+ LINES · TYPESCRIPT AND RUST'], ['LINE', 'PHANTOM · UNRELEASED']],
+  },
+  {
+    id: 'savetokens', no: 'A-604', name: 'savetokens.tips', href: 'https://savetokens.tips/', fig: 'fig-d-savetokens',
+    aria: 'Command output before and after filtering, with 45.3 percent of the tokens removed',
+    line: 'A measured guide to using fewer AI tokens',
+    note: 'Token-saving habits for Claude Code and Codex, published as a component datasheet. Each figure is marked as measured or as an estimate.',
+    stack: 'HTML · Node.js · PowerShell',
+    facts: [['MEASURED', '45.3% OF OUTPUT TOKENS REMOVED'], ['SAVED', '681.7M TOKENS · 529,601 COMMANDS'], ['HABITS', '12'], ['SNAPSHOT', '10 NOV 2026 · REFRESHED DAILY']],
+  },
+  {
+    id: 'harness', no: 'A-605', name: 'Harness Firmware', href: 'https://harnessfirmware.com', fig: 'fig-d-harness',
+    aria: 'The harness loop: recall, work, verify, refine, reviewed change, next task',
+    line: 'Project memory and workflows for AI coding',
+    note: 'A repository starter for Claude Code and Codex: versioned instructions, durable project memory, reusable skills, and workflows for testing and independent review. Full sheet: <a href="#sec-a650">A-650</a>.',
+    stack: 'PowerShell · JavaScript',
+    facts: [['SKILLS', '54 CLAUDE CODE · 50 CODEX'], ['SPLIT', '8 CORE · 19 DISCIPLINE · 27 SPECIALIST'], ['LICENSE', 'MIT']],
+  },
+  {
+    id: 'securewall', no: 'A-606', name: 'Secure Wall', href: 'https://www.secwall.org/', fig: 'fig-d-securewall',
+    aria: 'Apps on one side of a wall and the network on the other: only connections with a rule pass',
+    line: 'Choose which apps connect with a Windows firewall',
+    note: 'A default-deny firewall for Windows 10 and 11, built on TinyWall. Nothing reaches the network until a rule allows it, and an unknown app gets a prompt.',
+    stack: 'C# · .NET · Windows Filtering Platform',
+    facts: [['POLICY', 'DEFAULT DENY'], ['PROMPT', 'ALLOW OUTGOING · ALWAYS ALLOW · IGNORE'], ['BUILDS', 'X64 · ARM64 · X86'], ['STATUS', 'ALPHA · GPL-3.0']],
+  },
+  {
+    id: 'stk', no: 'A-607', name: 'STK', href: 'https://savetokens.tips/stk', fig: 'fig-d-stk',
+    aria: 'A long file stopped at a 16,384 byte threshold and returned as a short line-numbered outline',
+    line: 'Keep large file reads out of an agent’s context',
+    note: 'One Rust binary for Claude Code and Codex. A whole-file read over the threshold comes back as a line-numbered outline, so the agent fetches only the part it needs.',
+    stack: 'Rust · Claude Code hooks',
+    facts: [['THRESHOLD', '16,384 BYTES · 51,200 FOR MARKDOWN'], ['OUTLINE', '80 LINES AT MOST'], ['TESTS', '41 UNIT'], ['LICENSE', 'MIT']],
+  },
+  {
+    id: 'mavvi', no: 'A-608', name: 'MAVVI', href: '', fig: 'fig-d-mavvi',
+    aria: 'A flavor wheel with six sectors, one per drink',
+    line: 'A website for six sparkling fermented cocktails',
+    note: 'A prototype brand site for six flavors: Apple Crush, Berry Drift, Guava Hour, Matcha Mood, Pineapple Day, and Vanilla Dusk.',
+    stack: 'HTML · CSS · JavaScript · Three.js · Canvas 2D',
+    facts: [['FLAVORS', '6'], ['STATUS', 'PROTOTYPE']],
+  },
+];
+
+// Sheet A-800: the six steps the film walks through. `at` is the film time in
+// seconds each step starts (kept in step with CHAPTERS in about-film.js).
+const steps = [
+  { at: 20, name: 'Find the slowest step together', sub: 'Find where customers drop off' },
+  { at: 29, name: 'Break the goal down', sub: 'Turn the goal into testable steps' },
+  { at: 38, name: 'Build the fix', sub: 'Build fast, review every change' },
+  { at: 48, name: 'Test it many times', sub: 'Repeat, score and compare' },
+  { at: 57, name: 'Hand it over', sub: 'You own the code and the tools' },
+  { at: 66, name: 'Continue to optimize', sub: 'Find the next weak point' },
+];
+const terms = [
+  ['We agree the scope first', 'Before I build anything, we agree what it is and how we’ll test it.'],
+  ['Every change gets checked', 'AI is fast and sometimes confidently wrong, so each change gets an independent review and a real-world test before you see it.'],
+  ['It’s all yours', 'The code, the tools, and the flow behind them are yours.'],
+  ['You won’t need me to run it', 'Workflows can run on their own schedule, so I never become your next bottleneck.'],
 ];
 ---
 
 <Base
   title="Ryan D. Allen, Full Stack Developer · CoreWise Academy"
-  description="Ryan D. Allen builds and ships AI systems end to end. Four live systems, presented as a technical drawing set: corewise.video, kinefractal.com, truenote.org, willaicite.com."
+  description="Ryan D. Allen builds and ships AI systems end to end. Twelve featured works, presented as a technical drawing set, and the method behind them."
+  dateModified="2026-11-10"
   faq={faq}
   crumbs={[{ name: 'About the editor', path: '/about/' }]}
 >
@@ -29,19 +141,25 @@ const faq = [
     <section class="sheet hero" data-sheet="A-000">
       <div class="hero-grid">
         <div class="hero-mast">
-          <p class="aw-kicker">APPROVED WORKS</p>
+          <p class="aw-kicker">APPROVED WORKS · SET A</p>
           <h1 class="hero-name">Ryan D. Allen</h1>
           <div class="hero-rule"></div>
-          <p class="hero-line">Full Stack Developer<br />shipping end to end</p>
-          <p class="hero-links">
-            <a href="https://corewise.video">corewise.video</a> ·
-            <a href="https://kinefractal.com">kinefractal.com</a><br />
-            <a href="https://truenote.org">truenote.org</a> ·
-            <a href="https://willaicite.com">willaicite.com</a><br />
-            <a href="https://layline.site">layline.site</a> ·
-            <a class="gh" href="https://github.com/ryanportfolio">github.com/ryanportfolio</a>
-            <span class="fullbuild"><a href="https://fullbuild.ai">fullbuild.ai</a> · <a href="https://savetokens.tips">savetokens.tips</a></span>
+          <p class="hero-role">FULL STACK DEVELOPER</p>
+          <p class="hero-line">I design and build websites, brands, and useful software</p>
+          <p class="hero-cta">
+            <a class="btn solid" href="#contact">Get in touch</a>
+            <a class="btn" href="https://fullbuild.ai">fullbuild.ai ↗</a>
           </p>
+          <ul class="hero-links" aria-label="Live work">
+            <li><a href="https://corewise.video">corewise.video</a></li>
+            <li><a href="https://kinefractal.com">kinefractal.com</a></li>
+            <li><a href="https://truenote.org">truenote.org</a></li>
+            <li><a href="https://willaicite.com">willaicite.com</a></li>
+            <li><a href="https://latter.design/">latter.design</a></li>
+            <li><a href="https://savetokens.tips">savetokens.tips</a></li>
+            <li><a href="https://harnessfirmware.com">harnessfirmware.com</a></li>
+            <li><a href="https://github.com/ryanportfolio">github.com/ryanportfolio</a></li>
+          </ul>
         </div>
         <div class="hero-fig" id="fig-hero" aria-label="Six model strands converging to one synthesis, drawn in true perspective"></div>
       </div>
@@ -56,13 +174,16 @@ const faq = [
         <li><a href="#sec-a300"><span class="idx-no">A-300</span><span class="idx-name">Truenote · cited answers or refusal</span><span class="idx-live"><span class="ext">truenote.org ↗</span> LIVE</span></a></li>
         <li><a href="#sec-a400"><span class="idx-no">A-400</span><span class="idx-name">WillAICite · deterministic GEO audit</span><span class="idx-live"><span class="ext">willaicite.com ↗</span> LIVE</span></a></li>
         <li><a href="#sec-a500"><span class="idx-no">A-500</span><span class="idx-name">Method of construction</span><span class="idx-tag">METHOD</span></a></li>
-        <li><a href="#sec-a600"><span class="idx-no">A-600</span><span class="idx-name">Works in progress</span><span class="idx-tag">TOOLING</span></a></li>
-        <li><a href="#sec-a650"><span class="idx-no">A-650</span><span class="idx-name">Harness-Firmware · how I engineer with AI</span><span class="idx-tag">TEMPLATE</span></a></li>
-        <li><a href="#sec-a700"><span class="idx-no">A-700</span><span class="idx-name">Prototype register</span><span class="idx-tag">PROTOTYPES</span></a></li>
+        <li><a href="#sec-a600"><span class="idx-no">A-600</span><span class="idx-name">Featured works · eight details</span><span class="idx-tag">DETAILS</span></a></li>
+        <li><a href="#sec-a650"><span class="idx-no">A-650</span><span class="idx-name">Harness Firmware · how I engineer with AI</span><span class="idx-tag">TEMPLATE</span></a></li>
+        <li><a href="#sec-a700"><span class="idx-no">A-700</span><span class="idx-name">Workshop · tooling and prototypes</span><span class="idx-tag">WORKSHOP</span></a></li>
+        <li><a href="#sec-a800"><span class="idx-no">A-800</span><span class="idx-name">Solving bottlenecks · how I work with you</span><span class="idx-tag">FILM</span></a></li>
+        <li><a href="#contact"><span class="idx-no">A-1000</span><span class="idx-name">Questions and contact</span><span class="idx-tag">CONTACT</span></a></li>
+        <li><a href="#sec-a1100"><span class="idx-no">A-1100</span><span class="idx-name">Closing note</span><span class="idx-tag">LAST SHEET</span></a></li>
       </ol>
 
-      <div class="hold" aria-label="Schedule of works: one key figure per live system">
-        <p class="hold-head"><span>SCHEDULE OF WORKS</span></p>
+      <div class="hold" aria-label="Schedule of works: one key figure per featured work">
+        <p class="hold-head"><span>SCHEDULE OF WORKS</span><span>12 FEATURED</span></p>
         <div class="hold-grid">
           <a class="hold-cell ink-vermilion" href="#sec-a100">
             <span class="hold-top"><span class="hold-no">A-100</span><span class="hold-name">COREWISE</span></span>
@@ -88,6 +209,16 @@ const faq = [
             <span class="hold-k">AUTOMATED TESTS · ANSWER ENGINE OPTIMIZATION AUDIT · ZERO AI CALLS</span>
             <span class="hold-url">willaicite.com&nbsp;↗</span>
           </a>
+          {
+            more.map((m) => (
+              <a class="hold-cell" href={`#det-${m.id}`}>
+                <span class="hold-top"><span class="hold-no">{m.no}</span><span class="hold-name">{m.name}</span></span>
+                <span class="hold-big">{m.count ? <span data-count={m.count}>{m.big}</span> : m.big}</span>
+                <span class="hold-k">{m.k}</span>
+                <span class="hold-url">{m.url}</span>
+              </a>
+            ))
+          }
         </div>
       </div>
 
@@ -381,46 +512,39 @@ const faq = [
       </div>
     </section>
 
-    <!-- A-600 · Works in progress -->
+    <!-- A-600 · Featured works -->
     <section class="sheet" data-sheet="A-600" id="sec-a600">
       <header class="sheet-head">
         <div>
           <p class="sheet-no">A-600</p>
-          <h2 class="sheet-title">WORKS IN PROGRESS · TOOLING</h2>
+          <h2 class="sheet-title">FEATURED WORKS · EIGHT DETAILS</h2>
         </div>
-        <p class="sheet-sub">THE SHOP THAT BUILDS THE SHIPS</p>
+        <p class="sheet-sub">ONE DRAWN MECHANISM PER WORK</p>
       </header>
-      <div class="cols">
-        <div class="main">
-          <h3 class="sec-head">LOCAL-CPU-ONLY-PTT</h3>
-          <div class="fig" id="fig-ptt" aria-label="Offline dictation pipeline inside a boundary box"></div>
-          <p class="fig-cap"><span class="fig-no">FIG 1</span>Offline push-to-talk dictation for Windows:
-            microphone, voice activity detection, Whisper on CPU only, clipboard. The boundary box is the
-            feature: no cloud, no network path, nothing leaves the machine.
-            <a href="https://github.com/ryanportfolio/Local-CPU-only-PTT">Public repo ↗</a></p>
-          <h3 class="sec-head">GITHELP</h3>
-          <div class="fig" id="fig-githelp" aria-label="Discussion-scouting pipeline with a normally-open human switch"></div>
-          <p class="fig-cap"><span class="fig-no">FIG 2</span>A workspace that scouts GitHub Discussions, ranks
-            what's answerable, reads the full thread, and drafts a verified answer.</p>
-          <div class="fig-row">
-            <div class="fig" id="fig-pixelswarm" aria-label="Maimcoil drawn entirely in phantom line"></div>
-            <div class="side-copy">
-              <h3 class="sec-head">MAIMCOIL</h3>
-              <p class="fig-cap"><span class="fig-no">FIG 3</span>A survivors-style action game headed for Steam:
-                Tauri 2 + React with a Rust/Steamworks bridge, ~47k lines of game code. A playable
-                prototype is live at <a href="https://corewise.video/play">corewise.video/play ↗</a>.</p>
-            </div>
-          </div>
-        </div>
-        <aside class="rail">
-          <p class="rail-head">TOOLING</p>
-          <div class="rail-rule"></div>
-          <dl>
-            <dt>LOCAL-CPU-ONLY-PTT</dt><dd>PUBLIC · OFFLINE · CPU-ONLY WHISPER · <a href="https://github.com/ryanportfolio/Local-CPU-only-PTT">REPO ↗</a></dd>
-            <dt>GITHELP</dt><dd>PRIVATE · HUMAN-GO GATE</dd>
-            <dt>MAIMCOIL</dt><dd>STEAM GAME · PROTOTYPE · <a href="https://corewise.video/play">PLAY ↗</a></dd>
-          </dl>
-        </aside>
+      <p class="lede">Eight more works, each drawn doing the one thing it is for.</p>
+      <div class="dets">
+        {
+          details.map((d, i) => (
+            <article class="det" id={`det-${d.id}`}>
+              <header class="det-head">
+                <span class="det-no">DETAIL {i + 1}</span>
+                <span class="det-mark">{d.no}</span>
+              </header>
+              <div class="fig det-fig" id={d.fig} aria-label={d.aria} data-fig={d.data}></div>
+              <h3 class="det-name">
+                {d.href ? <a href={d.href}>{d.name}<span aria-hidden="true"> ↗</span></a> : d.name}
+              </h3>
+              <p class="det-line">{d.line}</p>
+              <p class="det-note" set:html={d.note} />
+              <dl class="det-facts">
+                {d.facts.map(([k, v]) => (
+                  <div><dt>{k}</dt><dd>{v}</dd></div>
+                ))}
+                <div><dt>STACK</dt><dd>{d.stack}</dd></div>
+              </dl>
+            </article>
+          ))
+        }
       </div>
     </section>
 
@@ -429,7 +553,7 @@ const faq = [
       <header class="sheet-head">
         <div>
           <p class="sheet-no">A-650</p>
-          <h2 class="sheet-title">HARNESS-FIRMWARE</h2>
+          <h2 class="sheet-title">HARNESS FIRMWARE</h2>
         </div>
         <p class="sheet-sub">HOW I ENGINEER WITH AI</p>
       </header>
@@ -454,11 +578,12 @@ const faq = [
         </div>
         <aside class="rail">
           <p class="rail-head">HARNESS-FIRMWARE</p>
-          <a class="rail-url" href="https://fullbuild.ai/harness-firmware">fullbuild.ai/harness-firmware ↗</a>
+          <a class="rail-url" href="https://harnessfirmware.com">harnessfirmware.com ↗</a>
           <div class="rail-rule"></div>
           <dl>
             <dt>STATUS</dt><dd>OPEN SOURCE · MIT</dd>
             <dt>BUILT FOR</dt><dd>CLAUDE CODE · CODEX</dd>
+            <dt>SKILLS</dt><dd>54 CLAUDE CODE · 50 CODEX</dd>
             <dt>SYSTEM INCLUDES</dt><dd>CONTEXT · METHODS · CHECKS · REVIEW · MEMORY · RECOVERY</dd>
             <dt>HUMAN OWNS</dt><dd>GOALS · PERMISSIONS · QUALITY BAR · RELEASE</dd>
             <dt>INSTALL</dt><dd>TEMPLATE · VERSIONED PLUGIN</dd>
@@ -468,62 +593,189 @@ const faq = [
       </div>
     </section>
 
-    <!-- A-700 · Prototype register -->
+    <!-- A-700 · Workshop -->
     <section class="sheet" data-sheet="A-700" id="sec-a700">
       <header class="sheet-head">
         <div>
           <p class="sheet-no">A-700</p>
-          <h2 class="sheet-title">PROTOTYPE REGISTER</h2>
+          <h2 class="sheet-title">WORKSHOP · TOOLING AND PROTOTYPES</h2>
         </div>
-        <p class="sheet-sub">PUBLIC REPOS · SUMMER 2026</p>
+        <p class="sheet-sub">THE SHOP THAT BUILDS THE SHIPS</p>
       </header>
-      <div class="reg-wrap">
-          <p class="lede">Other projects</p>
-          <table class="rev reg">
-            <thead><tr><th>MARK</th><th>WORK</th><th>DESCRIPTION</th></tr></thead>
-            <tbody>
-              <tr><td class="reg-no">A-701</td><td class="reg-name"><a href="https://layline.site">LAYLINE</a></td><td class="reg-desc">Browser race replay engine, live at <a href="https://layline.site">layline.site</a>: 4 Hz sailing telemetry turned into continuous 3D motion with Three.js, on a deterministic seeded race. Drawing-set write-up at <a href="https://fullbuild.ai/prototype/layline">fullbuild.ai/prototype/layline</a>; <a href="https://github.com/ryanportfolio/layline">repo</a>.</td></tr>
-              <tr><td class="reg-no">A-702</td><td class="reg-name"><a href="https://github.com/ryanportfolio/wfm">WFM</a></td><td class="reg-desc">Browser-only contact-center workforce workbench: interval volume forecasting, rolling-origin backtests, and Erlang A/C staffing. No backend.</td></tr>
-              <tr><td class="reg-no">A-703</td><td class="reg-name"><a href="https://github.com/ryanportfolio/dealstream">DEALSTREAM</a></td><td class="reg-desc">Go deals-catalog backend: eight messy simulated retailer feeds ingested into Postgres, ClickHouse, and Redis, serving search, deals, and price history.</td></tr>
-              <tr><td class="reg-no">A-704</td><td class="reg-name"><a href="https://github.com/ryanportfolio/winuse-mcp">WINUSE-MCP</a></td><td class="reg-desc">Computer use for Claude Code on Windows: an MCP server that lets the agent see the screen and drive mouse and keyboard.</td></tr>
-              <tr><td class="reg-no">A-705</td><td class="reg-name"><a href="https://github.com/ryanportfolio/strictcall">STRICTCALL</a></td><td class="reg-desc">LangGraph agent with Pydantic-validated tool contracts over a SQL warehouse: one SQL interface, DuckDB now, Snowflake next.</td></tr>
-              <tr><td class="reg-no">A-706</td><td class="reg-name"><a href="https://github.com/ryanportfolio/cx-lab">CX-LAB</a></td><td class="reg-desc">Proactive contact-center AI agent on Cognigy.AI: trained intents, a vulnerable-customer escalation policy, and a regression suite that runs headless in CI.</td></tr>
-              <tr><td class="reg-no">A-707</td><td class="reg-name"><a href="https://github.com/ryanportfolio/tracebench">TRACEBENCH</a></td><td class="reg-desc">Replayable evals for AI coding agents, built from my own developer sessions, with deterministic scoring and every transcript published.</td></tr>
-              <tr><td class="reg-no">A-708</td><td class="reg-name"><a href="https://github.com/ryanportfolio/SecureWall">SECUREWALL</a></td><td class="reg-desc">Windows default-deny firewall derived from TinyWall, with a tightly scoped prompt when an unknown app attempts an outbound connection.</td></tr>
-              <tr><td class="reg-no">A-709</td><td class="reg-name"><a href="https://github.com/ryanportfolio/STK">STK</a></td><td class="reg-desc">Claude Code hook that clamps oversized file reads into line-numbered outlines; companion to RTK, which trims per-command output.</td></tr>
-              <tr><td class="reg-no">A-710</td><td class="reg-name"><a href="https://github.com/ryanportfolio/fahrzeugmarkt">FAHRZEUGMARKT</a></td><td class="reg-desc">Used-vehicle marketplace prototype: Vue 3 and TypeScript over Java 21 with Spring Boot, PostgreSQL, and server-side faceted search.</td></tr>
-            </tbody>
-          </table>
-          <h3 class="sec-head">RECENT</h3>
-          <p class="works">
-            <a href="https://corewise.video">corewise.video</a> · six models read in parallel, 1,880+ registered users<br />
-            <a href="https://kinefractal.com">kinefractal.com</a> · 592+ agent-written PRs, every merge through a human gate<br />
-            <a href="https://truenote.org">truenote.org</a> · cited answers or refusal, never a guess<br />
-            <a href="https://willaicite.com">willaicite.com</a> · deterministic GEO audit, spec to live in a day<br />
-            <a href="https://layline.site">layline.site</a> · race replay engine, sailing telemetry into continuous 3D motion<br />
-            <a href="https://github.com/ryanportfolio/Harness-Firmware">Harness-Firmware</a> · the self-syncing template this site's repo runs on, 31 skills<br />
-            <a href="https://github.com/ryanportfolio">github.com/ryanportfolio</a> · the rest of the shop
-          </p>
+      <div class="shop">
+        <div class="shop-item">
+          <h3 class="sec-head">LOCAL-CPU-ONLY-PTT</h3>
+          <div class="fig" id="fig-ptt" aria-label="Offline dictation pipeline inside a boundary box"></div>
+          <p class="fig-cap"><span class="fig-no">FIG 1</span>Offline push-to-talk dictation for Windows:
+            microphone, voice activity detection, Whisper on CPU only, clipboard. The boundary box is the
+            feature: no cloud, no network path, nothing leaves the machine.
+            <a href="https://github.com/ryanportfolio/Local-CPU-only-PTT">Public repo ↗</a></p>
+        </div>
+        <div class="shop-item">
+          <h3 class="sec-head">GITHELP</h3>
+          <div class="fig" id="fig-githelp" aria-label="Discussion-scouting pipeline with a normally-open human switch"></div>
+          <p class="fig-cap"><span class="fig-no">FIG 2</span>A private workspace that scouts GitHub Discussions,
+            ranks what's answerable, reads the full thread, and drafts a verified answer. Nothing posts
+            without an explicit human go.</p>
+        </div>
+      </div>
+      <h3 class="sec-head">PROTOTYPE REGISTER</h3>
+      <table class="rev reg">
+        <thead><tr><th>MARK</th><th>WORK</th><th>DESCRIPTION</th></tr></thead>
+        <tbody>
+          <tr><td class="reg-no">A-701</td><td class="reg-name"><a href="https://layline.site">LAYLINE</a></td><td class="reg-desc">Browser race replay engine, live at <a href="https://layline.site">layline.site</a>: 4 Hz sailing telemetry turned into continuous 3D motion with Three.js, on a deterministic seeded race. Drawing-set write-up at <a href="https://fullbuild.ai/prototype/layline">fullbuild.ai/prototype/layline</a>; <a href="https://github.com/ryanportfolio/layline">repo</a>.</td></tr>
+          <tr><td class="reg-no">A-702</td><td class="reg-name"><a href="https://github.com/ryanportfolio/wfm">WFM</a></td><td class="reg-desc">Browser-only contact-center workforce workbench: interval volume forecasting, rolling-origin backtests, and Erlang A/C staffing. No backend.</td></tr>
+        </tbody>
+      </table>
+      <p class="mono-link shop-more"><a href="https://github.com/ryanportfolio">github.com/ryanportfolio ↗</a> · the rest of the shop</p>
+    </section>
+
+    <!-- A-800 · the film -->
+    <section class="sheet" data-sheet="A-800" id="sec-a800">
+      <header class="sheet-head">
+        <div>
+          <p class="sheet-no">A-800</p>
+          <h2 class="sheet-title">SOLVING BOTTLENECKS</h2>
+        </div>
+        <p class="sheet-sub">HOW I WORK WITH YOU · 82 SECONDS · SILENT</p>
+      </header>
+      <p class="lede film-lede">A business grows only as fast as its slowest step. Speeding up any other
+        step changes nothing, because the work still queues at the slow one. So we find that step
+        together and fix it first.</p>
+      <figure class="film" id="film">
+        <div class="film-stage">
+          <canvas id="film-canvas" role="img" aria-label="An animated drawing of customers flowing through four stages: reach, acquire, convert, expand. They queue and drop off at the narrow convert stage. The film then walks through six steps: find the slowest step, break the goal down, build the fix, test it many times, hand it over, and continue to optimize."></canvas>
+        </div>
+        <div class="film-bar">
+          <button class="film-btn" id="film-play" type="button" aria-pressed="true">PAUSE</button>
+          <div class="film-track">
+            <div class="film-ticks" id="film-ticks" aria-hidden="true"></div>
+            <input type="range" id="film-scrub" min="0" max="82" step="0.05" value="0" aria-label="Film position in seconds" />
+          </div>
+          <span class="film-time" id="film-time">00 / 82 S</span>
+        </div>
+      </figure>
+      <ol class="film-steps" id="film-steps">
+        {
+          steps.map((s, i) => (
+            <li>
+              <button type="button" data-seek={s.at}>
+                <span class="fs-no">{String(i + 1).padStart(2, '0')}</span>
+                <span class="fs-name">{s.name}</span>
+                <span class="fs-sub">{s.sub}</span>
+              </button>
+            </li>
+          ))
+        }
+      </ol>
+      <div class="terms">
+        {
+          terms.map(([k, v]) => (
+            <div class="term">
+              <h3 class="term-k">{k}</h3>
+              <p class="term-v">{v}</p>
+            </div>
+          ))
+        }
       </div>
     </section>
 
-    <!-- A-1000 · FAQ + contact -->
+    <!-- A-1000 · questions + contact -->
     <section class="sheet" data-sheet="A-1000" id="contact">
       <header class="sheet-head">
         <div>
           <p class="sheet-no">A-1000</p>
-          <h2 class="sheet-title">FAQ &amp; CONTACT</h2>
+          <h2 class="sheet-title">QUESTIONS &amp; CONTACT</h2>
         </div>
         <p class="sheet-sub">QUESTIONS THE SET GETS ASKED</p>
       </header>
-      <div class="cols">
-        <div class="main">
-          <Faq heading="FAQ · about Ryan D. Allen" items={faq} open={true} />
+
+      <div class="qa">
+        <article class="qa-item">
+          <p class="qa-no">Q1</p>
+          <div class="qa-body">
+            <h3 class="qa-q">Who am I?</h3>
+            <p class="qa-lede">I’m Ryan D. Allen, a full stack developer. I design and build websites,
+              brands, and useful software, and I ship end to end.</p>
+            <div class="note-tb qa-tb">
+              <span class="note-cell wide"><span class="note-k">WORKFORCE &amp; AUDIT TEAM</span>FABLE · OPUS · SOL</span>
+              <span class="note-cell wide"><span class="note-k">EDITOR OF</span>COREWISE ACADEMY</span>
+              <span class="note-cell wide"><span class="note-k">BASED IN</span>CHESAPEAKE, VA · WORKING REMOTELY</span>
+            </div>
+          </div>
+          <aside class="qa-fig">
+            <div class="fig" id="fig-mergegate" aria-label="An endless queue of pull requests pausing at a human gate: approved ones merge onto main, declined ones fall away dashed"></div>
+            <p class="fig-cap"><span class="fig-no">FIG 1</span>Every change pauses for my review</p>
+          </aside>
+        </article>
+
+        <article class="qa-item">
+          <p class="qa-no">Q2</p>
+          <div class="qa-body">
+            <h3 class="qa-q">How I build</h3>
+            <p class="qa-lede">AI helps me build faster. Clear direction and independent verification
+              help me build better.</p>
+            <p class="body-block">Every change runs one loop: clear plan, agent build, real-world tests,
+              independent review, refine and correct. I tune model choice and thinking budgets for the
+              highest quality and accuracy at the lowest cost.</p>
+            <div class="eq" role="math" aria-label="Plan quality times agent effectiveness times verification quality gives output quality">
+              <span class="eq-lead">QUALITY EQUATION</span>
+              <span class="eq-row">
+                <span>Plan quality</span><span class="eq-op">&#215;</span>
+                <span>Agent effectiveness</span><span class="eq-op">&#215;</span>
+                <span>Verification quality</span><span class="eq-op">&#8594;</span>
+                <span class="eq-out">Output quality</span>
+              </span>
+            </div>
+            <div class="note-tb qa-tb">
+              <span class="note-cell wide"><span class="note-k">FOCUS ON WHAT MATTERS</span>ARCHITECTURE · CODEBASE HEALTH · TRADEOFFS · USER EXPERIENCE</span>
+            </div>
+          </div>
+          <aside class="qa-fig">
+            <div class="fig" id="fig-loop" aria-label="The engineering loop: clear plan, agent build, real-world tests, independent review, refine and correct, then round again"></div>
+            <p class="fig-cap"><span class="fig-no">FIG 2</span>The engineering loop: resolve issues, then check again</p>
+          </aside>
+        </article>
+
+        <article class="qa-item qa-wide">
+          <p class="qa-no">Q3</p>
+          <div class="qa-body">
+            <h3 class="qa-q">How I think about design</h3>
+            <ol class="rules">
+              <li>
+                <span class="rule-no">D1</span>
+                <p class="rule-k">Simplicity first</p>
+                <p class="rule-v">No one should be confused or have to guess. Complexity does not need to be complicated.</p>
+              </li>
+              <li>
+                <span class="rule-no">D2</span>
+                <p class="rule-k">Context and specificity</p>
+                <p class="rule-v">Vague goals produce bad results. Define audience, purpose, and brand.</p>
+              </li>
+              <li>
+                <span class="rule-no">D3</span>
+                <p class="rule-k">Preferences change with audience and situation</p>
+              </li>
+              <li>
+                <span class="rule-no">D4</span>
+                <p class="rule-k">Never stop after one pass from one model</p>
+              </li>
+            </ol>
+          </div>
+        </article>
+      </div>
+
+      <div class="contact">
+        <p class="contact-k">CONTACT</p>
+        <p class="contact-big">Tell me what you want<br />to build or fix</p>
+        <p class="contact-sub">And what’s slowing you down. I’ll reply within 24 hours.</p>
+        <a class="contact-mail" href="mailto:hi@fullbuild.ai">hi@fullbuild.ai<span aria-hidden="true"> ↗</span></a>
+        <div class="note-tb contact-tb">
+          <span class="note-cell wide"><span class="note-k">BASED IN</span>CHESAPEAKE, VA · WORKING REMOTELY</span>
+          <span class="note-cell"><span class="note-k">PORTFOLIO</span><a href="https://fullbuild.ai">FULLBUILD.AI ↗</a></span>
+          <span class="note-cell"><span class="note-k">CODE</span><a href="https://github.com/ryanportfolio">GITHUB ↗</a></span>
+          <span class="note-cell"><span class="note-k">PROFILE</span><a href="https://www.linkedin.com/in/ryan-allen-d/">LINKEDIN ↗</a></span>
         </div>
-        <aside class="rail">
-          <div class="fig" id="fig-mergegate" aria-label="An endless queue of pull requests pausing at a human gate: approved ones merge onto main, declined ones fall away dashed"></div>
-          <p class="fig-cap"><span class="fig-no">FIG 1</span>Every change pauses for my review</p>
-        </aside>
       </div>
     </section>
 
@@ -575,8 +827,12 @@ const faq = [
 
   <script>
     import { boot } from '../scripts/about-plates.js';
+    import { boot as bootDetails } from '../scripts/about-details.js';
+    import { boot as bootFilm } from '../scripts/about-film.js';
     import { boot as bootSmoothScroll } from '../scripts/smooth-scroll.js';
     boot();
+    bootDetails();
+    bootFilm();
     bootSmoothScroll();
   </script>
 
@@ -618,6 +874,8 @@ const faq = [
       position: relative;
     }
     .sheet.last { border-bottom: 0; }
+    /* anchors land below the sticky masthead */
+    .sheet, .det { scroll-margin-top: 84px; }
 
     /* ---- hero ---- */
     .hero { padding-top: var(--s-6); }
@@ -625,12 +883,17 @@ const faq = [
     .aw-kicker { font-family: var(--font-mono); font-weight: 500; font-size: var(--text-2xs); letter-spacing: 0.24em; color: var(--awg); }
     .hero-name { font-family: var(--font-display); font-weight: 400; font-size: clamp(3rem, 7vw, var(--text-4xl)); line-height: 1.02; margin-top: var(--s-2); }
     .hero-rule { width: 120px; height: 2px; background: var(--awc); margin: var(--s-3) 0; }
-    .hero-line { font-family: var(--font-body); font-size: var(--text-md); max-width: 26ch; }
-    .hero-links { font-family: var(--font-mono); font-size: var(--text-xs); margin-top: var(--s-2); line-height: 2; }
+    .hero-role { font-family: var(--font-mono); font-weight: 500; font-size: var(--text-2xs); letter-spacing: 0.2em; color: var(--awg); }
+    .hero-line { font-family: var(--font-body); font-size: var(--text-lg); line-height: 1.24; max-width: 19ch; margin-top: var(--s-2); text-wrap: balance; }
+    .hero-cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: var(--s-3); }
+    .hero-cta .btn { padding: 12px 16px; }
+    .hero-links {
+      list-style: none; padding: 0; margin-top: var(--s-3);
+      display: grid; grid-template-columns: repeat(2, max-content); gap: 2px var(--s-4);
+      font-family: var(--font-mono); font-size: var(--text-2xs); line-height: 2;
+    }
     .hero-links a { color: var(--ink-soft); text-decoration-color: var(--line); }
     .hero-links a:hover { color: var(--accent-deep); }
-    .hero-links .fullbuild { display: block; text-align: center; font-weight: 700; }
-    .hero-links .fullbuild a { font-weight: 700; color: var(--ink); }
     .hero-hint { font-family: var(--font-body); font-style: italic; font-size: var(--text-sm); color: var(--aw-sepia); max-width: 40ch; margin-top: var(--s-3); }
     .hero-fig { min-height: 340px; cursor: crosshair; }
 
@@ -686,19 +949,22 @@ const faq = [
     :global(#aw[data-hl='phantom'] .plate-svg [data-conv='phantom']) { opacity: 1; }
 
     /* ---- holdings: schedule of works ---- */
-    .hold { border: 1.5px solid var(--awc); margin-bottom: var(--s-3); }
+    .hold { border: 1.5px solid var(--awc); margin-bottom: var(--s-3); overflow: hidden; }
     .hold-head {
+      display: flex; justify-content: space-between; gap: var(--s-2);
       padding: 7px 12px; border-bottom: 1.5px solid var(--awc);
       font-family: var(--font-mono); font-weight: 500; font-size: 0.58rem; letter-spacing: 0.2em;
     }
-    .hold-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    /* twelve cells, four to a row; the -1px margins tuck the outer cell rules under the frame */
+    .hold-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0 -1px -1px 0; }
+    .hold-cell:not([class*='ink-']) { --sheet-ink: var(--awc); }
     .hold-cell {
       position: relative; display: flex; flex-direction: column; gap: 7px;
-      padding: calc(var(--s-2) + 3px) var(--s-2) var(--s-2); border-right: 1px solid var(--awc);
+      padding: calc(var(--s-2) + 3px) var(--s-2) var(--s-2);
+      border-right: 1px solid var(--awc); border-bottom: 1px solid var(--awc);
       text-decoration: none; color: var(--ink);
       transition: background var(--dur) var(--ease);
     }
-    .hold-cell:last-child { border-right: 0; }
     /* each cell carries its sheet's ink as a drawn top tab, thicker on hover */
     .hold-cell::before {
       content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
@@ -706,7 +972,7 @@ const faq = [
     }
     .hold-cell:hover, .hold-cell:focus-visible { background: color-mix(in srgb, var(--sheet-ink) 7%, transparent); }
     .hold-cell:hover::before, .hold-cell:focus-visible::before { height: 6px; }
-    .hold-top { display: flex; justify-content: space-between; align-items: baseline; gap: 6px; flex-wrap: wrap; font-family: var(--font-mono); font-weight: 500; }
+    .hold-top { display: flex; flex-direction: column; gap: 3px; font-family: var(--font-mono); font-weight: 500; }
     .hold-no { font-size: var(--text-2xs); letter-spacing: 0.1em; color: var(--awg); white-space: nowrap; }
     .hold-name { font-size: var(--text-2xs); letter-spacing: 0.16em; color: var(--sheet-ink); white-space: nowrap; }
     .hold-big { font-family: var(--font-mono); font-weight: 500; font-size: var(--text-lg); line-height: 1; color: var(--sheet-ink); }
@@ -827,6 +1093,119 @@ const faq = [
     .reg .reg-name a:hover { color: var(--accent-deep); }
     .reg .reg-desc { font-family: var(--font-body); font-size: var(--text-sm); letter-spacing: 0; color: var(--ink-soft); max-width: 62ch; }
 
+    /* ---- A-600 featured works: one drawn detail per work ---- */
+    .dets { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border: 1.5px solid var(--awc); }
+    .det {
+      display: flex; flex-direction: column; min-width: 0; padding: var(--s-3);
+      border-right: 1px solid var(--awc); border-bottom: 1px solid var(--awc);
+    }
+    .det:nth-child(2n) { border-right: 0; }
+    .det:nth-last-child(-n + 2) { border-bottom: 0; }
+    .det-head { display: flex; justify-content: space-between; font-family: var(--font-mono); font-weight: 500; font-size: 0.58rem; letter-spacing: 0.2em; color: var(--awg); }
+    .det-fig { min-height: 220px; display: flex; align-items: center; justify-content: center; margin: var(--s-2) 0; }
+    .det-name { font-family: var(--font-display); font-weight: 400; font-size: var(--text-xl); line-height: 1.05; }
+    .det-name a { color: var(--ink); text-decoration: none; transition: color var(--dur) var(--ease); }
+    .det-name a span { font-family: var(--font-mono); font-size: 0.5em; color: var(--awg); }
+    .det-name a:hover, .det-name a:focus-visible { color: var(--accent-deep); }
+    .det-line { font-family: var(--font-body); font-size: var(--text-md); line-height: 1.3; margin-top: 8px; text-wrap: balance; }
+    .det-note { font-family: var(--font-body); font-size: var(--text-sm); color: var(--ink-soft); margin: var(--s-1) 0 var(--s-2); max-width: 48ch; }
+    .det-facts { margin: auto 0 0; padding-top: var(--s-1); border-top: 1px solid var(--line); display: grid; gap: 3px; }
+    .det-facts div { display: grid; grid-template-columns: 104px 1fr; gap: 10px; align-items: baseline; }
+    .det-facts dt { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.14em; color: var(--awg); }
+    .det-facts dd { font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.04em; line-height: 1.6; margin: 0; }
+
+    /* ---- A-700 workshop ---- */
+    .shop { display: grid; gap: var(--s-2); margin-bottom: var(--s-3); }
+    .shop-item .fig { max-width: 680px; }
+    .shop-item .sec-head { margin-top: 0; }
+    .shop-more { margin-top: var(--s-3); }
+
+    /* ---- A-800 the film ---- */
+    .film-lede { max-width: 52ch; }
+    .film { margin: 0; border: 1.5px solid var(--awc); background: color-mix(in srgb, var(--paper) 96%, var(--ink) 4%); }
+    .film-stage { position: relative; aspect-ratio: 16 / 9; }
+    .film-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: pointer; }
+    .film-bar {
+      display: flex; align-items: center; gap: var(--s-2); padding: 8px 12px;
+      border-top: 1px solid var(--awc);
+      font-family: var(--font-mono); font-size: var(--text-2xs); letter-spacing: 0.1em;
+    }
+    .film-btn {
+      font: inherit; font-weight: 500; letter-spacing: 0.14em; min-width: 5.6em;
+      background: none; border: 1.5px solid var(--awc); color: var(--ink); padding: 6px 12px; cursor: pointer;
+      transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+    }
+    .film-btn:hover { background: var(--awc); color: var(--paper); }
+    .film-track { position: relative; flex: 1; height: 28px; display: flex; align-items: center; }
+    .film-track input { width: 100%; height: 28px; margin: 0; background: transparent; cursor: pointer; appearance: none; -webkit-appearance: none; }
+    .film-track input::-webkit-slider-runnable-track { height: 1.5px; background: var(--awc); }
+    .film-track input::-moz-range-track { height: 1.5px; background: var(--awc); }
+    .film-track input::-webkit-slider-thumb { -webkit-appearance: none; width: 3px; height: 20px; margin-top: -9px; background: var(--aw-verm); border: 0; border-radius: 0; }
+    .film-track input::-moz-range-thumb { width: 3px; height: 20px; background: var(--aw-verm); border: 0; border-radius: 0; }
+    .film-ticks { position: absolute; inset: 0; pointer-events: none; }
+    :global(.film-ticks i) { position: absolute; top: 9px; width: 1px; height: 10px; background: var(--awg); }
+    .film-time { min-width: 7.5em; text-align: right; color: var(--awg); white-space: nowrap; }
+    .film-steps {
+      list-style: none; padding: 0; margin: var(--s-3) 0 0;
+      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+      border-top: 1px solid var(--awc); border-left: 1px solid var(--awc);
+    }
+    .film-steps li { border-right: 1px solid var(--awc); border-bottom: 1px solid var(--awc); }
+    .film-steps button {
+      all: unset; box-sizing: border-box; display: grid; gap: 4px; align-content: start;
+      width: 100%; height: 100%; padding: var(--s-2); cursor: pointer;
+      transition: background var(--dur) var(--ease);
+    }
+    .film-steps button:hover { background: color-mix(in srgb, var(--aw-verm) 5%, transparent); }
+    .film-steps button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+    .fs-no { font-family: var(--font-mono); font-weight: 500; font-size: var(--text-2xs); letter-spacing: 0.14em; color: var(--awg); }
+    .fs-name { font-family: var(--font-body); font-size: var(--text-md); line-height: 1.2; }
+    .fs-sub { font-family: var(--font-body); font-size: var(--text-sm); color: var(--ink-soft); line-height: 1.4; }
+    :global(.film-steps li.on) button { background: color-mix(in srgb, var(--aw-verm) 9%, transparent); }
+    :global(.film-steps li.on) .fs-no { color: var(--aw-verm); }
+    .terms { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-4); margin-top: var(--s-6); }
+    .term-k { font-family: var(--font-body); font-weight: 600; font-size: var(--text-base); line-height: 1.25; border-top: 1.5px solid var(--awc); padding-top: var(--s-1); }
+    .term-v { font-family: var(--font-body); font-size: var(--text-sm); color: var(--ink-soft); line-height: 1.55; margin-top: 6px; }
+
+    /* ---- A-1000 questions: each one a plate, not a disclosure row ---- */
+    .qa-item {
+      display: grid; grid-template-columns: 56px minmax(0, 1fr) 260px; gap: var(--s-4); align-items: start;
+      padding: var(--s-6) 0; border-bottom: 1px solid var(--line);
+    }
+    .qa-item:first-child { padding-top: var(--s-2); }
+    .qa-wide .qa-body { grid-column: 2 / -1; }
+    .qa-no { font-family: var(--font-mono); font-weight: 500; font-size: var(--text-xs); letter-spacing: 0.14em; color: var(--awg); padding-top: 0.9em; }
+    .qa-q { font-family: var(--font-display); font-weight: 400; font-size: clamp(2.1rem, 5vw, 3.5rem); line-height: 1.04; }
+    .qa-lede { font-family: var(--font-body); font-size: var(--text-lg); line-height: 1.3; max-width: 28ch; margin: var(--s-3) 0; text-wrap: pretty; }
+    .qa-tb { border: 1px solid var(--line); margin-top: var(--s-3); }
+    .qa-fig { border-left: 1px solid var(--line); padding-left: var(--s-3); }
+    .eq { border: 1px solid var(--awc); background: color-mix(in srgb, var(--paper) 96%, var(--ink) 4%); padding: var(--s-2) var(--s-3) var(--s-3); }
+    .eq-lead { display: block; font-family: var(--font-mono); font-weight: 500; font-size: 0.5rem; letter-spacing: 0.22em; color: var(--awg); margin-bottom: var(--s-1); }
+    .eq-row { display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: baseline; font-family: var(--font-body); font-size: clamp(1.05rem, 2vw, var(--text-lg)); line-height: 1.3; }
+    .eq-op { font-family: var(--font-mono); font-size: 0.82em; color: var(--awg); }
+    .eq-out { font-style: italic; color: var(--accent-deep); }
+    .rules { list-style: none; padding: 0; margin: var(--s-4) 0 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1.5px solid var(--awc); }
+    .rules li { display: grid; grid-template-columns: 44px 1fr; column-gap: var(--s-2); align-content: start; padding: var(--s-3) var(--s-3) var(--s-3) 0; border-bottom: 1px solid var(--line); }
+    .rules li:nth-child(odd) { border-right: 1px solid var(--line); }
+    .rules li:nth-child(even) { padding-left: var(--s-3); }
+    .rule-no { grid-row: 1 / span 2; font-family: var(--font-mono); font-weight: 500; font-size: var(--text-2xs); letter-spacing: 0.14em; color: var(--awg); padding-top: 0.75em; }
+    .rule-k { font-family: var(--font-body); font-size: var(--text-lg); line-height: 1.2; text-wrap: balance; }
+    .rule-v { grid-column: 2; font-family: var(--font-body); font-size: var(--text-sm); color: var(--ink-soft); line-height: 1.55; margin-top: 8px; }
+
+    /* ---- contact: the last plate is the ask ---- */
+    .contact { margin-top: var(--s-8); border: 1.5px solid var(--awc); background: color-mix(in srgb, var(--paper) 96%, var(--ink) 4%); }
+    .contact-k { font-family: var(--font-mono); font-weight: 500; font-size: 0.5rem; letter-spacing: 0.22em; color: var(--awg); padding: 8px var(--s-4) 0; }
+    .contact-big { font-family: var(--font-display); font-weight: 400; font-size: clamp(1.9rem, 5.4vw, 3.9rem); line-height: 1.04; padding: var(--s-3) var(--s-4) 0; }
+    .contact-sub { font-family: var(--font-body); font-size: var(--text-md); color: var(--ink-soft); padding: var(--s-2) var(--s-4) 0; }
+    .contact-mail {
+      display: inline-block; margin: var(--s-3) var(--s-4) var(--s-4);
+      font-family: var(--font-mono); font-weight: 500; font-size: clamp(1.15rem, 3.4vw, var(--text-xl));
+      color: var(--accent-deep); text-underline-offset: 7px;
+    }
+    .contact-mail span { color: var(--awg); }
+    .contact-tb a { color: var(--ink); text-decoration-color: var(--line); }
+    .contact-tb a:hover { color: var(--accent-deep); }
+
     /* ---- A-002 general note: a sheet quoted the way the set quotes itself ---- */
     #sec-a002 .sheet-no { white-space: nowrap; }
     .note { margin: 0; border: 1px solid var(--awc); background: color-mix(in srgb, var(--paper) 96%, var(--ink) 4%); }
@@ -897,8 +1276,14 @@ const faq = [
       .cols { grid-template-columns: 1fr; }
       .rail { position: static; border-left: 0; border-top: 1px solid var(--line); padding: var(--s-3) 0 0; }
       .hold-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .hold-cell:nth-child(2) { border-right: 0; }
-      .hold-cell:nth-child(-n + 2) { border-bottom: 1px solid var(--awc); }
+      .dets { grid-template-columns: 1fr; }
+      .det, .det:nth-child(2n) { border-right: 0; }
+      .det:nth-last-child(2) { border-bottom: 1px solid var(--awc); }
+      .qa-item { grid-template-columns: 1fr; gap: var(--s-2); }
+      .qa-wide .qa-body { grid-column: auto; }
+      .qa-fig { border-left: 0; padding-left: 0; }
+      .film-steps { grid-template-columns: repeat(2, 1fr); }
+      .terms { grid-template-columns: repeat(2, 1fr); }
       .tb-cell.wide, .tb-zonecell { display: none; }
     }
     @media (max-width: 560px) {
@@ -907,6 +1292,28 @@ const faq = [
       .idx-live, .idx-tag { display: none; }
       .gatekey { grid-template-columns: 1fr; }
       .reg th:first-child, .reg .reg-no { display: none; }
+      .hero-links { grid-template-columns: 1fr; }
+      .film-steps, .terms, .rules { grid-template-columns: 1fr; }
+      .rules li, .rules li:nth-child(even) { padding-left: 0; border-right: 0; }
+      .sheet { padding-left: var(--s-2); padding-right: var(--s-2); }
+      .det { padding: var(--s-2) 12px; }
+      .btn-xl { padding: 18px 22px; font-size: var(--text-base); gap: 12px; }
+      .contact-k, .contact-big, .contact-sub { padding-left: var(--s-2); padding-right: var(--s-2); }
+      .contact-mail { margin-left: var(--s-2); margin-right: var(--s-2); }
+      .qa-no { padding-top: 0; }
+      .det-facts div { grid-template-columns: 84px 1fr; }
+      .film-time { display: none; }
+    }
+    @media (max-width: 480px) {
+      .hold-grid { grid-template-columns: 1fr; }
+      .hold-cell { display: grid; grid-template-columns: 1fr auto; column-gap: var(--s-2); align-items: baseline; }
+      .hold-top { grid-column: 1; }
+      .hold-big { grid-column: 2; grid-row: 1; text-align: right; }
+      .hold-k, .hold-url { grid-column: 1 / -1; }
+    }
+    /* the film recomposes for a tall stage on phones (see about-film.js) */
+    @media (max-width: 700px) {
+      .film-stage { aspect-ratio: 4 / 5; }
     }
   </style>
 </Base>
