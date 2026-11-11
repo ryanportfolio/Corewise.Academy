@@ -739,7 +739,7 @@ function initHarnessSystem(host) {
   onEnter(host, prepDraw(svg, { stagger: 30, dur: 420 }));
 }
 
-/* ------------------------------------------------------- ptt + githelp --- */
+/* ----------------------------------------------------------------- ptt --- */
 function initPtt(host) {
   const w = 520, h = 96, y = 54;
   const svg = svgRoot(host, w, h);
@@ -752,26 +752,6 @@ function initPtt(host) {
     if (i) el('line', { x1: stages[i - 1][2] + stages[i - 1][1], y1: y, x2: x - hw, y2: y, class: 'st-carbon-thin pulse-path' }, svg);
   });
   onEnter(host, prepDraw(svg, { stagger: 25, dur: 420 }));
-}
-function initGithelp(host) {
-  const w = 520, h = 84, y = 40;
-  const svg = svgRoot(host, w, h);
-  const stages = [['SCOUT', 56], ['RANK', 148], ['READ', 240], ['DRAFT', 332]];
-  stages.forEach(([label, x], i) => {
-    el('rect', { x: x - 36, y: y - 11, width: 72, height: 22, class: 'st-carbon', fill: 'none' }, svg);
-    el('text', { x, y: y + 3.5, class: 'annf', 'text-anchor': 'middle' }, svg).textContent = label;
-    if (i) el('line', { x1: stages[i - 1][1] + 36, y1: y, x2: x - 36, y2: y, class: 'st-carbon-thin' }, svg);
-  });
-  const sx = 412;
-  el('line', { x1: 368, y1: y, x2: sx - 12, y2: y, class: 'st-carbon-thin' }, svg);
-  el('circle', { cx: sx - 9, cy: y, r: 1.8, class: 'nd-solid' }, svg);
-  const arm = el('line', { x1: sx - 9, y1: y, x2: sx + 7, y2: y - 11, class: 'st-human', 'stroke-width': 1.4 }, svg);
-  el('circle', { cx: sx + 9, cy: y, r: 1.8, class: 'nd-solid' }, svg);
-  el('text', { x: sx, y: y + 19, class: 'annf ann-human', 'text-anchor': 'middle' }, svg).textContent = 'EXPLICIT HUMAN GO';
-  el('line', { x1: sx + 9, y1: y, x2: w - 78, y2: y, class: 'st-carbon-thin' }, svg);
-  const post = el('rect', { x: w - 76, y: y - 11, width: 62, height: 22, class: 'st-carbon', fill: 'none' }, svg);
-  el('text', { x: w - 45, y: y + 3.5, class: 'annf', 'text-anchor': 'middle' }, svg).textContent = 'POST';
-  onEnter(host, prepDraw(svg, { stagger: 20, dur: 420 }));
 }
 
 /* ----------------------------------------------------------- pixelswarm -- */
@@ -1028,7 +1008,6 @@ export function boot() {
   gate('stemma', () => initStemma($('fig-stemma')));
   gate('skills', () => initHarnessSystem($('fig-harness')));
   gate('ptt', () => initPtt($('fig-ptt')));
-  gate('githelp', () => initGithelp($('fig-githelp')));
   gate('pixel', () => initPixelswarm($('fig-pixelswarm')));
   gate('mergegate', () => initMergeGate($('fig-mergegate')));
   gate('counters', () => initCounters());

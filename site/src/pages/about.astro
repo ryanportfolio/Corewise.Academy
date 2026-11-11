@@ -29,18 +29,6 @@ const faq = [
   },
 ];
 
-// Schedule of works, second and third rows: the eight details on sheet A-600.
-const more = [
-  { no: 'A-601', id: 'latter', name: 'LATTER DESIGN', big: '3', k: 'EXPORT FORMATS: PNG, VIDEO, HTML · LAYERED SHADER BACKGROUNDS', url: 'latter.design' },
-  { no: 'A-602', id: 'academy', name: 'COREWISE ACADEMY', big: String(guideCount), count: guideCount, k: `GUIDES IN 5 TRACKS · ABOUT ${guideMinutes} MINUTES OF READING`, url: 'corewise.academy' },
-  { no: 'A-603', id: 'maimcoil', name: 'MAIMCOIL', big: '110K+', k: 'LINES OF TYPESCRIPT AND RUST · PIXEL-ART ACTION GAME BUILT FOR STEAM', url: 'steam app 4975550' },
-  { no: 'A-604', id: 'savetokens', name: 'SAVETOKENS.TIPS', big: '45.3%', k: 'OF OUTPUT TOKENS REMOVED, MEASURED · 681.7M TOKENS SAVED', url: 'savetokens.tips' },
-  { no: 'A-605', id: 'harness', name: 'HARNESS FIRMWARE', big: '54', count: 54, k: 'SKILLS FOR CLAUDE CODE, 50 FOR CODEX · PROJECT MEMORY', url: 'harnessfirmware.com' },
-  { no: 'A-606', id: 'securewall', name: 'SECURE WALL', big: '0', k: 'CONNECTIONS WITHOUT A RULE · DEFAULT-DENY WINDOWS FIREWALL', url: 'secwall.org' },
-  { no: 'A-607', id: 'stk', name: 'STK', big: '16 KB', k: 'READ THRESHOLD · LARGER FILES RETURN AN OUTLINE OF 80 LINES AT MOST', url: 'savetokens.tips/stk' },
-  { no: 'A-608', id: 'mavvi', name: 'MAVVI', big: '6', count: 6, k: 'SPARKLING FERMENTED COCKTAILS · PROTOTYPE BRAND SITE', url: 'prototype' },
-];
-
 // Sheet A-600: one drawn detail per featured work. `fig` is the host id the
 // client engine (about-details.js, about-plates.js) draws into.
 const details = [
@@ -182,13 +170,13 @@ const terms = [
         <li><a href="#sec-a1100"><span class="idx-no">A-1100</span><span class="idx-name">Closing note</span><span class="idx-tag">LAST SHEET</span></a></li>
       </ol>
 
-      <div class="hold" aria-label="Schedule of works: one key figure per featured work">
-        <p class="hold-head"><span>SCHEDULE OF WORKS</span><span>12 FEATURED</span></p>
+      <div class="hold" aria-label="Schedule of works: one key figure per live system">
+        <p class="hold-head"><span>SCHEDULE OF WORKS</span></p>
         <div class="hold-grid">
           <a class="hold-cell ink-vermilion" href="#sec-a100">
             <span class="hold-top"><span class="hold-no">A-100</span><span class="hold-name">COREWISE</span></span>
-            <span class="hold-big"><span data-count="650">650</span>M+</span>
-            <span class="hold-k">TOKENS PROCESSED FOR 1,880+ REGISTERED USERS · 6 AI MODELS IN PARALLEL</span>
+            <span class="hold-big"><span data-count="820">820</span>M+</span>
+            <span class="hold-k">TOKENS PROCESSED FOR 2,000+ REGISTERED USERS · 6 AI MODELS IN PARALLEL</span>
             <span class="hold-url">corewise.video&nbsp;↗</span>
           </a>
           <a class="hold-cell ink-prussian" href="#sec-a200">
@@ -209,16 +197,6 @@ const terms = [
             <span class="hold-k">AUTOMATED TESTS · ANSWER ENGINE OPTIMIZATION AUDIT · ZERO AI CALLS</span>
             <span class="hold-url">willaicite.com&nbsp;↗</span>
           </a>
-          {
-            more.map((m) => (
-              <a class="hold-cell" href={`#det-${m.id}`}>
-                <span class="hold-top"><span class="hold-no">{m.no}</span><span class="hold-name">{m.name}</span></span>
-                <span class="hold-big">{m.count ? <span data-count={m.count}>{m.big}</span> : m.big}</span>
-                <span class="hold-k">{m.k}</span>
-                <span class="hold-url">{m.url}</span>
-              </a>
-            ))
-          }
         </div>
       </div>
 
@@ -331,7 +309,7 @@ const terms = [
           <dl>
             <dt>STATUS</dt><dd>LIVE · VERIFIED REACHABLE</dd>
             <dt>MODELS IN PARALLEL</dt><dd>6</dd>
-            <dt>REGISTERED USERS</dt><dd>1,880+</dd>
+            <dt>REGISTERED USERS</dt><dd>2,000+</dd>
             <dt>COMMITS</dt><dd>~10.9K / ~8 MO</dd>
             <dt>PLATFORMS</dt><dd>WEB · MOBILE (PWA) · FIREFOX + CHROME EXTENSION · MCP SERVER</dd>
             <dt>BILLING / EXPORT</dt><dd>STRIPE · NOTION / PDF / TTS</dd>
@@ -521,7 +499,6 @@ const terms = [
         </div>
         <p class="sheet-sub">ONE DRAWN MECHANISM PER WORK</p>
       </header>
-      <p class="lede">Eight more works, each drawn doing the one thing it is for.</p>
       <div class="dets">
         {
           details.map((d, i) => (
@@ -532,7 +509,7 @@ const terms = [
               </header>
               <div class="fig det-fig" id={d.fig} aria-label={d.aria} data-fig={d.data}></div>
               <h3 class="det-name">
-                {d.href ? <a href={d.href}>{d.name}<span aria-hidden="true"> ↗</span></a> : d.name}
+                {d.href ? <a href={d.href}>{d.name}<span aria-hidden="true">&nbsp;↗</span></a> : d.name}
               </h3>
               <p class="det-line">{d.line}</p>
               <p class="det-note" set:html={d.note} />
@@ -611,15 +588,8 @@ const terms = [
             feature: no cloud, no network path, nothing leaves the machine.
             <a href="https://github.com/ryanportfolio/Local-CPU-only-PTT">Public repo ↗</a></p>
         </div>
-        <div class="shop-item">
-          <h3 class="sec-head">GITHELP</h3>
-          <div class="fig" id="fig-githelp" aria-label="Discussion-scouting pipeline with a normally-open human switch"></div>
-          <p class="fig-cap"><span class="fig-no">FIG 2</span>A private workspace that scouts GitHub Discussions,
-            ranks what's answerable, reads the full thread, and drafts a verified answer. Nothing posts
-            without an explicit human go.</p>
-        </div>
       </div>
-      <h3 class="sec-head">PROTOTYPE REGISTER</h3>
+      <h3 class="sec-head">PROTOTYPES</h3>
       <table class="rev reg">
         <thead><tr><th>MARK</th><th>WORK</th><th>DESCRIPTION</th></tr></thead>
         <tbody>
@@ -867,7 +837,7 @@ const terms = [
     }
 
     .sheet {
-      max-width: 1060px;
+      max-width: 1280px;
       margin: 0 auto;
       padding: var(--s-8) var(--s-4) var(--s-6);
       border-bottom: 1px solid var(--line);
@@ -1306,10 +1276,6 @@ const terms = [
     }
     @media (max-width: 480px) {
       .hold-grid { grid-template-columns: 1fr; }
-      .hold-cell { display: grid; grid-template-columns: 1fr auto; column-gap: var(--s-2); align-items: baseline; }
-      .hold-top { grid-column: 1; }
-      .hold-big { grid-column: 2; grid-row: 1; text-align: right; }
-      .hold-k, .hold-url { grid-column: 1 / -1; }
     }
     /* the film recomposes for a tall stage on phones (see about-film.js) */
     @media (max-width: 700px) {
