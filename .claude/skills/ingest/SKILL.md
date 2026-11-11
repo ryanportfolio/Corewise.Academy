@@ -59,7 +59,10 @@ which video to ingest.
   the passage). Sweep the finished draft for word tics: an abstract word repeated
   across the piece marks sentences to rewrite as concrete statements. Claims
   about how something was made are facts; methods distilled afterward are
-  disclosed as such. Full rulings: `.claude/reference/copy-rules.md`.
+  disclosed as such. Notes about the ingest or the source material (what the
+  transcript lacked, what the guide omits, that a prompt is original) go in the
+  notes file and the pull request, never in guide prose. Full rulings:
+  `.claude/reference/copy-rules.md`.
 
 ## Step 1: Get the transcript
 

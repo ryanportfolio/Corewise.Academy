@@ -121,7 +121,10 @@ when available. Use the current schema and an existing guide as the structural r
   `## <span class="sec-no">01</span>Title`.
 - Attribute short `<PullQuote>` excerpts with creator, video, href, and timestamp.
   Include a concrete `<Exercise>` with ordered steps. Import components as existing
-  guides do. Mark original prompts as original; do not imply they were copied from video.
+  guides do. Never attribute an original prompt to the video. Record that it is original,
+  and any other note about the ingest or the source material, in the notes file and the
+  pull request, not in guide prose (`copy-rules.md`, "No commentary about the source or
+  the guide").
 - Put source URLs, creator names, titles, and verified timestamps in `sources`.
   Follow the live schema instead of inventing fields. Quote YAML strings containing `: `.
 

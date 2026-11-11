@@ -252,6 +252,30 @@ origin of the about page, when the method was actually distilled after the fact.
   (`pre-wrap`); hard line breaks inside a paragraph render as ragged
   mid-sentence breaks at every viewport width.
 
+## No commentary about the source or the guide (editor ruling, 2026-11-10)
+
+From the review of guide No. 68: the draft introduced its exercise prompt with "The
+video shows its prompts on screen, and the transcript does not include them. This
+prompt is original to this guide." The editor cut both sentences. The reader came for
+the prompt; how the draft was assembled is no use to them.
+
+Guide prose never reports on its own making or on the state of the source material:
+
+- What the transcript, captions, or footage did or did not contain.
+- What the guide covers, omits, or changes relative to the source ("This guide covers
+  the questions and omits the product").
+- That a prompt, table, or exercise is original to the guide.
+- Where the guide's advice departs from the video. State the advice.
+
+These notes still get recorded: in `content/notes/<date>-<video-id>.md`, the registry
+row, and the pull request. An original prompt is never attributed to the source.
+
+Three things stay in the guide because the reader needs them: a conflict of interest in
+the source (a sponsor, an affiliate link), a correction of a source's factual claim
+with the primary source linked, and the provenance disclosures in the section above
+(a method distilled after the fact, a prompt tidied for print, an artifact edited to
+pass the site gates).
+
 ## Self-contained passages, no word tics, one name per concept (editor rulings, 2026-07-18, 2026-07-19)
 
 - **Every passage lands without private context.** If a paragraph only makes
