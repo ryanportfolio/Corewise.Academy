@@ -38,7 +38,7 @@ New No. 68, **Five questions before you build with AI**, practice / broad. The c
 ## Draft decisions
 
 - One direct quotation, Ouyang at 18:06, ten words. Caption type is unknown, so the wording was not checked against the audio.
-- The video shows its prompts on screen and the captions do not contain them. The guide's prompt, exercise, summary table, and the own-earlier-months fallback for benchmarks are original and labelled as such where the reader could mistake them for the source's.
+- The video shows its prompts on screen and the captions do not contain them. The guide's prompt, exercise, summary table, and the own-earlier-months fallback for benchmarks are original. The editor cut the in-guide labels saying so during review of PR 312, along with other commentary about the source and the guide itself; this record is here instead.
 - Marchese's definition of a hot zone is "critical parts of your work that you need to get right" (13:42). The guide uses that definition and his two examples.
 
 ## Validation
