@@ -794,11 +794,12 @@ export function boot() {
   const ticks = document.getElementById('film-ticks');
   const stepEls = [...document.querySelectorAll('#film-steps li')];
   const pad = (n) => String(Math.floor(n)).padStart(2, '0');
-  let t = 0, playing = false, wanted = !reduced, visible = false, raf = 0, last = 0, lastStep = -1;
+  let t = 0, playing = false, wanted = !reduced, visible = false, raf = 0, last = 0, lastStep = -1, dragging = false;
 
   CHAPTERS.slice(1).forEach((c) => { const i = document.createElement('i'); i.style.left = `${(c.a / DUR) * 100}%`; ticks?.appendChild(i); });
   const sync = () => {
-    if (scrub && document.activeElement !== scrub) scrub.value = String(t);
+    // follow playback except while the thumb is being dragged (focus alone must not freeze it)
+    if (scrub && !dragging) scrub.value = String(t);
     if (timeEl) timeEl.textContent = `${pad(t)} / ${DUR} S`;
     const step = (CHAPTERS.find((c) => t >= c.a && t < c.b) ?? CHAPTERS[0]).step;
     if (step !== lastStep) { lastStep = step; stepEls.forEach((li, i) => li.classList.toggle('on', i + 1 === step)); }
@@ -823,8 +824,11 @@ export function boot() {
   playBtn?.addEventListener('click', () => want(!wanted));
   canvas.addEventListener('click', () => want(!wanted));
   scrub?.addEventListener('input', () => seek(scrub.value));
+  scrub?.addEventListener('pointerdown', () => { dragging = true; });
+  for (const ev of ['pointerup', 'pointercancel']) window.addEventListener(ev, () => { dragging = false; });
   stepEls.forEach((li) => li.querySelector('button')?.addEventListener('click', (e) => {
-    seek(e.currentTarget.dataset.seek, { play: !reduced });
+    // with reduced motion the film stays paused, so land where the step's drawing and caption are complete
+    seek(Number(e.currentTarget.dataset.seek) + (reduced ? 6.5 : 0), { play: !reduced });
     canvas.closest('.film')?.scrollIntoView({ block: 'nearest', behavior: 'instant' });
   }));
   new IntersectionObserver((es) => {
