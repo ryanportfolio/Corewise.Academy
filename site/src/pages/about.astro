@@ -109,12 +109,6 @@ const steps = [
   { at: 57, name: 'Hand it over', sub: 'You own the code and the tools' },
   { at: 66, name: 'Continue to optimize', sub: 'Find the next weak point' },
 ];
-const terms = [
-  ['We agree the scope first', 'Before I build anything, we agree what it is and how we’ll test it.'],
-  ['Every change gets checked', 'AI is fast and sometimes confidently wrong, so each change gets an independent review and a real-world test before you see it.'],
-  ['It’s all yours', 'The code, the tools, and the flow behind them are yours.'],
-  ['You won’t need me to run it', 'Workflows can run on their own schedule, so I never become your next bottleneck.'],
-];
 ---
 
 <Base
@@ -146,7 +140,7 @@ const terms = [
             <li><a href="https://latter.design/">latter.design</a></li>
             <li><a href="https://savetokens.tips">savetokens.tips</a></li>
             <li><a href="https://harnessfirmware.com">harnessfirmware.com</a></li>
-            <li><a href="https://github.com/ryanportfolio">github.com/ryanportfolio</a></li>
+            <li><a href="https://www.secwall.org/">secwall.org</a></li>
           </ul>
         </div>
         <div class="hero-fig" id="fig-hero" aria-label="Six model strands converging to one synthesis, drawn in true perspective"></div>
@@ -171,7 +165,6 @@ const terms = [
       </ol>
 
       <div class="hold" aria-label="Schedule of works: one key figure per live system">
-        <p class="hold-head"><span>SCHEDULE OF WORKS</span></p>
         <div class="hold-grid">
           <a class="hold-cell ink-vermilion" href="#sec-a100">
             <span class="hold-top"><span class="hold-no">A-100</span><span class="hold-name">COREWISE</span></span>
@@ -201,6 +194,7 @@ const terms = [
       </div>
 
       <p class="credo">
+        <span class="credo-row">
         <span>idea</span>
         <svg class="credo-star" viewBox="0 0 52 16" aria-hidden="true">
           <path class="cs-line" d="M2 8 H43" />
@@ -213,19 +207,23 @@ const terms = [
           <path class="cs-head" d="M38 3.5 L45 8 L38 12.5" />
           <path class="cs-comet" d="M2 8 H43" />
         </svg>
+        </span>
+        <span class="credo-row">
         <span>engineering</span>
         <svg class="credo-star" viewBox="0 0 52 16" aria-hidden="true">
           <path class="cs-line" d="M2 8 H43" />
           <path class="cs-head" d="M38 3.5 L45 8 L38 12.5" />
           <path class="cs-comet" d="M2 8 H43" />
         </svg>
-        <span>audit</span>
+        <span class="credo-pair">audit
         <svg class="credo-loop" viewBox="0 0 24 24" aria-hidden="true">
           <g class="cl-spin">
             <path class="cl-arc" d="M12 4 A8 8 0 1 1 5.07 8" />
             <path class="cl-head" d="M0 -3.2 L5 0 L0 3.2" transform="translate(5.07 8) rotate(-60)" />
           </g>
         </svg>
+        </span>
+        </span>
         <span class="credo-shipped">shipped</span>
       </p>
     </section>
@@ -638,16 +636,6 @@ const terms = [
           ))
         }
       </ol>
-      <div class="terms">
-        {
-          terms.map(([k, v]) => (
-            <div class="term">
-              <h3 class="term-k">{k}</h3>
-              <p class="term-v">{v}</p>
-            </div>
-          ))
-        }
-      </div>
     </section>
 
     <!-- A-1000 · questions + contact -->
@@ -920,12 +908,7 @@ const terms = [
 
     /* ---- holdings: schedule of works ---- */
     .hold { border: 1.5px solid var(--awc); margin-bottom: var(--s-3); overflow: hidden; }
-    .hold-head {
-      display: flex; justify-content: space-between; gap: var(--s-2);
-      padding: 7px 12px; border-bottom: 1.5px solid var(--awc);
-      font-family: var(--font-mono); font-weight: 500; font-size: 0.58rem; letter-spacing: 0.2em;
-    }
-    /* twelve cells, four to a row; the -1px margins tuck the outer cell rules under the frame */
+    /* the -1px margins tuck the outer cell rules under the frame */
     .hold-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0 -1px -1px 0; }
     .hold-cell:not([class*='ink-']) { --sheet-ink: var(--awc); }
     .hold-cell {
@@ -959,6 +942,10 @@ const terms = [
       display: flex; align-items: center; justify-content: space-between; gap: 0.35em; flex-wrap: wrap;
     }
     .credo span { white-space: nowrap; }
+    /* the review loop never wraps away from the word it belongs to */
+    .credo-pair { display: inline-flex; align-items: center; gap: 0.3em; }
+    /* two fixed rows: idea to design, then engineering to audit */
+    .credo-row { flex: 1 0 100%; display: flex; align-items: center; justify-content: space-between; gap: 0.35em; }
     .credo-shipped { flex: 1 0 100%; text-align: center; font-size: 2em; line-height: 1.05; }
     /* shooting-star connector: static shaft + head, plus a comet dash that streaks along it */
     .credo-star { width: 1.7em; height: 0.52em; flex: 1 0 auto; max-width: 3.2em; overflow: visible; }
@@ -1133,9 +1120,6 @@ const terms = [
     .fs-sub { font-family: var(--font-body); font-size: var(--text-sm); color: var(--ink-soft); line-height: 1.4; }
     :global(.film-steps li.on) button { background: color-mix(in srgb, var(--aw-verm) 9%, transparent); }
     :global(.film-steps li.on) .fs-no { color: var(--aw-verm); }
-    .terms { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-4); margin-top: var(--s-6); }
-    .term-k { font-family: var(--font-body); font-weight: 600; font-size: var(--text-base); line-height: 1.25; border-top: 1.5px solid var(--awc); padding-top: var(--s-1); }
-    .term-v { font-family: var(--font-body); font-size: var(--text-sm); color: var(--ink-soft); line-height: 1.55; margin-top: 6px; }
 
     /* ---- A-1000 questions: each one a plate, not a disclosure row ---- */
     .qa-item {
@@ -1253,7 +1237,6 @@ const terms = [
       .qa-wide .qa-body { grid-column: auto; }
       .qa-fig { border-left: 0; padding-left: 0; }
       .film-steps { grid-template-columns: repeat(2, 1fr); }
-      .terms { grid-template-columns: repeat(2, 1fr); }
       .tb-cell.wide, .tb-zonecell { display: none; }
     }
     @media (max-width: 560px) {
@@ -1263,7 +1246,8 @@ const terms = [
       .gatekey { grid-template-columns: 1fr; }
       .reg th:first-child, .reg .reg-no { display: none; }
       .hero-links { grid-template-columns: 1fr; }
-      .film-steps, .terms, .rules { grid-template-columns: 1fr; }
+      .credo-row { flex-wrap: wrap; }
+      .film-steps, .rules { grid-template-columns: 1fr; }
       .rules li, .rules li:nth-child(even) { padding-left: 0; border-right: 0; }
       .sheet { padding-left: var(--s-2); padding-right: var(--s-2); }
       .det { padding: var(--s-2) 12px; }
