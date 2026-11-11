@@ -1,0 +1,184 @@
+---
+title: Five questions before you build with AI
+description: 'Answer five questions before asking Claude to build: the result you want as a number, the smallest first version, what to leave out, which parts must work, and what slows you down.'
+track: practice
+level: broad
+number: 68
+minutes: 7
+tags: ['planning', 'verification', 'automation']
+objectives:
+  - Restate a goal as one number with a deadline.
+  - Reduce a build idea to the fewest steps that produce one result you can check.
+  - List what you will leave out and what replaces each item.
+  - Save approved examples and rerun them after every change to a part that must work.
+  - Identify a bottleneck from the tasks you postpone.
+prerequisites:
+  - slug: brief-the-model
+    note: Write down the context Claude cannot infer about your situation.
+sources:
+  - url: https://www.youtube.com/watch?v=fFktpPMQzjI
+    creator: Austin Marchese
+    video: "If You Ask Claude 5 Questions, It'll Make You Build 10x Faster"
+    timestamps: ['0:34', '1:13', '2:07', '3:06', '3:47', '4:23', '5:57', '6:41', '8:02', '9:36', '10:05', '10:45', '11:20', '12:05', '13:38', '14:29', '15:18', '16:20', '17:29', '18:06', '19:09', '19:51', '20:07', '20:28']
+  - url: https://platform.claude.com/docs/en/test-and-evaluate/develop-tests
+    creator: Anthropic
+    video: Define success criteria and build evaluations
+  - url: https://code.claude.com/docs/en/memory
+    creator: Anthropic
+    video: How Claude remembers your project
+  - url: https://code.claude.com/docs/en/permissions
+    creator: Anthropic
+    video: Configure permissions
+selfCheck:
+  - q: 'Your goal is "more customers". What does the first question ask you to change about it?'
+    a: State it as one number and one deadline, chosen after Claude has your situation and your figures. In the source video, a goal of more monthly revenue became a target for the share of visitors who buy.
+  - q: A line in CLAUDE.md tells Claude to ask before changing your payment code. Does that line guarantee Claude will ask?
+    a: No. Claude Code reads CLAUDE.md as context and does not enforce it. A permission rule set to ask for that folder makes Claude Code prompt you before its file-editing tools change anything there.
+  - q: You changed a skill after new feedback. What do you rerun before trusting the change?
+    a: Every example a person approved earlier. A change that fixes the newest case can make an older one worse, and rerunning the saved examples is how you find out.
+status: review
+lastUpdated: 2026-11-10
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+
+<p class="lede">Building with Claude is now fast enough that every idea looks worth building. Five questions, answered before you start and asked again on a schedule, tell you which idea to build.</p>
+
+The questions come from [If You Ask Claude 5 Questions, It'll Make You Build 10x Faster](https://www.youtube.com/watch?v=fFktpPMQzjI). In it Austin Marchese, who makes videos about building with Claude, interviews Ryan Ouyang, an AI engineer at Whop. Whop makes tools for running a business, and the video uses them in its examples. Marchese says on camera that he is a Whop affiliate and that he and Ouyang built an earlier startup together. This guide covers the questions and omits the product.
+
+| Question | What you write down |
+| --- | --- |
+| 1. What is your situation, and what result do you want? | Your circumstances, then one number and one deadline |
+| 2. What is the most important thing to build? | The fewest steps that produce one result |
+| 3. What are you leaving out? | The things you will not build, and what you use instead |
+| 4. Which parts must work? | The parts you approve yourself, with saved examples to rerun |
+| 5. What is slowing you down? | The tasks you postpone, and the number each one limits |
+
+## <span class="sec-no">01</span>Write the outcome as a number
+
+Claude knows nothing about your situation until you write it down. [Ouyang's list](https://www.youtube.com/watch?v=fFktpPMQzjI&t=127s) is short: what the business does, who it serves, where you are, and how much time you give it. Location and hours look irrelevant, and they change which answer fits you.
+
+[Brief the model like a brilliant new hire](/guides/brief-the-model/) covers writing that context. [Set up an AI that knows your business](/guides/set-up-an-ai-that-knows-your-business/) covers keeping it in files Claude reads every time.
+
+Then state the result as one number and one deadline. Marchese wanted more monthly revenue. Once Claude could see his site's visitor figures, [the number to improve](https://www.youtube.com/watch?v=fFktpPMQzjI&t=227s) was the share of visitors who buy.
+
+Tell Claude what the task is for. Ouyang told Claude that [more AI agents were trying to use Whop's products](https://www.youtube.com/watch?v=fFktpPMQzjI&t=73s). An AI agent is software that acts on a person's behalf. With that context, Claude suggested a command-line tool that agents could use easily. Marchese's reading is that a bare request for "an agent tool" gets built as an isolated job, with no view of the customers it should help.
+
+Anthropic's documentation sets the same bar for an AI feature. It asks for [success criteria](https://platform.claude.com/docs/en/test-and-evaluate/develop-tests) you can measure, such as a score on a named set of test cases, in place of a phrase like "good performance".
+
+## <span class="sec-no">02</span>Find the smallest first version
+
+Start from one result and work backward. [Ouyang's example](https://www.youtube.com/watch?v=fFktpPMQzjI&t=401s) is a car wash. To get the first customer he needs a flyer to leave on a dirty car, a pressure washer, soap, and a sponge. That shopping list is the whole first version.
+
+[Marchese's steps](https://www.youtube.com/watch?v=fFktpPMQzjI&t=482s) for your own goal:
+
+1. List the actions that could improve the number from question 1.
+2. Pick the action with the largest likely effect.
+3. Cut it to the fewest steps that produce one result you can check.
+
+The same steps work on something you already run. If the number is hours saved, list where the hours go.
+
+Ouyang adds a filter for step 2: [prefer work only you can do](https://www.youtube.com/watch?v=fFktpPMQzjI&t=263s). Your skills, your location, and the time you have decide what that work is. Marchese [sorts every task](https://www.youtube.com/watch?v=fFktpPMQzjI&t=357s) by that test:
+
+**Work only you can do.** Spend more of your own time here, and ask how Claude can help you do more of it.
+
+**Work anyone could do.** Automate it, or hand it to a service that already does it.
+
+[What still pays when AI does the work](/guides/what-still-pays-when-ai-does-the-work/) covers which human work keeps its value.
+
+## <span class="sec-no">03</span>Decide what to leave out
+
+Write down what you will not build before you start. Ouyang is a programmer, and he would enjoy [building his own database](https://www.youtube.com/watch?v=fFktpPMQzjI&t=605s) and making its queries a few milliseconds faster. No customer would notice. Deciding that at the start keeps him from spending a week on it.
+
+Three kinds of work belong on the list:
+
+- A copy of a tool you already use that works slightly worse.
+- Anything that [neither saves time nor earns money](https://www.youtube.com/watch?v=fFktpPMQzjI&t=645s), however good it looks.
+- Standard functions that a service already sells, such as [taking payments](https://www.youtube.com/watch?v=fFktpPMQzjI&t=680s) or placing ads.
+
+Beside each item, write what you will use instead. Keep that second list short too. Ouyang's rule is to [get more from each tool](https://www.youtube.com/watch?v=fFktpPMQzjI&t=725s) you have before adding another.
+
+[Choose AI changes worth your time](/guides/choose-ai-changes-worth-your-time/) covers counting setup, correction, and upkeep before you commit to a build.
+
+## <span class="sec-no">04</span>Guard the parts that must work
+
+Some parts of your work have to be right. Marchese calls them [hot zones](https://www.youtube.com/watch?v=fFktpPMQzjI&t=818s); his are an add-on that goes out to more than 5,000 people and the steps where customers pay. Everywhere else, let Claude do the work and check the outcome. In the parts that must work, do two things.
+
+**Require your approval.** Marchese [adds a line to CLAUDE.md](https://www.youtube.com/watch?v=fFktpPMQzjI&t=869s), the instruction file Claude Code reads at the start of each session, telling Claude to stop and ask before it touches those parts. Anthropic documents that Claude [treats that file as context](https://code.claude.com/docs/en/memory#claude-md-vs-auto-memory) and does not enforce it. For a rule that has to hold, add a [permission rule](https://code.claude.com/docs/en/permissions) set to `ask` for that folder. Claude Code then prompts you before its file-editing tools change anything there. [Assume your agent uses every tool it has](/guides/assume-your-agent-uses-every-tool-it-has/) covers the difference between an instruction and a restriction.
+
+**Keep approved examples and rerun them.** Engineers call this an evaluation, or eval. [Ouyang describes three parts](https://www.youtube.com/watch?v=fFktpPMQzjI&t=918s):
+
+- The thing you change. For him it is a skill, the saved instructions Claude follows for one task.
+- A program, which Claude can write, that runs the skill against a set of test inputs.
+- A report of how the skill did on each input.
+
+Some work needs a person to judge it. Marchese built a report-writing skill for an engineering firm and [tested it by hand](https://www.youtube.com/watch?v=fFktpPMQzjI&t=980s):
+
+1. Generate a report and collect the client's corrections.
+2. Adjust the skill until the client approves the report, then save that report and its inputs.
+3. After every later change, rerun the skill on all the saved inputs and confirm no approved report got worse.
+
+The set of saved examples grows with each round of feedback. Anthropic's advice on [building evaluations](https://platform.claude.com/docs/en/test-and-evaluate/develop-tests) is to make the examples match your everyday inputs, include the unusual cases, and automate the grading where you can.
+
+[Score your agent on known good answers](/guides/score-your-agent-on-known-good-answers/) covers grading. [Build a skill from an approved example](/guides/build-a-skill-from-an-approved-example/) covers starting from a result someone already approved.
+
+## <span class="sec-no">05</span>Find the work you avoid
+
+A bottleneck is the step that limits everything after it. [Ouyang's example](https://www.youtube.com/watch?v=fFktpPMQzjI&t=1049s): a site that sells to most of its visitors and has few visitors is limited by how many people arrive. A site with many visitors and few sales is limited by how few of them buy.
+
+<PullQuote
+  quote="Everything that people don't enjoy doing eventually becomes a bottleneck."
+  creator="Ryan Ouyang, AI engineer at Whop"
+  video="If You Ask Claude 5 Questions, It'll Make You Build 10x Faster"
+  href="https://www.youtube.com/watch?v=fFktpPMQzjI&t=1086s"
+  timestamp="18:06"
+/>
+
+A designer who loves improving the website keeps improving it while the marketing goes undone. List what you have postponed, what you are weak at, and what has had none of your time this month. The bottleneck is usually on that list.
+
+Marchese [gives two checks](https://www.youtube.com/watch?v=fFktpPMQzjI&t=1149s):
+
+**You are working on the bottleneck when the result matches the effort.** If you put in far more effort than you get back, you are working on something else.
+
+**The bottleneck is fixed when its number matches the usual figure for similar businesses.** Marchese gets those figures from Whop's data. Without outside figures, compare with your own earlier months.
+
+[Automate the step that slows you down](/guides/automate-the-bottleneck/) covers pointing Claude at the bottleneck once you have named it.
+
+## <span class="sec-no">06</span>Ask the questions again
+
+Your answers go out of date. You wrote the first set before the work taught you anything, so [schedule the questions](https://www.youtube.com/watch?v=fFktpPMQzjI&t=1191s) as two recurring calendar events.
+
+**Weekly: questions 2, 4, and 5.** Name this week's most important build, the saved examples you are rerunning, and the number that changed.
+
+**Monthly or quarterly: questions 1 and 3.** Rethinking the plan every day leaves no time to build.
+
+[Marchese's split](https://www.youtube.com/watch?v=fFktpPMQzjI&t=1228s) puts questions 4 and 5 on the weekly list and questions 1 and 3 on the slower one. Question 2 is weekly here because Whop [sets its main outcome each quarter](https://www.youtube.com/watch?v=fFktpPMQzjI&t=1207s) and picks its most important work week by week.
+
+## <span class="sec-no">07</span>Answer all five for one project
+
+The video shows its prompts on screen, and the transcript does not include them. This prompt is original to this guide.
+
+```text
+I am deciding what to build next. Interview me one question at a time and wait for each answer. Do not propose anything to build until the interview is done.
+
+1. Ask about my situation: what I do, who it is for, where I am, my skills, and the hours I have each week. Then ask what result I want. Help me restate it as one number and one deadline, and tell me which figures you need from me to set them.
+
+2. List the actions that could move that number. Recommend one, and cut it to the fewest steps that produce one result I can check.
+
+3. From my answers, list what I should not build. For each item, name what I would use instead, or say that I can drop it.
+
+4. Ask which parts of my work would cost the most if they went wrong. For each part, propose three to five examples I could save and rerun after every change, and ask who approves them.
+
+5. Ask what I have postponed, what I am weak at, and what has had none of my time this month. Name the most likely bottleneck and the number that would show it is fixed.
+
+Finish with a one-page table: the question, my answer, and the date to ask it again.
+```
+
+<Exercise>
+1. Pick one project and run the prompt. Answer with figures you can look up, and say so when you are guessing.
+2. Look up the current value of the number from question 1 yourself before you accept the target and deadline.
+3. Do the first step from question 2 this week.
+4. For one part that must work, save one approved example and its inputs in a folder today.
+5. Add two recurring calendar events: weekly for questions 2, 4, and 5, and monthly or quarterly for questions 1 and 3.
+</Exercise>
