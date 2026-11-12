@@ -1,0 +1,184 @@
+---
+title: Why a few people get far more from AI
+description: 'Andrej Karpathy names three causes for the gap between casual and heavy AI use: the size of the problem, the kind of work, and access. Act on each, starting with one problem.'
+track: practice
+level: broad
+number: 69
+minutes: 7
+tags: ['planning', 'skills', 'cost control']
+objectives:
+  - Identify which of the four groups of AI users describes your own use.
+  - Choose one large problem from the tasks you postpone or spend hours on without noticing.
+  - Sort the parts of that problem by whether they happen on a computer and have a result you can check.
+  - Build one small tool or saved skill for a task you repeat.
+  - Decide from two questions whether a usage limit is changing your work.
+prerequisites: []
+sources:
+  - url: https://www.youtube.com/watch?v=_cSM8Xe0sd8
+    creator: Austin Marchese
+    video: "How To Prompt Claude Like The Top 1% (Karpathy's Method)"
+    timestamps: ['0:52', '1:35', '2:03', '2:33', '2:45', '3:09', '6:56', '7:50', '8:37', '8:51', '9:17', '10:00', '10:34', '11:21', '11:33', '12:22', '12:58', '13:27', '13:33', '15:02', '15:13']
+  - url: https://x.com/karpathy/status/2109361546505966046
+    creator: Andrej Karpathy
+    video: Post on the widening gap in AI use, October 11, 2026
+  - url: https://www.anthropic.com/research/claude-code-expertise
+    creator: Anthropic
+    video: Agentic coding and persistent returns to expertise
+  - url: https://www.anthropic.com/research/employment-at-anthropic
+    creator: Anthropic
+    video: How employment is changing at Anthropic
+selfCheck:
+  - q: You mostly ask AI questions that one paragraph can answer. Which of the three causes is that, and what do you change?
+    a: Problem size. Karpathy writes that a question with a paragraph answer barely stresses the system. Pick one large problem you care about, from the tasks you postpone or spend hours on without noticing, and ask for a bigger version of the result.
+  - q: Your job is mostly meetings and calls. Where can AI still do strong work for you?
+    a: In the parts of the job that happen on a computer and have a result you can check. Ask Claude to build a small tool or a saved skill for one of those parts, such as the report you assemble after the calls.
+  - q: How do you tell whether your plan is limiting your work?
+    a: Count how often you wait for a usage limit to reset and how often you change a request because of one. If either happens, first stay on the default model and turn repeated steps into a program. If a limit still gets in your way after that, consider a larger plan.
+status: review
+lastUpdated: 2026-11-11
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+
+<p class="lede">Most people who use AI get a better search engine. A much smaller group gets weeks of work finished from one request. Andrej Karpathy names three causes for the difference, and you can act on each.</p>
+
+Karpathy is an AI researcher who led AI at Tesla and helped found OpenAI. In [a post on October 11, 2026](https://x.com/karpathy/status/2109361546505966046) he sorted the world into four groups by how they use AI. The numbers are his own rough estimates.
+
+| Group | Karpathy's estimate | What AI looks like from there |
+| --- | --- | --- |
+| Have barely used AI | About 6 billion people, 75% of the world | Nothing yet |
+| Use a free chatbot now and then | 1 to 2 billion, about 20% | A better search engine or a writing aid |
+| Use the best paid models at work, for code and math | About 20 million, 0.2% | Projects that took weeks or months, finished by AI agents from one request |
+| Work inside an AI lab, on systems not yet released | About 5,000 | Thousands of agents working together for weeks on one project |
+
+An agent is AI software that carries out a task over many steps without a person directing each one.
+
+Austin Marchese, who makes videos about building with Claude, turns the three causes into steps in [How To Prompt Claude Like The Top 1% (Karpathy's Method)](https://www.youtube.com/watch?v=_cSM8Xe0sd8).
+
+The video calls the third group 2% of the population; Karpathy's figure is 0.2%. It includes a paid segment for Viktor, an AI assistant that works inside Slack, with Marchese's referral link and discount code.
+
+## <span class="sec-no">01</span>Three causes of the gap
+
+Here are the three causes in Karpathy's words, with what you can change about each.
+
+| Cause | In Karpathy's words | What you change |
+| --- | --- | --- |
+| Problem size | "The impact scales with ambition, problem size, and horizon." | Bring a bigger problem that you care about |
+| Kind of work | "Capability peaks in domains that are digital, verifiable and economically valuable." | Give AI the parts of your job that happen on a computer and can be checked |
+| Access | "Access. Free-tier, paid-tier, internal." | Find out whether your plan's usage limit changes how you work |
+
+## <span class="sec-no">02</span>Bring a bigger problem
+
+Small questions use almost none of what the models can do. Karpathy's line: "A question with a paragraph answer barely stresses the system." His advice is to keep a supply of big, hard problems you care about.
+
+The first attempt at a big problem often fails. Marchese says a person with [no stake in the problem](https://www.youtube.com/watch?v=_cSM8Xe0sd8&t=123s) quits at that point and decides AI cannot do the job.
+
+To find a problem you have a stake in, he asks [two questions](https://www.youtube.com/watch?v=_cSM8Xe0sd8&t=95s):
+
+**What do you keep putting off?** A task you avoid is one to hand to AI completely.
+
+**What takes hours without your noticing?** That is work you like. Keep doing it, and use AI to do more of it or do it better.
+
+[Five questions before you build with AI](/guides/five-questions-before-you-build-with-ai/) covers choosing the first thing to build from your answers.
+
+Pick a problem in a field you know. Anthropic [studied sessions in Claude Code](https://www.anthropic.com/research/claude-code-expertise), its tool that lets Claude work on your files and run programs. It had Claude rate each person's expertise at the task in front of them, based on how precisely the person gave directions, what they asked Claude to check, and who corrected whom. Job title played no part. Sessions rated expert got more from each prompt:
+
+| For each prompt | Novice-rated session | Expert-rated session |
+| --- | --- | --- |
+| Actions Claude takes | About 5 | 12 |
+| Words Claude writes | About 600 | 3,200 |
+
+The study found that knowing the problem counted for more than knowing how to code. It observed sessions and ran no experiment, so it shows that expertise and output rise together and leaves open which causes which.
+
+Then ask for more than you normally would. Marchese says the heaviest users [assume AI can do more](https://www.youtube.com/watch?v=_cSM8Xe0sd8&t=153s) than seems possible, and that the limit is what you think to ask for.
+
+<PullQuote
+  quote="Can I use AI for this?"
+  creator="Austin Marchese, reading the note he keeps on his desk"
+  video="How To Prompt Claude Like The Top 1% (Karpathy's Method)"
+  href="https://www.youtube.com/watch?v=_cSM8Xe0sd8&t=165s"
+  timestamp="2:45"
+/>
+
+He gives [three ways to ask for more](https://www.youtube.com/watch?v=_cSM8Xe0sd8&t=189s):
+
+- After working through a task with Claude, ask how the result could be 10 times more useful, and build that version.
+- Raise the volume: five features where you planned one, four posts where you planned one. Stop when the quality drops.
+- Take on work next to yours. In marketing, ask what you could now do in sales. In engineering, ask what you could do in design.
+
+[Take a problem apart before AI solves it](/guides/take-a-problem-apart-before-ai-solves-it/) and [Split big AI tasks into steps and checks](/guides/split-big-ai-tasks-into-steps-and-checks/) cover working on a big problem once you have chosen it.
+
+## <span class="sec-no">03</span>Use AI where it is strongest
+
+The models are strongest at work that happens on a computer, has a result that can be checked, and earns money. Karpathy explains that the models learn by practicing tasks where a program can check the answer, and the labs pick the tasks that can bring revenue. Code and math fit best.
+
+Much office work is conversation. Karpathy notes that executives and many other professionals spend their days talking to people, so what AI can do stays "second-hand and a bit abstract" for them.
+
+Marchese says to [ask AI for software](https://www.youtube.com/watch?v=_cSM8Xe0sd8&t=470s) that does part of your job, even if you have never written code. Anthropic's [report on its own workforce](https://www.anthropic.com/research/employment-at-anthropic) looked at employees who had no record of writing code there. Their monthly sessions with coding agents grew 45-fold between August 2025 and May 2026. One sales representative in the report built a custom dashboard in three to four hours.
+
+Marchese gives [three ways to start](https://www.youtube.com/watch?v=_cSM8Xe0sd8&t=531s), smallest first:
+
+**Use AI inside the apps you already work in.** If your work lives in a spreadsheet, run Claude in the spreadsheet. [A practical guide to Claude's features](/guides/a-practical-guide-to-claudes-features/) covers where Claude can run.
+
+**Build a small tool for one annoyance.** Marchese calls these [micro tools](https://www.youtube.com/watch?v=_cSM8Xe0sd8&t=557s). Name the annoying task and ask Claude to suggest an artifact for it. An artifact is a small working app or document that opens beside the chat. [Build a personal tool with Claude](/guides/build-a-personal-tool-with-claude/) covers building one from start to finish.
+
+**Save a repeated process as a skill.** A skill is a set of saved instructions Claude follows for one task. Marchese [sorts skills into three types](https://www.youtube.com/watch?v=_cSM8Xe0sd8&t=634s) so the small ones get reused by the larger ones:
+
+| Skill type | What it does | Example for reviewing an inbox |
+| --- | --- | --- |
+| Utility | One small task you repeat | Decide whether an email is spam |
+| Task completion | A whole job, built from utility skills | Draft a reply to an email |
+| Orchestration | Runs several skills in order | Review the inbox |
+
+Write a first skill as one piece. Marchese says the three types [help later](https://www.youtube.com/watch?v=_cSM8Xe0sd8&t=681s), once you have several skills.
+
+When a skill gets something wrong, tell Claude what was wrong and why, and [ask it to update the skill](https://www.youtube.com/watch?v=_cSM8Xe0sd8&t=693s). [Write smaller Claude skills that work](/guides/write-smaller-claude-skills-that-work/) covers writing a skill. [Make skills improve after each run](/guides/make-skills-improve-after-each-run/) covers repairing one.
+
+Expect your first tool to take longer than doing the task by hand. Marchese says [many people quit there](https://www.youtube.com/watch?v=_cSM8Xe0sd8&t=517s). [Choose AI changes worth your time](/guides/choose-ai-changes-worth-your-time/) covers counting that cost before you commit.
+
+## <span class="sec-no">04</span>Check if your plan is too small
+
+Karpathy's third cause is access, in three tiers: free, paid, and internal. The internal tier belongs to people who work at the labs. Your choice is between a free plan and a paid plan, which comes in several sizes.
+
+Every plan has a usage limit: a cap on how much you can use the AI before you have to wait for it to reset. Marchese's rule is to upgrade when [a usage limit changes what you do](https://www.youtube.com/watch?v=_cSM8Xe0sd8&t=778s). He [asks two questions](https://www.youtube.com/watch?v=_cSM8Xe0sd8&t=813s):
+
+- How often do you wait for a limit to reset?
+- How often do you change a request because of a limit?
+
+A small plan costs less money, but Marchese [also counts](https://www.youtube.com/watch?v=_cSM8Xe0sd8&t=807s) the time spent waiting and the work he cuts down to fit the limit. He budgets for the subscription the way he budgets for his laptop and internet connection.
+
+His work is building software and videos with these tools. Your answers to the two questions tell you whether a larger plan is worth it for your work.
+
+Before you pay more, get more from the plan you have:
+
+- [Stay on the model](https://www.youtube.com/watch?v=_cSM8Xe0sd8&t=902s) your app recommends by default. Larger models use up the limit sooner.
+- When a skill runs the same steps every time, ask Claude to [turn those steps into a program](https://www.youtube.com/watch?v=_cSM8Xe0sd8&t=913s). A program gives the same output for the same input, and running it uses little or none of your limit.
+
+[Stop hitting your token limit](/guides/stop-hitting-your-token-limit/) covers finding where a session's usage goes.
+
+## <span class="sec-no">05</span>Try it on one problem
+
+Paste this prompt into a new chat. Claude interviews you and finishes with a one-page plan.
+
+```text
+I want to get more from AI on one problem that matters to me. Interview me one question at a time and wait for each answer. This conversation produces a plan only: do not build anything yet.
+
+1. Ask what I keep putting off at work, and what I spend hours on without noticing. Ask which of those I know best, and help me pick one problem from my answers.
+
+2. Ask what I would normally request from you for that problem. Then describe a version 10 times more useful, and ask what would have to be true for it to work.
+
+3. List the parts of the problem. For each part, say whether it happens on a computer or in person, and whether someone could check the result. For the parts on a computer with a result I can check, propose one small tool or one saved skill, and say which to build first.
+
+4. Ask how often I wait for a usage limit to reset, and how often I change a request because of a limit.
+
+Finish with a one-page plan: the problem, the bigger version, the first thing to build, how I will check that it works, and whether my plan is limiting me.
+```
+
+<Exercise>
+1. Find your row in the table of four groups.
+2. Run the prompt on one problem. Answer from your last two weeks of work, and say so when you are guessing.
+3. Build the first tool or skill from the plan this week, and use it once on a task you would have done anyway.
+4. Check its output against one case where you already know the right answer.
+5. For one week, keep a tally of each time a usage limit makes you wait or change a request. If the tally is zero, keep your plan. If it is higher, try the two fixes in section 04 before you pay for a larger one.
+</Exercise>
