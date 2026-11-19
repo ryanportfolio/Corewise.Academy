@@ -10,7 +10,7 @@
 
 ## Conflicts of interest in the source
 
-Marchese states at 9:02 that he is a Whop affiliate; the description's first link is an affiliate signup. At 13:24 he says he and Ouyang built an earlier startup (IYK) together. Whop's CLI, payments, ads, analytics, and benchmark data appear in every question. The guide discloses both relationships in its second paragraph and keeps only the method.
+Marchese states at 9:02 that he is a Whop affiliate; the description's first link is an affiliate signup. At 13:24 he says he and Ouyang built an earlier startup (IYK) together. Whop's CLI, payments, ads, analytics, and benchmark data appear in every question. The guide keeps only the method. It first disclosed both relationships in its second paragraph; the editor had that sentence cut on November 18, 2026 (ruling in `.claude/reference/copy-rules.md`, "A source's sponsors and promotions never go in a guide").
 
 ## Placement
 
