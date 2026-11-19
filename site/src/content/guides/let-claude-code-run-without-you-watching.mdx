@@ -67,7 +67,7 @@ selfCheck:
     a: The rule checked the command Claude ran, which was only the test command. It cannot see which files a program opens once it is running. With the sandbox on, the operating system applies the rule to every program the command starts. A cloud session also closes the gap, because the file was never copied to that machine.
   - q: Your hook runs the tests when Claude marks a task complete. The tests fail, and the task is marked complete anyway. What is the likely cause?
     a: The script exited with code 1, the usual failure code. Claude Code treats 1 as a warning and carries on. Make the script exit with code 2, which keeps the task open and sends Claude back to fix it.
-status: review
+status: published
 lastUpdated: 2026-11-18
 ---
 
