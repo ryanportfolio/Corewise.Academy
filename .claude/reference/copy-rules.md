@@ -294,8 +294,10 @@ Guide prose never says:
   exists to disclose the tie
 - that the guide leaves a sponsor segment or a product walkthrough out
 
-Record all of it in the notes file, the registry row, and the pull request. Those are
-the audit trail. The guide is for the reader.
+Record all of it in the registry row, in the notes file when the source has one, and
+in the pull request. Those are the audit trail. The guide is for the reader. Two of the
+four lines cut below come from guides older than the notes files: the Claude Design
+sponsorship is in its registry row, and the Berman cut is recorded in the table here.
 
 Still fine, because the reader uses them:
 
