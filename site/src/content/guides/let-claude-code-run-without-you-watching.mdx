@@ -113,7 +113,7 @@ Claude can do the audit. Run [`/doctor prompt-audit`](https://code.claude.com/do
 
 ## <span class="sec-no">02</span>Let auto mode approve commands
 
-Every command Claude wanted to run used to wait for your click. Auto mode is a permission mode, a setting that decides when Claude has to ask you first. It replaces the click with a second model, called a classifier, that reviews each action before it runs. The classifier [lets routine commands through](https://www.youtube.com/watch?v=vlfCjWuv4es&t=247s), such as running tests or installing packages, and blocks the ones it judges unsafe.
+Every command Claude wanted to run used to wait for your click. Auto mode is a permission mode, a setting that decides when Claude has to ask you first. It replaces the click with a second model, called a classifier, that reviews commands and most other actions before they run. Ordinary reads and edits of files in your folder skip the review. The classifier [lets routine commands through](https://www.youtube.com/watch?v=vlfCjWuv4es&t=247s), such as running tests or installing packages, and blocks the ones it judges unsafe.
 
 On Claude Code version 2.1.283 or later, new terminal and VS Code sessions [start in auto mode](https://code.claude.com/docs/en/permission-modes) on every plan. In the terminal, the status bar reads `auto mode on`, and Shift+Tab switches modes.
 
@@ -167,7 +167,11 @@ Programmers usually keep secret keys in a file named `.env`. The rule that prote
 }
 ```
 
-Claude reads files in two ways: with its built-in file tools, and with shell commands, the commands a person would type into a terminal. The rule [stops the file tools](https://code.claude.com/docs/en/permissions#read-and-edit) from opening `.env`, along with the shell commands Claude Code recognizes as reading a file, such as `cat`. Commit the settings file, which saves it to the project's shared history, and the rule applies to everyone who works on the project and to sessions that run in the cloud.
+Claude reads files in two ways: with its built-in file tools, and with shell commands, the commands a person would type into a terminal. The rule [stops the file tools](https://code.claude.com/docs/en/permissions#read-and-edit) from opening `.env`, along with the shell commands Claude Code recognizes as reading a file, such as `cat`.
+
+`./.env` means the `.env` file in the folder where the session starts, so start each session in the project's main folder.
+
+Commit the settings file, which saves it to the project's shared history, and the rule applies to everyone who works on the project and to cloud sessions you start yourself.
 
 **An instruction in `CLAUDE.md` is weaker.** Claude reads that file as context and can decide that a line does not apply. [Assume your agent uses every tool it has](/guides/assume-your-agent-uses-every-tool-it-has/) covers the difference between an instruction and a restriction.
 
@@ -181,6 +185,8 @@ Claude reads files in two ways: with its built-in file tools, and with shell com
 }
 ```
 
+A `Bash` rule covers only commands Claude runs through Bash, the usual shell on macOS and Linux. On Windows, Claude usually runs commands through PowerShell, so add `PowerShell(git push *)` to the list as well.
+
 Keep the list of rules short. Anthropic's [advice](https://code.claude.com/docs/en/best-practices#enforce-the-rules-that-cant-have-exceptions) is that every rule sometimes blocks an action it should have allowed, and that a list of forty is mostly preferences Claude could have weighed for itself.
 
 ## <span class="sec-no">04</span>Limit what a command can reach
@@ -193,15 +199,16 @@ Two options limit what a running command can reach. The sandbox is for work that
 
 **A sandbox on your own computer.** Run [`/sandbox`](https://code.claude.com/docs/en/sandboxing) in a session to turn it on. The operating system then controls which files a shell command can read and write and which websites it can contact. The limits apply to every program the command starts. Your `Read` deny rules are [passed to the operating system](https://www.youtube.com/watch?v=vlfCjWuv4es&t=528s), so the tampered package is refused when it tries to open `.env`.
 
-The sandbox leaves three gaps:
+The sandbox leaves four gaps:
 
 - It is off until you turn it on, and it runs on macOS, Linux, and WSL2 (Linux running inside Windows). On Windows without WSL2, commands run with no sandbox.
 - Commands inside it can still read most of your computer, including the `~/.ssh` folder where SSH keys live. Add a `Read` deny rule for each file that holds a secret.
 - It covers shell commands only. Claude's file tools, your connections to outside services, and your hooks run outside it.
+- A command the sandbox blocks can ask to run again outside it, and in auto mode the classifier decides whether it may. Strict sandbox mode, in the Overrides tab of `/sandbox`, turns that retry off.
 
 **A cloud session.** Claude Code runs on a computer Anthropic hosts, with a fresh copy of your project, and [keeps working after you close your laptop](https://www.youtube.com/watch?v=vlfCjWuv4es&t=563s). Your `.env` file and SSH keys are not there because they were never in the project's shared history.
 
-Start a cloud session in the browser at [claude.ai/code](https://claude.ai/code), in the Code tab of the Claude app, or from the terminal with `claude --cloud`. A cloud session [copies the project from GitHub](https://code.claude.com/docs/en/claude-code-on-the-web), so connect a GitHub repository first.
+Start a cloud session in the browser at [claude.ai/code](https://claude.ai/code), in the Code tab of the Claude app, or from the terminal with `claude --cloud`. A cloud session [copies the project from GitHub](https://code.claude.com/docs/en/claude-code-on-the-web), so install the Claude GitHub App on the repository first. Without the app, `claude --cloud` uploads the copy on your computer instead, including changes you have not committed yet to files already in the project's shared history. Check those files for secrets before you start.
 
 [Network access is limited](https://code.claude.com/docs/en/cloud-environments#access-levels) by default to GitHub, the sites that packages are downloaded from, and a short list of other approved domains. You add any others in the environment's settings. When a task needs a secret key, store it as a [network secret](https://code.claude.com/docs/en/cloud-environments#add-network-secrets): Anthropic attaches the key to each request after the request leaves the cloud computer, so Claude can call the service and never sees the key.
 
@@ -237,7 +244,7 @@ A check can live in three places. Each is stricter than the one before.
 
 **In the prompt.** [Say what done looks like](https://www.youtube.com/watch?v=vlfCjWuv4es&t=726s), ask Claude to split the work into tasks that each have a test, and ask it to show the command it ran and the output. You were not there, so the output is your evidence. Claude still decides when it is done.
 
-**As a goal.** [`/goal`](https://code.claude.com/docs/en/goal) sets a finish condition, such as `/goal all tests in tests/auth pass`. A separate model checks the condition each time Claude stops, and Claude keeps working until the condition is met.
+**As a goal.** [`/goal`](https://code.claude.com/docs/en/goal) sets a finish condition, such as `/goal all tests in tests/auth pass`. A separate model checks the condition each time Claude stops, and Claude keeps working until the condition is met. A goal can also end unmet, when that model judges it impossible or an error clears it, so check the result yourself.
 
 **As a hook.** A hook is a script that Claude Code runs at a fixed point in a session. Claude cannot skip it. Hallie [gives three examples](https://www.youtube.com/watch?v=vlfCjWuv4es&t=760s), and each attaches to a named event in the [hooks reference](https://code.claude.com/docs/en/hooks):
 
@@ -265,7 +272,7 @@ This `Stop` hook from Anthropic's [documentation](https://code.claude.com/docs/e
 }
 ```
 
-`|| exit 2` turns any failure into exit code 2. `1>&2` sends the error text to the place Claude Code reads the reason from, so Claude knows what to fix.
+`|| exit 2` turns any failure into exit code 2. `1>&2` sends the error text to the place Claude Code reads the reason from, so Claude knows what to fix. The command is written for the Bash shell. On Windows it needs Git for Windows installed. Without it the hook runs in PowerShell and can fail.
 
 Exit code 2 [acts differently on each event](https://code.claude.com/docs/en/hooks#exit-code-2-behavior-per-event). On `Stop` and `TaskCompleted` it keeps Claude working. On `PostToolUse` the edit has already happened, so Claude only receives the error text. If a `Stop` hook blocks eight times in a row and Claude takes no action in between, Claude Code lets Claude stop anyway.
 
@@ -281,7 +288,7 @@ The last check runs after the session. On Hallie's team, each session ends by op
 
 Anthropic offers a review of this kind as [Code Review](https://code.claude.com/docs/en/code-review) on Team and Enterprise plans. On any plan, [`/code-review`](https://code.claude.com/docs/en/code-review-local) reviews your changes inside your own session, using a helper that never saw the conversation.
 
-[Give your coding agent a finish line](/guides/give-your-coding-agent-a-finish-line/) covers choosing a check that can catch the failure. [Loop the agent until the work passes](/guides/loop-the-agent-until-the-work-passes/) covers rerunning work until a check passes.
+[Give your coding agent a finish line](/guides/give-your-coding-agent-a-finish-line/) covers choosing a check that can catch the failure. [Loop the agent until the work passes](/guides/loop-the-agent-until-the-work-passes/) covers rerunning work until a check passes. [Guardrails for hours-long agent runs](/guides/guardrails-for-long-runs/) covers an instruction that makes Claude check each claim against what its tools returned.
 
 ## <span class="sec-no">06</span>Let one session start the rest
 
@@ -297,6 +304,8 @@ The coordinator and the threads do different work, so [each can run a different 
 
 Both are set in **Project settings > General**. A new Project runs Opus for both, with threads at high effort, the setting that uses up your plan's allowance fastest.
 
+Cloud threads in a Project [do not read `.claude/settings.json`](https://code.claude.com/docs/en/claude-projects#what-threads-pick-up-from-your-repositories), so your deny rules, `ask` rules, and hooks do not apply there. You rely on auto mode and on the approvals you give inside each thread. To keep your rules and hooks, ask Claude to run the thread on your own computer.
+
 A Project also keeps its conversations from growing too long. Each thread summarizes its own history when needed, so you never decide when to clear one.
 
 Projects are a public beta on Pro, Max, and Ultra plans, released to accounts gradually. Team and Enterprise plans do not have them yet.
@@ -309,7 +318,7 @@ Hallie's [closing advice](https://www.youtube.com/watch?v=vlfCjWuv4es&t=1020s) i
 
 <Exercise>
 1. Open a session in your project folder, run `/doctor prompt-audit`, and apply the edits you agree with.
-2. Write down three actions you could not undo. For each file Claude must never read, add a `Read` deny rule to `.claude/settings.json`. For each command that should wait for you, add a `Bash` ask rule.
+2. Write down three actions you could not undo. For each file Claude must never read, add a `Read` deny rule to `.claude/settings.json`. For each command that should wait for you, add an `ask` rule.
 3. Pick a task larger than you would normally give Claude. Write what done looks like as checks that pass or fail.
 4. Start the task, in a cloud session if your plan has them, and ask Claude to show the command and the output for each check.
 5. List every point where the session stopped for you. For each, add a trusted place to auto mode, a deny or `ask` rule, or a check.
