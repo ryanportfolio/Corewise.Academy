@@ -270,11 +270,29 @@ Guide prose never reports on its own making or on the state of the source materi
 These notes still get recorded: in `content/notes/<date>-<video-id>.md`, the registry
 row, and the pull request. An original prompt is never attributed to the source.
 
-Three things stay in the guide because the reader needs them: a conflict of interest in
-the source (a sponsor, an affiliate link), a correction of a source's factual claim
-with the primary source linked, and the provenance disclosures in the section above
-(a method distilled after the fact, a prompt tidied for print, an artifact edited to
-pass the site gates).
+Three things stay in the guide because the reader needs them: a conflict of interest
+that bears on something the guide passes on (see the ruling below), a correction of a
+source's factual claim with the primary source linked, and the provenance disclosures
+in the section above (a method distilled after the fact, a prompt tidied for print, an
+artifact edited to pass the site gates).
+
+### A source's own promotions stay out of the guide (editor ruling, 2026-11-18)
+
+From guide No. 70, after publication. The guide's third paragraph said "Herk's video
+promotes his own online community, and its description carries affiliate links for a
+hosting company and a dictation app." The editor called it a fail: it helps the reader
+in no way. Nothing in the guide used the community, the hosting company, or the app, so
+the sentence was a report on the source, the same defect this section bans.
+
+- A creator's community, newsletter, course, discount code, or affiliate link is not
+  mentioned in guide prose when no claim or recommendation the guide passes on
+  depends on it.
+- Record it in the notes file, the registry row, and the pull request, as before.
+- Scope, as the agent that wrote the draft read the ruling (the editor did not state
+  it): a conflict is disclosed in the guide only when the guide repeats a claim or a
+  recommendation that the conflict bears on, such as recommending a product the
+  source is paid to promote. When unsure, leave it out and ask the editor in the pull
+  request.
 
 ## Self-contained passages, no word tics, one name per concept (editor rulings, 2026-07-18, 2026-07-19)
 
