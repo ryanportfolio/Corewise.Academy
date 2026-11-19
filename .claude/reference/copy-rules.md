@@ -285,7 +285,8 @@ in no way. Nothing in the guide used the community, the hosting company, or the 
 the sentence was a report on the source, the same defect this section bans.
 
 - A creator's community, newsletter, course, discount code, or affiliate link is not
-  mentioned in guide prose when the guide recommends none of it.
+  mentioned in guide prose when no claim or recommendation the guide passes on
+  depends on it.
 - Record it in the notes file, the registry row, and the pull request, as before.
 - Scope, as the agent that wrote the draft read the ruling (the editor did not state
   it): a conflict is disclosed in the guide only when the guide repeats a claim or a
