@@ -270,29 +270,51 @@ Guide prose never reports on its own making or on the state of the source materi
 These notes still get recorded: in `content/notes/<date>-<video-id>.md`, the registry
 row, and the pull request. An original prompt is never attributed to the source.
 
-Three things stay in the guide because the reader needs them: a conflict of interest
-that bears on something the guide passes on (see the ruling below), a correction of a
-source's factual claim with the primary source linked, and the provenance disclosures
-in the section above (a method distilled after the fact, a prompt tidied for print, an
+Two things stay in the guide because the reader needs them: a correction of a source's
+factual claim with the primary source linked, and the provenance disclosures in the
+section above (a method distilled after the fact, a prompt tidied for print, an
 artifact edited to pass the site gates).
 
-### A source's own promotions stay out of the guide (editor ruling, 2026-11-18)
+### A source's sponsors and promotions never go in a guide (editor rulings, 2026-11-18)
 
-From guide No. 70, after publication. The guide's third paragraph said "Herk's video
+Two rulings on one day. Guide No. 70 was published with the sentence "Herk's video
 promotes his own online community, and its description carries affiliate links for a
-hosting company and a dictation app." The editor called it a fail: it helps the reader
-in no way. Nothing in the guide used the community, the hosting company, or the app, so
-the sentence was a report on the source, the same defect this section bans.
+hosting company and a dictation app." The editor called it a fail: "its not helpful in
+any way". The sentence was there because this file used to say a conflict of interest
+in the source "stays in the guide". Told that, the editor called the old rule
+"absolutely wrong" and had every guide checked.
 
-- A creator's community, newsletter, course, discount code, or affiliate link is not
-  mentioned in guide prose when no claim or recommendation the guide passes on
-  depends on it.
-- Record it in the notes file, the registry row, and the pull request, as before.
-- Scope, as the agent that wrote the draft read the ruling (the editor did not state
-  it): a conflict is disclosed in the guide only when the guide repeats a claim or a
-  recommendation that the conflict bears on, such as recommending a product the
-  source is paid to promote. When unsure, leave it out and ask the editor in the pull
-  request.
+Guide prose never says:
+
+- that a video or article has a sponsor, a paid segment, or is sponsored by anyone
+- that the creator has an affiliate link, a referral link, or a discount code
+- that the creator promotes or sells a community, course, newsletter, template, or
+  paid tier
+- that the creator has a business tie to a guest or a company, when the sentence
+  exists to disclose the tie
+- that the guide leaves a sponsor segment or a product walkthrough out
+
+Record all of it in the notes file, the registry row, and the pull request. Those are
+the audit trail. The guide is for the reader.
+
+Still fine, because the reader uses them:
+
+- Who the creator is: their job, their employer, the company they run.
+- A product the lesson itself uses, named where the lesson uses it.
+
+When a source's incentive makes a claim doubtful, check the claim against a primary
+source or leave the claim out. A disclosure sentence does neither. (This paragraph is
+the drafting agent's reading. The editor ruled on the sentences, and did not say what
+to do with a doubtful claim.)
+
+The sweep on 2026-11-18 read all 63 guides in full and cut four lines:
+
+| Guide | What was cut |
+|---|---|
+| No. 69, Why a few people get far more from AI | "It includes a paid segment for Viktor, an AI assistant that works inside Slack, with Marchese's referral link and discount code." |
+| No. 68, Five questions before you build with AI | "Marchese says on camera that he is a Whop affiliate and that he and Ouyang built an earlier startup together." |
+| Move design work into Claude Design | "an Anthropic-sponsored video" became "a video" |
+| Recheck your model choices each release | ", with the product walkthrough left out" |
 
 ## Self-contained passages, no word tics, one name per concept (editor rulings, 2026-07-18, 2026-07-19)
 
