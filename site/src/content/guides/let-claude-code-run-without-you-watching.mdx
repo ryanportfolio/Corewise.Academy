@@ -1,0 +1,316 @@
+---
+title: Let Claude Code run without you watching
+description: 'Five jobs you used to do by hand in every Claude Code session, what does each one now, and the settings that keep an unattended session safe and checked.'
+track: agents
+level: practitioner
+number: 70
+minutes: 10
+tags: ['claude code', 'agent safety', 'verification']
+objectives:
+  - Remove the CLAUDE.md lines Claude can work out by reading your files.
+  - List the places auto mode should trust in your settings file.
+  - Write a deny rule for each action you cannot undo.
+  - Choose between a sandbox and a cloud session to limit what a running command can reach.
+  - Build a hook that sends Claude back to work when a check fails.
+prerequisites:
+  - slug: set-up-claude-code-in-seven-steps
+    note: Have Claude Code working in a folder of your own.
+sources:
+  - url: https://www.youtube.com/watch?v=vlfCjWuv4es
+    creator: Lydia Hallie
+    video: Rethinking Claude Code Best Practices
+    timestamps: ['1:20', '3:18', '3:41', '3:56', '4:07', '4:32', '5:58', '6:11', '6:40', '7:16', '8:48', '9:23', '10:27', '10:36', '11:12', '11:43', '12:06', '12:40', '13:00', '13:58', '14:38', '14:52', '15:10', '15:52', '16:01', '17:00']
+  - url: https://www.youtube.com/watch?v=8Pg6G5h05hk
+    creator: Nate Herk
+    video: Anthropic Just Released the New Rules of Claude Code
+    timestamps: ['1:02', '2:29', '3:54', '5:58', '8:15']
+  - url: https://code.claude.com/docs/en/best-practices
+    creator: Anthropic
+    video: Best practices for Claude Code
+  - url: https://code.claude.com/docs/en/memory
+    creator: Anthropic
+    video: How Claude remembers your project
+  - url: https://code.claude.com/docs/en/permission-modes
+    creator: Anthropic
+    video: Choose a permission mode
+  - url: https://code.claude.com/docs/en/auto-mode-config
+    creator: Anthropic
+    video: Configure auto mode
+  - url: https://claude.com/resources/articles/auto-mode-default-in-claude-code
+    creator: Anthropic
+    video: 'Auto mode is now the default in Claude Code for Pro, Max, Ultra, and Team plans'
+  - url: https://code.claude.com/docs/en/permissions
+    creator: Anthropic
+    video: Configure permissions
+  - url: https://code.claude.com/docs/en/sandboxing
+    creator: Anthropic
+    video: Configure the sandboxed Bash tool
+  - url: https://code.claude.com/docs/en/claude-code-on-the-web
+    creator: Anthropic
+    video: Use Claude Code in the cloud
+  - url: https://code.claude.com/docs/en/cloud-environments
+    creator: Anthropic
+    video: Configure cloud environments
+  - url: https://code.claude.com/docs/en/hooks
+    creator: Anthropic
+    video: Hooks reference
+  - url: https://code.claude.com/docs/en/code-review
+    creator: Anthropic
+    video: Code Review
+  - url: https://code.claude.com/docs/en/claude-projects
+    creator: Anthropic
+    video: Let Claude coordinate ongoing work with Projects
+selfCheck:
+  - q: Auto mode blocked 89% of the dangerous commands in Anthropic's test. Why add deny rules as well?
+    a: About one dangerous command in ten still got through. Claude Code checks a deny rule before auto mode sees the action and applies it in every permission mode, so a deny rule is the right tool for anything you cannot undo.
+  - q: A deny rule stops Claude reading your .env file. Claude runs your tests, and a package the tests load opens the file anyway. What did the rule miss, and what closes the gap?
+    a: The rule checked the command Claude ran, which was only the test command. It cannot see which files a program opens once it is running. With the sandbox on, the operating system applies the rule to every program the command starts. A cloud session also closes the gap, because the file was never copied to that machine.
+  - q: Your hook runs the tests when Claude marks a task complete. The tests fail, and the task is marked complete anyway. What is the likely cause?
+    a: The script exited with code 1, the usual failure code. Claude Code treats 1 as a warning and carries on. Make the script exit with code 2, which keeps the task open and sends Claude back to fix it.
+status: review
+lastUpdated: 2026-11-18
+---
+
+import PullQuote from '../../components/PullQuote.astro';
+import Exercise from '../../components/Exercise.astro';
+
+<p class="lede">A Claude Code session used to need you at every step. You corrected Claude as it worked and approved every command it ran. Five jobs like these now belong to the model and the software around it, and each needs a small piece of setup before you can stop watching.</p>
+
+The five jobs come from [Rethinking Claude Code Best Practices](https://www.youtube.com/watch?v=vlfCjWuv4es), a talk by Lydia Hallie, who works on Claude Code at Anthropic. A session is one conversation with Claude Code. Hallie says her team has gone from watching one or two sessions to [managing dozens](https://www.youtube.com/watch?v=vlfCjWuv4es&t=80s) that run for hours.
+
+In [Anthropic Just Released the New Rules of Claude Code](https://www.youtube.com/watch?v=8Pg6G5h05hk), Nate Herk, who makes videos about AI automation, retells the talk for people who use Claude Code for office work. Herk's video promotes his own online community, and its description carries affiliate links for a hosting company and a dictation app.
+
+| Job you did by hand | What does it now | What you set up |
+| --- | --- | --- |
+| Correcting Claude as it works | The model | A shorter instruction file |
+| Approving each command | Auto mode | A list of the places you trust |
+| Refusing dangerous actions | Deny rules, with a sandbox or a cloud session | A rule for each action you cannot undo |
+| Checking the result | Tests, hooks, and review | A check that passes or fails |
+| Starting each session | A coordinating session | One list of tasks |
+
+## <span class="sec-no">01</span>Cut what Claude can read itself
+
+`CLAUDE.md` is the instruction file Claude Code reads at the start of every session. Older models stopped early and needed reminders, so people filled the file with corrections and warnings in capital letters. Hallie says those lines now [make the results worse](https://www.youtube.com/watch?v=vlfCjWuv4es&t=198s): the model goes off track and takes more steps to finish.
+
+Anthropic's [best practices page](https://code.claude.com/docs/en/best-practices) gives the reason. Current models follow a plainly worded line, and added emphasis makes Claude apply the rule too widely.
+
+Keep only what Claude cannot learn by reading your files. [Herk's test](https://www.youtube.com/watch?v=8Pg6G5h05hk&t=62s) for each line is one question: could Claude work this out from the files in the folder? If it could, cut the line.
+
+**A line to keep.** Hallie's example is [a service that still depends on an old system](https://www.youtube.com/watch?v=vlfCjWuv4es&t=221s) that no file mentions.
+
+**A line to cut.** One that says which programming tools the project uses. Claude can read that for itself.
+
+Anthropic's documentation lists four kinds of line that are worth keeping:
+
+- The exact commands that check the work, such as the one that runs the tests.
+- Places where the files are misleading, such as an old pattern new work must not copy.
+- Decisions that are written nowhere in the project, such as how a release goes out.
+- Anything you have had to correct twice.
+
+Claude can do the audit. Run [`/doctor prompt-audit`](https://code.claude.com/docs/en/memory#audit-your-instruction-files) in a session. It [checks your instruction files and your skills](https://www.youtube.com/watch?v=vlfCjWuv4es&t=236s). A skill is a set of saved instructions for one task. The audit reports instructions written for older models, references to files that no longer exist, and instructions that contradict each other. Each finding comes with a proposed edit, and nothing changes until you ask Claude to apply one. The command needs Claude Code version 2.1.283 or later.
+
+[Stop shouting at the model](/guides/stop-shouting-at-the-model/) covers rewriting emphatic instructions. [Trim the instructions your model outgrew](/guides/trim-the-instructions-your-model-outgrew/) covers testing a shorter file against work you already trust.
+
+## <span class="sec-no">02</span>Let auto mode approve commands
+
+Every command Claude wanted to run used to wait for your click. Auto mode is a permission mode, a setting that decides when Claude has to ask you first. It replaces the click with a second model, called a classifier, that reviews each action before it runs. The classifier [lets routine commands through](https://www.youtube.com/watch?v=vlfCjWuv4es&t=247s), such as running tests or installing packages, and blocks the ones it judges unsafe.
+
+On Claude Code version 2.1.283 or later, new terminal and VS Code sessions [start in auto mode](https://code.claude.com/docs/en/permission-modes) on every plan. In the terminal, the status bar reads `auto mode on`, and Shift+Tab switches modes.
+
+By default the classifier trusts two places: the folder you are working in, and the online copies of the project, called repositories, that the folder is linked to. Everything else counts as outside. Hallie's example is [publishing to a second repository](https://www.youtube.com/watch?v=vlfCjWuv4es&t=272s) that holds the test version of a site. Auto mode blocks the upload, and you are approving by hand again.
+
+Tell the classifier which places you trust. The entries are [plain sentences](https://code.claude.com/docs/en/auto-mode-config#define-trusted-infrastructure) in your personal settings file, `~/.claude/settings.json`. Two entries from the example in Anthropic's documentation:
+
+```json
+{
+  "autoMode": {
+    "environment": [
+      "$defaults",
+      "Source control: github.example.com/acme-corp and all repos under it",
+      "Trusted cloud buckets: s3://acme-build-artifacts, gs://acme-ml-datasets"
+    ]
+  }
+}
+```
+
+`"$defaults"` keeps the built-in entries. The classifier ignores an `autoMode` block in a project's own settings file, so a project you download cannot grant itself trust.
+
+[`/auto-mode-setup`](https://code.claude.com/docs/en/auto-mode-config#generate-environment-entries), a command [Herk points to](https://www.youtube.com/watch?v=8Pg6G5h05hk&t=149s), drafts the entries from the project and your recent sessions in it. You accept or discard the draft as a whole, then edit the file to change single entries.
+
+Anthropic [tested auto mode against people](https://claude.com/resources/articles/auto-mode-default-in-claude-code). It hired 1,053 paid testers for a coding study and made one approval prompt in each session ask to run a clearly dangerous command. The testers caught the command 13.6% of the time. Auto mode blocked 89% of the same commands. The testers worked in an environment built for the study, so the test did not measure people guarding their own projects.
+
+[About one dangerous command in ten](https://www.youtube.com/watch?v=vlfCjWuv4es&t=358s) still got past auto mode.
+
+## <span class="sec-no">03</span>Block what you cannot undo
+
+A deny rule is a line in a settings file that names an action Claude Code must refuse. Claude Code [checks deny rules first](https://www.youtube.com/watch?v=vlfCjWuv4es&t=371s), in every permission mode, auto mode included, so the classifier never sees an action that matches one.
+
+Hallie's test for what needs a rule:
+
+<PullQuote
+  quote="If Claude gets this wrong once, can I take it back?"
+  creator="Lydia Hallie, Claude Code team at Anthropic"
+  video="Rethinking Claude Code Best Practices"
+  href="https://www.youtube.com/watch?v=vlfCjWuv4es&t=400s"
+  timestamp="6:40"
+/>
+
+Wrong code can be reverted, so it needs no rule. Unsaved work that Claude throws away cannot be recovered. A secret key, the password a program uses to reach a paid service, stays in the record of the conversation once Claude has read it. Those two need rules. [Herk applies the test to office work](https://www.youtube.com/watch?v=8Pg6G5h05hk&t=234s): a rewritten draft can be undone, and a sent email or a deleted file cannot.
+
+Programmers usually keep secret keys in a file named `.env`. The rule that protects it goes in `.claude/settings.json` inside the project:
+
+```json
+{
+  "permissions": {
+    "deny": ["Read(./.env)"]
+  }
+}
+```
+
+Claude reads files in two ways: with its built-in file tools, and with shell commands, the commands a person would type into a terminal. The rule [stops the file tools](https://code.claude.com/docs/en/permissions#read-and-edit) from opening `.env`, along with the shell commands Claude Code recognizes as reading a file, such as `cat`. Commit the settings file, which saves it to the project's shared history, and the rule applies to everyone who works on the project and to sessions that run in the cloud.
+
+**An instruction in `CLAUDE.md` is weaker.** Claude reads that file as context and can decide that a line does not apply. [Assume your agent uses every tool it has](/guides/assume-your-agent-uses-every-tool-it-has/) covers the difference between an instruction and a restriction.
+
+**An `ask` rule waits for you.** For an action that needs your approval each time, write an [`ask` rule](https://code.claude.com/docs/en/auto-mode-config#add-a-human-checkpoint) in `.claude/settings.json`, inside the same `permissions` block as the deny list. Claude Code then prompts you even in auto mode. This rule matches shell commands that begin with `git push`, the command that uploads your changes:
+
+```json
+{
+  "permissions": {
+    "ask": ["Bash(git push *)"]
+  }
+}
+```
+
+Keep the list of rules short. Anthropic's [advice](https://code.claude.com/docs/en/best-practices#enforce-the-rules-that-cant-have-exceptions) is that every rule sometimes blocks an action it should have allowed, and that a list of forty is mostly preferences Claude could have weighed for itself.
+
+## <span class="sec-no">04</span>Limit what a command can reach
+
+A deny rule sees the command. It cannot see what the command does once it is running.
+
+Hallie's example is [`npm test`](https://www.youtube.com/watch?v=vlfCjWuv4es&t=436s), the command that runs a JavaScript project's tests. The tests load packages that other people wrote. If one of those packages has been tampered with, it can open `.env` or your SSH keys, the files that prove your identity to other computers, and send them to a server you have never heard of. A person approving by hand would have clicked allow, because the prompt showed only `npm test`.
+
+Two options limit what a running command can reach. The sandbox is for work that stays on your own computer. Hallie prefers a cloud session for runs that last hours.
+
+**A sandbox on your own computer.** Run [`/sandbox`](https://code.claude.com/docs/en/sandboxing) in a session to turn it on. The operating system then controls which files a shell command can read and write and which websites it can contact. The limits apply to every program the command starts. Your `Read` deny rules are [passed to the operating system](https://www.youtube.com/watch?v=vlfCjWuv4es&t=528s), so the tampered package is refused when it tries to open `.env`.
+
+The sandbox leaves three gaps:
+
+- It is off until you turn it on, and it runs on macOS, Linux, and WSL2 (Linux running inside Windows). On Windows without WSL2, commands run with no sandbox.
+- Commands inside it can still read most of your computer, including the `~/.ssh` folder where SSH keys live. Add a `Read` deny rule for each file that holds a secret.
+- It covers shell commands only. Claude's file tools, your connections to outside services, and your hooks run outside it.
+
+**A cloud session.** Claude Code runs on a computer Anthropic hosts, with a fresh copy of your project, and [keeps working after you close your laptop](https://www.youtube.com/watch?v=vlfCjWuv4es&t=563s). Your `.env` file and SSH keys are not there because they were never in the project's shared history.
+
+Start a cloud session in the browser at [claude.ai/code](https://claude.ai/code), in the Code tab of the Claude app, or from the terminal with `claude --cloud`. A cloud session [copies the project from GitHub](https://code.claude.com/docs/en/claude-code-on-the-web), so connect a GitHub repository first.
+
+[Network access is limited](https://code.claude.com/docs/en/cloud-environments#access-levels) by default to GitHub, the sites that packages are downloaded from, and a short list of other approved domains. You add any others in the environment's settings. When a task needs a secret key, store it as a [network secret](https://code.claude.com/docs/en/cloud-environments#add-network-secrets): Anthropic attaches the key to each request after the request leaves the cloud computer, so Claude can call the service and never sees the key.
+
+Cloud sessions are available on Pro, Max, Ultra, and Team plans, and on some Enterprise seats.
+
+<PullQuote
+  quote="This machine is disposable, but the things that leave it aren't."
+  creator="Lydia Hallie, Claude Code team at Anthropic"
+  video="Rethinking Claude Code Best Practices"
+  href="https://www.youtube.com/watch?v=vlfCjWuv4es&t=627s"
+  timestamp="10:27"
+/>
+
+An uploaded change or a message sent through a connected service stays sent. Hallie [keeps auto mode on in cloud sessions](https://www.youtube.com/watch?v=vlfCjWuv4es&t=636s) and saves her deny rules with the project so they come along.
+
+[Defend your agent from prompt injection](/guides/defend-your-agent-from-prompt-injection/) covers hidden instructions in the material an agent reads.
+
+## <span class="sec-no">05</span>Give Claude a pass or fail check
+
+When you approved every change, you had seen all the work. After a session runs for hours on its own, you will not read every file.
+
+Hallie's example is [moving a login system to a new service](https://www.youtube.com/watch?v=vlfCjWuv4es&t=672s). The same prompt can end three ways:
+
+- The login moves and the old system is left running.
+- The login moves for new sign-ins only.
+- The login moves and every user is logged out.
+
+Each ending looks reasonable in a summary.
+
+Give Claude checks to run along the way. A check is [anything that comes back pass or fail](https://www.youtube.com/watch?v=vlfCjWuv4es&t=703s): a test, a screenshot, or a build (the step that turns the code into a program that runs). If one check is that existing users stay signed in, the run that logs everyone out fails that check and has to find another way. For a research report, [Herk's checks](https://www.youtube.com/watch?v=8Pg6G5h05hk&t=358s) are that every claim has a source link and every number matches the spreadsheet.
+
+A check can live in three places. Each is stricter than the one before.
+
+**In the prompt.** [Say what done looks like](https://www.youtube.com/watch?v=vlfCjWuv4es&t=726s), ask Claude to split the work into tasks that each have a test, and ask it to show the command it ran and the output. You were not there, so the output is your evidence. Claude still decides when it is done.
+
+**As a goal.** [`/goal`](https://code.claude.com/docs/en/goal) sets a finish condition, such as `/goal all tests in tests/auth pass`. A separate model checks the condition each time Claude stops, and Claude keeps working until the condition is met.
+
+**As a hook.** A hook is a script that Claude Code runs at a fixed point in a session. Claude cannot skip it. Hallie [gives three examples](https://www.youtube.com/watch?v=vlfCjWuv4es&t=760s), and each attaches to a named event in the [hooks reference](https://code.claude.com/docs/en/hooks):
+
+| When it runs | Event name | Hallie's example check |
+| --- | --- | --- |
+| After Claude edits a file | `PostToolUse` | The linter, a tool that flags style and syntax errors |
+| When Claude marks a task complete | `TaskCompleted` | The tests for the code it changed |
+| When Claude tries to finish | `Stop` | The whole test suite |
+
+A failed check sends Claude back only if the script reports the failure with the right number. Every script ends by reporting a number called an exit code. Most test tools [exit with 1](https://www.youtube.com/watch?v=vlfCjWuv4es&t=780s) when a test fails. Claude Code treats 1 as a warning and carries on, so the task is marked complete anyway. Exit code 2 is the one that blocks.
+
+This `Stop` hook from Anthropic's [documentation](https://code.claude.com/docs/en/best-practices#enforce-the-check-with-a-stop-hook) goes in `.claude/settings.json`. Its command, `pnpm tsc --noEmit`, checks a TypeScript project for type errors. Swap in the command that runs your own check:
+
+```json
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          { "type": "command", "command": "pnpm tsc --noEmit 1>&2 || exit 2" }
+        ]
+      }
+    ]
+  }
+}
+```
+
+`|| exit 2` turns any failure into exit code 2. `1>&2` sends the error text to the place Claude Code reads the reason from, so Claude knows what to fix.
+
+Exit code 2 [acts differently on each event](https://code.claude.com/docs/en/hooks#exit-code-2-behavior-per-event). On `Stop` and `TaskCompleted` it keeps Claude working. On `PostToolUse` the edit has already happened, so Claude only receives the error text. If a `Stop` hook blocks eight times in a row and Claude takes no action in between, Claude Code lets Claude stop anyway.
+
+The last check runs after the session. On Hallie's team, each session ends by opening a pull request, a proposed change that waits for approval. The project's automated checks, called CI, [run on every pull request](https://www.youtube.com/watch?v=vlfCjWuv4es&t=838s) however the session went.
+
+[Claude reviews each pull request first](https://www.youtube.com/watch?v=vlfCjWuv4es&t=878s), in a fresh session that did not write the code, and a second group of agents rechecks every bug it reports. People then [review by risk](https://www.youtube.com/watch?v=vlfCjWuv4es&t=892s). Hallie's rough scale:
+
+| Change | Human review |
+| --- | --- |
+| Documentation or wording | None once the automated checks pass |
+| An ordinary product change | One reviewer |
+| A risky change | Two reviewers |
+
+Anthropic offers a review of this kind as [Code Review](https://code.claude.com/docs/en/code-review) on Team and Enterprise plans. On any plan, [`/code-review`](https://code.claude.com/docs/en/code-review-local) reviews your changes inside your own session, using a helper that never saw the conversation.
+
+[Give your coding agent a finish line](/guides/give-your-coding-agent-a-finish-line/) covers choosing a check that can catch the failure. [Loop the agent until the work passes](/guides/loop-the-agent-until-the-work-passes/) covers rerunning work until a check passes.
+
+## <span class="sec-no">06</span>Let one session start the rest
+
+The last job is starting each session and reading what comes back. Hallie expects that job to move too: you talk to [one coordinating session](https://www.youtube.com/watch?v=vlfCjWuv4es&t=910s), and it starts the others.
+
+Claude Code offers this as [Projects](https://code.claude.com/docs/en/claude-projects). A Project is one continuing conversation in which Claude acts as coordinator. You tell it what needs doing. It starts a thread for each task, usually a cloud session, keeps track of what each thread reports, and [sends back work that is unfinished](https://www.youtube.com/watch?v=vlfCjWuv4es&t=961s). The tasks can be office work: [Herk's examples](https://www.youtube.com/watch?v=8Pg6G5h05hk&t=495s) are a client report and a research brief.
+
+The coordinator and the threads do different work, so [each can run a different model](https://www.youtube.com/watch?v=vlfCjWuv4es&t=952s):
+
+**Coordinator model.** The coordinator decides what to do and judges what comes back. It writes none of the code. Hallie picks a model that is strong at judging work, and names Fable.
+
+**Thread model.** The threads do the work. Hallie picks a model that is strong at carrying out a task, and names Opus 5.5.
+
+Both are set in **Project settings > General**. A new Project runs Opus for both, with threads at high effort, the setting that uses up your plan's allowance fastest.
+
+A Project also keeps its conversations from growing too long. Each thread summarizes its own history when needed, so you never decide when to clear one.
+
+Projects are a public beta on Pro, Max, and Ultra plans, released to accounts gradually. Team and Enterprise plans do not have them yet.
+
+[A practical guide to Claude's features](/guides/a-practical-guide-to-claudes-features/) covers where Projects sit among Claude's other tools. [Split big AI tasks into steps and checks](/guides/split-big-ai-tasks-into-steps-and-checks/) covers dividing a large job by hand.
+
+## <span class="sec-no">07</span>Try it on one large task
+
+Hallie's [closing advice](https://www.youtube.com/watch?v=vlfCjWuv4es&t=1020s) is to pick one task much larger than you would normally give Claude and run it in the cloud. Each point where the session stops and waits for you is the next job to hand over.
+
+<Exercise>
+1. Open a session in your project folder, run `/doctor prompt-audit`, and apply the edits you agree with.
+2. Write down three actions you could not undo. For each file Claude must never read, add a `Read` deny rule to `.claude/settings.json`. For each command that should wait for you, add a `Bash` ask rule.
+3. Pick a task larger than you would normally give Claude. Write what done looks like as checks that pass or fail.
+4. Start the task, in a cloud session if your plan has them, and ask Claude to show the command and the output for each check.
+5. List every point where the session stopped for you. For each, add a trusted place to auto mode, a deny or `ask` rule, or a check.
+</Exercise>
